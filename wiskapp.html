@@ -434,36 +434,46 @@ console.log('cleaned');
 
 };
 
-function pluskey() {
-    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
+function ReplaceWithPlus() {
+//    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
+
+substitution = 'Select(x) + y';
+equation = substituteselected( substitution, equation);
+updatelatex(equation);
 }
 
-function timeskey() {
-    alert("test")
-}
-function powerkey() {
+function ReplaceWithTimes() {
 
-substitution = '(Select(x)) ^ y';
+substitution = 'Select(a) * b';
+equation = substituteselected( substitution, equation);
+updatelatex(equation);
+}
+function ReplaceWithPower() {
+
+substitution = 'Select(a) ^ b';
 equation = substituteselected( substitution, equation);
 updatelatex(equation);
 
 }
-function minuskey() {
-    alert("test")
-}
-function dividekey() {
+function ReplaceWithMinus() {
 
-substitution = '(Select(x)) / y';
+substitution = '(Select(a)-b)';
 equation = substituteselected( substitution, equation);
 updatelatex(equation);
 }
-function nthrootkey() {
+function ReplaceWithDivide() {
 
-substitution = 'nthRoot(Select(x),n)';
+substitution = 'Select(a) / b';
 equation = substituteselected( substitution, equation);
 updatelatex(equation);
 }
-function equalskey() {
+function ReplaceWithNthroot() {
+
+substitution = 'nthRoot(Select(a),b)';
+equation = substituteselected( substitution, equation);
+updatelatex(equation);
+}
+function ReplaceWithEquality() {
     equation = math.parse('Select(a)==b');
     updatelatex(equation);
 }
@@ -644,15 +654,24 @@ function  keysPressed(e) {
 
 if (e.shiftKey == 1)
     switch (e.keyCode) {
+// pijltjes met shift
         case 37: out.innerHTML = 'left'; break;
         case 38: out.innerHTML = 'up'; break;
         case 39: out.innerHTML = 'right'; break;
         case 40: out.innerHTML = 'down'; break;
 
-// Speciale cijfers
+// Speciale cijfers met shift
         case 53: equation = math.parse(expr.value); updatelatex(equation); break;
         case 54: updatelatex(equation); break;
+
+// letters met shift
+        case 65: ; break; // shift a
+        case 66: ; break; // shift b
+        case 67: ; break; // shift c
+
     }
+
+
 
 else if (e.ctrlKey == 1)
     switch (e.keyCode) {
@@ -691,22 +710,22 @@ else
         case 40: out.innerHTML = 'down'; e.preventDefault(); downselect(equation); break;
 
 // Specialkeys voor Wouter        
-        case 173: pluskey(); keyslist.push(173); break;
-        case 164: timeskey(); keyslist.push(164); break;
-        case 192: powerkey(); keyslist.push(192); break;
-        case 169: minuskey(); keyslist.push(169); break;
-        case 160: dividekey(); keyslist.push(160); break;
-        case 165: nthrootkey(); keyslist.push(165); break;
-        case 61: equalskey(); keyslist.push(61); break;
+        case 173: ReplaceWithPlus(); keyslist.push(173); break;
+        case 164: ReplaceWithTimes(); keyslist.push(164); break;
+        case 192: ReplaceWithPower(); keyslist.push(192); break;
+        case 169: ReplaceWithMinus(); keyslist.push(169); break;
+        case 160: ReplaceWithDivide(); keyslist.push(160); break;
+        case 165: ReplaceWithNthroot(); keyslist.push(165); break;
+        case 61:  ReplaceWithEquality(); keyslist.push(61); break;
 
 // Specialkeys voor SVEN (hacky)
-        case 189: pluskey(); break;
-        case 186: timeskey(); break;
-        case 220: powerkey(); break;
-        case 219: minuskey(); break;
-        case 221: dividekey(); break;
-        case 192: nthrootkey(); break;
-        case 187: equalskey(); break;
+        case 189: ReplaceWithPlus(); break;
+        case 186: ReplaceWithTimes(); break;
+        case 220: ReplaceWithMinus(); break;
+        case 219: ReplaceWithMinus(); break;
+        case 221: ReplaceWithDivide(); break;
+        case 192: ReplaceWithNthroot(); break;
+        case 187: ReplaceWithEquality(); break;
 
 // Cijfers (voor Wouter)
         case 49: e.preventDefault(); substituteselected(selectit('1'), equation); updatelatex(equation); break; 
@@ -719,6 +738,11 @@ else
         case 56: e.preventDefault(); substituteselected(selectit('8'), equation); updatelatex(equation); break;
         case 57: e.preventDefault(); substituteselected(selectit('9'), equation); updatelatex(equation); break;
         case 48: e.preventDefault(); substituteselected(selectit('0'), equation); updatelatex(equation); break;
+
+// letters
+        case 65: e.preventDefault(); substituteselected(selectit('a'), equation); updatelatex(equation); break; //  a
+        case 66: e.preventDefault(); substituteselected(selectit('b'), equation); updatelatex(equation); break; //  b
+        case 67: e.preventDefault(); substituteselected(selectit('c'), equation); updatelatex(equation); break; //  c
     }
 };
 
