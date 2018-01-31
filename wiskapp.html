@@ -189,6 +189,17 @@ var invert = function(input) {
       return output
 }
 
+var invertSimple = function(input) {
+      var output = {}
+
+      Object.keys(input).forEach(function(key) {
+        var value = input[key]
+        output[value] = key
+      })
+
+      return output
+}
+
 // niet destructief alternatief voor pop()
 function returnWithoutLast(arr) {
 newarr = [];
@@ -605,7 +616,7 @@ MoveSelectToAdress(selectAdress,upAdress,eq);
 updateLatex(equation);
 }
 
-function downSelect(eq) {
+function downSelect(eq,actionName) {
 
 // dit is maar 1 enkel selectadres dus momenteel werkt deze functie alleen voor enkele selecties    
 selectAdress = adresses('Select',eq)[0];
@@ -636,7 +647,11 @@ console.log(downAdress);
 
 MoveSelectToAdress(selectAdress,downAdress,eq);
 
- updateLatex(equation);
+// noteer dat er een succesvolle downselect is gebeurd
+keysList.push(actionName);
+// update de latexweergave
+updateLatex(equation);
+
 }
 
 
@@ -648,112 +663,185 @@ expr.oninput = function () {
     
 }
 
- document.onkeydown = keysPressed
+///*********************************************************************
+///  Keyboard handling
+///*********************************************************************
+
+var keyboards = {
+    wouter: {
+        left:    37,
+        up:      38,
+        right:   39,
+        down:    40,
+
+        minus:   169,  
+        plus:    173,
+        divide:  160,
+        times:   164,
+        nthroot: 165,
+        power:   192,
+        equals:  61,
+
+
+        0:       48,
+        1:       49,
+        2:       50,
+        3:       51,
+        4:       52,
+        5:       53,
+        6:       54,
+        7:       55,
+        8:       56,
+        9:       57,
+
+        a:       65,
+        b:       66,
+        c:       67
+
+    },
+    sven:   {
+        left:    37,
+        up:      38,
+        right:   39,
+        down:    40,
+
+        minus:   219,  
+        plus:    189,
+        divide:  221,
+        times:   186,
+        nthroot: 192,
+        power:   220,
+        equals:  187,
+
+
+        0:       48,
+        1:       49,
+        2:       50,
+        3:       51,
+        4:       52,
+        5:       53,
+        6:       54,
+        7:       55,
+        8:       56,
+        9:       57,
+
+        a:       65,
+        b:       66,
+        c:       67
+    } 
+};
+
+keyboardType = 'wouter';
+
+// maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType
+var keyLookup = invertSimple(keyboards[keyboardType]);
+
+document.onkeydown = keysPressed
   
 function  keysPressed(e) {
 
 if (e.shiftKey == 1)
-    switch (e.keyCode) {
+    switch (keyLookup[e.keyCode]) {
 // pijltjes met shift
-        case 37: out.innerHTML = 'left'; break;
-        case 38: out.innerHTML = 'up'; break;
-        case 39: out.innerHTML = 'right'; break;
-        case 40: out.innerHTML = 'down'; break;
+        case 'left': out.innerHTML = 'left'; break;
+        case 'up': out.innerHTML = 'up'; break;
+        case 'right': out.innerHTML = 'right'; break;
+        case 'down': out.innerHTML = 'down'; break;
 
 // Speciale cijfers met shift
-        case 53: equation = math.parse(expr.value); updateLatex(equation); break;
-        case 54: updateLatex(equation); break;
+        case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
+        case '5': updateLatex(equation); break;
 
 // letters met shift
-        case 65: ; break; // shift a
-        case 66: ; break; // shift b
-        case 67: ; break; // shift c
+        case 'a': ; break; // shift a
+        case 'b': ; break; // shift b
+        case 'c': ; break; // shift c
 
     }
 
 
 
 else if (e.ctrlKey == 1)
-    switch (e.keyCode) {
-        case 37: out.innerHTML = 'CTRLleft';break;
-        case 38: out.innerHTML = 'up'; break;
-        case 39: out.innerHTML = 'right'; break;
-        case 40: out.innerHTML = 'down'; break;
+    switch (keyLookup[e.keyCode]) {
+        case 'left': out.innerHTML = 'CTRLleft';break;
+        case 'up': out.innerHTML = 'up'; break;
+        case 'right': out.innerHTML = 'right'; break;
+        case 'down': out.innerHTML = 'down'; break;
     }
 
 else if (e.metaKey == 1)
 
-    switch (e.keyCode) {
-        case 37: out.innerHTML = 'left'; break;
-        case 38: out.innerHTML = 'up'; break;
-        case 39: out.innerHTML = 'right'; break;
-        case 40: out.innerHTML = 'down'; break;
+    switch (keyLookup[e.keyCode]) {
+        case 'left': out.innerHTML = 'left'; break;
+        case 'up': out.innerHTML = 'up'; break;
+        case 'right': out.innerHTML = 'right'; break;
+        case 'down': out.innerHTML = 'down'; break;
 
-        case 70: e.preventDefault(); out.innerHTML = 'meta f'; break;
+        case 'f': e.preventDefault(); out.innerHTML = 'meta f'; break;
     }
 
 else if (e.altKey == 1)
 
-    switch (e.keyCode) {
-        case 37: out.innerHTML = 'left'; break;
-        case 38: out.innerHTML = 'up'; break;
-        case 39: out.innerHTML = 'right'; break;
-        case 40: out.innerHTML = 'down'; break;
+    switch (keyLookup[e.keyCode]) {
+        case 'left': out.innerHTML = 'left'; break;
+        case 'up': out.innerHTML = 'up'; break;
+        case 'right': out.innerHTML = 'right'; break;
+        case 'down': out.innerHTML = 'down'; break;
     }
 
 else
 
-    switch (e.keyCode) {
-        case 37: out.innerHTML = 'left'; e.preventDefault(); leftSelect(equation); break;
-        case 38: out.innerHTML = 'up'; e.preventDefault(); upSelect(equation); break;
-        case 39: out.innerHTML = 'right'; e.preventDefault(); rightSelect(equation); break;
-        case 40: out.innerHTML = 'down'; e.preventDefault(); downSelect(equation); break;
+    switch (keyLookup[e.keyCode]) {
+        case 'left': out.innerHTML = 'left'; keysList.push('left') ; e.preventDefault(); leftSelect(equation); break;
+        case 'up': out.innerHTML = 'up'; keysList.push('up') ; e.preventDefault(); upSelect(equation); break;
+        case 'right': out.innerHTML = 'right'; keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
+        case 'down': out.innerHTML = 'down'; e.preventDefault(); downSelect(equation, 'down'); break;
 
 // Specialkeys voor Wouter        
-        case 173: replaceWithPlus(); keysList.push(173); break;
-        case 164: replaceWithTimes(); keysList.push(164); break;
-        case 192: replaceWithPower(); keysList.push(192); break;
-        case 169: replaceWithMinus(); keysList.push(169); break;
-        case 160: replaceWithDivide(); keysList.push(160); break;
-        case 165: replaceWithNthroot(); keysList.push(165); break;
-        case 61:  replaceWithEquality(); keysList.push(61); break;
-
-// Specialkeys voor SVEN (hacky)
-        case 189: replaceWithPlus(); break;
-        case 186: replaceWithTimes(); break;
-        case 220: replaceWithMinus(); break;
-        case 219: replaceWithMinus(); break;
-        case 221: replaceWithDivide(); break;
-        case 192: replaceWithNthroot(); break;
-        case 187: replaceWithEquality(); break;
+        case 'plus': replaceWithPlus(); keysList.push('plus'); break;
+        case 'times': replaceWithTimes(); keysList.push('times'); break;
+        case 'power': replaceWithPower(); keysList.push('power'); break;
+        case 'minus': replaceWithMinus(); keysList.push('minus'); break;
+        case 'divide': replaceWithDivide(); keysList.push('divide'); break;
+        case 'nthroot': replaceWithNthroot(); keysList.push('nthroot'); break;
+        case 'equals':  replaceWithEquality(); keysList.push('equals'); break;
 
 // Cijfers (voor Wouter)
-        case 49: e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 
-        case 50: e.preventDefault(); substituteSelected(selectIt('2'), equation); updateLatex(equation); break;
-        case 51: e.preventDefault(); substituteSelected(selectIt('3'), equation); updateLatex(equation); break;
-        case 52: e.preventDefault(); substituteSelected(selectIt('4'), equation); updateLatex(equation); break;
-        case 53: e.preventDefault(); substituteSelected(selectIt('5'), equation); updateLatex(equation); break;
-        case 54: e.preventDefault(); substituteSelected(selectIt('6'), equation); updateLatex(equation); break;
-        case 55: e.preventDefault(); substituteSelected(selectIt('7'), equation); updateLatex(equation); break;
-        case 56: e.preventDefault(); substituteSelected(selectIt('8'), equation); updateLatex(equation); break;
-        case 57: e.preventDefault(); substituteSelected(selectIt('9'), equation); updateLatex(equation); break;
-        case 48: e.preventDefault(); substituteSelected(selectIt('0'), equation); updateLatex(equation); break;
+        case '1': e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 
+        case '2': e.preventDefault(); substituteSelected(selectIt('2'), equation); updateLatex(equation); break;
+        case '3': e.preventDefault(); substituteSelected(selectIt('3'), equation); updateLatex(equation); break;
+        case '4': e.preventDefault(); substituteSelected(selectIt('4'), equation); updateLatex(equation); break;
+        case '5': e.preventDefault(); substituteSelected(selectIt('5'), equation); updateLatex(equation); break;
+        case '6': e.preventDefault(); substituteSelected(selectIt('6'), equation); updateLatex(equation); break;
+        case '7': e.preventDefault(); substituteSelected(selectIt('7'), equation); updateLatex(equation); break;
+        case '8': e.preventDefault(); substituteSelected(selectIt('8'), equation); updateLatex(equation); break;
+        case '9': e.preventDefault(); substituteSelected(selectIt('9'), equation); updateLatex(equation); break;
+        case '0': e.preventDefault(); substituteSelected(selectIt('0'), equation); updateLatex(equation); break;
 
 // letters
-        case 65: e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
-        case 66: e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
-        case 67: e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c
+        case 'a': e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
+        case 'b': e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
+        case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c
     }
 };
 
-// bij mij vs bij sven
-// 61  -> 187
-// 192 -> 220
-// 165 -> 192
-// 164 -> 186
-// 160 -> 221
-// 173 -> 189
-// 169 -> 219
+function inputDigit (digit,eq) {
+    selectAdress = adresses('Select',eq)[0];
+    selectNode = readAtAdress(selectAdress,eq);
+// arg is de node die geselecteerd is 
+    arg = selectNode.args[0];
+    if (arg.isSymbolNode) {
+        oudGetal = /\d+/.exec(arg.name);
+        
+        
+        if (isNaN(oudGetal)) { } else {
+            nieuwGetal = oudGetal.concat(digit);
+            substituteSelected(nieuwGetal, eq);
+            updateLatex(eq);
+            };
+        } else {   
+    };    
+};
 
 </script>
 
