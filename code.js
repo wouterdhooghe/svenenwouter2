@@ -342,7 +342,6 @@ updateLatex = function (node) {
     updateEval(node);
 }
 
-updateLatex(equation);
 
 // verplaatst de selectie naar het gevraagde adress
 // past global variabele equation aan!

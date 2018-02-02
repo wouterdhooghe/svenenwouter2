@@ -118,6 +118,8 @@ math.import(customFunctions);
 var equation = math.parse('');
 var keysList = [];
 
+updateLatex(equation);
+
 // wat er gebeurt als je iets rechtstreeks invult in de expressiebox
 expr.oninput = function () {
     
