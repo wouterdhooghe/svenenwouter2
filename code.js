@@ -6,64 +6,59 @@
 var customFunctions = {
     
     Plus: function () {
-  //     arguments is een object met alle argumenten die zijn meegegeven met deze functie erin
-  
-  // de argumenten van de plus functie zijn een object, maar moeten eerst naar een array worden omgezet
-  var argumentArray = Object.values(arguments);
-  // Tel steeds de eerste op met de som van de rest van de array (reduce) en bekom zo de totale som
-  sum = argumentArray.reduce(function (a,b) {return a + b;});
-  return sum;
+          //     arguments is een object met alle argumenten die zijn meegegeven met deze functie erin
+         // de argumenten van de plus functie zijn een object, maar moeten eerst naar een array worden omgezet
+        var argumentArray = Object.values(arguments);
+        // Tel steeds de eerste op met de som van de rest van de array (reduce) en bekom zo de totale som
+        sum = argumentArray.reduce(function (a,b) {return a + b;});
+        return sum;
     },
     Times: function () {
-  //     arguments is een object met alle argumenten die zijn meegegeven met deze functie erin
+        //     arguments is een object met alle argumenten die zijn meegegeven met deze functie erin
   
-  // de argumenten van de Times functie zijn een object, maar moeten eerst naar een array worden omgezet
-  var argumentArray = Object.values(arguments);
-  // Tel steeds de eerste op met de som van de rest van de array (reduce) en bekom zo de totale som
-  product = argumentArray.reduce(function (a,b) {return a * b;});
-  return product;
+        // de argumenten van de Times functie zijn een object, maar moeten eerst naar een array worden omgezet
+        var argumentArray = Object.values(arguments);
+         // Tel steeds de eerste op met de som van de rest van de array (reduce) en bekom zo de totale som
+        product = argumentArray.reduce(function (a,b) {return a * b;});
+        return product;
     },
     minus: function (a, b) {
-      return a - b;
+        return a - b;
     },
     binom: function (n, k) {
-      return 1;
+        return 1;
     },
     Select: function (a) {
-      return a;
+       return a;
     }
   
   
   };
   
+
   customFunctions.Plus.toTex = function (node, options) {
-      
-      console.log('plusinputnode: ');
-      console.log(node);
-      totalargs = node.args.length;
-      outputs = [];
-  
-      for (i=0; i<totalargs; i++) {
-          outputs.push(node.args[i].toTex(options));
-          console.log(outputs);
-      };
-      console.log('plusoutputs');
-      console.log(outputs.join(' + '));
-      return outputs.join(' + ');
+      output = '';
+      node.args.forEach( function (value, index, parent) {
+            output += value.toTex(options);
+            index==parent.length - 1  ? output = output : output += '+';
+      });      
+      return output;
   };
-  
+
+
+/*
+customFunctions.Plus.toTex = function (node, options) {
+    console.log(node.args);
+    return node.args[0].toTex(options) + '+' + node.args[1].toTex(options)+ '+' + node.args[2].toTex(options)};
+ */
+
   customFunctions.Times.toTex = function (node, options) {
-      
-      console.log('timesinputnode: ');
-      console.log(node);
-  
-      totalargs = node.args.length;
-      outputs = [];
-      for (i=0; i<totalargs; i++) {
-          outputs.push(node.args[i].toTex(options));
-      };
-      console.log(outputs.join(' * '));
-      return outputs.join(' * ');
+    output = '';
+    node.args.forEach( function (value, index, parent) {
+          output += value.toTex(options);
+          index==parent.length - 1  ? output = output : output += '*';
+    });      
+    return output;
   };
   customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
   customFunctions.minus.toTex = function (node, options) { return node.args[0].toTex(options) 
