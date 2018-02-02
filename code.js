@@ -1,3 +1,306 @@
+
+//************************************* */
+// CUSTOM FUNCTIES
+//************************************* */
+
+var customFunctions = {
+    
+    Plus: function () {
+  //     arguments is een object met alle argumenten die zijn meegegeven met deze functie erin
+  
+  // de argumenten van de plus functie zijn een object, maar moeten eerst naar een array worden omgezet
+  var argumentArray = Object.values(arguments);
+  // Tel steeds de eerste op met de som van de rest van de array (reduce) en bekom zo de totale som
+  sum = argumentArray.reduce(function (a,b) {return a + b;});
+  return sum;
+    },
+    Times: function () {
+  //     arguments is een object met alle argumenten die zijn meegegeven met deze functie erin
+  
+  // de argumenten van de Times functie zijn een object, maar moeten eerst naar een array worden omgezet
+  var argumentArray = Object.values(arguments);
+  // Tel steeds de eerste op met de som van de rest van de array (reduce) en bekom zo de totale som
+  product = argumentArray.reduce(function (a,b) {return a * b;});
+  return product;
+    },
+    minus: function (a, b) {
+      return a - b;
+    },
+    binom: function (n, k) {
+      return 1;
+    },
+    Select: function (a) {
+      return a;
+    }
+  
+  
+  };
+  
+  customFunctions.Plus.toTex = function (node, options) {
+      
+      console.log('plusinputnode: ');
+      console.log(node);
+      totalargs = node.args.length;
+      outputs = [];
+  
+      for (i=0; i<totalargs; i++) {
+          outputs.push(node.args[i].toTex(options));
+          console.log(outputs);
+      };
+      console.log('plusoutputs');
+      console.log(outputs.join(' + '));
+      return outputs.join(' + ');
+  };
+  
+  customFunctions.Times.toTex = function (node, options) {
+      
+      console.log('timesinputnode: ');
+      console.log(node);
+  
+      totalargs = node.args.length;
+      outputs = [];
+      for (i=0; i<totalargs; i++) {
+          outputs.push(node.args[i].toTex(options));
+      };
+      console.log(outputs.join(' * '));
+      return outputs.join(' * ');
+  };
+  customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
+  customFunctions.minus.toTex = function (node, options) { return node.args[0].toTex(options) 
+    + node.name + node.args[1].toTex(options);
+  };
+  customFunctions.Select.toTex = function (node, options) {
+      console.log('slct');
+    return '\\textcolor{red}{' + node.args[0].toTex(options) + '}';
+  };
+
+
+//************************************* */
+// UTILITY
+//************************************* */
+
+// invert functie van internet (support voor dubbele values). Accepteert alleen arrays als keys in het originele object
+
+var invert = function(input) {
+    var output = {}
+
+    Object.keys(input).forEach(function(key) {
+      var value = input[key]
+      output[value] = output[value] || []
+      output[value].push(key.split(','))
+    })
+
+    return output
+}
+
+var invertSimple = function(input) {
+    var output = {}
+
+    Object.keys(input).forEach(function(key) {
+      var value = input[key]
+      output[value] = key
+    })
+
+    return output
+}
+
+// niet destructief alternatief voor pop()
+function returnWithoutLast(arr) {
+newarr = [];
+  for (i=0; i < arr.length - 1; i++) {
+      newarr[i] = arr[i];
+  };
+return newarr;
+};
+
+
+
+//************************************* */
+// SELECTIES
+//************************************* */
+
+
+// bouw een object met als keys de adressen in de uitdrukking bignode en als values het symbool op elk adres
+
+function buildPath(bignode) {
+
+    var adress = [];
+    var lastChildAtLevel = [];
+    var adressList = new Object;
+  
+      bignode.traverse(function (child,arg,parent) {
+  
+  switch (child.type) {
+      case 'OperatorNode': name = child.op;    break;
+      case 'ConstantNode': name = child.value; break;
+      case 'FunctionNode': name = child.fn;    break;
+      case 'SymbolNode':   name = child.name;  break;
+      default:             name = child.type;
+    }
+  
+   if (arg==null) {arg='root?'}
+  
+   switch (arg.slice(0,4)) {
+       case 'args':    argnum = /\d+/.exec(arg); break ;
+       case 'cont':   argnum = 0; break; 
+       default:       argnum = 8;
+   }
+  
+   if (parent == null) {
+       totalargs = 0
+   } else {
+      parent.args == undefined ? totalargs = 0 : totalargs = parent.args.length - 1
+   }
+  
+   var leaf = child.args == undefined & child.content == undefined;
+   var lastChild = argnum == totalargs;
+  
+   adress.push(arg);
+  
+  // console.log(name + ':' + adress);
+  
+   adressList[adress] = name;
+  
+  // console.log('arg:'+ arg + 'argnum: '+argnum + 'totalargs:' + totalargs);
+  
+  if (lastChild) {
+          lastChildAtLevel[adress.length]=1;
+      };
+   //   console.log(lastChildAtLevel);
+   //   console.log('lastChild=' + lastChild);
+  
+   if (leaf == 1) {
+       
+      adress.pop()
+  
+   //   console.log('leafpop');
+  
+      if (lastChild == true) {
+  
+   //       console.log('leaf+lastChild');
+  
+          while (lastChildAtLevel[lastChildAtLevel.length -1 ] == 1) {
+              adress.pop();
+              lastChildAtLevel.pop();
+   //           console.log('poptit: '+ lastChildAtLevel.length);
+          };
+       //   adress.pop();
+      };
+      
+  
+  };
+  
+      }
+      );
+  
+   return adressList;
+  };
+  
+  // geeft een array terug met alle adressen van de gevraagde string in de uitdrukking bignode
+  function adresses(string, bignode) {
+      return invert(buildPath(bignode))[string];
+  }
+  
+  // geeft de uitdrukking die op het gegeven adres staat in de uitdrukking bignode
+  function readAtAdress(adress,bignode) {
+  
+      var node = math.parse('');
+  
+      for (i = 0; i < adress.length; i++) {
+          arg = adress[i];
+          switch (arg.slice(0,4)) {
+              case 'root':   node = bignode; console.log('readroot'); break;
+              case 'args':    node = node.args[/\d+/.exec(arg)]; console.log('readargs['+/\d+/.exec(arg)+']'); break;
+              case 'cont':   node = node.content; console.log('readcontent'); break; 
+              default:        alert('error: non-valid adress: ' + arg);
+          };
+          
+      };
+  
+      return node;
+  ;}
+  
+  function injectAtAdress(subst,adress,bignode) {
+      if (typeof subst === 'string') { subst = math.parse(subst)};
+  
+      var eq = bignode;
+      var adressText = '';
+  
+      for (i = 0; i < adress.length; i++) {
+          arg = adress[i];
+          switch (arg.slice(0,4)) {
+              case 'root':    adressText = ''; /* console.log(arg, adressText) */; break;
+              case 'args':    adressText = adressText + '.args[' + /\d+/.exec(arg) + ']'; /* console.log(arg, adressText) */; break;
+              case 'cont':   adressText = adressText + '.content'; /* console.log(arg, adressText) */; break; 
+              default:        alert('error: non-valid adress' + arg);
+          };
+          
+      };
+  
+   //   console.log('adrestext:' + adressText + ' subst: ' + subst);
+  // PAS OP WANT DIT IS DESTRUCTIEF en vERANDERT DE OORSPRONKELIJKE VARIABELE !!!
+  // IS DAT ECHT ZO? CHECK DIT!
+      eval('eq'+adressText+ '= subst');
+      return eq;
+  };
+  
+  // zet een Select() rond de gegeven uitdrukking (mag in stringvorm of in objectvorm zijn)
+  function selectIt(node) {
+      if (typeof node === 'string') { node = math.parse(node)};
+      return new math.expression.node.FunctionNode('Select', [node]);
+  }
+  
+  // vervangt wat nu geselecteerd is in bignode door de opgegeven substitutie (mag in stringvorm of in objectvorm zijn)
+  // de substitutie moet zelf al een Select bevatten want deze functie voegt die niet toe
+  function substituteSelected(subst, bignode) {
+      if (typeof subst === 'string') { subst = math.parse(subst)};
+  
+      // replace in all select adresses
+      adresses('Select', bignode).forEach(function (adress) {
+          injectAtAdress(subst,adress,bignode);
+  }
+      );
+      return bignode;
+  };
+  
+  /* OUDE VERSIE MET TRANSFORM FUNCTIE
+  function substituteSelected(subst, bignode) {
+      
+   subst = subst.replace('Select', 'Salect');
+   subst = math.parse(subst);
+  
+      eq = bignode.transform(function (node, path, parent) {
+    if (node.name === 'Select') {
+        console.log('subbed')
+      return subst;
+    }
+  
+  //  }
+    else {
+        console.log('nosub')
+        return node;
+    }
+  });
+  
+  eq = eq.transform(function (node, path, parent) {
+    if (node.name === 'Salect') {
+        console.log('subbed')
+      return math.parse('Select(' + node.args[0] + ')');
+    }
+  
+    else {
+        console.log('nosub')
+        return node;
+    }
+  });
+  
+  return eq
+  
+  };
+   */
+
+
+
 selected = function (node) {
       
 var filtered = node.filter(function (node) {
@@ -7,6 +310,11 @@ var filtered = node.filter(function (node) {
 return filtered;
 
 }
+
+
+//************************************* */
+// UPDATES
+//************************************* */
 
 updateEval = function (node) {
     
@@ -50,6 +358,11 @@ console.log('cleaned');
  equation = eq;
 
 };
+
+
+//************************************* */
+// ACTIES
+//************************************* */
 
 function replaceWithPlus() {
 //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
@@ -103,14 +416,8 @@ selectAdress = adresses('Select',eq)[0];
 console.log('selectAdress: ');
 console.log(selectAdress);
 
-// als Select maar 1 kind heeft: doe niks: ONDERSTAANDE CODE WERKT NIET WANT MOET OVER PARENT GAAN IPV OVER selectNode
-// eigenlijk moet dit niet niet gecontroleerd worden voor links
-// selectNode = readAtAdress(selectAdress,eq);
-// if (selectNode.args[1] == undefined) {console.log('only one argument'); return};
-// console.log('more than one argument');
-
-    // als Select al de root is: doe niks
-    if (eq.fn == 'Select') {return}; 
+// als Select al de root is: doe niks
+if (eq.fn == 'Select') {return}; 
 
 // vind het nummer van dit argument
 if (selectAdress[selectAdress.length - 1] == 'content') {
@@ -149,14 +456,8 @@ selectAdress = adresses('Select',eq)[0];
 console.log('selectAdress: ');
 console.log(selectAdress);
 
-// als Select maar 1 kind heeft: doe niks: ONDERSTAANDE CODE WERKT NIET WANT MOET OVER PARENT GAAN IPV OVER selectNode
-// eigenlijk moet dit niet niet gecontroleerd worden voor links
-// selectNode = readAtAdress(selectAdress,eq);
-// if (selectNode.args[1] == undefined) {console.log('only one argument'); return};
-// console.log('more than one argument');
-
-    // als Select al de root is: doe niks
-    if (eq.fn == 'Select') {return}; 
+// als Select al de root is: doe niks
+if (eq.fn == 'Select') {return}; 
 
 // vind het nummer van dit argument, en het aantal argumenten
 if (selectAdress[selectAdress.length - 1] == 'content') {
