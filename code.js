@@ -546,9 +546,22 @@ console.log(downAdress);
 
 MoveSelectToAdress(selectAdress,downAdress,eq);
 
-// noteer dat er een succesvolle downselect is gebeurd
-keysList.push(actionName);
+// noteer dat er een succesvolle downselect is gebeurd DIT Staat nu gewoon bij de keyhandler functie
+// keysList.push(actionName);
+
 // update de latexweergave
 updateLatex(equation);
 
-}
+};
+
+// SHIFT toetsen
+
+function shiftLeftSelect(eq) {
+// bedoeling is om de huidige selectie uit te breiden naar links. Dit is alleen zinvol binnen een multiargument functie
+
+// check of we inderdaad in een multi argument functie zitten
+
+//
+
+
+};

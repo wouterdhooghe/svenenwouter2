@@ -208,7 +208,7 @@ function  keysPressed(e) {
 if (e.shiftKey == 1)
     switch (keyLookup[e.keyCode]) {
 // pijltjes met shift
-        case 'left': out.innerHTML = 'left'; break;
+        case 'left': keysList.push('left') ; e.preventDefault(); shiftLeftSelect(equation); break;
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
         case 'down': out.innerHTML = 'down'; break;
@@ -257,10 +257,10 @@ else if (e.altKey == 1)
 else
 
     switch (keyLookup[e.keyCode]) {
-        case 'left': out.innerHTML = 'left'; keysList.push('left') ; e.preventDefault(); leftSelect(equation); break;
-        case 'up': out.innerHTML = 'up'; keysList.push('up') ; e.preventDefault(); upSelect(equation); break;
-        case 'right': out.innerHTML = 'right'; keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
-        case 'down': out.innerHTML = 'down'; e.preventDefault(); downSelect(equation, 'down'); break;
+        case 'left': keysList.push('left') ; e.preventDefault(); leftSelect(equation); break;
+        case 'up': keysList.push('up') ; e.preventDefault(); upSelect(equation); break;
+        case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
+        case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
 
 // Specialkeys voor Wouter        
         case 'plus': replaceWithPlus(); keysList.push('plus'); break;
