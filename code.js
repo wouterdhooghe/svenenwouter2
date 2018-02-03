@@ -47,18 +47,16 @@ var customFunctions = {
 
 
 /*
-customFunctions.Plus.toTex = function (node, options) {
-    console.log(node.args);
-    return node.args[0].toTex(options) + '+' + node.args[1].toTex(options)+ '+' + node.args[2].toTex(options)};
+        Plus(Select(3),Times(4,Times(5,6),7),8,9,10)
  */
 
   customFunctions.Times.toTex = function (node, options) {
     output = '';
     node.args.forEach( function (value, index, parent) {
           output += value.toTex(options);
-          index==parent.length - 1  ? output = output : output += '*';
+          index==parent.length - 1  ? output = output : output += '\\cdot';
     });      
-    return output;
+    return '(' + output + ')';
   };
   customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
   customFunctions.minus.toTex = function (node, options) { return node.args[0].toTex(options) 
@@ -361,14 +359,14 @@ console.log('cleaned');
 function replaceWithPlus() {
 //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
 
-substitution = 'Select(x) + y';
+substitution = 'Plus(Select(x),y)';
 equation = substituteSelected( substitution, equation);
 updateLatex(equation);
 }
 
 function replaceWithTimes() {
 
-substitution = 'Select(a) * b';
+substitution = 'Times(Select(a),b)';
 equation = substituteSelected( substitution, equation);
 updateLatex(equation);
 }
