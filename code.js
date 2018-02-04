@@ -457,7 +457,9 @@ function replaceWithDivide() {
 // brengt geneste times samen in 1 niveau.
 // Destructief! verandert de node die wordt ingegeven
 function flatten(eq) {
-    eq.traverse( function (node, index, parent) {
+
+    neweq = eq;
+    neweq.traverse( function (node, index, parent) {
         if (parent != null) {
             console.log(node);
         if (node.type == 'FunctionNode') { 
@@ -470,12 +472,12 @@ function flatten(eq) {
 
 
             
-        }
+        } 
     };
     };
     });
 
-    return eq;
+    return neweq;
 };
 
 function slurpRight(eq) {
@@ -499,17 +501,30 @@ function slurpRight(eq) {
             secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
             second = readAtAdress(secondAdress,eq);
           
-          // onderstaande manier verliest blijkbaar getallen...  
+          // onderstaande manier verliest blijkbaar getallen...  Maar dat kan ook door FLATTEN komen!!!
             newSelection = math.parse('Times(a,b)');
             newSelection.args[0]=first;
             newSelection.args[1]=second;
           //  maar de manier hieronder werkt ook niet er gaan blijkbaar getallen verloren zo...  
           //  newSelection = new math.expression.node.FunctionNode(parentNode.name, [first, second]);
-            newSelection = selectIt(flatten(newSelection));
+
+        //  newSelectionCopy = newSelection;
+        //  console.log(newSelectionCopy.toString());
+        //console.log(flatten(newSelectionCopy).toString());
+
+             //   flatnewSelection = flatten(newSelection);
+
+            newSelection = selectIt(newSelection);
+
+            
+            //console.log(newSelectionCopy.toString());
+           // console.log(flatten(newSelectionCopy).toString());
         
             newParent = parentNode;
             newParent.args.splice(huidigNummer,2,newSelection)
-          eq = injectAtAdress(newParent, parentAdress, eq);
+            eq = injectAtAdress(newParent, parentAdress, eq);
+
+         //   eq = flatten(eq);
 
           updateLatex(equation);
 
