@@ -359,9 +359,12 @@ updateEval = function (node) {
 
 updateLatex = function (eq) {
     try {
+
         // update expression
 
         expr.value = eq;
+
+        
 
         // export the expression to LaTeX
         var latex = eq ? eq.toTex({
@@ -459,14 +462,14 @@ function flatten(eq) {
             console.log(node);
         if (node.type == 'FunctionNode') { 
         if (parent.name == 'Times' & node.name == 'Times') {
-            if (node.args.length == 1) {
-            console.log(index);
+            
             indexnum = Number(/\d+/.exec(index));
-            parent.args[indexnum] = node.args[0];
-            } else {
-                // meerdere argumenten in de binnenste times
+            
+            // args van de parent vervangen door eerste deel parent.args, dan child.args, dan tweede deel parents.args
+            parent.args = parent.args.slice(0,indexnum).concat(node.args, parent.args.slice(indexnum+1,parent.args.length - 1));
 
-            }
+
+            
         }
     };
     };
@@ -495,9 +498,14 @@ function slurpRight(eq) {
             
             secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
             second = readAtAdress(secondAdress,eq);
-        
-            newSelection = new math.expression.node.FunctionNode(parentNode.name, [first, second]);
-            newSelection = selectIt(newSelection);
+          
+          // onderstaande manier verliest blijkbaar getallen...  
+            newSelection = math.parse('Times(a,b)');
+            newSelection.args[0]=first;
+            newSelection.args[1]=second;
+          //  maar de manier hieronder werkt ook niet er gaan blijkbaar getallen verloren zo...  
+          //  newSelection = new math.expression.node.FunctionNode(parentNode.name, [first, second]);
+            newSelection = selectIt(flatten(newSelection));
         
             newParent = parentNode;
             newParent.args.splice(huidigNummer,2,newSelection)

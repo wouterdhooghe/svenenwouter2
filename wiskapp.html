@@ -221,7 +221,7 @@ if (e.shiftKey == 1)
         case 'left': keysList.push('shift left') ; e.preventDefault(); shiftLeftSelect(equation); break;
         case 'up': out.innerHTML = 'shift up'; break;
         case 'right': keysList.push('shift right') ; e.preventDefault(); slurpRight(equation); break;
-        case 'down': out.innerHTML = 'shift down'; break;
+        case 'down': keysList.push('shift down') ; e.preventDefault(); flatten(equation); updateLatex(equation); break;
 
 // Speciale cijfers met shift
         case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
