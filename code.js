@@ -357,14 +357,14 @@ updateEval = function (node) {
 
 };
 
-updateLatex = function (node) {
+updateLatex = function (eq) {
     try {
         // update expression
 
-        expr.value = equation;
+        expr.value = eq;
 
         // export the expression to LaTeX
-        var latex = node ? node.toTex({
+        var latex = eq ? eq.toTex({
             parenthesis: parenthesis,
             implicit: implicit
         }) : '';
@@ -377,9 +377,8 @@ updateLatex = function (node) {
     } catch (err) {
         pretty.innerHTML = "error!!!"
     }
-    updateEval(node);
+    updateEval(eq);
 }
-
 
 // verplaatst de selectie naar het gevraagde adress
 // past global variabele equation aan!
