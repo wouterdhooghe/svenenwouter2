@@ -129,6 +129,16 @@ expr.oninput = function () {
 }
 
 ///*********************************************************************
+/// Initialisatie van objecten
+///*********************************************************************
+
+multiFunction = {   'Times': 1,
+                    'Plus': 1,
+                    'And': 1,
+                    'Or': 1
+    };
+
+///*********************************************************************
 ///  Keyboard handling
 ///*********************************************************************
 
@@ -208,10 +218,10 @@ function  keysPressed(e) {
 if (e.shiftKey == 1)
     switch (keyLookup[e.keyCode]) {
 // pijltjes met shift
-        case 'left': keysList.push('left') ; e.preventDefault(); shiftLeftSelect(equation); break;
-        case 'up': out.innerHTML = 'up'; break;
-        case 'right': out.innerHTML = 'right'; break;
-        case 'down': out.innerHTML = 'down'; break;
+        case 'left': keysList.push('shift left') ; e.preventDefault(); shiftLeftSelect(equation); break;
+        case 'up': out.innerHTML = 'shift up'; break;
+        case 'right': keysList.push('shift right') ; e.preventDefault(); slurpRight(equation); break;
+        case 'down': out.innerHTML = 'shift down'; break;
 
 // Speciale cijfers met shift
         case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
@@ -252,6 +262,10 @@ else if (e.altKey == 1)
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
         case 'down': out.innerHTML = 'down'; break;
+
+// Specialkeys   
+        case 'power': replaceWithPower(); keysList.push('power'); break;
+        case 'divide':replaceWithDivide(); keysList.push('divide'); break;
     }
 
 else
@@ -262,16 +276,16 @@ else
         case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
         case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
 
-// Specialkeys voor Wouter        
+// Specialkeys        
         case 'plus': replaceWithPlus(); keysList.push('plus'); break;
         case 'times': replaceWithTimes(); keysList.push('times'); break;
-        case 'power': replaceWithPower(); keysList.push('power'); break;
+        case 'power': applyPower(); keysList.push('power'); break;
         case 'minus': replaceWithMinus(); keysList.push('minus'); break;
-        case 'divide': replaceWithDivide(); keysList.push('divide'); break;
+        case 'divide': applyDivide(); keysList.push('divide'); break;
         case 'nthroot': replaceWithNthroot(); keysList.push('nthroot'); break;
         case 'equals':  replaceWithEquality(); keysList.push('equals'); break;
 
-// Cijfers (voor Wouter)
+// Cijfers
         case '1': e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 
         case '2': e.preventDefault(); substituteSelected(selectIt('2'), equation); updateLatex(equation); break;
         case '3': e.preventDefault(); substituteSelected(selectIt('3'), equation); updateLatex(equation); break;

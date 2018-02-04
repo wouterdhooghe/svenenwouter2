@@ -45,7 +45,7 @@ customFunctions.Plus.toTex = function (node, options) {
         output += value.toTex(options);
         index == parent.length - 1 ? output = output : output += '+';
     });
-    return output;
+    return '(' + output + ')';
 };
 
 
@@ -419,6 +419,16 @@ function replaceWithTimes() {
     updateLatex(equation);
 }
 
+function applyPower() {
+
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    exponent = math.parse('Select(b)');
+    substitution = new math.expression.node.OperatorNode('^', 'pow', [selectNode.args[0], exponent]);
+    equation = substituteSelected(substitution, equation);
+    updateLatex(equation);
+}
+
 function replaceWithPower() {
 
     substitution = 'Select(a) ^ b';
@@ -437,6 +447,80 @@ function replaceWithMinus() {
 function replaceWithDivide() {
 
     substitution = 'Select(a) / b';
+    equation = substituteSelected(substitution, equation);
+    updateLatex(equation);
+}
+
+// brengt geneste times samen in 1 niveau.
+// Destructief! verandert de node die wordt ingegeven
+function flatten(eq) {
+    eq.traverse( function (node, index, parent) {
+        if (parent != null) {
+            console.log(node);
+        if (node.type == 'FunctionNode') { 
+        if (parent.name == 'Times' & node.name == 'Times') {
+            if (node.args.length == 1) {
+            console.log(index);
+            indexnum = Number(/\d+/.exec(index));
+            parent.args[indexnum] = node.args[0];
+            } else {
+                // meerdere argumenten in de binnenste times
+
+            }
+        }
+    };
+    };
+    });
+
+    return eq;
+};
+
+function slurpRight(eq) {
+
+    // zoek uit of de parent een multifunction is
+    selectAdress = adresses('Select', eq)[0];
+    parentAdress = returnWithoutLast(selectAdress);
+    parentNode = readAtAdress(parentAdress, eq);
+    if (parentNode.type == 'FunctionNode') {
+        if (multiFunction[parentNode.name]==1) {
+
+            
+            selectNode = readAtAdress(selectAdress, eq);
+            
+        
+            first = selectNode.args[0];
+            secondAdress = selectAdress;
+            huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
+            if (huidigNummer < parentNode.args.length - 1) {
+            
+            secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
+            second = readAtAdress(secondAdress,eq);
+        
+            newSelection = new math.expression.node.FunctionNode(parentNode.name, [first, second]);
+            newSelection = selectIt(newSelection);
+        
+            newParent = parentNode;
+            newParent.args.splice(huidigNummer,2,newSelection)
+          eq = injectAtAdress(newParent, parentAdress, eq);
+
+          updateLatex(equation);
+
+          return eq;
+            };
+        } else {return eq;};
+    };
+
+
+ 
+    
+}
+
+function applyDivide() {
+
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    divisor = math.parse('Select(b)');
+    substitution = new math.expression.node.OperatorNode('/', 'divide ', [selectNode.args[0], divisor]);
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
 }
