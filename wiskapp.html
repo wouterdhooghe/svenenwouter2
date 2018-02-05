@@ -263,9 +263,16 @@ else if (e.altKey == 1)
         case 'right': out.innerHTML = 'right'; break;
         case 'down': out.innerHTML = 'down'; break;
 
-// Specialkeys   
-        case 'power': replaceWithPower(); keysList.push('power'); break;
-        case 'divide':replaceWithDivide(); keysList.push('divide'); break;
+// Specialkeys  
+        case 'plus': replaceWithPlus(); keysList.push('replacePlus'); break;
+        case 'times': replaceWithTimes(); keysList.push('replaceTimes'); break;
+        case 'power': replaceWithPower(); keysList.push('replacePower'); break;
+        case 'divide':replaceWithDivide(); keysList.push('replaceDivide'); break;
+        case 'minus': replaceWithMinus(); keysList.push('replaceMinus'); break;
+        case 'nthroot': replaceWithNthroot(); keysList.push('replaceNthroot'); break;
+        case 'equals':  replaceWithEquality(); keysList.push('replaceEquals'); break;
+
+        
     }
 
 else
@@ -277,13 +284,13 @@ else
         case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
 
 // Specialkeys        
-        case 'plus': replaceWithPlus(); keysList.push('plus'); break;
-        case 'times': replaceWithTimes(); keysList.push('times'); break;
-        case 'power': applyPower(); keysList.push('power'); break;
-        case 'minus': replaceWithMinus(); keysList.push('minus'); break;
-        case 'divide': applyDivide(); keysList.push('divide'); break;
-        case 'nthroot': replaceWithNthroot(); keysList.push('nthroot'); break;
-        case 'equals':  replaceWithEquality(); keysList.push('equals'); break;
+        case 'plus': applyPlus(); keysList.push('applyPlus'); break;
+        case 'times': applyTimes(); keysList.push('applyTimes'); break;
+        case 'power': applyPower(); keysList.push('applyPower'); break;
+        case 'minus': applyMinus(); keysList.push('applyMinus'); break;
+        case 'divide': applyDivide(); keysList.push('applyDivide'); break;
+        case 'nthroot': applyNthroot(); keysList.push('applyNthroot'); break;
+        case 'equals':  applyEquality(); keysList.push('applyEquals'); break;
 
 // Cijfers
         case '1': e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 

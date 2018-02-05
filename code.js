@@ -110,6 +110,39 @@ function returnWithoutLast(arr) {
     return newarr;
 };
 
+// brengt geneste multifunctions samen in 1 niveau.
+// Niet destructief!
+function flatten(eq) {
+
+    neweq = eq.cloneDeep();
+    neweq.traverse(function (node, index, parent) {
+        if (parent != null) {
+ //           console.log(node);
+            if (node.type == 'FunctionNode') {
+                if (multiFunction[parent.name] == 1 & node.name == parent.name) {
+
+                    indexnum = Number(/\d+/.exec(index));
+
+                    // args van de parent vervangen door eerste deel parent.args, dan child.args, dan tweede deel parents.args
+//                    console.log('indexnum:' + indexnum);
+//                    console.log('eerste deel:');
+//                    console.log(parent.args.slice(0, indexnum));
+//                    console.log('tweede deel:');
+//                    console.log(node.args);
+//                    console.log('derde deel:');
+//                    console.log(parent.args.slice(indexnum + 1, parent.args.length));
+
+                    parent.args = parent.args.slice(0, indexnum).concat(node.args, parent.args.slice(indexnum + 1, parent.args.length));
+
+
+
+                }
+            };
+        };
+    });
+
+    return neweq;
+};
 
 
 //************************************* */
@@ -407,11 +440,33 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
 // ACTIES
 //************************************* */
 
+function applyPlus() {
+
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    secondTerm = math.parse('Select(b)');
+    substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], secondTerm]);
+    equation = substituteSelected(substitution, equation);
+    equation = flatten(equation);
+    updateLatex(equation);
+}
+
 function replaceWithPlus() {
     //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
 
     substitution = 'Plus(Select(x),y)';
     equation = substituteSelected(substitution, equation);
+    updateLatex(equation);
+}
+
+function applyTimes() {
+
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    secondFactor = math.parse('Select(b)');
+    substitution = new math.expression.node.FunctionNode('Times', [selectNode.args[0], secondFactor]);
+    equation = substituteSelected(substitution, equation);
+    equation = flatten(equation);
     updateLatex(equation);
 }
 
@@ -440,6 +495,16 @@ function replaceWithPower() {
 
 }
 
+function applyMinus() {
+
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    substractor = math.parse('Select(-b)');
+    substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], substractor]);
+    equation = substituteSelected(substitution, equation);
+    updateLatex(equation);
+}
+
 function replaceWithMinus() {
 
     substitution = '(Select(a)-b)';
@@ -454,39 +519,6 @@ function replaceWithDivide() {
     updateLatex(equation);
 }
 
-// brengt geneste multifunctions samen in 1 niveau.
-// Niet destructief!
-function flatten(eq) {
-
-    neweq = eq.cloneDeep();
-    neweq.traverse(function (node, index, parent) {
-        if (parent != null) {
- //           console.log(node);
-            if (node.type == 'FunctionNode') {
-                if (multiFunction[parent.name] == 1 & node.name == parent.name) {
-
-                    indexnum = Number(/\d+/.exec(index));
-
-                    // args van de parent vervangen door eerste deel parent.args, dan child.args, dan tweede deel parents.args
-//                    console.log('indexnum:' + indexnum);
-//                    console.log('eerste deel:');
-//                    console.log(parent.args.slice(0, indexnum));
-//                    console.log('tweede deel:');
-//                    console.log(node.args);
-//                    console.log('derde deel:');
-//                    console.log(parent.args.slice(indexnum + 1, parent.args.length));
-
-                    parent.args = parent.args.slice(0, indexnum).concat(node.args, parent.args.slice(indexnum + 1, parent.args.length));
-
-
-
-                }
-            };
-        };
-    });
-
-    return neweq;
-};
 
 function applyDivide() {
 
