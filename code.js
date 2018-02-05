@@ -42,8 +42,12 @@ var customFunctions = {
 customFunctions.Plus.toTex = function (node, options) {
     output = '';
     node.args.forEach(function (value, index, parent) {
+        
+        // geen + schrijven als er toch al een unary minus staat (tenzij er een select rond de unary minus staat)
+        // geen plus schrijven voor de eerste term
+        value.op == '-' ? teken = '' : teken = '+';
+        index == parent.length | index == 0  ? output = output : output += teken;
         output += value.toTex(options);
-        index == parent.length - 1 ? output = output : output += '+';
     });
     return '(' + output + ')';
 };
