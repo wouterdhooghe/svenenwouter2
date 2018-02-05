@@ -512,13 +512,6 @@ function replaceWithMinus() {
     updateLatex(equation);
 }
 
-function replaceWithDivide() {
-
-    substitution = 'Select(a) / b';
-    equation = substituteSelected(substitution, equation);
-    updateLatex(equation);
-}
-
 
 function applyDivide() {
 
@@ -526,6 +519,23 @@ function applyDivide() {
     selectNode = readAtAdress(selectAdress, equation);
     divisor = math.parse('Select(b)');
     substitution = new math.expression.node.OperatorNode('/', 'divide ', [selectNode.args[0], divisor]);
+    equation = substituteSelected(substitution, equation);
+    updateLatex(equation);
+}
+
+function replaceWithDivide() {
+
+    substitution = 'Select(a) / b';
+    equation = substituteSelected(substitution, equation);
+    updateLatex(equation);
+}
+
+function applyNthroot() {
+
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    rootnumber = math.parse('Select(b)');
+    substitution = new math.expression.node.FunctionNode('nthRoot', [selectNode.args[0], rootnumber]);
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
 }
@@ -566,7 +576,14 @@ function leftSelect(eq) {
     console.log('upAdress: ');
     console.log(upAdress);
 
+    upNode = readAtAdress(upAdress, eq);
+
+    upNode.args == undefined ? laatsteNummer = 0 : laatsteNummer = upNode.args.length - 1;
+    console.log('laatsteNummer: ' + laatsteNummer);
+
     nieuwNummer = Math.max(0, huidigNummer - 1);
+    // omkeren voor een nthroot (want daar staat het tweede argument (de exponent) links
+    if (readAtAdress(upAdress, equation).name == 'nthRoot') {nieuwNummer = Math.min(huidigNummer + 1, laatsteNummer);};
 
     if (selectAdress[selectAdress.length - 1] == 'content') {
         leftAdress = upAdress.concat(['content']);
@@ -609,10 +626,14 @@ function rightSelect(eq) {
     console.log(upAdress);
 
     upNode = readAtAdress(upAdress, eq);
+
     upNode.args == undefined ? laatsteNummer = 0 : laatsteNummer = upNode.args.length - 1;
     console.log('laatsteNummer: ' + laatsteNummer);
 
     nieuwNummer = Math.min(huidigNummer + 1, laatsteNummer);
+
+    // omkeren voor een nthroot (want daar staat het tweede argument (de exponent) links
+    if (upNode.name == 'nthRoot') {nieuwNummer = Math.max(0, huidigNummer - 1)};
     console.log('nieuwNummer: ' + nieuwNummer);
 
     if (selectAdress[selectAdress.length - 1] == 'content') {
