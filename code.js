@@ -49,7 +49,8 @@ customFunctions.Plus.toTex = function (node, options) {
         index == parent.length | index == 0  ? output = output : output += teken;
         output += value.toTex(options);
     });
-    return '(' + output + ')';
+    // return '(' + output + ')';
+    return output;
 };
 
 
@@ -691,6 +692,8 @@ function upSelect(eq) {
     //  equation = eq;
 
     MoveSelectToAdress(selectAdress, upAdress, eq);
+
+    equation = flatten(equation);
 
     updateLatex(equation);
 }
