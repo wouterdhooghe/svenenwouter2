@@ -364,7 +364,7 @@ updateLatex = function (eq) {
 
         expr.value = eq;
 
-        
+
 
         // export the expression to LaTeX
         var latex = eq ? eq.toTex({
@@ -458,27 +458,37 @@ function replaceWithDivide() {
 // Destructief! verandert de node die wordt ingegeven
 function flatten(eq) {
 
-    neweq = eq;
-    neweq.traverse( function (node, index, parent) {
+    neweq = eq.cloneDeep();
+    neweq.traverse(function (node, index, parent) {
         if (parent != null) {
             console.log(node);
-        if (node.type == 'FunctionNode') { 
-        if (parent.name == 'Times' & node.name == 'Times') {
-            
-            indexnum = Number(/\d+/.exec(index));
-            
-            // args van de parent vervangen door eerste deel parent.args, dan child.args, dan tweede deel parents.args
-            parent.args = parent.args.slice(0,indexnum).concat(node.args, parent.args.slice(indexnum+1,parent.args.length - 1));
+            if (node.type == 'FunctionNode') {
+                if (multiFunction[parent.name] == 1 & node.name == parent.name) {
+
+                    indexnum = Number(/\d+/.exec(index));
+
+                    // args van de parent vervangen door eerste deel parent.args, dan child.args, dan tweede deel parents.args
+                    console.log('indexnum:' + indexnum);
+                    console.log('eerste deel:');
+                    console.log(parent.args.slice(0, indexnum));
+                    console.log('tweede deel:');
+                    console.log(node.args);
+                    console.log('derde deel:');
+                    console.log(parent.args.slice(indexnum + 1, parent.args.length));
+
+                    parent.args = parent.args.slice(0, indexnum).concat(node.args, parent.args.slice(indexnum + 1, parent.args.length));
 
 
-            
-        } 
-    };
-    };
+
+                }
+            };
+        };
     });
 
     return neweq;
 };
+
+// TEstcase: Times(2,3,Select(Times(6,7)),Times(8,9),10)
 
 function slurpRight(eq) {
 
@@ -487,55 +497,53 @@ function slurpRight(eq) {
     parentAdress = returnWithoutLast(selectAdress);
     parentNode = readAtAdress(parentAdress, eq);
     if (parentNode.type == 'FunctionNode') {
-        if (multiFunction[parentNode.name]==1) {
+        if (multiFunction[parentNode.name] == 1) {
 
-            
+
             selectNode = readAtAdress(selectAdress, eq);
-            
-        
+
+
             first = selectNode.args[0];
             secondAdress = selectAdress;
             huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
             if (huidigNummer < parentNode.args.length - 1) {
-            
-            secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
-            second = readAtAdress(secondAdress,eq);
-          
-          // onderstaande manier verliest blijkbaar getallen...  Maar dat kan ook door FLATTEN komen!!!
-            newSelection = math.parse('Times(a,b)');
-            newSelection.args[0]=first;
-            newSelection.args[1]=second;
-          //  maar de manier hieronder werkt ook niet er gaan blijkbaar getallen verloren zo...  
-          //  newSelection = new math.expression.node.FunctionNode(parentNode.name, [first, second]);
 
-        //  newSelectionCopy = newSelection;
-        //  console.log(newSelectionCopy.toString());
-        //console.log(flatten(newSelectionCopy).toString());
+                secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
+                second = readAtAdress(secondAdress, eq);
 
-             //   flatnewSelection = flatten(newSelection);
+                // onderstaande manier verliest blijkbaar getallen...  Maar dat kan ook door FLATTEN komen!!!
+                //  newSelection = math.parse('Times(a,b)');
+                //  newSelection.args[0]=first;
+                //  newSelection.args[1]=second;
+                //  maar de manier hieronder werkt ook niet er gaan blijkbaar getallen verloren zo...  
+                newSelection = new math.expression.node.FunctionNode(parentNode.name, [first, second]);
 
-            newSelection = selectIt(newSelection);
+                //  newSelectionCopy = newSelection;
+                // console.log(newSelectionCopy.toString());
+                //console.log(flatten(newSelectionCopy).toString());
 
-            
-            //console.log(newSelectionCopy.toString());
-           // console.log(flatten(newSelectionCopy).toString());
-        
-            newParent = parentNode;
-            newParent.args.splice(huidigNummer,2,newSelection)
-            eq = injectAtAdress(newParent, parentAdress, eq);
+                //   flatnewSelection = flatten(newSelection);
 
-         //   eq = flatten(eq);
+                newSelection = selectIt(flatten(newSelection));
 
-          updateLatex(equation);
+                newParent = parentNode;
+                newParent.args.splice(huidigNummer, 2, newSelection)
+                eq = injectAtAdress(newParent, parentAdress, eq);
 
-          return eq;
+                //   eq = flatten(eq);
+
+                updateLatex(equation);
+
+                return eq;
             };
-        } else {return eq;};
+        } else {
+            return eq;
+        };
     };
 
 
- 
-    
+
+
 }
 
 function applyDivide() {
@@ -723,13 +731,3 @@ function downSelect(eq, actionName) {
 };
 
 // SHIFT toetsen
-
-function shiftLeftSelect(eq) {
-    // bedoeling is om de huidige selectie uit te breiden naar links. Dit is alleen zinvol binnen een multiargument functie
-
-    // check of we inderdaad in een multi argument functie zitten
-
-    //
-
-
-};
