@@ -547,6 +547,16 @@ function replaceWithNthroot() {
     updateLatex(equation);
 }
 
+function applyEquality() {
+
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    tweedeLid = math.parse('Select(b)');
+    substitution = new math.expression.node.OperatorNode('==','equal', [selectNode.args[0], tweedeLid]);
+    equation = substituteSelected(substitution, equation);
+    updateLatex(equation);
+}
+
 function replaceWithEquality() {
     equation = math.parse('Select(a)==b');
     updateLatex(equation);
