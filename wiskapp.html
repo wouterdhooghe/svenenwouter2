@@ -218,9 +218,9 @@ function  keysPressed(e) {
 if (e.shiftKey == 1)
     switch (keyLookup[e.keyCode]) {
 // pijltjes met shift
-        case 'left': keysList.push('shift left') ; e.preventDefault(); shiftLeftSelect(equation); break;
+        case 'left': keysList.push('shift left') ; e.preventDefault(); leftSlurp(equation); break;
         case 'up': out.innerHTML = 'shift up'; break;
-        case 'right': keysList.push('shift right') ; e.preventDefault(); slurpRight(equation); break;
+        case 'right': keysList.push('shift right') ; e.preventDefault(); rightSlurp(equation); break;
         case 'down': keysList.push('shift down') ; e.preventDefault(); updateLatex(flatten(equation)); break;
 
 // Speciale cijfers met shift
