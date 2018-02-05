@@ -506,6 +506,7 @@ function applyMinus() {
     substractor = math.parse('Select(-b)');
     substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], substractor]);
     equation = substituteSelected(substitution, equation);
+    equation = flatten(equation);
     updateLatex(equation);
 }
 
