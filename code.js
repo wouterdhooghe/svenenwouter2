@@ -688,11 +688,12 @@ function rightSlurp(eq) {
 
             selectNode = readAtAdress(selectAdress, eq);
 
-
-            first = selectNode.args[0];
-            secondAdress = selectAdress;
+            
             huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
             if (huidigNummer < parentNode.args.length - 1) {
+
+                first = selectNode.args[0];
+                secondAdress = selectAdress;
 
                 secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
                 second = readAtAdress(secondAdress, eq);
@@ -705,7 +706,43 @@ function rightSlurp(eq) {
                 newParent.args.splice(huidigNummer, 2, newSelection)
                 eq = injectAtAdress(newParent, parentAdress, eq);
 
-                //   eq = flatten(eq);
+                updateLatex(equation);
+
+                return eq;
+            };
+        } else {
+            return eq;
+        };
+    };
+};
+
+function leftSlurp(eq) {
+
+    // zoek uit of de parent een multifunction is
+    selectAdress = adresses('Select', eq)[0];
+    parentAdress = returnWithoutLast(selectAdress);
+    parentNode = readAtAdress(parentAdress, eq);
+    if (parentNode.type == 'FunctionNode') {
+        if (multiFunction[parentNode.name] == 1) {
+
+
+            selectNode = readAtAdress(selectAdress, eq);
+
+            first = selectNode.args[0];
+            secondAdress = selectAdress;
+            huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
+            if (huidigNummer > 0) {
+
+                secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer - 1) + ']';
+                second = readAtAdress(secondAdress, eq);
+
+// de tweede wordt hier eerst gezet
+                newSelection = new math.expression.node.FunctionNode(parentNode.name, [second, first]);
+                newSelection = selectIt(flatten(newSelection));
+
+                newParent = parentNode;
+                newParent.args.splice(huidigNummer-1, 2, newSelection);
+                eq = injectAtAdress(newParent, parentAdress, eq);
 
                 updateLatex(equation);
 
