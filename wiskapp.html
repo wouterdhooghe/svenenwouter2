@@ -48,8 +48,13 @@
 
 <body>
 
-
-<p> testpara</p>
+<div> Keyboard:</div>
+    <select id='keyboardType' onchange="changeKeyboardType()">
+        <option value="wouterCode">Wouter code</option>
+        <option value="svenCode">Sven code</option>
+        <option value="wouterkeyCode">Wouter keyCode</option>
+        <option value="svenkeyCode">Sven Code</option>
+      </select>
 
     <p class="output"> para 2</p>
 
@@ -143,7 +148,7 @@ multiFunction = {   'Times': 1,
 ///*********************************************************************
 
 var keyboards = {
-    wouter: {
+    wouterkeyCode: {
         left:    37,
         up:      38,
         right:   39,
@@ -174,7 +179,7 @@ var keyboards = {
         c:       67
 
     },
-    sven:   {
+    svenkeyCode:   {
         left:    37,
         up:      38,
         right:   39,
@@ -203,10 +208,46 @@ var keyboards = {
         a:       65,
         b:       66,
         c:       67
+    },
+     wouterCode:   {
+        left:    'ArrowLeft',
+        up:      'ArrowUp',
+        right:   'ArrowRight',
+        down:    'ArrowDown',
+
+        minus:   'Minus',  
+        plus:    'Equal',
+        divide:  'BracketLeft',
+        times:   'BracketRight',
+        nthroot: 'Quote',
+        power:   'Backslash',
+        equals:  'Slash',
+
+
+        0:       'Digit0',
+        1:       'Digit1',
+        2:       'Digit2',
+        3:       'Digit3',
+        4:       'Digit4',
+        5:       'Digit5',
+        6:       'Digit6',
+        7:       'Digit7',
+        8:       'Digit8',
+        9:       'Digit9',
+
+        a:       'keyQ',
+        b:       'keyB',
+        c:       'keyC'
     } 
 };
 
-keyboardType = 'wouter';
+keyboardSelectElement = document.getElementById('keyboardType');
+keyboardType = keyboardSelectElement.value;
+
+function changeKeyboardType() {
+    keyboardSelectElement = document.getElementById('keyboardType');
+    keyboardType = keyboardSelectElement.value;
+};
 
 // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType
 var keyLookup = invertSimple(keyboards[keyboardType]);
@@ -215,8 +256,10 @@ document.onkeydown = keysPressed
   
 function  keysPressed(e) {
 
+    out.innerHTML = e.code;
+
 if (e.shiftKey == 1)
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
 // pijltjes met shift
         case 'left': keysList.push('shift left') ; e.preventDefault(); leftSlurp(equation); break;
         case 'up': out.innerHTML = 'shift up'; break;
@@ -237,7 +280,7 @@ if (e.shiftKey == 1)
 
 
 else if (e.ctrlKey == 1)
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
         case 'left': out.innerHTML = 'CTRLleft';break;
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
@@ -246,7 +289,7 @@ else if (e.ctrlKey == 1)
 
 else if (e.metaKey == 1)
 
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
         case 'left': out.innerHTML = 'left'; break;
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
@@ -257,7 +300,7 @@ else if (e.metaKey == 1)
 
 else if (e.altKey == 1)
 
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
         case 'left': out.innerHTML = 'left'; break;
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
@@ -277,7 +320,7 @@ else if (e.altKey == 1)
 
 else
 
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
         case 'left': keysList.push('left') ; e.preventDefault(); leftSelect(equation); break;
         case 'up': keysList.push('up') ; e.preventDefault(); upSelect(equation); break;
         case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;

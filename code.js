@@ -47,10 +47,11 @@ customFunctions.Plus.toTex = function (node, options) {
         // geen plus schrijven voor de eerste term
         value.op == '-' ? teken = '' : teken = '+';
         index == parent.length | index == 0  ? output = output : output += teken;
-        output += value.toTex(options);
+        nextArgument = value.toTex(options);
+        output += nextArgument;
     });
-    // return '(' + output + ')';
-    return output;
+    return '(' + output + ')';
+    // return output;
 };
 
 
