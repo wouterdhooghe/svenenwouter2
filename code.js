@@ -331,7 +331,7 @@ function substituteSelected(subst, bignode) {
 
     // replace in all select adresses
     adresses('Select', bignode).forEach(function (adress) {
-        injectAtAdress(subst, adress, bignode);
+        bignode = injectAtAdress(subst, adress, bignode);
     });
     return bignode;
 };
