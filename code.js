@@ -41,16 +41,17 @@ var customFunctions = {
 
 customFunctions.Plus.toTex = function (node, options) {
     output = '';
+    teken = '';
     node.args.forEach(function (value, index, parent) {
         
         // geen + schrijven als er toch al een unary minus staat (tenzij er een select rond de unary minus staat)
         // geen plus schrijven voor de eerste term
         value.op == '-' ? teken = '' : teken = '+';
-        index == parent.length | index == 0  ? output = output : output += teken;
-        nextArgument = value.toTex(options);
-        output += nextArgument;
+        index == 0  ? output = output : output += teken;
+        output += value.toTex(options);
+        console.log(output);
     });
-    return '(' + output + ')';
+    return output;
     // return output;
 };
 
@@ -61,11 +62,14 @@ customFunctions.Plus.toTex = function (node, options) {
 
 customFunctions.Times.toTex = function (node, options) {
     output = '';
+    options.implicit == 'hide' ? teken = '~' : teken = '\\cdot';
     node.args.forEach(function (value, index, parent) {
+        
+        index == 0 ? output = output : output += teken;
         output += value.toTex(options);
-        index == parent.length - 1 ? output = output : output += '\\cdot';
     });
-    return '(' + output + ')';
+    options.parenthesis == 'all' ? output = '(' + output + ')' : output = output ;
+    return output;
 };
 customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
 customFunctions.minus.toTex = function (node, options) {
@@ -150,6 +154,41 @@ function flatten(eq) {
     return neweq;
 };
 
+// brengt geneste multifunctions samen in 1 niveau.
+// Niet destructief!
+function flattenOp(eq) {
+
+    neweq = eq.cloneDeep();
+    neweq.traverse(function (node, index, parent) {
+        if (parent != null) {
+ //           console.log(node);
+            if (node.type == 'OperatorNode') {
+                if (multiFunction[parent.fn] == 1 & node.fn == parent.fn) {
+                    
+
+                    indexnum = Number(/\d+/.exec(index));
+
+                    // args van de parent vervangen door eerste deel parent.args, dan child.args, dan tweede deel parents.args
+//                    console.log('indexnum:' + indexnum);
+//                    console.log('eerste deel:');
+//                    console.log(parent.args.slice(0, indexnum));
+//                    console.log('tweede deel:');
+//                    console.log(node.args);
+//                    console.log('derde deel:');
+//                    console.log(parent.args.slice(indexnum + 1, parent.args.length));
+
+                    parent.args = parent.args.slice(0, indexnum).concat(node.args, parent.args.slice(indexnum + 1, parent.args.length));
+                    console.log('flattenedOp');
+                    console.log(parent.args.length);
+
+
+                }
+            };
+        };
+    });
+
+    return neweq;
+};
 
 //************************************* */
 // SELECTIES
@@ -399,8 +438,8 @@ updateEval = function (node) {
 updateLatex = function (eq) {
     try {
 
-        // update expression
 
+        // update expression
         expr.value = eq;
 
 
@@ -457,6 +496,16 @@ function applyPlus() {
     updateLatex(equation);
 }
 
+function applyAdd() {
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    secondTerm = math.parse('Select(b)');
+    substitution = new math.expression.node.OperatorNode('+', 'add', [selectNode.args[0], secondTerm]);
+    equation = substituteSelected(substitution, equation);
+    equation = flattenOp(equation);
+    updateLatex(equation);
+}
+
 function replaceWithPlus() {
     //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
 
@@ -473,6 +522,16 @@ function applyTimes() {
     substitution = new math.expression.node.FunctionNode('Times', [selectNode.args[0], secondFactor]);
     equation = substituteSelected(substitution, equation);
     equation = flatten(equation);
+    updateLatex(equation);
+}
+
+function applyMultiply() {
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    secondTerm = math.parse('Select(b)');
+    substitution = new math.expression.node.OperatorNode('*', 'multiply', [selectNode.args[0], secondTerm]);
+    equation = substituteSelected(substitution, equation);
+    equation = flattenOp(equation);
     updateLatex(equation);
 }
 
@@ -501,6 +560,17 @@ function replaceWithPower() {
 
 }
 
+function applyMinusOp() {
+
+    selectAdress = adresses('Select', equation)[0];
+    selectNode = readAtAdress(selectAdress, equation);
+    substractor = math.parse('Select(-b)');
+    substitution = new math.expression.node.OperatorNode('+','add', [selectNode.args[0], substractor]);
+    equation = substituteSelected(substitution, equation);
+    equation = flattenOp(equation);
+    updateLatex(equation);
+}
+
 function applyMinus() {
 
     selectAdress = adresses('Select', equation)[0];
@@ -510,7 +580,6 @@ function applyMinus() {
     equation = substituteSelected(substitution, equation);
     equation = flatten(equation);
     updateLatex(equation);
-}
 
 function replaceWithMinus() {
 
@@ -788,6 +857,46 @@ function rightSlurp(eq) {
     };
 };
 
+function rightSlurpOp(eq) {
+
+    // zoek uit of de parent een multifunction is
+    selectAdress = adresses('Select', eq)[0];
+    parentAdress = returnWithoutLast(selectAdress);
+    parentNode = readAtAdress(parentAdress, eq);
+    if (parentNode.type == 'OperatorNode') {
+        if (multiFunction[parentNode.fn] == 1) {
+
+
+            selectNode = readAtAdress(selectAdress, eq);
+
+            
+            huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
+            if (huidigNummer < parentNode.args.length - 1) {
+
+                first = selectNode.args[0];
+                secondAdress = selectAdress;
+
+                secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
+                second = readAtAdress(secondAdress, eq);
+
+
+                newSelection = new math.expression.node.OperatorNode(parentNode.op, parentNode.fn, [first, second]);
+                newSelection = selectIt(flattenOp(newSelection));
+
+                newParent = parentNode;
+                newParent.args.splice(huidigNummer, 2, newSelection)
+                eq = injectAtAdress(newParent, parentAdress, eq);
+
+                updateLatex(equation);
+
+                return eq;
+            };
+        } else {
+            return eq;
+        };
+    };
+};
+
 function leftSlurp(eq) {
 
     // zoek uit of de parent een multifunction is
@@ -811,6 +920,44 @@ function leftSlurp(eq) {
 // de tweede wordt hier eerst gezet
                 newSelection = new math.expression.node.FunctionNode(parentNode.name, [second, first]);
                 newSelection = selectIt(flatten(newSelection));
+
+                newParent = parentNode;
+                newParent.args.splice(huidigNummer-1, 2, newSelection);
+                eq = injectAtAdress(newParent, parentAdress, eq);
+
+                updateLatex(equation);
+
+                return eq;
+            };
+        } else {
+            return eq;
+        };
+    };
+};
+
+function leftSlurpOp(eq) {
+
+    // zoek uit of de parent een multifunction is
+    selectAdress = adresses('Select', eq)[0];
+    parentAdress = returnWithoutLast(selectAdress);
+    parentNode = readAtAdress(parentAdress, eq);
+    if (parentNode.type == 'OperatorNode') {
+        if (multiFunction[parentNode.fn] == 1) {
+
+
+            selectNode = readAtAdress(selectAdress, eq);
+
+            first = selectNode.args[0];
+            secondAdress = selectAdress;
+            huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
+            if (huidigNummer > 0) {
+
+                secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer - 1) + ']';
+                second = readAtAdress(secondAdress, eq);
+
+// de tweede wordt hier eerst gezet
+                newSelection = new math.expression.node.OperatorNode(parentNode.op, parentNode.fn, [second, first]);
+                newSelection = selectIt(flattenOp(newSelection));
 
                 newParent = parentNode;
                 newParent.args.splice(huidigNummer-1, 2, newSelection);
