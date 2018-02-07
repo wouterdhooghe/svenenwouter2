@@ -304,7 +304,7 @@ var keyboards = {
         a:       'KeyQ',
         b:       'KeyB',
         c:       'KeyC',
-        
+
         x:       'KeyX',
         y:       'KeyY',
         z:       'KeyZ'
@@ -421,6 +421,10 @@ else
         case 'a': e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
         case 'b': e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
         case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c
+
+        case 'x': e.preventDefault(); substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  x
+        case 'y': e.preventDefault(); substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  y
+        case 'z': e.preventDefault(); substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  z
     }
 };
 
