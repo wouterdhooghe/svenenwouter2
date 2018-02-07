@@ -43,10 +43,8 @@
                         <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
                         <p class="output"> para 2</p>
                 </div>
-              </div>
-        </div>      
-   
-
+        </div>
+    </div>      
 </div>
 
 <div class='row'> 
@@ -58,6 +56,8 @@
                     <div class="card-body">
                       <p class="card-text">Grafiek</p>
                       <input type="range" value="7" min="0"  max="10" name="range">
+
+                      <input type="range" min="0" max="100" value="50" class="vertical" orient="vertical">
                       
                     </div>
             </div>
@@ -177,6 +177,28 @@ var out = document.querySelector(".output");
 // Selectfunctie en andere speciale functies importeren
 
 math.import(customFunctions);
+// math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
+math.pow.toTex = function (node, options) {
+
+    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot') {
+        return "\\left("+node.args[0].toTex(options)+"\\right)^{"+node.args[1].toTex(options)+"}";
+    } else {
+        return node.args[0].toTex(options)+"^{"+node.args[1].toTex(options)+"}";
+    }
+
+};
+
+math.unaryMinus.toTex = function (node, options) {
+
+if (multiFunction[node.args[0].name]==1) {
+    return "-\\left("+node.args[0].toTex(options)+"\\right)";
+} else {
+    return "-" + node.args[0].toTex(options);
+}
+
+};
+
+// "-\\left(${args[0]}\\right)"
 
 // Initialisatie van de state variabelen: begin met een lege vergelijking en een lege keyslist
 

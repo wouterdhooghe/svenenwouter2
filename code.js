@@ -46,7 +46,7 @@ customFunctions.Plus.toTex = function (node, options) {
         
         // geen + schrijven als er toch al een unary minus staat (tenzij er een select rond de unary minus staat)
         // geen plus schrijven voor de eerste term
-        value.op == '-' ? teken = '' : teken = '+';
+        value.name == 'unaryMinus' ? teken = '' : teken = '+';
         index == 0  ? output = output : output += teken;
         output += value.toTex(options);
         console.log(output);
@@ -90,6 +90,7 @@ customFunctions.Select.toTex = function (node, options) {
     console.log('slct');
     return '\\textcolor{red}{' + node.args[0].toTex(options) + '}';
 };
+
 
 
 //************************************* */
@@ -558,14 +559,16 @@ function applyPower() {
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     exponent = math.parse('Select(b)');
-    substitution = new math.expression.node.OperatorNode('^', 'pow', [selectNode.args[0], exponent]);
+    substitution = new math.expression.node.FunctionNode('pow', [selectNode.args[0], exponent]);
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
 }
 
 function replaceWithPower() {
 
-    substitution = 'Select(a) ^ b';
+    base = math.parse('Select(a)');
+    exponent = math.parse('b');
+    substitution = new math.expression.node.FunctionNode('pow', [base, exponent]);
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
 
@@ -586,7 +589,7 @@ function applyMinus() {
 
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
-    substractor = math.parse('Select(-b)');
+    substractor = new math.expression.node.FunctionNode('unaryMinus', [math.parse('Select(c)')]);
     substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], substractor]);
     equation = substituteSelected(substitution, equation);
     equation = flatten(equation);
