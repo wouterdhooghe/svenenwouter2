@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+<link rel="stylesheet" type="text/css" href="style.css">
 
 
 <body>
@@ -15,6 +15,9 @@
 
 
 <div class='container-fluid'>
+
+<div class="row">
+    <div class="col-md-12">
 
         <div class="card">
                 <div class="card-body">
@@ -38,29 +41,38 @@
                         <b>Implicit multiplication:</b>
                         <input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
                         <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
+                        <p class="output"> para 2</p>
                 </div>
-              </div>
-              
-    <p class="output"> para 2</p>
+        </div>
+    </div>      
+</div>
 
 <div class='row'> 
-    <div class='col-md-4'> 
+    <div class='col-md' id="left"> 
 
             <div > Grafieken </div>
 
             <div class="card">
                     <div class="card-body">
                       <p class="card-text">Grafiek</p>
+
+                      <canvas id="myCanvas" width="300" height="300">
+                            Fallback content, in case the browser does not support Canvas.
+                      </canvas>
+
+                      <input type="range" value="7" min="0"  max="10" name="range">
+
+                      <input type="range" min="0" max="100" value="50" class="vertical" orient="vertical">
                       
                     </div>
             </div>
 
     </div>
-    <div class='col-md-4'>
+    <div class='col-md' id="middle">
 
            <div > Vergelijkingen</div>
                    
-        <div class="d-flex flex-row flex-nowrap">
+        
 
             <div class="card">
                     <div class='card-header'> Vgl 1</div>
@@ -106,11 +118,28 @@
                   <p class="card-text">Vgl 7</p>
                 </div>
         </div>
-                  
+
+        <div class="card">
+                <div class="card-body">
+                  <p class="card-text">Vgl 5</p>
+                </div>
         </div>
+
+        <div class="card">
+                <div class="card-body">
+                  <p class="card-text">Vgl 6</p>
+                </div>
+        </div>
+
+        <div class="card">
+                <div class="card-body">
+                  <p class="card-text">Vgl 7</p>
+                </div>
+        </div>        
+        
             
     </div>
-    <div class='col-md-4'> 
+    <div class='col-md' id='right'> 
 
             <div > Rekenregels</div>
 
@@ -131,9 +160,35 @@
     </div>
 </div>
 
-   
-          
-          
+<script>  
+
+//CANVAS GEDOE
+
+
+var canvas = document.getElementById("myCanvas");
+var canvasWidth = canvas.width;
+var canvasHeight = canvas.height;
+var ctx = canvas.getContext("2d");
+var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+// That's how you define the value of a pixel //
+function drawPixel (x, y, r, g, b, a) {
+    var index = (x + y * canvasWidth) * 4;
+
+    canvasData.data[index + 0] = r;
+    canvasData.data[index + 1] = g;
+    canvasData.data[index + 2] = b;
+    canvasData.data[index + 3] = a;
+}
+
+// That's how you update the canvas, so that your //
+// modification are taken in consideration //
+function updateCanvas() {
+    ctx.putImageData(canvasData, 0, 0);
+} 
+</script>
+
+
           
          
 
@@ -153,6 +208,28 @@ var out = document.querySelector(".output");
 // Selectfunctie en andere speciale functies importeren
 
 math.import(customFunctions);
+// math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
+math.pow.toTex = function (node, options) {
+
+    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide') {
+        return "\\left("+node.args[0].toTex(options)+"\\right)^{"+node.args[1].toTex(options)+"}";
+    } else {
+        return node.args[0].toTex(options)+"^{"+node.args[1].toTex(options)+"}";
+    }
+
+};
+
+math.unaryMinus.toTex = function (node, options) {
+
+if (multiFunction[node.args[0].name]==1) {
+    return "-\\left("+node.args[0].toTex(options)+"\\right)";
+} else {
+    return "-" + node.args[0].toTex(options);
+}
+
+};
+
+// "-\\left(${args[0]}\\right)"
 
 // Initialisatie van de state variabelen: begin met een lege vergelijking en een lege keyslist
 
@@ -161,18 +238,7 @@ math.import(customFunctions);
 
 
 
-var equation = math.parse('');
-var keysList = [];
 
-updateLatex(equation);
-
-// wat er gebeurt als je iets rechtstreeks invult in de expressiebox
-expr.oninput = function () {
-    
-    equation = math.parse(expr.value)
-    updateLatex(equation);
-    
-}
 
 ///*********************************************************************
 /// Initialisatie van objecten
@@ -185,6 +251,22 @@ multiFunction = {   'Times': 1,
                     'add': 1,
                     'multiply': 1
     };
+
+var equation = math.parse('');
+
+var keysList = [];
+
+updateLatex(equation);
+
+// wat er gebeurt als je iets rechtstreeks invult in de expressiebox
+expr.oninput = function () {
+    
+    equation = math.parse(expr.value)
+    updateLatex(equation);
+    
+}
+
+
 
 ///*********************************************************************
 ///  Keyboard handling
@@ -278,9 +360,15 @@ var keyboards = {
         8:       'Digit8',
         9:       'Digit9',
 
-        a:       'keyQ',
-        b:       'keyB',
-        c:       'keyC'
+        a:       'KeyQ',
+        b:       'KeyB',
+        c:       'KeyC',
+
+        d:       'KeyD',
+
+        x:       'KeyX',
+        y:       'KeyY',
+        z:       'KeyZ'
     } 
 };
 
@@ -358,6 +446,9 @@ else if (e.altKey == 1)
         case 'nthroot': replaceWithNthroot(); keysList.push('replaceNthroot'); break;
         case 'equals':  replaceWithEquality(); keysList.push('replaceEquals'); break;
 
+// letters
+        case 'd': drawGraph(equation); break;
+
         
     }
 
@@ -394,6 +485,10 @@ else
         case 'a': e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
         case 'b': e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
         case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c
+
+        case 'x': e.preventDefault(); substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  x
+        case 'y': e.preventDefault(); substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  y
+        case 'z': e.preventDefault(); substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  z
     }
 };
 
@@ -415,7 +510,12 @@ function inputDigit (digit,eq) {
     };    
 };
 
+// plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
+equation = math.parse('x^2 - y^2 == Select(100)');
+updateLatex(equation);
+
 </script>
+
 
 
 </div>

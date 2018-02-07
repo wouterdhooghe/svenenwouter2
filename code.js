@@ -46,13 +46,13 @@ customFunctions.Plus.toTex = function (node, options) {
         
         // geen + schrijven als er toch al een unary minus staat (tenzij er een select rond de unary minus staat)
         // geen plus schrijven voor de eerste term
-        value.op == '-' ? teken = '' : teken = '+';
+        value.name == 'unaryMinus' ? teken = '' : teken = '+';
         index == 0  ? output = output : output += teken;
         output += value.toTex(options);
         console.log(output);
     });
-    return '(' + output + ')';
-    // return output;
+    // return '(' + output + ')';
+    return output;
 };
 
 
@@ -65,12 +65,21 @@ customFunctions.Times.toTex = function (node, options) {
     options.implicit == 'hide' ? teken = '~' : teken = '\\cdot';
     node.args.forEach(function (value, index, parent) {
         
-        index == 0 ? output = output : output += teken;
-        output += value.toTex(options);
+        index == 0 ? ditTeken = '' : ditTeken = teken;
+        output += ditTeken;
+
+        selectedPlus = value.name == 'Select' && value.args[0].name == 'Plus';
+        plus = value.name == 'Plus';
+
+        plusOrSelectedPlus = selectedPlus || plus;
+
+console.log(plusOrSelectedPlus);
+
+        plusOrSelectedPlus ? output += '(' + value.toTex(options) + ')' : output += value.toTex(options);
     });
     options.parenthesis == 'all' ? output = '(' + output + ')' : output = output ;
     //return output;
-    return '(' + output + ')';
+    return  output;
 };
 customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
 customFunctions.minus.toTex = function (node, options) {
@@ -81,6 +90,7 @@ customFunctions.Select.toTex = function (node, options) {
     console.log('slct');
     return '\\textcolor{red}{' + node.args[0].toTex(options) + '}';
 };
+
 
 
 //************************************* */
@@ -549,14 +559,16 @@ function applyPower() {
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     exponent = math.parse('Select(b)');
-    substitution = new math.expression.node.OperatorNode('^', 'pow', [selectNode.args[0], exponent]);
+    substitution = new math.expression.node.FunctionNode('pow', [selectNode.args[0], exponent]);
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
 }
 
 function replaceWithPower() {
 
-    substitution = 'Select(a) ^ b';
+    base = math.parse('Select(a)');
+    exponent = math.parse('b');
+    substitution = new math.expression.node.FunctionNode('pow', [base, exponent]);
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
 
@@ -577,7 +589,7 @@ function applyMinus() {
 
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
-    substractor = math.parse('Select(-b)');
+    substractor = new math.expression.node.FunctionNode('unaryMinus', [math.parse('Select(c)')]);
     substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], substractor]);
     equation = substituteSelected(substitution, equation);
     equation = flatten(equation);
@@ -597,7 +609,7 @@ function applyDivide() {
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     divisor = math.parse('Select(b)');
-    substitution = new math.expression.node.OperatorNode('/', 'divide ', [selectNode.args[0], divisor]);
+    substitution = new math.expression.node.OperatorNode('/', 'divide', [selectNode.args[0], divisor]);
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
 }
@@ -637,7 +649,7 @@ function applyEquality() {
 }
 
 function replaceWithEquality() {
-    equation = math.parse('Select(a)==b');
+    equation = math.parse('y==Select(x)');
     updateLatex(equation);
 }
 
@@ -975,3 +987,77 @@ function leftSlurpOp(eq) {
         };
     };
 };
+
+function drawGraph(eq) {
+    if (eq != undefined) {
+        //              console.log(eq.toString())
+        leftSideCode = eq.args[0].compile();
+        rightSideCode = eq.args[1].compile();
+
+        var imageArray = [];
+
+        startX = -100;
+        endX = 100;
+        startY = -100;
+        endY = 100;
+        rangeX = endX - startX;
+        rangeY = endY - startY;
+
+
+
+    for (i = 0; i < canvasWidth; i = i + 1) {
+        for (j = 0; j < canvasHeight; j = j + 1) {
+          
+              scope = {
+                  x: startX + (rangeX/canvasWidth)*i,
+                  y: startY + (rangeY/canvasHeight)*j
+              };
+              squaredDifference = math.pow(leftSideCode.eval(scope) - rightSideCode.eval(scope),2);
+              imageArray.push({pixelX: i, pixelY: canvasHeight-j, result: squaredDifference});
+              
+            }
+         };
+    
+    
+    minResult = arrayResultRange(imageArray).min;
+    resultRange = arrayResultRange(imageArray).max - minResult;
+    console.log(minResult);
+    console.log(resultRange);
+
+    imageArray.forEach( function (point) {
+       // fullSmooth = 255-Math.floor(255*(point.result-minResult)/resultRange);
+       // logDiff = math.log(point.result);
+       // squareDiff = 255 - point.result;
+        drawPixel(point.pixelX, point.pixelY, 0, 0, 0, squareDiff(point.result));
+    });
+
+             
+    updateCanvas()
+              
+            }
+        };
+
+        // komt van internet zou sneller moeten zijn dan alternatieven
+        function arrayResultRange(arr) {
+            var len = arr.length, max = -Infinity, min = Infinity;
+            while (len--) {
+              if (arr[len].result > max) {
+                max = arr[len].result;
+              }
+              if (arr[len].result < min) {
+                min = arr[len].result;
+              }
+            }
+            return {max: max, min: min};
+          };
+
+        // diff Functies voor de grafieken, verwachten dat minResult, resultRange gegeven zijn. Input is een squaredDifference
+          function fullSmooth(sqdiff) {
+              return 255-Math.floor(255*(sqdiff-minResult)/resultRange)
+          }
+          function squareDiff(sqdiff) {
+              return 255 - sqdiff;
+          }
+          function logDiff(sqdiff) {
+              return math.log(sqdiff)
+          }

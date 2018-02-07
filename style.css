@@ -1,0 +1,46 @@
+@media (min-width: 768px){
+  #left {
+    position: absolute;
+    top: 40%;
+    bottom: 0;
+    left: 0;
+    width: 33%;
+    overflow-y: scroll; 
+  }
+
+  #middle {
+    position: absolute;
+    top: 40%;
+    bottom: 0;
+    left: 33%;
+    overflow-y: scroll;
+    width: 33%;
+  }
+  
+  #right {
+    position: absolute;
+    top: 40%;
+    bottom: 0;
+    right: 0;
+    overflow-y: scroll;
+    width: 33%;
+  }
+}
+
+#left {
+  background-color: rgb(200, 194, 218);
+  text-align: center;
+  height:100%;
+}
+
+#right {
+  height:100%;
+  background-color: rgb(175, 215, 230);
+  text-align: center;
+}
+
+#middle {
+    height:100%;
+    background-color: rgb(175, 230, 175);
+    text-align: center;
+  }
