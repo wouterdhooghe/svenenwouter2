@@ -47,9 +47,15 @@
 
 
 <body>
+<div class='container-fluid'>
 
-
-<p> testpara</p>
+<div> Keyboard:</div>
+    <select id='keyboardType' onchange="changeKeyboardType()">
+        <option value="wouterCode">Wouter code</option>
+        <option value="svenCode">Sven code</option>
+        <option value="wouterkeyCode">Wouter keyCode</option>
+        <option value="svenkeyCode">Sven Code</option>
+      </select>
 
     <p class="output"> para 2</p>
 
@@ -129,11 +135,23 @@ expr.oninput = function () {
 }
 
 ///*********************************************************************
+/// Initialisatie van objecten
+///*********************************************************************
+
+multiFunction = {   'Times': 1,
+                    'Plus': 1,
+                    'And': 1,
+                    'Or': 1,
+                    'add': 1,
+                    'multiply': 1
+    };
+
+///*********************************************************************
 ///  Keyboard handling
 ///*********************************************************************
 
 var keyboards = {
-    wouter: {
+    wouterkeyCode: {
         left:    37,
         up:      38,
         right:   39,
@@ -164,7 +182,7 @@ var keyboards = {
         c:       67
 
     },
-    sven:   {
+    svenkeyCode:   {
         left:    37,
         up:      38,
         right:   39,
@@ -193,10 +211,46 @@ var keyboards = {
         a:       65,
         b:       66,
         c:       67
+    },
+     wouterCode:   {
+        left:    'ArrowLeft',
+        up:      'ArrowUp',
+        right:   'ArrowRight',
+        down:    'ArrowDown',
+
+        minus:   'Minus',  
+        plus:    'Equal',
+        divide:  'BracketLeft',
+        times:   'BracketRight',
+        nthroot: 'Quote',
+        power:   'Backslash',
+        equals:  'Slash',
+
+
+        0:       'Digit0',
+        1:       'Digit1',
+        2:       'Digit2',
+        3:       'Digit3',
+        4:       'Digit4',
+        5:       'Digit5',
+        6:       'Digit6',
+        7:       'Digit7',
+        8:       'Digit8',
+        9:       'Digit9',
+
+        a:       'keyQ',
+        b:       'keyB',
+        c:       'keyC'
     } 
 };
 
-keyboardType = 'wouter';
+keyboardSelectElement = document.getElementById('keyboardType');
+keyboardType = keyboardSelectElement.value;
+
+function changeKeyboardType() {
+    keyboardSelectElement = document.getElementById('keyboardType');
+    keyboardType = keyboardSelectElement.value;
+};
 
 // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType
 var keyLookup = invertSimple(keyboards[keyboardType]);
@@ -205,13 +259,15 @@ document.onkeydown = keysPressed
   
 function  keysPressed(e) {
 
+    out.innerHTML = e.code;
+
 if (e.shiftKey == 1)
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
 // pijltjes met shift
-        case 'left': keysList.push('left') ; e.preventDefault(); shiftLeftSelect(equation); break;
-        case 'up': out.innerHTML = 'up'; break;
-        case 'right': out.innerHTML = 'right'; break;
-        case 'down': out.innerHTML = 'down'; break;
+        case 'left': keysList.push('shift left') ; e.preventDefault(); leftSlurp(equation); break;
+        case 'up': out.innerHTML = 'shift up'; break;
+        case 'right': keysList.push('shift right') ; e.preventDefault(); rightSlurp(equation); break;
+        case 'down': keysList.push('shift down') ; e.preventDefault(); updateLatex(flatten(equation)); break;
 
 // Speciale cijfers met shift
         case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
@@ -227,7 +283,7 @@ if (e.shiftKey == 1)
 
 
 else if (e.ctrlKey == 1)
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
         case 'left': out.innerHTML = 'CTRLleft';break;
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
@@ -236,7 +292,7 @@ else if (e.ctrlKey == 1)
 
 else if (e.metaKey == 1)
 
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
         case 'left': out.innerHTML = 'left'; break;
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
@@ -247,31 +303,42 @@ else if (e.metaKey == 1)
 
 else if (e.altKey == 1)
 
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
         case 'left': out.innerHTML = 'left'; break;
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
         case 'down': out.innerHTML = 'down'; break;
+
+// Specialkeys  
+        case 'plus': replaceWithPlus(); keysList.push('replacePlus'); break;
+        case 'times': replaceWithTimes(); keysList.push('replaceTimes'); break;
+        case 'power': replaceWithPower(); keysList.push('replacePower'); break;
+        case 'divide':replaceWithDivide(); keysList.push('replaceDivide'); break;
+        case 'minus': replaceWithMinus(); keysList.push('replaceMinus'); break;
+        case 'nthroot': replaceWithNthroot(); keysList.push('replaceNthroot'); break;
+        case 'equals':  replaceWithEquality(); keysList.push('replaceEquals'); break;
+
+        
     }
 
 else
 
-    switch (keyLookup[e.keyCode]) {
+    switch (keyLookup[e.code]) {
         case 'left': keysList.push('left') ; e.preventDefault(); leftSelect(equation); break;
         case 'up': keysList.push('up') ; e.preventDefault(); upSelect(equation); break;
         case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
         case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
 
-// Specialkeys voor Wouter        
-        case 'plus': replaceWithPlus(); keysList.push('plus'); break;
-        case 'times': replaceWithTimes(); keysList.push('times'); break;
-        case 'power': replaceWithPower(); keysList.push('power'); break;
-        case 'minus': replaceWithMinus(); keysList.push('minus'); break;
-        case 'divide': replaceWithDivide(); keysList.push('divide'); break;
-        case 'nthroot': replaceWithNthroot(); keysList.push('nthroot'); break;
-        case 'equals':  replaceWithEquality(); keysList.push('equals'); break;
+// Specialkeys        
+        case 'plus': applyPlus(); keysList.push('applyPlus'); break;
+        case 'times': applyTimes(); keysList.push('applyTimes'); break;
+        case 'power': applyPower(); keysList.push('applyPower'); break;
+        case 'minus': applyMinus(); keysList.push('applyMinus'); break;
+        case 'divide': applyDivide(); keysList.push('applyDivide'); break;
+        case 'nthroot': applyNthroot(); keysList.push('applyNthroot'); break;
+        case 'equals':  applyEquality(); keysList.push('applyEquals'); break;
 
-// Cijfers (voor Wouter)
+// Cijfers
         case '1': e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 
         case '2': e.preventDefault(); substituteSelected(selectIt('2'), equation); updateLatex(equation); break;
         case '3': e.preventDefault(); substituteSelected(selectIt('3'), equation); updateLatex(equation); break;
@@ -320,5 +387,7 @@ function inputDigit (digit,eq) {
     <li>drie</li>
 </ul>
 
+
+</div>
 
 </body>
