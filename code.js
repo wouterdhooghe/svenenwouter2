@@ -51,8 +51,8 @@ customFunctions.Plus.toTex = function (node, options) {
         output += value.toTex(options);
         console.log(output);
     });
-    return '(' + output + ')';
-    // return output;
+    // return '(' + output + ')';
+    return output;
 };
 
 
@@ -65,12 +65,21 @@ customFunctions.Times.toTex = function (node, options) {
     options.implicit == 'hide' ? teken = '~' : teken = '\\cdot';
     node.args.forEach(function (value, index, parent) {
         
-        index == 0 ? output = output : output += teken;
-        output += value.toTex(options);
+        index == 0 ? ditTeken = '' : ditTeken = teken;
+        output += ditTeken;
+
+        selectedPlus = value.name == 'Select' && value.args[0].name == 'Plus';
+        plus = value.name == 'Plus';
+
+        plusOrSelectedPlus = selectedPlus || plus;
+
+console.log(plusOrSelectedPlus);
+
+        plusOrSelectedPlus ? output += '(' + value.toTex(options) + ')' : output += value.toTex(options);
     });
     options.parenthesis == 'all' ? output = '(' + output + ')' : output = output ;
     //return output;
-    return '(' + output + ')';
+    return  output;
 };
 customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
 customFunctions.minus.toTex = function (node, options) {
