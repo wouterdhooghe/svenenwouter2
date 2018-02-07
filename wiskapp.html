@@ -49,52 +49,83 @@
 <body>
 <div class='container-fluid'>
 
-<div> Keyboard:</div>
-    <select id='keyboardType' onchange="changeKeyboardType()">
-        <option value="wouterCode">Wouter code</option>
-        <option value="svenCode">Sven code</option>
-        <option value="wouterkeyCode">Wouter keyCode</option>
-        <option value="svenkeyCode">Sven Code</option>
-      </select>
+        <div class="card">
+                <div class="card-block">
+                  <h4 class="card-title">Instellingen </h4>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
 
+                  <select id='keyboardType' onchange="changeKeyboardType()">
+                        <option value="wouterCode">Wouter code</option>
+                        <option value="svenCode">Sven code</option>
+                        <option value="wouterkeyCode">Wouter keyCode</option>
+                        <option value="svenkeyCode">Sven Code</option>
+                  </select>
+
+                </div>
+                <div class="card-block">
+                        <b>Parenthesis option:</b>
+                        <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
+                        <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
+                        <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
+                        <br/>
+                        <b>Implicit multiplication:</b>
+                        <input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
+                        <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
+                </div>
+              </div>
+              
     <p class="output"> para 2</p>
 
-<div class='row'> </div>
+<div class='row'> 
+    <div class='col-md-4'> 
+        <div> haahah </div>
+    </div>
+    <div class='col-md-4'>
 
-    <h1>
-            Expression evaluation with math.js, pretty printing with Katex
-          </h1>
+            <div class="card">
+                    <div class="card-block">
+                      <h4 class="card-title">Vergelijking</h4>
+                      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                      <p class="card-text" id="pretty">$$$$</p>
+                      <p class="card-text" id="result">    </p>
+                      <p class="card-text" id="expr"> </p>
+                      <a href="#" class="card-link">Card link</a>
+                      <a href="#" class="card-link">Another link</a>
+                    </div>
+                  </div>
+
+         <!--    <table>
+                    <tr>
+                      <th>Expression</th>
+                      <td><input type="text" id="expr"/></td>
+                    </tr>
+                    <tr>
+                      <th>Pretty print</th>
+                      <td><div id="pretty">$$$$</div></td>
+                    </tr>
+                    <tr>
+                      <th>Result</th>
+                      <td><div id="result"></div></td>
+                    </tr>
+                      <tr>
+                      <th>transfo</th>
+                      <td><div id="transfo"></div></td>
+                    </tr>
+                  </table> -->
+                  
+        
+            
+    </div>
+    <div class='col-md-4'> 
+        <p> paragraaf </p>
+    </div>
+</div>
+
+   
           
           
           
-          <table>
-            <tr>
-              <th>Expression</th>
-              <td><input type="text" id="expr"/></td>
-            </tr>
-            <tr>
-              <th>Pretty print</th>
-              <td><div id="pretty">$$$$</div></td>
-            </tr>
-            <tr>
-              <th>Result</th>
-              <td><div id="result"></div></td>
-            </tr>
-              <tr>
-              <th>transfo</th>
-              <td><div id="transfo"></div></td>
-            </tr>
-          </table>
-          <b>Parenthesis option:</b>
-          <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
-          <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
-          <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
-          <br/>
-          <b>Implicit multiplication:</b>
-          <input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
-          <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
-
-
+         
 
 <script>
 
