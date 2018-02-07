@@ -51,7 +51,7 @@ customFunctions.Plus.toTex = function (node, options) {
         output += value.toTex(options);
         console.log(output);
     });
-    return output;
+    return '(' + output + ')';
     // return output;
 };
 
@@ -69,7 +69,8 @@ customFunctions.Times.toTex = function (node, options) {
         output += value.toTex(options);
     });
     options.parenthesis == 'all' ? output = '(' + output + ')' : output = output ;
-    return output;
+    //return output;
+    return '(' + output + ')';
 };
 customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
 customFunctions.minus.toTex = function (node, options) {
@@ -120,7 +121,7 @@ function returnWithoutLast(arr) {
     return newarr;
 };
 
-// brengt geneste multifunctions samen in 1 niveau.
+// brengt geneste multifunctions Plus en Times samen in 1 niveau.
 // Niet destructief!
 function flatten(eq) {
 
@@ -143,7 +144,8 @@ function flatten(eq) {
 //                    console.log(parent.args.slice(indexnum + 1, parent.args.length));
 
                     parent.args = parent.args.slice(0, indexnum).concat(node.args, parent.args.slice(indexnum + 1, parent.args.length));
-
+                    console.log('flattened');
+                    console.log(parent.args.length);
 
 
                 }
@@ -154,7 +156,7 @@ function flatten(eq) {
     return neweq;
 };
 
-// brengt geneste multifunctions samen in 1 niveau.
+// brengt geneste multifunctions add en times samen in 1 niveau.
 // Niet destructief!
 function flattenOp(eq) {
 
@@ -438,7 +440,7 @@ updateEval = function (node) {
 updateLatex = function (eq) {
     try {
 
-
+        eq = flatten(eq);
         // update expression
         expr.value = eq;
 
@@ -580,6 +582,7 @@ function applyMinus() {
     equation = substituteSelected(substitution, equation);
     equation = flatten(equation);
     updateLatex(equation);
+}
 
 function replaceWithMinus() {
 
