@@ -17,7 +17,7 @@
 <div class='container-fluid'>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
 
         <div class="card">
                 <div class="card-body">
@@ -43,6 +43,22 @@
                         <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
                         <p class="output"> para 2</p>
                 </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+
+        <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Toetsen </h4>
+                    <p> pijltjes om door de vergelijking te bewegen</p>
+                    <p> de zes toetsen naast enter zijn standaardbewerkingen</p>
+                    <p> ALT en de letter d voor een update van de grafiek</p>
+                    <p> ALT en = om een propere vergelijking te krijgen</p>
+                    <p> cijfers (zonder shift) voor cijfers</p>
+                    <p> SHIFT en pijltjes om de selectie uit te breiden</p>
+
+                </div>
+                
         </div>
     </div>      
 </div>
@@ -511,8 +527,8 @@ function inputDigit (digit,eq) {
 };
 
 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
-//equation = math.parse('x^2 - y^2 == Select(100)');
-//updateLatex(equation);
+equation = math.parse('x^2 - y^2 == Select(100)');
+updateLatex(equation);
 
 </script>
 
