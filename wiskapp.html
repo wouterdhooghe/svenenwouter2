@@ -211,7 +211,7 @@ math.import(customFunctions);
 // math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
 math.pow.toTex = function (node, options) {
 
-    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot') {
+    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide') {
         return "\\left("+node.args[0].toTex(options)+"\\right)^{"+node.args[1].toTex(options)+"}";
     } else {
         return node.args[0].toTex(options)+"^{"+node.args[1].toTex(options)+"}";
@@ -238,18 +238,7 @@ if (multiFunction[node.args[0].name]==1) {
 
 
 
-var equation = math.parse('');
-var keysList = [];
 
-updateLatex(equation);
-
-// wat er gebeurt als je iets rechtstreeks invult in de expressiebox
-expr.oninput = function () {
-    
-    equation = math.parse(expr.value)
-    updateLatex(equation);
-    
-}
 
 ///*********************************************************************
 /// Initialisatie van objecten
@@ -262,6 +251,22 @@ multiFunction = {   'Times': 1,
                     'add': 1,
                     'multiply': 1
     };
+
+var equation = math.parse('');
+
+var keysList = [];
+
+updateLatex(equation);
+
+// wat er gebeurt als je iets rechtstreeks invult in de expressiebox
+expr.oninput = function () {
+    
+    equation = math.parse(expr.value)
+    updateLatex(equation);
+    
+}
+
+
 
 ///*********************************************************************
 ///  Keyboard handling
@@ -505,7 +510,12 @@ function inputDigit (digit,eq) {
     };    
 };
 
+// plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
+equation = math.parse('x^2 - y^2 == Select(100)');
+updateLatex(equation);
+
 </script>
+
 
 
 </div>

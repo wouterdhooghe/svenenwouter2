@@ -609,7 +609,7 @@ function applyDivide() {
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     divisor = math.parse('Select(b)');
-    substitution = new math.expression.node.OperatorNode('/', 'divide ', [selectNode.args[0], divisor]);
+    substitution = new math.expression.node.OperatorNode('/', 'divide', [selectNode.args[0], divisor]);
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
 }
@@ -649,7 +649,7 @@ function applyEquality() {
 }
 
 function replaceWithEquality() {
-    equation = math.parse('Select(a)==b');
+    equation = math.parse('y==Select(x)');
     updateLatex(equation);
 }
 
