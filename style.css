@@ -28,13 +28,19 @@
 }
 
 #left {
-  background-color: #FC6E51;
+  background-color: rgb(200, 194, 218);
   text-align: center;
   height:100%;
 }
 
 #right {
   height:100%;
-  background-color: #4FC1E9;
+  background-color: rgb(175, 215, 230);
   text-align: center;
 }
+
+#middle {
+    height:100%;
+    background-color: rgb(175, 230, 175);
+    text-align: center;
+  }
