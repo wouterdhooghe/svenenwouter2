@@ -987,3 +987,77 @@ function leftSlurpOp(eq) {
         };
     };
 };
+
+function drawGraph(eq) {
+    if (eq != undefined) {
+        //              console.log(eq.toString())
+        leftSideCode = eq.args[0].compile();
+        rightSideCode = eq.args[1].compile();
+
+        var imageArray = [];
+
+        startX = -100;
+        endX = 100;
+        startY = -100;
+        endY = 100;
+        rangeX = endX - startX;
+        rangeY = endY - startY;
+
+
+
+    for (i = 0; i < canvasWidth; i = i + 1) {
+        for (j = 0; j < canvasHeight; j = j + 1) {
+          
+              scope = {
+                  x: startX + (rangeX/canvasWidth)*i,
+                  y: startY + (rangeY/canvasHeight)*j
+              };
+              squaredDifference = math.pow(leftSideCode.eval(scope) - rightSideCode.eval(scope),2);
+              imageArray.push({pixelX: i, pixelY: canvasHeight-j, result: squaredDifference});
+              
+            }
+         };
+    
+    
+    minResult = arrayResultRange(imageArray).min;
+    resultRange = arrayResultRange(imageArray).max - minResult;
+    console.log(minResult);
+    console.log(resultRange);
+
+    imageArray.forEach( function (point) {
+       // fullSmooth = 255-Math.floor(255*(point.result-minResult)/resultRange);
+       // logDiff = math.log(point.result);
+       // squareDiff = 255 - point.result;
+        drawPixel(point.pixelX, point.pixelY, 0, 0, 0, squareDiff(point.result));
+    });
+
+             
+    updateCanvas()
+              
+            }
+        };
+
+        // komt van internet zou sneller moeten zijn dan alternatieven
+        function arrayResultRange(arr) {
+            var len = arr.length, max = -Infinity, min = Infinity;
+            while (len--) {
+              if (arr[len].result > max) {
+                max = arr[len].result;
+              }
+              if (arr[len].result < min) {
+                min = arr[len].result;
+              }
+            }
+            return {max: max, min: min};
+          };
+
+        // diff Functies voor de grafieken, verwachten dat minResult, resultRange gegeven zijn. Input is een squaredDifference
+          function fullSmooth(sqdiff) {
+              return 255-Math.floor(255*(sqdiff-minResult)/resultRange)
+          }
+          function squareDiff(sqdiff) {
+              return 255 - sqdiff;
+          }
+          function logDiff(sqdiff) {
+              return math.log(sqdiff)
+          }
