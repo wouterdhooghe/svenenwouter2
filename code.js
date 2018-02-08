@@ -450,11 +450,10 @@ updateEval = function (node) {
 updateLatex = function (eq) {
     try {
 
-        eq = flatten(eq);
+        // update de globale variabele equation
+        equation = flatten(eq);
         // update expression
         expr.value = eq;
-
-
 
         // export the expression to LaTeX
         var latex = eq ? eq.toTex({
@@ -471,7 +470,7 @@ updateLatex = function (eq) {
         pretty.innerHTML = "error!!!"
     }
     updateEval(eq);
-}
+};
 
 // verplaatst de selectie naar het gevraagde adress
 // past global variabele equation aan!
@@ -987,6 +986,94 @@ function leftSlurpOp(eq) {
         };
     };
 };
+
+/****************************** */
+// Alt - acties
+/****************************** */
+
+// deze code is bijna exact hetzelfde als rightSlurp
+commuteSelectedWithNext = function (eq) {
+     // zoek uit of de parent een multifunction is
+     selectAdress = adresses('Select', eq)[0];
+     parentAdress = returnWithoutLast(selectAdress);
+     parentNode = readAtAdress(parentAdress, eq);
+     if (parentNode.type == 'FunctionNode') {
+         if (multiFunction[parentNode.name] == 1) {
+
+             selectNode = readAtAdress(selectAdress, eq);
+ 
+
+             huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
+             if (huidigNummer < parentNode.args.length - 1) {
+ 
+                 first = selectNode.args[0];
+                 secondAdress = selectAdress;
+ 
+                 secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
+                 second = readAtAdress(secondAdress, eq);
+ 
+ // in dd volgende twee lijnen is het enige verschil met de rightSlurp: 
+                 newSelection = new math.expression.node.FunctionNode(parentNode.name, [second, selectNode]);
+                 newSelection = flatten(newSelection);
+ 
+                 newParent = parentNode;
+                 newParent.args.splice(huidigNummer, 2, newSelection)
+                 eq = injectAtAdress(newParent, parentAdress, eq);
+ 
+                updateLatex(eq);
+                
+ 
+                 return eq;
+             };
+         } else {
+             return eq;
+         };
+     };
+ };
+
+ // deze code is bijna exact hetzelfde als slurpLeft
+ function commuteSelectedWithPrevious(eq) {
+
+    // zoek uit of de parent een multifunction is
+    selectAdress = adresses('Select', eq)[0];
+    parentAdress = returnWithoutLast(selectAdress);
+    parentNode = readAtAdress(parentAdress, eq);
+    if (parentNode.type == 'FunctionNode') {
+        if (multiFunction[parentNode.name] == 1) {
+
+
+            selectNode = readAtAdress(selectAdress, eq);
+
+            first = selectNode.args[0];
+            secondAdress = selectAdress;
+            huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
+            if (huidigNummer > 0) {
+
+                secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer - 1) + ']';
+                second = readAtAdress(secondAdress, eq);
+
+// de tweede wordt hier eerst gezet
+                newSelection = new math.expression.node.FunctionNode(parentNode.name, [selectNode, second]);
+                newSelection = flatten(newSelection);
+
+                newParent = parentNode;
+                newParent.args.splice(huidigNummer-1, 2, newSelection);
+                eq = injectAtAdress(newParent, parentAdress, eq);
+
+               updateLatex(eq);
+
+                return eq;
+            };
+        } else {
+            return eq;
+        };
+    };
+};
+
+
+//***************************** */
+// Grafiek functies
+//***************************** */
 
 function drawGraph(eq) {
     if (eq != undefined) {
