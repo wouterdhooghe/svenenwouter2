@@ -41,15 +41,15 @@ var customFunctions = {
 
 customFunctions.Plus.toTex = function (node, options) {
     output = '';
-    teken = '';
+    plusTeken = '';
     node.args.forEach(function (value, index, parent) {
         
         // geen + schrijven als er toch al een unary minus staat (tenzij er een select rond de unary minus staat)
         // geen plus schrijven voor de eerste term
-        value.name == 'unaryMinus' ? teken = '' : teken = '+';
-        index == 0  ? output = output : output += teken;
+        value.name == 'unaryMinus' ? plusTeken = '' : plusTeken = '+';
+        index == 0  ? output = output : output += plusTeken;
         output += value.toTex(options);
-        console.log(output);
+        console.log('plustex:' + output);
     });
     // return '(' + output + ')';
     return output;
@@ -62,23 +62,33 @@ customFunctions.Plus.toTex = function (node, options) {
 
 customFunctions.Times.toTex = function (node, options) {
     output = '';
-    options.implicit == 'hide' ? teken = '~' : teken = '\\cdot';
+    options.implicit == 'hide' ? maalTeken = '~' : maalTeken = '\\cdot';
+    console.log('teken: ' + maalTeken);
     node.args.forEach(function (value, index, parent) {
         
-        index == 0 ? ditTeken = '' : ditTeken = teken;
+        console.log('maalteken: ' + maalTeken);
+
+        index == 0 ? ditTeken = '' : ditTeken = maalTeken;
         output += ditTeken;
+
+        console.log('ditTeken: ' + ditTeken);
 
         selectedPlus = value.name == 'Select' && value.args[0].name == 'Plus';
         plus = value.name == 'Plus';
 
         plusOrSelectedPlus = selectedPlus || plus;
 
-console.log(plusOrSelectedPlus);
+console.log('plusOrSelectedPlus' + plusOrSelectedPlus);
 
         plusOrSelectedPlus ? output += '(' + value.toTex(options) + ')' : output += value.toTex(options);
+
+        console.log('timestex: '+ output);
+        console.log(value);
+       // console.log(value.toTex(options));
     });
     options.parenthesis == 'all' ? output = '(' + output + ')' : output = output ;
     //return output;
+    console.log(output);
     return  output;
 };
 customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
@@ -1055,6 +1065,8 @@ commuteSelectedWithNext = function (eq) {
 // de tweede wordt hier eerst gezet
                 newSelection = new math.expression.node.FunctionNode(parentNode.name, [selectNode, second]);
                 newSelection = flatten(newSelection);
+
+                console.log('newselect: ' + newSelection.toString());
 
                 newParent = parentNode;
                 newParent.args.splice(huidigNummer-1, 2, newSelection);
