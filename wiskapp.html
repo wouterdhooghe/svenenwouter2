@@ -505,6 +505,16 @@ else
         case 'nthroot': applyNthroot(); keysList.push('applyNthroot'); break;
         case 'equals':  applyEquality(); keysList.push('applyEquals'); break;
 
+// Extra keys
+        case 'space':  spaceBar(); keysList.push('space'); break;
+        case 'enter':  enter(); keysList.push('enter'); break;
+        case 'backspace':  backspace(); keysList.push('backspace'); break;
+
+// tekens
+        case 'KeyM': komma(); keysList.push('komma'); break;
+        case 'Comma': puntKomma(); keysList.push('puntKomma'); break;
+        case 'Period': dubbelPunt(); keysList.push('puntKomma'); break;
+
 // Cijfers
         case '1': e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 
         case '2': e.preventDefault(); substituteSelected(selectIt('2'), equation); updateLatex(equation); break;
