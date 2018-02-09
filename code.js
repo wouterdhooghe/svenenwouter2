@@ -33,6 +33,22 @@ var customFunctions = {
     },
     Select: function (a) {
         return a;
+    },
+
+    And: function () {
+        var argumentArray = Object.values(arguments);
+        allTrue = argumentArray.reduce(function (a,b) {
+            return a && b;
+        });
+        return allTrue;
+    },
+
+    Or: function () {
+        var argumentArray = Object.values(arguments);
+        atLeastOneTrue = argumentArray.reduce(function (a,b) {
+            return a || b;
+        });
+        return atLeastOneTrue;
     }
 
 
@@ -91,6 +107,42 @@ console.log('plusOrSelectedPlus' + plusOrSelectedPlus);
     console.log(output);
     return  output;
 };
+
+// katex.render("\\begin{cases} a b + c &=a \\\\ a b + c &=d \\\\ a b + c + d &=b \\\\ a b + c &=b \\\\ e&=b+c \\end{cases}", pretty)
+// Stelsels
+
+customFunctions.And.toTex = function (node, options) {
+    var output = '';
+    node.args.forEach(function (value, index, parent) {
+        output += value.toTex(options);
+        index == parent.length - 1 ? output = output : output += '\\\\';
+
+    });
+
+    output = '\\begin{cases}' + output + '\\end{cases}';
+    return output;
+};
+
+// katex.render("\\begin{array}{c|c} a & b \\\\ c & d \\end{array}", pretty)
+// Disjuncties
+
+customFunctions.Or.toTex = function (node, options) {
+    var output = '';
+    var c = '';
+    node.args.forEach(function (value, index, parent) {
+        output += value.toTex(options);
+        c += 'c';
+        index == parent.length - 1 ? output = output : output += '&';
+        index == parent.length - 1 ? c = c : c += '|';        
+
+    });
+
+    output = '\\begin{array}{' + c + '}' + output + '\\end{array}';
+    return output;
+    
+};
+
+
 customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
 customFunctions.minus.toTex = function (node, options) {
     return node.args[0].toTex(options) +
@@ -461,7 +513,9 @@ updateLatex = function (eq) {
     try {
 
         // update de globale variabele equation
-        equation = flatten(eq);
+ //       equation = flatten(eq);
+
+        equation = eq;
         // update expression
         expr.value = eq;
 
@@ -706,7 +760,7 @@ function leftSelect(eq) {
 
     MoveSelectToAdress(selectAdress, leftAdress, eq);
 
-    updateLatex(equation);
+    updateLatex(flatten(equation));
 
 }
 
@@ -756,7 +810,8 @@ function rightSelect(eq) {
 
     MoveSelectToAdress(selectAdress, rightAdress, eq);
 
-    updateLatex(equation);
+    // updateLatex(equation);
+    updateLatex(flatten(equation));
 }
 
 function upSelect(eq) {
@@ -871,7 +926,9 @@ function rightSlurp(eq) {
                 newParent.args.splice(huidigNummer, 2, newSelection)
                 eq = injectAtAdress(newParent, parentAdress, eq);
 
-                updateLatex(equation);
+                // MSS ZIJN DE VOLGENDE TWEE LIJNEN OVERBODIG?
+                eq = flatten(eq);
+                updateLatex(eq);
 
                 return eq;
             };
@@ -881,6 +938,7 @@ function rightSlurp(eq) {
     };
 };
 
+/* 
 function rightSlurpOp(eq) {
 
     // zoek uit of de parent een multifunction is
@@ -911,7 +969,7 @@ function rightSlurpOp(eq) {
                 newParent.args.splice(huidigNummer, 2, newSelection)
                 eq = injectAtAdress(newParent, parentAdress, eq);
 
-                updateLatex(equation);
+                //updateLatex(equation);
 
                 return eq;
             };
@@ -919,7 +977,7 @@ function rightSlurpOp(eq) {
             return eq;
         };
     };
-};
+}; */
 
 function leftSlurp(eq) {
 
@@ -949,7 +1007,9 @@ function leftSlurp(eq) {
                 newParent.args.splice(huidigNummer-1, 2, newSelection);
                 eq = injectAtAdress(newParent, parentAdress, eq);
 
-                updateLatex(equation);
+                // MSS ZIJN DE VOLGENDE TWEE LIJNEN OVERBODIG?
+                eq = flatten(eq);
+                updateLatex(eq);
 
                 return eq;
             };
@@ -958,7 +1018,7 @@ function leftSlurp(eq) {
         };
     };
 };
-
+/* 
 function leftSlurpOp(eq) {
 
     // zoek uit of de parent een multifunction is
@@ -995,7 +1055,7 @@ function leftSlurpOp(eq) {
             return eq;
         };
     };
-};
+}; */
 
 /****************************** */
 // Alt - acties
@@ -1024,13 +1084,17 @@ commuteSelectedWithNext = function (eq) {
  
  // in dd volgende twee lijnen is het enige verschil met de rightSlurp: 
                  newSelection = new math.expression.node.FunctionNode(parentNode.name, [second, selectNode]);
+
                  newSelection = flatten(newSelection);
+                 
+                 //console.log(newSelection);
  
                  newParent = parentNode;
                  newParent.args.splice(huidigNummer, 2, newSelection)
                  eq = injectAtAdress(newParent, parentAdress, eq);
- 
-                updateLatex(eq);
+
+                 eq = flatten(eq);
+                 updateLatex(eq);
                 
  
                  return eq;
@@ -1072,7 +1136,8 @@ commuteSelectedWithNext = function (eq) {
                 newParent.args.splice(huidigNummer-1, 2, newSelection);
                 eq = injectAtAdress(newParent, parentAdress, eq);
 
-               updateLatex(eq);
+                eq = flatten(eq);
+                updateLatex(eq);
 
                 return eq;
             };
