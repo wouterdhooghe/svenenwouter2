@@ -904,6 +904,26 @@ function downSelect(eq, actionName) {
 
 };
 
+function inputDigit (digit,eq) {
+    selectAdress = adresses('Select',eq)[0];
+    selectNode = readAtAdress(selectAdress,eq);
+// arg is de node die geselecteerd is 
+    arg = selectNode.args[0];
+    if (arg.isConstantNode) {
+        oudGetal = arg.value;
+        
+        
+        if (isNaN(oudGetal)) { } else {
+            nieuwGetal = oudGetal*10 + digit;
+            nieuwGetalNode = new math.expression.node.ConstantNode(nieuwGetal);
+            substituteSelected(selectIt(nieuwGetalNode), eq);
+            updateLatex(eq);
+            };
+        } else {
+            substituteSelected(selectIt(''+ digit), equation);
+    };    
+};
+
 // SHIFT toetsen
 
 // TEstcase: Times(2,3,Select(Times(6,7)),Times(8,9),10)

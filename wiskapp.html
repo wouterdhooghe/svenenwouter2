@@ -552,25 +552,7 @@ else
     }
 };
 
-function inputDigit (digit,eq) {
-    selectAdress = adresses('Select',eq)[0];
-    selectNode = readAtAdress(selectAdress,eq);
-// arg is de node die geselecteerd is 
-    arg = selectNode.args[0];
-    if (arg.isConstantNode) {
-        oudGetal = arg.value;
-        
-        
-        if (isNaN(oudGetal)) { } else {
-            nieuwGetal = oudGetal*10 + digit;
-            nieuwGetalNode = new math.expression.node.ConstantNode(nieuwGetal);
-            substituteSelected(selectIt(nieuwGetalNode), eq);
-            updateLatex(eq);
-            };
-        } else {
-            substituteSelected(selectIt(''+ digit), equation);
-    };    
-};
+
 
 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
 equation = math.parse('x^2 + y^2 == Select(1024)');
