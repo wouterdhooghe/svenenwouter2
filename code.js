@@ -705,10 +705,22 @@ function applyEquality() {
 
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
-    tweedeLid = math.parse('Select(b)');
-    substitution = new math.expression.node.OperatorNode('==','equal', [selectNode.args[0], tweedeLid]);
-    equation = substituteSelected(substitution, equation);
-    updateLatex(equation);
+    if (selectNode.args[0].name == 'And' || selectNode.args[0].fn == 'equal') {
+
+        tweedeVgl = math.parse('Select(a)==b');
+        substitution = new math.expression.node.FunctionNode('And', [selectNode.args[0], tweedeVgl]);
+        equation = substituteSelected(substitution, equation);
+        updateLatex(flatten(equation));
+    } 
+
+    /* if (selectNode.args[0].fn == 'equal') {
+
+        tweedeVgl = math.parse('Select(a)==b');
+        substitution = new math.expression.node.OperatorNode('==','equal', [selectNode.args[0], tweedeVgl]);
+        equation = substituteSelected(substitution, equation);
+        updateLatex(flatten(equation));
+    } */
+    
 }
 
 function replaceWithEquality() {
