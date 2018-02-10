@@ -227,10 +227,10 @@ math.import(customFunctions);
 // math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
 math.pow.toTex = function (node, options) {
 
-    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide') {
+    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide' || node.args[0].fn == 'pow') {
         return "\\left("+node.args[0].toTex(options)+"\\right)^{"+node.args[1].toTex(options)+"}";
     } else {
-        return node.args[0].toTex(options)+"^{"+node.args[1].toTex(options)+"}";
+        return "{"+node.args[0].toTex(options)+"}"+"^{"+node.args[1].toTex(options)+"}";
     }
 
 };
