@@ -433,9 +433,20 @@ if (e.shiftKey == 1)
         case 'right': keysList.push('shift right') ; e.preventDefault(); rightSlurp(equation); break;
         case 'down': keysList.push('shift down') ; e.preventDefault(); updateLatex(flatten(equation)); break;
 
-// Speciale cijfers met shift
+// Speciale tekens met shift
         case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
-        case '5': updateLatex(equation); break;
+
+// Cijfers met shift
+        case '1': e.preventDefault(); inputDigit(1, equation); updateLatex(equation); break; 
+        case '2': e.preventDefault(); inputDigit(2, equation); updateLatex(equation); break;
+        case '3': e.preventDefault(); inputDigit(3, equation); updateLatex(equation); break;
+        case '4': e.preventDefault(); inputDigit(4, equation); updateLatex(equation); break;
+        case '5': e.preventDefault(); inputDigit(5, equation); updateLatex(equation); break;
+        case '6': e.preventDefault(); inputDigit(6, equation); updateLatex(equation); break;
+        case '7': e.preventDefault(); inputDigit(7, equation); updateLatex(equation); break;
+        case '8': e.preventDefault(); inputDigit(8, equation); updateLatex(equation); break;
+        case '9': e.preventDefault(); inputDigit(9, equation); updateLatex(equation); break;
+        case '0': e.preventDefault(); inputDigit(0, equation); updateLatex(equation); break;        
 
 // letters met shift
         case 'a': ; break; // shift a
@@ -490,6 +501,10 @@ else if (e.altKey == 1)
 
 else
 
+// ********************************
+//   zonder modifier keys
+// ********************************
+
     switch (keyLookup[e.code]) {
         case 'left': keysList.push('left') ; e.preventDefault(); leftSelect(equation); break;
         case 'up': keysList.push('up') ; e.preventDefault(); upSelect(equation); break;
@@ -527,15 +542,13 @@ else
         case '8': e.preventDefault(); substituteSelected(selectIt('8'), equation); updateLatex(equation); break;
         case '9': e.preventDefault(); substituteSelected(selectIt('9'), equation); updateLatex(equation); break;
         case '0': e.preventDefault(); substituteSelected(selectIt('0'), equation); updateLatex(equation); break;
-
 // letters
         case 'a': e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
         case 'b': e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
-        case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c
-
-        case 'x': e.preventDefault(); substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  x
-        case 'y': e.preventDefault(); substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  y
-        case 'z': e.preventDefault(); substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  z
+        case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c7
+        case 'x': e.preventDefault(); substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  8
+        case 'y': e.preventDefault(); substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  9
+        case 'z': e.preventDefault(); substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  0
     }
 };
 
@@ -544,16 +557,18 @@ function inputDigit (digit,eq) {
     selectNode = readAtAdress(selectAdress,eq);
 // arg is de node die geselecteerd is 
     arg = selectNode.args[0];
-    if (arg.isSymbolNode) {
-        oudGetal = /\d+/.exec(arg.name);
+    if (arg.isConstantNode) {
+        oudGetal = arg.value;
         
         
         if (isNaN(oudGetal)) { } else {
-            nieuwGetal = oudGetal.concat(digit);
-            substituteSelected(nieuwGetal, eq);
+            nieuwGetal = oudGetal*10 + digit;
+            nieuwGetalNode = new math.expression.node.ConstantNode(nieuwGetal);
+            substituteSelected(selectIt(nieuwGetalNode), eq);
             updateLatex(eq);
             };
-        } else {   
+        } else {
+            substituteSelected(selectIt(''+ digit), equation);
     };    
 };
 
