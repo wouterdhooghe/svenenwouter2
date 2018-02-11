@@ -1179,6 +1179,40 @@ commuteSelectedWithNext = function (eq) {
     };
 };
 
+//***************************** */
+// CTRL - functies (rekenregels)
+//***************************** */
+
+function distributeSelected(eq) {
+    selectAdress = adresses('Select', eq)[0];
+    selectNode = readAtAdress(selectAdress, eq);
+    selectedNode = selectNode.args[0];
+
+    if (selectedNode.name == 'Times' & selectedNode.args[1].name == 'Plus') {
+        nieuw = selectedNode.args[1].map(function (node, index, parent) {return new math.expression.node.FunctionNode('Times', [selectedNode.args[0], node ])});
+    };
+    eq = injectAtAdress(selectIt(nieuw), selectAdress, eq);
+    return eq;
+};
+
+function factorSelected(eq) {
+    selectAdress = adresses('Select', eq)[0];
+    selectNode = readAtAdress(selectAdress, eq);
+    selectedNode = selectNode.args[0];
+
+    var sameFactor = true
+
+    if (selectedNode.name == 'Plus') {
+        commonFactor = selectedNode.args[0].args[0];
+        selectedNode.args.forEach(function (node, index, parent) {
+            node.args[0].equals(commonFactor) ? sameFactor = sameFactor : sameFactor = false;
+        });
+        nieuweSom = selectedNode.map(function (node, index, parent) {return node.args[1]});
+        nieuw = new math.expression.node.FunctionNode('Times', [commonFactor, nieuweSom]);
+    };
+    eq = injectAtAdress(selectIt(nieuw), selectAdress, eq);
+    return eq;
+};
 
 //***************************** */
 // Grafiek functies

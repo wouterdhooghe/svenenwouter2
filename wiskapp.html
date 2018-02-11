@@ -463,6 +463,11 @@ else if (e.ctrlKey == 1)
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
         case 'down': out.innerHTML = 'down'; break;
+
+        // letters
+
+        case 'd': e.preventDefault(); distributeSelected(equation); keysList.push('distributeSelected'); updateLatex(equation); break;
+        case 'f': e.preventDefault(); distributeSelected(equation); keysList.push('factorSelected'); updateLatex(equation); break;
     }
 
 else if (e.metaKey == 1)
