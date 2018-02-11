@@ -434,7 +434,7 @@ if (e.shiftKey == 1)
         case 'down': keysList.push('shift down') ; e.preventDefault(); updateLatex(flatten(equation)); break;
 
 // Speciale tekens met shift
-        case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
+        // case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
 
 // Cijfers met shift
         case '1': e.preventDefault(); inputDigit(1, equation); updateLatex(equation); break; 
@@ -466,8 +466,14 @@ else if (e.ctrlKey == 1)
 
         // letters
 
-        case 'd': e.preventDefault(); distributeSelected(equation); keysList.push('distributeSelected'); updateLatex(equation); break;
-        case 'f': e.preventDefault(); factorSelected(equation); keysList.push('factorSelected'); updateLatex(equation); break;
+//        case 'd': e.preventDefault(); distributeSelected(equation); keysList.push('distributeSelected'); updateLatex(equation); break;
+//        case 's': e.preventDefault(); factorSelected(equation); keysList.push('factorSelected'); updateLatex(equation); break;
+//        case 'a': e.preventDefault(); alert('CTRL - f');
+// case 'x': e.preventDefault(); alert('CTRL - f');
+//  case 'y': e.preventDefault(); alert('CTRL - f');
+// case 'c': e.preventDefault(); alert('CTRL - f');
+// case 'b': e.preventDefault(); alert('CTRL - f');
+
     }
 
 else if (e.metaKey == 1)
@@ -478,7 +484,11 @@ else if (e.metaKey == 1)
         case 'right': out.innerHTML = 'right'; break;
         case 'down': out.innerHTML = 'down'; break;
 
-        case 'f': e.preventDefault(); out.innerHTML = 'meta f'; break;
+        case 'x': e.preventDefault(); alert('meta - x');
+ case 'y': e.preventDefault(); alert('meta - y');
+case 'c': e.preventDefault(); alert('meta - c');
+case 'b': e.preventDefault(); alert('meta - b');
+
     }
 
 else if (e.altKey == 1)
