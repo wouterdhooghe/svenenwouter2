@@ -775,7 +775,17 @@ function spaceBar(eq) {
         equation = substituteSelected('Select('+uitkomstString+')',eq);
         updateLatex(equation);
      };
+}
 
+function enter(eq) {
+    selectAdress = adresses('Select', eq)[0];
+    selectNode = readAtAdress(selectAdress, eq);
+    if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
+        uitkomstString = math.eval(selectNode.args[0].toString());
+        console.log(uitkomstString);
+        equation = substituteSelected('Select('+uitkomstString+')',eq);
+        updateLatex(equation);
+     };
 }
 
 function leftSelect(eq) {
