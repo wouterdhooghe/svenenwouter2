@@ -536,7 +536,7 @@ else
         case 'equals':  applyEquality(); keysList.push('applyEquals'); break;
 
 // Extra keys
-        case 'space':  spaceBar(); keysList.push('space'); break;
+        case 'space':  e.preventDefault(); keysList.push('space'); spaceBar(equation); break;
         case 'enter':  enter(); keysList.push('enter'); break;
         case 'backspace':  backspace(); keysList.push('backspace'); break;
 
