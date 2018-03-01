@@ -1032,6 +1032,7 @@ function inputDigit (digit,eq) {
             };
         } else {
             substituteSelected(selectIt(''+ digit), eq);
+            updateLatex(eq);
     };    
 };
 
