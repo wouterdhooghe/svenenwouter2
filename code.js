@@ -83,8 +83,13 @@ customFunctions.Times.toTex = function (node, options) {
     node.args.forEach(function (value, index, parent) {
         
         console.log('maalteken: ' + maalTeken);
+        console.log('getalofniet: ' + (value.isConstantNode || (value.name == 'Select' && value.args[0].isConstantNode)));
+        (value.isConstantNode || (value.name == 'Select' && value.args[0].isConstantNode)) ? ditTeken = '\\cdot' : ditTeken = maalTeken;
+        if (index == 0) {
+            ditTeken = ''
+         } else if  (value.isConstantNode || (value.name == 'Select' && value.args[0].isConstantNode)) { ditTeken = '\\cdot';}
+        else {ditTeken = maalTeken;}
 
-        index == 0 ? ditTeken = '' : ditTeken = maalTeken;
         output += ditTeken;
 
         console.log('ditTeken: ' + ditTeken);
