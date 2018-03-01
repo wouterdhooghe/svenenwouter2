@@ -1014,6 +1014,12 @@ function downSelect(eq, actionName) {
 
 };
 
+function replaceWithDigit(digit,eq) {
+    prevEquation = equation.cloneDeep();
+    substituteSelected(selectIt(digit), eq);
+    updateLatex(eq);
+}
+
 function inputDigit (digit,eq) {
     prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select',eq)[0];

@@ -547,16 +547,16 @@ else
         case 'IntlBackslash': kleinerDan(); keysList.push('kleinerDan'); break;
 
 // Cijfers
-        case '1': e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 
-        case '2': e.preventDefault(); substituteSelected(selectIt('2'), equation); updateLatex(equation); break;
-        case '3': e.preventDefault(); substituteSelected(selectIt('3'), equation); updateLatex(equation); break;
-        case '4': e.preventDefault(); substituteSelected(selectIt('4'), equation); updateLatex(equation); break;
-        case '5': e.preventDefault(); substituteSelected(selectIt('5'), equation); updateLatex(equation); break;
-        case '6': e.preventDefault(); substituteSelected(selectIt('6'), equation); updateLatex(equation); break;
-        case '7': e.preventDefault(); substituteSelected(selectIt('7'), equation); updateLatex(equation); break;
-        case '8': e.preventDefault(); substituteSelected(selectIt('8'), equation); updateLatex(equation); break;
-        case '9': e.preventDefault(); substituteSelected(selectIt('9'), equation); updateLatex(equation); break;
-        case '0': e.preventDefault(); substituteSelected(selectIt('0'), equation); updateLatex(equation); break;
+        case '1': e.preventDefault(); replaceWithDigit('1',equation); break; 
+        case '2': e.preventDefault(); replaceWithDigit('2',equation); break;
+        case '3': e.preventDefault(); replaceWithDigit('3',equation); break;
+        case '4': e.preventDefault(); replaceWithDigit('4',equation); break;
+        case '5': e.preventDefault(); replaceWithDigit('5',equation); break;
+        case '6': e.preventDefault(); replaceWithDigit('6',equation); break;
+        case '7': e.preventDefault(); replaceWithDigit('7',equation); break;
+        case '8': e.preventDefault(); replaceWithDigit('8',equation); break;
+        case '9': e.preventDefault(); replaceWithDigit('9',equation); break;
+        case '0': e.preventDefault(); replaceWithDigit('0',equation); break;
 // letters
         case 'a': e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
         case 'b': e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
