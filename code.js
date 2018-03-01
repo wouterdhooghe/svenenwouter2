@@ -599,6 +599,7 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
 
 function applyPlus() {
 
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondTerm = math.parse('Select(b)');
@@ -609,6 +610,8 @@ function applyPlus() {
 }
 
 function applyAdd() {
+
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondTerm = math.parse('Select(b)');
@@ -621,6 +624,7 @@ function applyAdd() {
 function replaceWithPlus() {
     //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
 
+    prevEquation = equation;
     substitution = 'Plus(Select(x),y)';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -628,6 +632,7 @@ function replaceWithPlus() {
 
 function applyTimes() {
 
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondFactor = math.parse('Select(b)');
@@ -638,6 +643,8 @@ function applyTimes() {
 }
 
 function applyMultiply() {
+
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondTerm = math.parse('Select(b)');
@@ -649,6 +656,7 @@ function applyMultiply() {
 
 function replaceWithTimes() {
 
+    prevEquation = equation;
     substitution = 'Times(Select(a),b)';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -656,6 +664,7 @@ function replaceWithTimes() {
 
 function applyPower() {
 
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     exponent = math.parse('Select(b)');
@@ -666,6 +675,7 @@ function applyPower() {
 
 function replaceWithPower() {
 
+    prevEquation = equation;
     base = math.parse('Select(a)');
     exponent = math.parse('b');
     substitution = new math.expression.node.FunctionNode('pow', [base, exponent]);
@@ -676,6 +686,7 @@ function replaceWithPower() {
 
 function applyMinusOp() {
 
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     substractor = math.parse('Select(-b)');
@@ -687,6 +698,7 @@ function applyMinusOp() {
 
 function applyMinus() {
 
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     substractor = new math.expression.node.FunctionNode('unaryMinus', [math.parse('Select(c)')]);
@@ -698,6 +710,7 @@ function applyMinus() {
 
 function replaceWithMinus() {
 
+    prevEquation = equation;
     substitution = '(Select(a)-b)';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -706,6 +719,7 @@ function replaceWithMinus() {
 
 function applyDivide() {
 
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     divisor = math.parse('Select(b)');
@@ -716,6 +730,7 @@ function applyDivide() {
 
 function replaceWithDivide() {
 
+    prevEquation = equation;
     substitution = 'Select(a) / b';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -723,6 +738,7 @@ function replaceWithDivide() {
 
 function applyNthroot() {
 
+    prevEquation = equation;
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     rootnumber = math.parse('Select(b)');
@@ -765,6 +781,7 @@ function replaceWithEquality() {
     updateLatex(equation);
 }
 
+// factorObj is nu een array met gaten is niet de bedoeling. Wordt nu nog niet gebruikt voor priemontbinding te creeeren met machten
 function spaceBar(eq) {
     selectAdress = adresses('Select', eq)[0];
     selectNode = readAtAdress(selectAdress, eq);
@@ -800,6 +817,11 @@ function enter(eq) {
         equation = substituteSelected('Select('+uitkomstString+')',eq);
         updateLatex(equation);
      };
+}
+
+function backSpace(eq) {
+    equation = prevEquation;
+    updateLatex(equation);
 }
 
 function leftSelect(eq) {

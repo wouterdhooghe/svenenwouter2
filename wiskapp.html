@@ -538,7 +538,7 @@ else
 // Extra keys
         case 'space':  e.preventDefault(); keysList.push('space'); spaceBar(equation); break;
         case 'enter':  enter(equation); keysList.push('enter'); break;
-        case 'backspace':  backspace(); keysList.push('backspace'); break;
+        case 'backspace':  backSpace(); keysList.push('backspace'); break;
 
 // tekens
         case 'KeyM': komma(); keysList.push('komma'); break;
@@ -571,6 +571,7 @@ else
 
 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
 equation = math.parse('x^2 + y^2 == Select(1024)');
+prevEquation = equation;
 updateLatex(equation);
 
 </script>
