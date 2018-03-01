@@ -83,7 +83,7 @@ customFunctions.Times.toTex = function (node, options) {
     node.args.forEach(function (value, index, parent) {
         
         console.log('maalteken: ' + maalTeken);
-        console.log('getalofniet: ' + (value.isConstantNode || (value.name == 'Select' && value.args[0].isConstantNode)));
+        
         (value.isConstantNode || (value.name == 'Select' && value.args[0].isConstantNode)) ? ditTeken = '\\cdot' : ditTeken = maalTeken;
         if (index == 0) {
             ditTeken = ''
@@ -770,6 +770,15 @@ function spaceBar(eq) {
     selectNode = readAtAdress(selectAdress, eq);
     if (Number.isInteger(parseFloat(selectNode.args[0].value))) {
         number = selectNode.args[0].value;
+
+        factorTimesArray = factor(number).split('*');
+        var factorObj = {};
+        for (i=0; i < factorTimesArray.length; i++) {
+            fact = factorTimesArray[i]
+            factorObj.fact == undefined ? factorObj.fact = 1: factorObj.fact += 1;
+        };
+        console.log(factorObj);
+
         priemOntbinding = math.parse(factor(number));
         equation = substituteSelected(selectIt(priemOntbinding),eq);
         updateLatex(equation);
