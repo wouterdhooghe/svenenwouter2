@@ -599,7 +599,7 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
 
 function applyPlus() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondTerm = math.parse('Select(b)');
@@ -611,7 +611,7 @@ function applyPlus() {
 
 function applyAdd() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondTerm = math.parse('Select(b)');
@@ -624,7 +624,7 @@ function applyAdd() {
 function replaceWithPlus() {
     //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     substitution = 'Plus(Select(x),y)';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -632,19 +632,23 @@ function replaceWithPlus() {
 
 function applyTimes() {
 
-    prevEquation = equation;
+    console.log('applyTimes initiated');
+    prevEquation = equation.cloneDeep();
+    console.log('preveq: ' + prevEquation.toString());
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondFactor = math.parse('Select(b)');
     substitution = new math.expression.node.FunctionNode('Times', [selectNode.args[0], secondFactor]);
     equation = substituteSelected(substitution, equation);
     equation = flatten(equation);
+    console.log('preveq: ' + prevEquation.toString());
     updateLatex(equation);
+    
 }
 
 function applyMultiply() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondTerm = math.parse('Select(b)');
@@ -656,7 +660,7 @@ function applyMultiply() {
 
 function replaceWithTimes() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     substitution = 'Times(Select(a),b)';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -664,7 +668,7 @@ function replaceWithTimes() {
 
 function applyPower() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     exponent = math.parse('Select(b)');
@@ -675,7 +679,7 @@ function applyPower() {
 
 function replaceWithPower() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     base = math.parse('Select(a)');
     exponent = math.parse('b');
     substitution = new math.expression.node.FunctionNode('pow', [base, exponent]);
@@ -686,7 +690,7 @@ function replaceWithPower() {
 
 function applyMinusOp() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     substractor = math.parse('Select(-b)');
@@ -698,7 +702,7 @@ function applyMinusOp() {
 
 function applyMinus() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     substractor = new math.expression.node.FunctionNode('unaryMinus', [math.parse('Select(c)')]);
@@ -710,7 +714,7 @@ function applyMinus() {
 
 function replaceWithMinus() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     substitution = '(Select(a)-b)';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -719,7 +723,7 @@ function replaceWithMinus() {
 
 function applyDivide() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     divisor = math.parse('Select(b)');
@@ -730,7 +734,7 @@ function applyDivide() {
 
 function replaceWithDivide() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     substitution = 'Select(a) / b';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -738,7 +742,7 @@ function replaceWithDivide() {
 
 function applyNthroot() {
 
-    prevEquation = equation;
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     rootnumber = math.parse('Select(b)');
@@ -749,6 +753,7 @@ function applyNthroot() {
 
 function replaceWithNthroot() {
 
+    prevEquation = equation.cloneDeep();
     substitution = 'nthRoot(Select(a),b)';
     equation = substituteSelected(substitution, equation);
     updateLatex(equation);
@@ -756,6 +761,7 @@ function replaceWithNthroot() {
 
 function applyEquality() {
 
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     if (selectNode.args[0].name == 'And' || selectNode.args[0].fn == 'equal') {
@@ -777,12 +783,15 @@ function applyEquality() {
 }
 
 function replaceWithEquality() {
+
+    prevEquation = equation.cloneDeep();
     equation = math.parse('y==Select(x)');
     updateLatex(equation);
 }
 
 // factorObj is nu een array met gaten is niet de bedoeling. Wordt nu nog niet gebruikt voor priemontbinding te creeeren met machten
 function spaceBar(eq) {
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', eq)[0];
     selectNode = readAtAdress(selectAdress, eq);
     if (Number.isInteger(parseFloat(selectNode.args[0].value))) {
@@ -809,6 +818,7 @@ function spaceBar(eq) {
 }
 
 function enter(eq) {
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', eq)[0];
     selectNode = readAtAdress(selectAdress, eq);
     if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
@@ -819,7 +829,11 @@ function enter(eq) {
      };
 }
 
-function backSpace(eq) {
+function backSpace() {
+    console.log('equation: ')
+    console.log(equation);
+    console.log('prevequation: ');
+    console.log(prevEquation);
     equation = prevEquation;
     updateLatex(equation);
 }
@@ -1001,6 +1015,7 @@ function downSelect(eq, actionName) {
 };
 
 function inputDigit (digit,eq) {
+    prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select',eq)[0];
     selectNode = readAtAdress(selectAdress,eq);
 // arg is de node die geselecteerd is 
