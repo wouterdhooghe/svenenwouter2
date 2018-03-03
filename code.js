@@ -640,16 +640,18 @@ function replaceWithPlus() {
 
 function applyTimes() {
 
-    console.log('applyTimes initiated');
     prevEquation = equation.cloneDeep();
-    console.log('preveq: ' + prevEquation.toString());
-    selectAdress = adresses('Select', equation)[0];
-    selectNode = readAtAdress(selectAdress, equation);
+
     secondFactor = math.parse('Select(b)');
-    substitution = new math.expression.node.FunctionNode('Times', [selectNode.args[0], secondFactor]);
-    equation = substituteSelected(substitution, equation);
+
+    selectAdresses = adresses('Select', equation);
+    selectAdresses.forEach(function setnodes(item, index) {
+        selectNode = readAtAdress(item, equation);
+        substitution = new math.expression.node.FunctionNode('Times', [selectNode.args[0], secondFactor]);
+        equation = injectAtAdress(substitution, item, equation);
+    });
+
     equation = flatten(equation);
-    console.log('preveq: ' + prevEquation.toString());
     updateLatex(equation);
     
 }
@@ -677,11 +679,15 @@ function replaceWithTimes() {
 function applyPower() {
 
     prevEquation = equation.cloneDeep();
-    selectAdress = adresses('Select', equation)[0];
-    selectNode = readAtAdress(selectAdress, equation);
     exponent = math.parse('Select(b)');
-    substitution = new math.expression.node.FunctionNode('pow', [selectNode.args[0], exponent]);
-    equation = substituteSelected(substitution, equation);
+
+    selectAdresses = adresses('Select', equation);
+    selectAdresses.forEach(function setnodes(item, index) {
+        selectNode = readAtAdress(item, equation);
+        substitution = new math.expression.node.FunctionNode('pow', [selectNode.args[0], exponent]);
+        equation = injectAtAdress(substitution, item, equation);
+    });
+
     updateLatex(equation);
 }
 
@@ -696,26 +702,32 @@ function replaceWithPower() {
 
 }
 
-function applyMinusOp() {
+// function applyMinusOp() {
 
-    prevEquation = equation.cloneDeep();
-    selectAdress = adresses('Select', equation)[0];
-    selectNode = readAtAdress(selectAdress, equation);
-    substractor = math.parse('Select(-b)');
-    substitution = new math.expression.node.OperatorNode('+','add', [selectNode.args[0], substractor]);
-    equation = substituteSelected(substitution, equation);
-    equation = flattenOp(equation);
-    updateLatex(equation);
-}
+//     prevEquation = equation.cloneDeep();
+//     selectAdress = adresses('Select', equation)[0];
+//     selectNode = readAtAdress(selectAdress, equation);
+//     substractor = math.parse('Select(-b)');
+//     substitution = new math.expression.node.OperatorNode('+','add', [selectNode.args[0], substractor]);
+//     equation = substituteSelected(substitution, equation);
+//     equation = flattenOp(equation);
+//     updateLatex(equation);
+// }
 
 function applyMinus() {
 
     prevEquation = equation.cloneDeep();
-    selectAdress = adresses('Select', equation)[0];
-    selectNode = readAtAdress(selectAdress, equation);
+    // selectAdress = adresses('Select', equation)[0];
+    // selectNode = readAtAdress(selectAdress, equation);
     substractor = new math.expression.node.FunctionNode('unaryMinus', [math.parse('Select(c)')]);
-    substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], substractor]);
-    equation = substituteSelected(substitution, equation);
+
+    selectAdresses = adresses('Select', equation);
+    selectAdresses.forEach(function setnodes(item, index) {
+        selectNode = readAtAdress(item, equation);
+        substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], substractor]);
+        equation = injectAtAdress(substitution, item, equation);
+    });
+    
     equation = flatten(equation);
     updateLatex(equation);
 }
@@ -732,11 +744,16 @@ function replaceWithMinus() {
 function applyDivide() {
 
     prevEquation = equation.cloneDeep();
-    selectAdress = adresses('Select', equation)[0];
-    selectNode = readAtAdress(selectAdress, equation);
+
     divisor = math.parse('Select(b)');
-    substitution = new math.expression.node.OperatorNode('/', 'divide', [selectNode.args[0], divisor]);
-    equation = substituteSelected(substitution, equation);
+
+    selectAdresses = adresses('Select', equation);
+    selectAdresses.forEach(function setnodes(item, index) {
+        selectNode = readAtAdress(item, equation);
+        substitution = new math.expression.node.OperatorNode('/', 'divide', [selectNode.args[0], divisor]);
+        equation = injectAtAdress(substitution, item, equation);
+    });
+
     updateLatex(equation);
 }
 
@@ -751,11 +768,17 @@ function replaceWithDivide() {
 function applyNthroot() {
 
     prevEquation = equation.cloneDeep();
-    selectAdress = adresses('Select', equation)[0];
-    selectNode = readAtAdress(selectAdress, equation);
+    // selectAdress = adresses('Select', equation)[0];
+    // selectNode = readAtAdress(selectAdress, equation);
     rootnumber = math.parse('Select(b)');
-    substitution = new math.expression.node.FunctionNode('nthRoot', [selectNode.args[0], rootnumber]);
-    equation = substituteSelected(substitution, equation);
+
+    selectAdresses = adresses('Select', equation);
+    selectAdresses.forEach(function setnodes(item, index) {
+        selectNode = readAtAdress(item, equation);
+        substitution = new math.expression.node.FunctionNode('nthRoot', [selectNode.args[0], rootnumber]);
+        equation = injectAtAdress(substitution, item, equation);
+    });
+
     updateLatex(equation);
 }
 
@@ -827,14 +850,29 @@ function spaceBar(eq) {
 
 function enter(eq) {
     prevEquation = equation.cloneDeep();
-    selectAdress = adresses('Select', eq)[0];
-    selectNode = readAtAdress(selectAdress, eq);
-    if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
-        uitkomstString = math.eval(selectNode.args[0].toString());
-        console.log(uitkomstString);
-        equation = substituteSelected('Select('+uitkomstString+')',eq);
-        updateLatex(equation);
-     };
+    // selectAdress = adresses('Select', eq)[0];
+    // selectNode = readAtAdress(selectAdress, eq);
+
+    selectAdresses = adresses('Select', equation);
+    selectAdresses.forEach(function setnodes(item, index) {
+        selectNode = readAtAdress(item, equation);
+console.log('selectNode: ' + selectNode.toString());
+        if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
+            uitkomstString = math.eval(selectNode.args[0].toString());
+            console.log('index: ' + index);
+            console.log(uitkomstString);
+            substitution = math.parse('Select('+uitkomstString+')');
+            equation = injectAtAdress(substitution, item, equation);
+            // equation = substituteSelected('Select('+uitkomstString+')',eq);
+
+         };
+
+
+    });
+
+    updateLatex(equation);
+    
+
 }
 
 function backSpace() {
