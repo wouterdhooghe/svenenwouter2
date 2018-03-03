@@ -823,47 +823,56 @@ function replaceWithEquality() {
 // factorObj is nu een array met gaten is niet de bedoeling. Wordt nu nog niet gebruikt voor priemontbinding te creeeren met machten
 function spaceBar(eq) {
     prevEquation = equation.cloneDeep();
-    selectAdress = adresses('Select', eq)[0];
-    selectNode = readAtAdress(selectAdress, eq);
-    if (Number.isInteger(parseFloat(selectNode.args[0].value))) {
-        number = selectNode.args[0].value;
-
-        factorTimesArray = factor(number).split('*');
-        var factorObj = {};
-        for (i=0; i < factorTimesArray.length; i++) {
-            fact = factorTimesArray[i]
-            factorObj.fact == undefined ? factorObj.fact = 1: factorObj.fact += 1;
-        };
-        console.log(factorObj);
-
-        priemOntbinding = math.parse(factor(number));
-        equation = substituteSelected(selectIt(priemOntbinding),eq);
-        updateLatex(equation);
-
-    } else if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
-        uitkomstString = math.eval(selectNode.args[0].toString());
-        console.log(uitkomstString);
-        equation = substituteSelected('Select('+uitkomstString+')',eq);
-        updateLatex(equation);
-     };
-}
-
-function enter(eq) {
-    prevEquation = equation.cloneDeep();
     // selectAdress = adresses('Select', eq)[0];
     // selectNode = readAtAdress(selectAdress, eq);
 
     selectAdresses = adresses('Select', equation);
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
-console.log('selectNode: ' + selectNode.toString());
+
+        if (Number.isInteger(parseFloat(selectNode.args[0].value))) {
+            number = selectNode.args[0].value;
+    
+            factorTimesArray = factor(number).split('*');
+            var factorObj = {};
+            for (i=0; i < factorTimesArray.length; i++) {
+                fact = factorTimesArray[i]
+                factorObj.fact == undefined ? factorObj.fact = 1: factorObj.fact += 1;
+            };
+            console.log(factorObj);
+    
+            priemOntbinding = math.parse(factor(number));
+            equation = injectAtAdress(selectIt(priemOntbinding), item, equation);
+            // equation = substituteSelected(selectIt(priemOntbinding),eq);
+            // updateLatex(equation);
+    
+        } else if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
+            uitkomstString = math.eval(selectNode.args[0].toString());
+            console.log(uitkomstString);
+            uitkomstNode = selectIt(math.parse(uitkomstString));
+                    equation = injectAtAdress(uitkomstNode, item, equation);
+            // equation = substituteSelected('Select('+uitkomstString+')',eq);
+            // updateLatex(equation);
+         };
+
+    });
+    updateLatex(equation);
+
+}
+
+function enter(eq) {
+    prevEquation = equation.cloneDeep();
+
+    selectAdresses = adresses('Select', equation);
+    selectAdresses.forEach(function setnodes(item, index) {
+        selectNode = readAtAdress(item, equation);
+
         if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
             uitkomstString = math.eval(selectNode.args[0].toString());
-            console.log('index: ' + index);
-            console.log(uitkomstString);
+
             substitution = math.parse('Select('+uitkomstString+')');
             equation = injectAtAdress(substitution, item, equation);
-            // equation = substituteSelected('Select('+uitkomstString+')',eq);
+
 
          };
 
