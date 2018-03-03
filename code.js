@@ -607,7 +607,6 @@ function applyPlus() {
     selectAdresses = adresses('Select', equation);
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
-        console.log(selectNode.toString());
         substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], secondTerm]);
         equation = injectAtAdress(substitution, item, equation);
     });
@@ -632,8 +631,10 @@ function replaceWithPlus() {
     //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
 
     prevEquation = equation.cloneDeep();
-    substitution = 'Plus(Select(x),y)';
+    substitution = 'Plus(Select(a),b)';
+
     equation = substituteSelected(substitution, equation);
+    
     updateLatex(equation);
 }
 
