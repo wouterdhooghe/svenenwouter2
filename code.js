@@ -597,19 +597,26 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
 // ACTIES
 //************************************* */
 
+// laat meerdere selecties toe!!!
 function applyPlus() {
 
     prevEquation = equation.cloneDeep();
-    selectAdress = adresses('Select', equation)[0];
-    selectNode = readAtAdress(selectAdress, equation);
+
     secondTerm = math.parse('Select(b)');
-    substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], secondTerm]);
-    equation = substituteSelected(substitution, equation);
+
+    selectAdresses = adresses('Select', equation);
+    selectAdresses.forEach(function setnodes(item, index) {
+        selectNode = readAtAdress(item, equation);
+        console.log(selectNode.toString());
+        substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], secondTerm]);
+        equation = injectAtAdress(substitution, item, equation);
+    });
+
     equation = flatten(equation);
     updateLatex(equation);
 }
 
-function applyAdd() {
+/* function applyAdd() {
 
     prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
@@ -619,7 +626,7 @@ function applyAdd() {
     equation = substituteSelected(substitution, equation);
     equation = flattenOp(equation);
     updateLatex(equation);
-}
+} */
 
 function replaceWithPlus() {
     //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
@@ -646,7 +653,7 @@ function applyTimes() {
     
 }
 
-function applyMultiply() {
+/* function applyMultiply() {
 
     prevEquation = equation.cloneDeep();
     selectAdress = adresses('Select', equation)[0];
@@ -656,7 +663,7 @@ function applyMultiply() {
     equation = substituteSelected(substitution, equation);
     equation = flattenOp(equation);
     updateLatex(equation);
-}
+} */
 
 function replaceWithTimes() {
 
