@@ -768,16 +768,43 @@ function replaceWithDivide() {
 function applyNthroot() {
 
     prevEquation = equation.cloneDeep();
-    // selectAdress = adresses('Select', equation)[0];
-    // selectNode = readAtAdress(selectAdress, equation);
+
     rootnumber = math.parse('Select(b)');
 
     selectAdresses = adresses('Select', equation);
+
+    // als alle selecties een gelijkheid zijn -> NthRoot aan beide kanten
+
+    function vergelijkingIsGeselecteerd (selectAdres) {
+        return readAtAdress(selectAdres,equation).args[0].op == '==';
+    };
+
+    if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+        console.log('vergelijkingen geselecteerd!!');
+        
+        selectAdresses.forEach(function setnodes(item, index) {
+            selectNode = readAtAdress(item, equation);
+            links = new math.expression.node.FunctionNode('nthRoot', [selectNode.args[0].args[0], rootnumber])
+            rechts = new math.expression.node.FunctionNode('nthRoot', [selectNode.args[0].args[1], rootnumber]);
+            substitution = new math.expression.node.OperatorNode('==','equal', [links, rechts])
+            equation = injectAtAdress(substitution, item, equation);
+        });
+        
+    } else {
+
+
+     // anders Nthroot van de expressie
+     console.log('gewoon subexps wortelen');
+            
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
         substitution = new math.expression.node.FunctionNode('nthRoot', [selectNode.args[0], rootnumber]);
         equation = injectAtAdress(substitution, item, equation);
     });
+
+    };
+
+
 
     updateLatex(equation);
 }
