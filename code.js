@@ -687,11 +687,30 @@ function applyPower() {
     exponent = math.parse('Select(b)');
 
     selectAdresses = adresses('Select', equation);
+
+        // als alle selecties een gelijkheid zijn -> power aan beide kanten
+        if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+            console.log('vergelijkingen geselecteerd!!');
+            
+            selectAdresses.forEach(function setnodes(item, index) {
+                selectNode = readAtAdress(item, equation);
+                links = new math.expression.node.FunctionNode('pow', [selectNode.args[0].args[0], exponent])
+                rechts = new math.expression.node.FunctionNode('pow', [selectNode.args[0].args[1], exponent]);
+                substitution = new math.expression.node.OperatorNode('==','equal', [links, rechts])
+                equation = injectAtAdress(substitution, item, equation);
+            });
+            
+        } else {
+    
+         // anders power van de expressie
+    
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
         substitution = new math.expression.node.FunctionNode('pow', [selectNode.args[0], exponent]);
         equation = injectAtAdress(substitution, item, equation);
     });
+};
+    
 
     updateLatex(equation);
 }
@@ -727,11 +746,30 @@ function applyMinus() {
     substractor = new math.expression.node.FunctionNode('unaryMinus', [math.parse('Select(c)')]);
 
     selectAdresses = adresses('Select', equation);
+
+        // als alle selecties een gelijkheid zijn -> aftrekking aan beide kanten
+        if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+            console.log('vergelijkingen geselecteerd!!');
+            
+            selectAdresses.forEach(function setnodes(item, index) {
+                selectNode = readAtAdress(item, equation);
+                links = new math.expression.node.FunctionNode('Plus', [selectNode.args[0].args[0], substractor])
+                rechts = new math.expression.node.FunctionNode('Plus', [selectNode.args[0].args[1], substractor]);
+                substitution = new math.expression.node.OperatorNode('==','equal', [links, rechts])
+                equation = injectAtAdress(substitution, item, equation);
+            });
+            
+        } else {
+    
+         // anders aftrekking van de expressie
+
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
         substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], substractor]);
         equation = injectAtAdress(substitution, item, equation);
     });
+
+    };
     
     equation = flatten(equation);
     updateLatex(equation);
