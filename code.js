@@ -610,11 +610,29 @@ function applyPlus() {
     secondTerm = math.parse('Select(b)');
 
     selectAdresses = adresses('Select', equation);
+
+      // als alle selecties een gelijkheid zijn -> Plus aan beide kanten
+      if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+           console.log('vergelijkingen geselecteerd!!');
+                    
+            selectAdresses.forEach(function setnodes(item, index) {
+                  selectNode = readAtAdress(item, equation);
+                 links = new math.expression.node.FunctionNode('Plus', [selectNode.args[0].args[0], secondTerm])
+                 rechts = new math.expression.node.FunctionNode('Plus', [selectNode.args[0].args[1], secondTerm]);
+                substitution = new math.expression.node.OperatorNode('==','equal', [links, rechts])
+                  equation = injectAtAdress(substitution, item, equation);
+                    });
+                    
+    } else {
+
+        // anders Plus op de subexpressie
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
         substitution = new math.expression.node.FunctionNode('Plus', [selectNode.args[0], secondTerm]);
         equation = injectAtAdress(substitution, item, equation);
     });
+
+    };
 
     equation = flatten(equation);
     updateLatex(equation);
@@ -650,12 +668,29 @@ function applyTimes() {
     secondFactor = math.parse('Select(b)');
 
     selectAdresses = adresses('Select', equation);
+
+            // als alle selecties een gelijkheid zijn -> times aan beide kanten
+            if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+                console.log('vergelijkingen geselecteerd!!');
+                
+                selectAdresses.forEach(function setnodes(item, index) {
+                    selectNode = readAtAdress(item, equation);
+                    links = new math.expression.node.FunctionNode('Times', [selectNode.args[0].args[0], secondFactor])
+                    rechts = new math.expression.node.FunctionNode('Times', [selectNode.args[0].args[1], secondFactor]);
+                    substitution = new math.expression.node.OperatorNode('==','equal', [links, rechts])
+                    equation = injectAtAdress(substitution, item, equation);
+                });
+                
+            } else {
+        
+             // anders times van de expressie
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
         substitution = new math.expression.node.FunctionNode('Times', [selectNode.args[0], secondFactor]);
         equation = injectAtAdress(substitution, item, equation);
     });
 
+};
     equation = flatten(equation);
     updateLatex(equation);
     
