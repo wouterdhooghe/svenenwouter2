@@ -306,8 +306,7 @@ function factor(n) {
         return readAtAdress(selectAdres,equation).args[0].op == '==';
     };
 
-function SelectAllLettersInSelection(letter, eq) {
-
+function cleanEquation(eq) {
  // select eruit halen (dit werkt is getest)
  cleanedEquation = eq.transform(function (child, path, parent) {
     if (child.fn == 'Select') {
@@ -316,7 +315,21 @@ function SelectAllLettersInSelection(letter, eq) {
         return child
     };
 });
-console.log('cleaned');
+return cleanedEquation;
+}
+
+function SelectAllLettersInSelection(letter, eq) {
+
+//  // select eruit halen (dit werkt is getest)
+//  cleanedEquation = eq.transform(function (child, path, parent) {
+//     if (child.fn == 'Select') {
+//         return child.args[0]
+//     } else {
+//         return child
+//     };
+// });
+
+cleanedEquation = cleanEquation(eq);
 
 build = invert(buildPath(cleanedEquation));
 build[letter].forEach(function (adres) {eq = injectAtAdress(selectIt(letter),adres,cleanedEquation)});
@@ -330,6 +343,16 @@ equation = cleanedEquation;
 
        updateLatex(equation);
     
+}
+
+function patternContents(cleanedNode, patternNode, unknownArr) {
+    output = [];
+    unknownArr.forEach(function (letter) {
+        adresses(letter, patternNode).forEach(function (adres) {
+            output[letter] = readAtAdress(adres,cleanedNode);
+        });
+    });
+    return output;
 }
 
 //************************************* */
