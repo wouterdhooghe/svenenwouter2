@@ -750,6 +750,7 @@ function applyDivide() {
 
     prevEquation = equation.cloneDeep();
 
+    selectAdresses = adresses('Select', equation);
     divisor = math.parse('Select(b)');
 
         // als alle selecties een gelijkheid zijn -> deling aan beide kanten
@@ -767,8 +768,6 @@ function applyDivide() {
         } else {
     
          // anders divide van de expressie
-
-    selectAdresses = adresses('Select', equation);
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
         substitution = new math.expression.node.OperatorNode('/', 'divide', [selectNode.args[0], divisor]);
@@ -927,6 +926,7 @@ function spaceBar(eq) {
          };
 
     });
+    flatten(equation);
     updateLatex(equation);
 
 };
