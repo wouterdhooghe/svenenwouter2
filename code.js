@@ -862,37 +862,42 @@ function spaceBar(eq) {
         if (Number.isInteger(parseFloat(selectNode.args[0].value))) {
             number = selectNode.args[0].value;
     
-            factorTimesArray = factor(number).split('*');
-            // factorObj = [];
-            // for (i=0; i < factorTimesArray.length; i++) {
-            //     fact = factorTimesArray[i];
-            //     factorObj[fact] == undefined ? factorObj[fact] = 1: factorObj[fact] += 1;
-            // };
-            // console.log(factorObj);
-
-            // function quickparseObj(exponent,index) {
-            //     exponent == 1 ? fctr =  math.parse(index) : fctr = new math.expression.node.FunctionNode('pow', [math.parse(index), math.parse(exponent)])
-            //     return fctr;
-            // };
-            // newfactorNodes = factorObj.map(quickparseObj);
+            factorTimesArray = factor(number).split('*').reverse();
 
             newFactorNodes = [];
-            for (i=0 ; i< factorTimesArray.length ; i++) {
-                factorTimesArray[i].pop() = currentFactor;
+            k = -1;
+            oldFactor = 0;
+            factornumber = factorTimesArray.length;
+            for (i=0 ; i< factornumber ; i++) {
+                currentFactor = parseInt(factorTimesArray.pop());
+
+                console.log('i: ' + i);
+                console.log('currentfactor: ' + currentFactor)
+
                 if (currentFactor == oldFactor) {
+                    
                     // exponent maken
+                    exponent++;
+                    baseNode = new math.expression.node.ConstantNode(currentFactor);
+                    exponentNode = new math.expression.node.ConstantNode(exponent);
+                    newFactorNodes[k]= new math.expression.node.FunctionNode('pow', [baseNode, exponentNode]);
                     
                 } else {
                     // gewoon getal maken
+                    k++;
+                    console.log(k);
                     newFactorNodes[k]= new math.expression.node.ConstantNode(currentFactor);
-                }
+                    exponent = 1;
+                    
+                };
+                oldFactor = currentFactor;
             };
 
-            function quickparse(num) {return math.parse(num)};
+            // function quickparse(num) {return math.parse(num)};
+            // factorNodes = factorTimesArray.map(quickparse);
 
-            factorNodes = factorTimesArray.map(quickparse);
             // priemOntbinding = math.parse(factor(number));
-            priemOntbinding = new math.expression.node.FunctionNode('Times', factorNodes);
+            priemOntbinding = new math.expression.node.FunctionNode('Times', newFactorNodes);
             equation = injectAtAdress(selectIt(priemOntbinding), item, equation);
             // equation = substituteSelected(selectIt(priemOntbinding),eq);
             // updateLatex(equation);
@@ -909,7 +914,7 @@ function spaceBar(eq) {
     });
     updateLatex(equation);
 
-}
+};
 
 function enter(eq) {
     prevEquation = equation.cloneDeep();
