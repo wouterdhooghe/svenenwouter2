@@ -308,7 +308,7 @@ function factor(n) {
 
 function cleanEquation(eq) {
  // select eruit halen (dit werkt is getest)
- cleanedEquation = eq.transform(function (child, path, parent) {
+ var cleanedEquation = eq.transform(function (child, path, parent) {
     if (child.fn == 'Select') {
         return child.args[0]
     } else {
@@ -345,6 +345,34 @@ function patternContents(cleanedNode, patternNode, unknownArr) {
             console.log(output[letter]);
         });
     });
+    return output;
+}
+
+function matchesPattern(cleanedNode, patternNode) {
+    patpad = buildPath(patternNode);
+    bigpad = buildPath(cleanedNode);
+
+    placeholders = ['a','b','c','d','x','y','z'];
+
+    match = true
+    for (var place in patpad) {match = match &&(patpad[place] == bigpad[place] || placeholders.includes(patpad[place]))};
+    return match;
+}
+
+// return de waarden van de placeholders binnen elke selectie
+// Werkt voor enkele selectie maar geeft geen array bij meerdere selecties
+function selectionPatternContents(eq, patternNode, unknownArr) {
+    output = [];
+    adresses('Select', eq).forEach( function (selection,selectionNr) {
+        
+        selectNode = readAtAdress(selection, eq);
+        console.log('selection: ' + selectNode.toString());
+        console.log('selectNr: ' + selectionNr);
+        cleanedNode = cleanEquation(selectNode);
+        if (matchesPattern(cleanedNode, patternNode)) {
+            output[selectionNr] = patternContents(cleanedNode,patternNode,unknownArr);
+        }
+    })
     return output;
 }
 
