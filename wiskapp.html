@@ -456,10 +456,12 @@ if (e.shiftKey == 1)
         case '0': e.preventDefault(); inputDigit(0, equation); break;        
 
 // letters met shift
-        case 'a': ; break; // shift a
-        case 'b': ; break; // shift b
-        case 'c': ; break; // shift c
-
+        case 'a': SelectAllLettersInSelection('a', equation); break; // shift a
+        case 'b': SelectAllLettersInSelection('b', equation); break; // shift b
+        case 'c': SelectAllLettersInSelection('c', equation); break; // shift c
+        case 'x': SelectAllLettersInSelection('x', equation); break; // shift x
+        case 'y': SelectAllLettersInSelection('y', equation); break; // shift y
+        case 'z': SelectAllLettersInSelection('z', equation); break; // shift z
     }
 
 
@@ -578,8 +580,8 @@ else
 
 
 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
-// equation = math.parse('Select(Times(4,9))^2 + y^2 == Select(Times(2,512))');
-equation = math.parse('Select(pow(Times(4,9),2))==91');
+// equation = math.parse('Select(Times(4,9))^2( + y^2 == Select(Times(2,512))');
+equation = math.parse('Select(pow(Times(a,Plus(9,a)),2))==a');
 
 prevEquation = equation;
 updateLatex(equation);

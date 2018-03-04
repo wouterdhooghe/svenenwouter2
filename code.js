@@ -306,6 +306,32 @@ function factor(n) {
         return readAtAdress(selectAdres,equation).args[0].op == '==';
     };
 
+function SelectAllLettersInSelection(letter, eq) {
+
+ // select eruit halen (dit werkt is getest)
+ cleanedEquation = eq.transform(function (child, path, parent) {
+    if (child.fn == 'Select') {
+        return child.args[0]
+    } else {
+        return child
+    };
+});
+console.log('cleaned');
+
+build = invert(buildPath(cleanedEquation));
+build[letter].forEach(function (adres) {eq = injectAtAdress(selectIt(letter),adres,cleanedEquation)});
+equation = cleanedEquation;
+
+// selectAdresses = adresses('Select', eq);
+// selectAdresses.forEach(function setnodes(selectAdres, index) {
+//    selectNode = readAtAdress(selectAdres, equation);
+
+// });
+
+       updateLatex(equation);
+    
+}
+
 //************************************* */
 // SELECTIES
 //************************************* */
