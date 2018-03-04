@@ -863,14 +863,34 @@ function spaceBar(eq) {
             number = selectNode.args[0].value;
     
             factorTimesArray = factor(number).split('*');
-            var factorObj = {};
-            for (i=0; i < factorTimesArray.length; i++) {
-                fact = factorTimesArray[i]
-                factorObj.fact == undefined ? factorObj.fact = 1: factorObj.fact += 1;
+            // factorObj = [];
+            // for (i=0; i < factorTimesArray.length; i++) {
+            //     fact = factorTimesArray[i];
+            //     factorObj[fact] == undefined ? factorObj[fact] = 1: factorObj[fact] += 1;
+            // };
+            // console.log(factorObj);
+
+            // function quickparseObj(exponent,index) {
+            //     exponent == 1 ? fctr =  math.parse(index) : fctr = new math.expression.node.FunctionNode('pow', [math.parse(index), math.parse(exponent)])
+            //     return fctr;
+            // };
+            // newfactorNodes = factorObj.map(quickparseObj);
+
+            newFactorNodes = [];
+            for (i=0 ; i< factorTimesArray.length ; i++) {
+                factorTimesArray[i].pop() = currentFactor;
+                if (currentFactor == oldFactor) {
+                    // exponent maken
+                    
+                } else {
+                    // gewoon getal maken
+                    newFactorNodes[k]= new math.expression.node.ConstantNode(currentFactor);
+                }
             };
-            console.log(factorObj);
-            
-            factorNodes = factorTimesArray.map(math.parse);
+
+            function quickparse(num) {return math.parse(num)};
+
+            factorNodes = factorTimesArray.map(quickparse);
             // priemOntbinding = math.parse(factor(number));
             priemOntbinding = new math.expression.node.FunctionNode('Times', factorNodes);
             equation = injectAtAdress(selectIt(priemOntbinding), item, equation);
