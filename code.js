@@ -302,6 +302,10 @@ function factor(n) {
     return minFactor+'*'+factor(n/minFactor);
    }
 
+    function vergelijkingIsGeselecteerd (selectAdres) {
+        return readAtAdress(selectAdres,equation).args[0].op == '==';
+    };
+
 //************************************* */
 // SELECTIES
 //************************************* */
@@ -776,9 +780,7 @@ function applyNthroot() {
 
     // als alle selecties een gelijkheid zijn -> NthRoot aan beide kanten
 
-    function vergelijkingIsGeselecteerd (selectAdres) {
-        return readAtAdress(selectAdres,equation).args[0].op == '==';
-    };
+
 
     if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
         console.log('vergelijkingen geselecteerd!!');
@@ -848,8 +850,7 @@ function replaceWithEquality() {
     updateLatex(equation);
 }
 
-// factorObj is nu een array met gaten is niet de bedoeling. Wordt nu nog niet gebruikt voor priemontbinding te creeeren met machten
-// MOET MET Times werken ipv met math parse!!! Momenteeel probleeem met factornodes werkt niet!!!
+
 function spaceBar(eq) {
     prevEquation = equation.cloneDeep();
     // selectAdress = adresses('Select', eq)[0];
