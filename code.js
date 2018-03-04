@@ -320,15 +320,6 @@ return cleanedEquation;
 
 function SelectAllLettersInSelection(letter, eq) {
 
-//  // select eruit halen (dit werkt is getest)
-//  cleanedEquation = eq.transform(function (child, path, parent) {
-//     if (child.fn == 'Select') {
-//         return child.args[0]
-//     } else {
-//         return child
-//     };
-// });
-
 cleanedEquation = cleanEquation(eq);
 
 build = invert(buildPath(cleanedEquation));
@@ -346,10 +337,12 @@ equation = cleanedEquation;
 }
 
 function patternContents(cleanedNode, patternNode, unknownArr) {
-    output = [];
+    output = {};
     unknownArr.forEach(function (letter) {
         adresses(letter, patternNode).forEach(function (adres) {
             output[letter] = readAtAdress(adres,cleanedNode);
+            console.log(letter);
+            console.log(output[letter]);
         });
     });
     return output;
