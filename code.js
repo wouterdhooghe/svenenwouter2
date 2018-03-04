@@ -752,12 +752,30 @@ function applyDivide() {
 
     divisor = math.parse('Select(b)');
 
+        // als alle selecties een gelijkheid zijn -> deling aan beide kanten
+        if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+            console.log('vergelijkingen geselecteerd!!');
+            
+            selectAdresses.forEach(function setnodes(item, index) {
+                selectNode = readAtAdress(item, equation);
+                links = new math.expression.node.OperatorNode('/', 'divide', [selectNode.args[0].args[0], divisor])
+                rechts = new math.expression.node.OperatorNode('/', 'divide', [selectNode.args[0].args[1], divisor]);
+                substitution = new math.expression.node.OperatorNode('==','equal', [links, rechts])
+                equation = injectAtAdress(substitution, item, equation);
+            });
+            
+        } else {
+    
+         // anders divide van de expressie
+
     selectAdresses = adresses('Select', equation);
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
         substitution = new math.expression.node.OperatorNode('/', 'divide', [selectNode.args[0], divisor]);
         equation = injectAtAdress(substitution, item, equation);
     });
+
+    };
 
     updateLatex(equation);
 }
@@ -779,9 +797,6 @@ function applyNthroot() {
     selectAdresses = adresses('Select', equation);
 
     // als alle selecties een gelijkheid zijn -> NthRoot aan beide kanten
-
-
-
     if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
         console.log('vergelijkingen geselecteerd!!');
         
@@ -794,7 +809,6 @@ function applyNthroot() {
         });
         
     } else {
-
 
      // anders Nthroot van de expressie
      console.log('gewoon subexps wortelen');
