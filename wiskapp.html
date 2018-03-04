@@ -227,7 +227,14 @@ math.import(customFunctions);
 // math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
 math.pow.toTex = function (node, options) {
 
+    console.log(multiFunction[node.args[0].name]==1);
+    console.log(node.args[0].name == 'nthRoot');
+    console.log(node.args[0].name == 'unaryMinus');
+    console.log(node.args[0].fn == 'divide');
+    console.log(node.args[0].fn == 'pow');
+
     if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide' || node.args[0].fn == 'pow') {
+        console.log('moethaakjeskrijgen');
         return "\\left("+node.args[0].toTex(options)+"\\right)^{"+node.args[1].toTex(options)+"}";
     } else {
         return "{"+node.args[0].toTex(options)+"}"+"^{"+node.args[1].toTex(options)+"}";
@@ -537,7 +544,8 @@ else
 
 // Extra keys
         case 'space':  e.preventDefault(); keysList.push('space'); spaceBar(equation); break;
-        case 'enter':  enter(equation); keysList.push('enter'); break;
+        case 'enter':  enter(equation
+    ); keysList.push('enter'); break;
         case 'backspace':  backSpace(); keysList.push('backspace'); break;
 
 // tekens
@@ -570,7 +578,9 @@ else
 
 
 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
-equation = math.parse('Select(Times(4,9))^2 + y^2 == Select(Times(2,512))');
+// equation = math.parse('Select(Times(4,9))^2 + y^2 == Select(Times(2,512))');
+equation = math.parse('Select(pow(Times(4,9),2))==91');
+
 prevEquation = equation;
 updateLatex(equation);
 

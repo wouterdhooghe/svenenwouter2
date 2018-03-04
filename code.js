@@ -79,10 +79,10 @@ customFunctions.Plus.toTex = function (node, options) {
 customFunctions.Times.toTex = function (node, options) {
     output = '';
     options.implicit == 'hide' ? maalTeken = '~' : maalTeken = '\\cdot';
-    console.log('teken: ' + maalTeken);
+    // console.log('teken: ' + maalTeken);
     node.args.forEach(function (value, index, parent) {
         
-        console.log('maalteken: ' + maalTeken);
+        // console.log('maalteken: ' + maalTeken);
         
         (value.isConstantNode || (value.name == 'Select' && value.args[0].isConstantNode)) ? ditTeken = '\\cdot' : ditTeken = maalTeken;
         if (index == 0) {
@@ -92,24 +92,24 @@ customFunctions.Times.toTex = function (node, options) {
 
         output += ditTeken;
 
-        console.log('ditTeken: ' + ditTeken);
+        // console.log('ditTeken: ' + ditTeken);
 
         selectedPlus = value.name == 'Select' && value.args[0].name == 'Plus';
         plus = value.name == 'Plus';
 
         plusOrSelectedPlus = selectedPlus || plus;
 
-console.log('plusOrSelectedPlus' + plusOrSelectedPlus);
+// console.log('plusOrSelectedPlus' + plusOrSelectedPlus);
 
         plusOrSelectedPlus ? output += '(' + value.toTex(options) + ')' : output += value.toTex(options);
 
-        console.log('timestex: '+ output);
-        console.log(value);
-       // console.log(value.toTex(options));
+    //     console.log('timestex: '+ output);
+    //     console.log(value);
+    //    // console.log(value.toTex(options));
     });
     options.parenthesis == 'all' ? output = '(' + output + ')' : output = output ;
     //return output;
-    console.log(output);
+    // console.log(output);
     return  output;
 };
 
@@ -157,6 +157,7 @@ customFunctions.Select.toTex = function (node, options) {
     console.log('slct');
     return '\\textcolor{red}{' + node.args[0].toTex(options) + '}';
 };
+
 
 
 
@@ -848,6 +849,7 @@ function replaceWithEquality() {
 }
 
 // factorObj is nu een array met gaten is niet de bedoeling. Wordt nu nog niet gebruikt voor priemontbinding te creeeren met machten
+// MOET MET Times werken ipv met math parse!!! Momenteeel probleeem met factornodes werkt niet!!!
 function spaceBar(eq) {
     prevEquation = equation.cloneDeep();
     // selectAdress = adresses('Select', eq)[0];
@@ -867,8 +869,10 @@ function spaceBar(eq) {
                 factorObj.fact == undefined ? factorObj.fact = 1: factorObj.fact += 1;
             };
             console.log(factorObj);
-    
-            priemOntbinding = math.parse(factor(number));
+            
+            factorNodes = factorTimesArray.map(math.parse);
+            // priemOntbinding = math.parse(factor(number));
+            priemOntbinding = new math.expression.node.FunctionNode('Times', factorNodes);
             equation = injectAtAdress(selectIt(priemOntbinding), item, equation);
             // equation = substituteSelected(selectIt(priemOntbinding),eq);
             // updateLatex(equation);
