@@ -336,6 +336,14 @@ equation = cleanedEquation;
     
 }
 
+// werkt voor geen meter
+function placeholders(node) {
+   return  node.filter(function (item) {
+        item.isSymbolNode;
+    });
+
+}
+
 function patternContents(cleanedNode, patternNode, unknownArr) {
     output = {};
     unknownArr.forEach(function (letter) {
@@ -361,16 +369,16 @@ function matchesPattern(cleanedNode, patternNode) {
 
 // als eq het juiste patroon heeft, return dan de getransformeerde versie
 // 
-function transformNode(eq, inputPatternNode,outputPatternNode, unknownArr) {
+function transformNode(cleanedEq, inputPatternNode,outputPatternNode, unknownInArr, unknownOutArr) {
 
-        cleanedNode = cleanEquation(eq);
+        // cleanedEq = cleanEquation(eq);
 
-        if (matchesPattern(cleanedNode, inputPatternNode)) {
-            console.log(unknownArr);
-            output = patternContents(cleanedNode,inputPatternNode, unknownArr);
+        if (matchesPattern(cleanedEq, inputPatternNode)) {
+            
+            output = patternContents(cleanedEq,inputPatternNode, unknownInArr);
             adressen = invert(buildPath(outputPatternNode));        
 
-        unknownArr.forEach( function (placeholder) {
+        unknownOutArr.forEach( function (placeholder) {
 
             adressen[placeholder].forEach(function (adres) {
                 injectAtAdress(output[placeholder],adres,outputPatternNode);
@@ -379,6 +387,20 @@ function transformNode(eq, inputPatternNode,outputPatternNode, unknownArr) {
         }
         
     return outputPatternNode;
+}
+
+// verandert equation maar doet nog geen update
+function transformSelected(eq,inputPatternNode,outputPatternNode,unknownInArr,unknownOutArr) {
+
+    selectAdresses = adresses('Select', eq);
+    selectAdresses.forEach(function setnodes(selectAdres, index) {
+        selectNode = readAtAdress(selectAdres, equation);
+        transformed = transformNode(selectNode.args[0],inputPatternNode,outputPatternNode,unknownInArr,unknownOutArr);
+        injectAtAdress(selectIt(transformed),selectAdres,eq);
+
+
+});
+
 }
 
 //************************************* */
