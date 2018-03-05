@@ -3,7 +3,7 @@
 <head>
   <title>Wiskunde App</title>
   <script src="code.js"></script>
-  
+
 <!-- 
   <script src="math.min.js"></script>
   <link rel="stylesheet" href="katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ" crossorigin="anonymous">
@@ -277,6 +277,33 @@ if (multiFunction[node.args[0].name]==1) {
 ///*********************************************************************
 /// Initialisatie van objecten
 ///*********************************************************************
+
+regels = {  
+    nulOpslorpendVoorPlus: {
+            naam: '0 opslorpend element voor +',
+            input: {
+                    node: math.parse('Plus(a,unaryMinus(a))'),
+                    unknowns: ['a']
+                },
+                output: {
+                    node: math.parse('0'),
+                    unknowns: []
+                }
+            
+    },
+        eenOpslorpendVoorMaal: {
+                naam: '1 opslorpend element voor *',
+                input: {
+                    node: math.parse('a/1'),
+                    unknowns: ['a']
+                },
+                output: {
+                    node: math.parse('a'),
+                    unknowns: ['a']
+                }
+                                }
+
+};
 
 multiFunction = {   'Times': 1,
                     'Plus': 1,
