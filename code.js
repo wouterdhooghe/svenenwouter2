@@ -359,21 +359,26 @@ function matchesPattern(cleanedNode, patternNode) {
     return match;
 }
 
-// return de waarden van de placeholders binnen elke selectie
-// Werkt voor enkele selectie maar geeft geen array bij meerdere selecties
-function selectionPatternContents(eq, patternNode, unknownArr) {
-    output = [];
-    adresses('Select', eq).forEach( function (selection,selectionNr) {
-        
-        selectNode = readAtAdress(selection, eq);
-        console.log('selection: ' + selectNode.toString());
-        console.log('selectNr: ' + selectionNr);
-        cleanedNode = cleanEquation(selectNode);
-        if (matchesPattern(cleanedNode, patternNode)) {
-            output[selectionNr] = patternContents(cleanedNode,patternNode,unknownArr);
+// als eq het juiste patroon heeft, return dan de getransformeerde versie
+// 
+function transformNode(eq, inputPatternNode,outputPatternNode, unknownArr) {
+
+        cleanedNode = cleanEquation(eq);
+
+        if (matchesPattern(cleanedNode, inputPatternNode)) {
+            console.log(unknownArr);
+            output = patternContents(cleanedNode,inputPatternNode, unknownArr);
+            adressen = invert(buildPath(outputPatternNode));        
+
+        unknownArr.forEach( function (placeholder) {
+
+            adressen[placeholder].forEach(function (adres) {
+                injectAtAdress(output[placeholder],adres,outputPatternNode);
+            })
+        })
         }
-    })
-    return output;
+        
+    return outputPatternNode;
 }
 
 //************************************* */
