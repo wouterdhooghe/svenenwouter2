@@ -356,7 +356,7 @@ function patternContents(cleanedNode, patternNode, unknownArr) {
     return output;
 }
 
-function matchesPattern(cleanedNode, patternNode) {
+function matchesPattern(cleanedNode, patternNode,unknownArr) {
     patpad = buildPath(patternNode);
     bigpad = buildPath(cleanedNode);
 
@@ -365,11 +365,11 @@ function matchesPattern(cleanedNode, patternNode) {
     console.log('bigpad ');
     console.log(bigpad);
 
-    placeholders = ['a','b','c','d','x','y','z'];
+    // placeholders = ['a','b','c','d','x','y','z'];
 
     match = true
     for (var place in patpad) {
-        match = match &&(patpad[place] == bigpad[place] || placeholders.includes(patpad[place]))
+        match = match &&(patpad[place] == bigpad[place] || unknownArr.includes(patpad[place]))
        
         console.log('place match =' + match);
     };
@@ -383,7 +383,7 @@ function transformNode(cleanedEq, inputPatternNode,outputPatternNode, unknownInA
 
         // cleanedEq = cleanEquation(eq);
 
-        if (matchesPattern(cleanedEq, inputPatternNode)) {
+        if (matchesPattern(cleanedEq, inputPatternNode,unknownInArr)) {
             
             output = patternContents(cleanedEq,inputPatternNode, unknownInArr);
             adressen = invert(buildPath(outputPatternNode));        
