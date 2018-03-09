@@ -360,10 +360,20 @@ function matchesPattern(cleanedNode, patternNode) {
     patpad = buildPath(patternNode);
     bigpad = buildPath(cleanedNode);
 
+    console.log('patpad ');
+    console.log(patpad);
+    console.log('bigpad ');
+    console.log(bigpad);
+
     placeholders = ['a','b','c','d','x','y','z'];
 
     match = true
-    for (var place in patpad) {match = match &&(patpad[place] == bigpad[place] || placeholders.includes(patpad[place]))};
+    for (var place in patpad) {
+        match = match &&(patpad[place] == bigpad[place] || placeholders.includes(patpad[place]))
+       
+        console.log('place match =' + match);
+    };
+    console.log('pattern match =' + match);
     return match;
 }
 
@@ -384,9 +394,11 @@ function transformNode(cleanedEq, inputPatternNode,outputPatternNode, unknownInA
                 injectAtAdress(output[placeholder],adres,outputPatternNode);
             })
         })
+
+        return outputPatternNode;
         }
         
-    return outputPatternNode;
+
 }
 
 // verandert equation maar doet nog geen update
@@ -402,6 +414,13 @@ function transformSelected(eq,inputPatternNode,outputPatternNode,unknownInArr,un
 });
 
 }
+
+function regelTransformSelected(eq, regel) {
+    console.log(regel);
+    console.log(multiFunction);
+    transformSelected(eq, regel.input.expr, regel.output.expr, regel.input.unknowns, regel.output.unknowns);
+    updateLatex(eq);
+};
 
 //************************************* */
 // SELECTIES
@@ -1043,6 +1062,12 @@ function spaceBar(eq) {
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
 
+        try {
+            ontbindbaarGetal = Number.isInteger(math.eval(selectNode.args[0].toString()))
+        } catch(err) { ontbindbaarGetal=false }
+
+        console.log(ontbindbaarGetal);
+
         if (Number.isInteger(parseFloat(selectNode.args[0].value))) {
             number = selectNode.args[0].value;
     
@@ -1086,13 +1111,16 @@ function spaceBar(eq) {
             // equation = substituteSelected(selectIt(priemOntbinding),eq);
             // updateLatex(equation);
     
-        } else if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
+        } else if (ontbindbaarGetal) {
             uitkomstString = math.eval(selectNode.args[0].toString());
             console.log(uitkomstString);
             uitkomstNode = selectIt(math.parse(uitkomstString));
                     equation = injectAtAdress(uitkomstNode, item, equation);
             // equation = substituteSelected('Select('+uitkomstString+')',eq);
             // updateLatex(equation);
+         } else {
+             console.log('trying it');
+             regelTransformSelected(eq,regels.nulOpslorpendVoorPlus); 
          };
 
     });

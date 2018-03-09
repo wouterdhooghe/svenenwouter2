@@ -282,11 +282,11 @@ regels = {
     nulOpslorpendVoorPlus: {
             naam: '0 opslorpend element voor +',
             input: {
-                    node: math.parse('Plus(a,unaryMinus(a))'),
+                    expr: math.parse('Plus(a,unaryMinus(a))'),
                     unknowns: ['a']
                 },
                 output: {
-                    node: math.parse('0'),
+                    expr: math.parse('0'),
                     unknowns: []
                 }
             
@@ -294,11 +294,11 @@ regels = {
         eenOpslorpendVoorMaal: {
                 naam: '1 opslorpend element voor *',
                 input: {
-                    node: math.parse('a/1'),
+                    expr: math.parse('a/1'),
                     unknowns: ['a']
                 },
                 output: {
-                    node: math.parse('a'),
+                    expr: math.parse('a'),
                     unknowns: ['a']
                 }
                                 }
