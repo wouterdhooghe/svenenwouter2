@@ -403,7 +403,7 @@ function transformNode(cleanedEq, inputPatternNode,outputPatternNode, unknownInA
 
 // verandert equation maar doet nog geen update
 function transformSelected(eq,inputPatternNode,outputPatternNode,unknownInArr,unknownOutArr) {
-
+    console.log('doe transformSelected met inputPattern: ' + inputPatternNode.toString());
     selectAdresses = adresses('Select', eq);
     selectAdresses.forEach(function setnodes(selectAdres, index) {
         selectNode = readAtAdress(selectAdres, equation);
@@ -416,10 +416,11 @@ function transformSelected(eq,inputPatternNode,outputPatternNode,unknownInArr,un
 }
 
 function regelTransformSelected(eq, regel) {
-    console.log(regel);
-    console.log(multiFunction);
+    console.log('doe regeltransformSelected op: ');
+    console.log(regel.naam);
+    // console.log(multiFunction);
     transformSelected(eq, regel.input.expr, regel.output.expr, regel.input.unknowns, regel.output.unknowns);
-    updateLatex(eq);
+    // updateLatex(eq);
 };
 
 //************************************* */
@@ -557,7 +558,7 @@ function injectAtAdress(subst, adress, bignode) {
         subst = math.parse(subst)
     };
 
-    var eq = bignode;
+    var eq = bignode.cloneDeep();
     var adressText = '';
 
     for (i = 0; i < adress.length; i++) {
@@ -1119,8 +1120,12 @@ function spaceBar(eq) {
             // equation = substituteSelected('Select('+uitkomstString+')',eq);
             // updateLatex(equation);
          } else {
-             console.log('trying it');
-             regelTransformSelected(eq,regels.nulOpslorpendVoorPlus); 
+             console.log('trying a-a=0');
+             regelTransformSelected(eq,regels.nulOpslorpendVoorPlus);
+             console.log('geen a-a=0, testing a/1=a')
+             regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+             updateLatex(eq);
+
          };
 
     });
@@ -1342,7 +1347,7 @@ function downSelect(eq, actionName) {
 
 function replaceWithDigit(digit,eq) {
     prevEquation = equation.cloneDeep();
-    substituteSelected(selectIt(digit), eq);
+    eq = substituteSelected(selectIt(digit), eq);
     updateLatex(eq);
 }
 
@@ -1359,11 +1364,11 @@ function inputDigit (digit,eq) {
         if (isNaN(oudGetal)) { } else {
             nieuwGetal = oudGetal*10 + digit;
             nieuwGetalNode = new math.expression.node.ConstantNode(nieuwGetal);
-            substituteSelected(selectIt(nieuwGetalNode), eq);
+            eq = substituteSelected(selectIt(nieuwGetalNode), eq);
             updateLatex(eq);
             };
         } else {
-            substituteSelected(selectIt(''+ digit), eq);
+            eq = substituteSelected(selectIt(''+ digit), eq);
             updateLatex(eq);
     };    
 };

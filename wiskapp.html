@@ -606,12 +606,12 @@ else
         case '9': e.preventDefault(); replaceWithDigit('9',equation); break;
         case '0': e.preventDefault(); replaceWithDigit('0',equation); break;
 // letters
-        case 'a': e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
-        case 'b': e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
-        case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c7
-        case 'x': e.preventDefault(); substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  8
-        case 'y': e.preventDefault(); substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  9
-        case 'z': e.preventDefault(); substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  0
+        case 'a': e.preventDefault(); equation = substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
+        case 'b': e.preventDefault(); equation = substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
+        case 'c': e.preventDefault(); equation = substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c7
+        case 'x': e.preventDefault(); equation = substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  8
+        case 'y': e.preventDefault(); equation = substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  9
+        case 'z': e.preventDefault(); equation = substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  0
     }
 };
 
