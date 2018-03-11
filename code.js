@@ -1137,9 +1137,9 @@ function spaceBar(eq) {
             // updateLatex(equation);
          } else {
              console.log('trying a-a=0');
-             regelTransformSelected(eq,regels.nulOpslorpendVoorPlus);
+             eq = regelTransformSelected(eq,regels.nulOpslorpendVoorPlus);
              console.log('geen a-a=0, testing a/1=a')
-             regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+             eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
              console.log('a/1 getest en mss gedaan')
              updateLatex(eq);
 
