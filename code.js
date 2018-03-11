@@ -435,7 +435,7 @@ function regelTransformSelected(eq, regel) {
     console.log('doe regeltransformSelected op: ');
     console.log(regel.naam);
     // console.log(multiFunction);
-    transformSelected(eq, regel.input.expr, regel.output.expr, regel.input.unknowns, regel.output.unknowns);
+    return transformSelected(eq, regel.input.expr, regel.output.expr, regel.input.unknowns, regel.output.unknowns);
     // updateLatex(eq);
 };
 
