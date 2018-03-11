@@ -305,6 +305,17 @@
                             expr: math.parse('a'),
                             unknowns: ['a']
                         }
+                    },
+                    schrapUnitaireBreuk: {
+                        naam: 'schrap unitaire breuk',
+                        input: {
+                            expr: math.parse('a/a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: []
+                        }
                     }
 
                 };

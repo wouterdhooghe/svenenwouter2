@@ -1227,18 +1227,26 @@ function enter(eq) {
       substitution = math.parse("Select(" + uitkomstString + ")");
       equation = injectAtAdress(substitution, item, equation);
     } else {
-      console.log("trying a-a=0");
+
       eq2 = regelTransformSelected(eq, regels.nulOpslorpendVoorPlus);
       eq3 = regelTransformSelected(eq, regels.eenOpslorpendVoorMaal);
-      if (eq2.equals(eq) == false) {
-        console.log("nieuwe eq:  " + eq2.toString());
-        updateLatex(eq2);
-      } else if (eq3.equals(eq) == false) {
-        console.log("geen a-a=0, testing a/1=a");
-        // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
-        console.log("a/1 getest en mss gedaan");
-        updateLatex(eq3);
-      }
+      eq4 = regelTransformSelected(eq, regels.schrapUnitaireBreuk);
+      uitkomsten = [eq2, eq3,eq4];
+      uitkomsten.forEach(function (uitkomst) {
+          if (uitkomst.equals(eq)==false) {
+            console.log("nieuwe eq:  " + uitkomst.toString());
+              updateLatex(uitkomst);
+          }
+      })
+    //   if (eq2.equals(eq) == false) {
+    //     console.log("nieuwe eq:  " + eq2.toString());
+    //     updateLatex(eq2);
+    //   } else if (eq3.equals(eq) == false) {
+    //     console.log("geen a-a=0, testing a/1=a");
+    //     // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+    //     console.log("a/1 getest en mss gedaan");
+    //     updateLatex(eq3);
+    //   }
     }
   });
 
