@@ -349,8 +349,8 @@ function patternContents(cleanedNode, patternNode, unknownArr) {
     unknownArr.forEach(function (letter) {
         adresses(letter, patternNode).forEach(function (adres) {
             output[letter] = readAtAdress(adres,cleanedNode);
-            console.log(letter);
-            console.log(output[letter]);
+            console.log('unkownletter: ' + letter);
+            console.log('expr voor letter: ' + output[letter]);
         });
     });
     return output;
@@ -366,10 +366,23 @@ function matchesPattern(cleanedNode, patternNode,unknownArr) {
     console.log(bigpad);
 
     // placeholders = ['a','b','c','d','x','y','z'];
-
-    match = true
+    checker = {};
+    var match = true
     for (var place in patpad) {
-        match = match &&(patpad[place] == bigpad[place] || unknownArr.includes(patpad[place]))
+        currentplaceholder = patpad[place];
+        match = match &&(patpad[place] == bigpad[place] || unknownArr.includes(currentplaceholder));
+        if (unknownArr.includes(currentplaceholder)) {
+            if (bigpad[place] == undefined) {console.log('adres bestaat niet in cleanednode '); return false} 
+                else {
+                    console.log('place ' + place);
+                    adres = place.split(',');
+                    subexp = readAtAdress(adres,cleanedNode);
+                    console.log('subexp = ' + subexp.toString());
+                    checker[currentplaceholder] ? match = match && (checker[currentplaceholder].equals(subexp)) : checker[currentplaceholder] = subexp ;
+                };
+
+
+        };
        
         console.log('place match =' + match);
     };
@@ -391,11 +404,13 @@ function transformNode(cleanedEq, inputPatternNode,outputPatternNode, unknownInA
         unknownOutArr.forEach( function (placeholder) {
 
             adressen[placeholder].forEach(function (adres) {
-                injectAtAdress(output[placeholder],adres,outputPatternNode);
+                outputPatternNode = injectAtAdress(output[placeholder],adres,outputPatternNode);
             })
         })
 
         return outputPatternNode;
+        } else {
+            return cleanedEq;
         }
         
 
@@ -408,7 +423,8 @@ function transformSelected(eq,inputPatternNode,outputPatternNode,unknownInArr,un
     selectAdresses.forEach(function setnodes(selectAdres, index) {
         selectNode = readAtAdress(selectAdres, equation);
         transformed = transformNode(selectNode.args[0],inputPatternNode,outputPatternNode,unknownInArr,unknownOutArr);
-        injectAtAdress(selectIt(transformed),selectAdres,eq);
+        // eq = injectAtAdress(selectIt(transformed),selectAdres,eq);
+        return injectAtAdress(selectIt(transformed),selectAdres, eq);
 
 
 });
@@ -1124,6 +1140,7 @@ function spaceBar(eq) {
              regelTransformSelected(eq,regels.nulOpslorpendVoorPlus);
              console.log('geen a-a=0, testing a/1=a')
              regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+             console.log('a/1 getest en mss gedaan')
              updateLatex(eq);
 
          };
