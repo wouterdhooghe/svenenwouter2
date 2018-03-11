@@ -1231,13 +1231,25 @@ function enter(eq) {
       eq2 = regelTransformSelected(eq, regels.nulOpslorpendVoorPlus);
       eq3 = regelTransformSelected(eq, regels.eenOpslorpendVoorMaal);
       eq4 = regelTransformSelected(eq, regels.schrapUnitaireBreuk);
-      uitkomsten = [eq2, eq3,eq4];
-      uitkomsten.forEach(function (uitkomst) {
-          if (uitkomst.equals(eq)==false) {
-            console.log("nieuwe eq:  " + uitkomst.toString());
-              updateLatex(uitkomst);
-          }
-      })
+      eq5 = regelTransformSelected(eq, regels.omgekeerdeIsInverseVoorMaal1);
+      eq6 = regelTransformSelected(eq, regels.omgekeerdeIsInverseVoorMaal2);
+      uitkomsten = [eq2, eq3,eq4,eq5,eq6];
+      testregels = ['nulOpslorpendVoorPlus', 'eenOpslorpendVoorMaal', 'schrapUnitaireBreuk', 'omgekeerdeIsInverseVoorMaal1','omgekeerdeIsInverseVoorMaal2']
+    //   uitkomsten.forEach(function (uitkomst) {
+    //       if (uitkomst.equals(eq)==false) {
+    //         console.log("nieuwe eq:  " + uitkomst.toString());
+    //           updateLatex(uitkomst);
+    //       }
+    //   })
+
+    testregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        if (uitkomst.equals(eq)==false) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            updateLatex(uitkomst);
+        }
+    })
+
     //   if (eq2.equals(eq) == false) {
     //     console.log("nieuwe eq:  " + eq2.toString());
     //     updateLatex(eq2);

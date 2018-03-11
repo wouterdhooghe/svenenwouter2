@@ -316,6 +316,28 @@
                             expr: math.parse('1'),
                             unknowns: []
                         }
+                    },
+                    omgekeerdeIsInverseVoorMaal1: {
+                        naam: 'omgekeerde is inverse voor maal',
+                        input: {
+                            expr: math.parse('Times(a,1/a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: []
+                        }
+                    },
+                    omgekeerdeIsInverseVoorMaal2: {
+                        naam: 'omgekeerde is inverse voor maal',
+                        input: {
+                            expr: math.parse('Times(1/a,a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: []
+                        }
                     }
 
                 };
@@ -557,10 +579,10 @@
                     else if (e.altKey == 1)
 
                         switch (keyLookup[e.code]) {
-                            case 'left': commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
-                            case 'up': out.innerHTML = 'up'; break;
-                            case 'right': commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
-                            case 'down': out.innerHTML = 'down'; break;
+                            case 'left': e.preventDefault(); commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
+                            case 'up': e.preventDefault(); out.innerHTML = 'up'; break;
+                            case 'right': e.preventDefault(); commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
+                            case 'down': e.preventDefault(); out.innerHTML = 'down'; break;
 
                             // Specialkeys  
                             case 'plus': replaceWithPlus(); keysList.push('replacePlus'); break;
