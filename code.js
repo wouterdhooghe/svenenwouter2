@@ -423,12 +423,12 @@ function transformSelected(eq,inputPatternNode,outputPatternNode,unknownInArr,un
     selectAdresses.forEach(function setnodes(selectAdres, index) {
         selectNode = readAtAdress(selectAdres, equation);
         transformed = transformNode(selectNode.args[0],inputPatternNode,outputPatternNode,unknownInArr,unknownOutArr);
-        // eq = injectAtAdress(selectIt(transformed),selectAdres,eq);
-        return injectAtAdress(selectIt(transformed),selectAdres, eq);
+        eq = injectAtAdress(selectIt(transformed),selectAdres,eq);
+        // return injectAtAdress(selectIt(transformed),selectAdres, eq);
 
 
 });
-
+return eq;
 }
 
 function regelTransformSelected(eq, regel) {
@@ -1138,6 +1138,8 @@ function spaceBar(eq) {
          } else {
              console.log('trying a-a=0');
              eq = regelTransformSelected(eq,regels.nulOpslorpendVoorPlus);
+             console.log('nieuwe eq:  ' + eq.toString());
+             updateLatex(eq);
              console.log('geen a-a=0, testing a/1=a')
              eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
              console.log('a/1 getest en mss gedaan')
