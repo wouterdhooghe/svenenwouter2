@@ -338,7 +338,30 @@
                             expr: math.parse('1'),
                             unknowns: []
                         }
-                    }
+                    },
+                    breukenVermenigvuldigen: {
+                        naam: 'breuken vermenigvuldigen',
+                        input: {
+                            expr: math.parse('Times(a/b,c/d)'),
+                            unknowns: ['a','b','c','d']
+                        },
+                        output: {
+                            expr: math.parse('Times(a,c)/Times(b,d)'),
+                            unknowns: ['a', 'b', 'c', 'd']
+                        }
+                    },
+                    uiteenTrekRegel: {
+                        naam: 'breuk in factoren uit elkaar trekken',
+                        input: {
+                            expr: math.parse('Times(a,c)/Times(b,d)'),
+                            unknowns: ['a','b','c','d']
+                        },
+                        output: {
+                            expr: math.parse('Times(a/b,c/d)'),
+                            unknowns: ['a', 'b', 'c', 'd']
+                        }
+                    },
+
 
                 };
 

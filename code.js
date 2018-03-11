@@ -408,7 +408,11 @@ function transformNode(
     output = patternContents(cleanedEq, inputPatternNode, unknownInArr);
     adressen = invert(buildPath(outputPatternNode));
 
+console.log('unknownoutARR= ');
+console.log(unknownOutArr);
+
     unknownOutArr.forEach(function(placeholder) {
+        console.log('crrent placeholder = ' + placeholder);
       adressen[placeholder].forEach(function(adres) {
         outputPatternNode = injectAtAdress(
           output[placeholder],
@@ -1201,6 +1205,15 @@ function spaceBar(eq) {
       // equation = substituteSelected('Select('+uitkomstString+')',eq);
       // updateLatex(equation);
     } else {
+        testregels = ['breukenVermenigvuldigen','uiteenTrekRegel'];
+
+        testregels.forEach(function (testregel) {
+            uitkomst = regelTransformSelected(eq, regels[testregel]);
+            if (uitkomst.equals(eq)==false) {
+              console.log("nieuwe eq:  " + uitkomst.toString());
+                updateLatex(uitkomst);
+            }
+        })
     }
   });
   flatten(equation);
@@ -1228,19 +1241,14 @@ function enter(eq) {
       equation = injectAtAdress(substitution, item, equation);
     } else {
 
-      eq2 = regelTransformSelected(eq, regels.nulOpslorpendVoorPlus);
-      eq3 = regelTransformSelected(eq, regels.eenOpslorpendVoorMaal);
-      eq4 = regelTransformSelected(eq, regels.schrapUnitaireBreuk);
-      eq5 = regelTransformSelected(eq, regels.omgekeerdeIsInverseVoorMaal1);
-      eq6 = regelTransformSelected(eq, regels.omgekeerdeIsInverseVoorMaal2);
-      uitkomsten = [eq2, eq3,eq4,eq5,eq6];
+    //   eq2 = regelTransformSelected(eq, regels.nulOpslorpendVoorPlus);
+    //   eq3 = regelTransformSelected(eq, regels.eenOpslorpendVoorMaal);
+    //   eq4 = regelTransformSelected(eq, regels.schrapUnitaireBreuk);
+    //   eq5 = regelTransformSelected(eq, regels.omgekeerdeIsInverseVoorMaal1);
+    //   eq6 = regelTransformSelected(eq, regels.omgekeerdeIsInverseVoorMaal2);
+    //   uitkomsten = [eq2, eq3,eq4,eq5,eq6];
       testregels = ['nulOpslorpendVoorPlus', 'eenOpslorpendVoorMaal', 'schrapUnitaireBreuk', 'omgekeerdeIsInverseVoorMaal1','omgekeerdeIsInverseVoorMaal2']
-    //   uitkomsten.forEach(function (uitkomst) {
-    //       if (uitkomst.equals(eq)==false) {
-    //         console.log("nieuwe eq:  " + uitkomst.toString());
-    //           updateLatex(uitkomst);
-    //       }
-    //   })
+
 
     testregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
