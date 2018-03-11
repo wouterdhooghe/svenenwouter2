@@ -33,6 +33,22 @@ var customFunctions = {
     },
     Select: function (a) {
         return a;
+    },
+
+    And: function () {
+        var argumentArray = Object.values(arguments);
+        allTrue = argumentArray.reduce(function (a,b) {
+            return a && b;
+        });
+        return allTrue;
+    },
+
+    Or: function () {
+        var argumentArray = Object.values(arguments);
+        atLeastOneTrue = argumentArray.reduce(function (a,b) {
+            return a || b;
+        });
+        return atLeastOneTrue;
     }
 
 
@@ -41,15 +57,15 @@ var customFunctions = {
 
 customFunctions.Plus.toTex = function (node, options) {
     output = '';
-    teken = '';
+    plusTeken = '';
     node.args.forEach(function (value, index, parent) {
         
         // geen + schrijven als er toch al een unary minus staat (tenzij er een select rond de unary minus staat)
         // geen plus schrijven voor de eerste term
-        value.name == 'unaryMinus' ? teken = '' : teken = '+';
-        index == 0  ? output = output : output += teken;
+        value.name == 'unaryMinus' ? plusTeken = '' : plusTeken = '+';
+        index == 0  ? output = output : output += plusTeken;
         output += value.toTex(options);
-        console.log(output);
+        console.log('plustex:' + output);
     });
     // return '(' + output + ')';
     return output;
@@ -62,25 +78,71 @@ customFunctions.Plus.toTex = function (node, options) {
 
 customFunctions.Times.toTex = function (node, options) {
     output = '';
-    options.implicit == 'hide' ? teken = '~' : teken = '\\cdot';
+    options.implicit == 'hide' ? maalTeken = '~' : maalTeken = '\\cdot';
+    console.log('teken: ' + maalTeken);
     node.args.forEach(function (value, index, parent) {
         
-        index == 0 ? ditTeken = '' : ditTeken = teken;
+        console.log('maalteken: ' + maalTeken);
+
+        index == 0 ? ditTeken = '' : ditTeken = maalTeken;
         output += ditTeken;
+
+        console.log('ditTeken: ' + ditTeken);
 
         selectedPlus = value.name == 'Select' && value.args[0].name == 'Plus';
         plus = value.name == 'Plus';
 
         plusOrSelectedPlus = selectedPlus || plus;
 
-console.log(plusOrSelectedPlus);
+console.log('plusOrSelectedPlus' + plusOrSelectedPlus);
 
         plusOrSelectedPlus ? output += '(' + value.toTex(options) + ')' : output += value.toTex(options);
+
+        console.log('timestex: '+ output);
+        console.log(value);
+       // console.log(value.toTex(options));
     });
     options.parenthesis == 'all' ? output = '(' + output + ')' : output = output ;
     //return output;
+    console.log(output);
     return  output;
 };
+
+// katex.render("\\begin{cases} a b + c &=a \\\\ a b + c &=d \\\\ a b + c + d &=b \\\\ a b + c &=b \\\\ e&=b+c \\end{cases}", pretty)
+// Stelsels
+
+customFunctions.And.toTex = function (node, options) {
+    var output = '';
+    node.args.forEach(function (value, index, parent) {
+        output += value.toTex(options);
+        index == parent.length - 1 ? output = output : output += '\\\\';
+
+    });
+
+    output = '\\begin{cases}' + output + '\\end{cases}';
+    return output;
+};
+
+// katex.render("\\begin{array}{c|c} a & b \\\\ c & d \\end{array}", pretty)
+// Disjuncties
+
+customFunctions.Or.toTex = function (node, options) {
+    var output = '';
+    var c = '';
+    node.args.forEach(function (value, index, parent) {
+        output += value.toTex(options);
+        c += 'c';
+        index == parent.length - 1 ? output = output : output += '&';
+        index == parent.length - 1 ? c = c : c += '|';        
+
+    });
+
+    output = '\\begin{array}{' + c + '}' + output + '\\end{array}';
+    return output;
+    
+};
+
+
 customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
 customFunctions.minus.toTex = function (node, options) {
     return node.args[0].toTex(options) +
@@ -450,11 +512,12 @@ updateEval = function (node) {
 updateLatex = function (eq) {
     try {
 
-        eq = flatten(eq);
+        // update de globale variabele equation
+ //       equation = flatten(eq);
+
+        equation = eq;
         // update expression
         expr.value = eq;
-
-
 
         // export the expression to LaTeX
         var latex = eq ? eq.toTex({
@@ -471,7 +534,7 @@ updateLatex = function (eq) {
         pretty.innerHTML = "error!!!"
     }
     updateEval(eq);
-}
+};
 
 // verplaatst de selectie naar het gevraagde adress
 // past global variabele equation aan!
@@ -642,10 +705,22 @@ function applyEquality() {
 
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
-    tweedeLid = math.parse('Select(b)');
-    substitution = new math.expression.node.OperatorNode('==','equal', [selectNode.args[0], tweedeLid]);
-    equation = substituteSelected(substitution, equation);
-    updateLatex(equation);
+    if (selectNode.args[0].name == 'And' || selectNode.args[0].fn == 'equal') {
+
+        tweedeVgl = math.parse('Select(a)==b');
+        substitution = new math.expression.node.FunctionNode('And', [selectNode.args[0], tweedeVgl]);
+        equation = substituteSelected(substitution, equation);
+        updateLatex(flatten(equation));
+    } 
+
+    /* if (selectNode.args[0].fn == 'equal') {
+
+        tweedeVgl = math.parse('Select(a)==b');
+        substitution = new math.expression.node.OperatorNode('==','equal', [selectNode.args[0], tweedeVgl]);
+        equation = substituteSelected(substitution, equation);
+        updateLatex(flatten(equation));
+    } */
+    
 }
 
 function replaceWithEquality() {
@@ -697,7 +772,7 @@ function leftSelect(eq) {
 
     MoveSelectToAdress(selectAdress, leftAdress, eq);
 
-    updateLatex(equation);
+    updateLatex(flatten(equation));
 
 }
 
@@ -747,7 +822,8 @@ function rightSelect(eq) {
 
     MoveSelectToAdress(selectAdress, rightAdress, eq);
 
-    updateLatex(equation);
+    // updateLatex(equation);
+    updateLatex(flatten(equation));
 }
 
 function upSelect(eq) {
@@ -828,6 +904,26 @@ function downSelect(eq, actionName) {
 
 };
 
+function inputDigit (digit,eq) {
+    selectAdress = adresses('Select',eq)[0];
+    selectNode = readAtAdress(selectAdress,eq);
+// arg is de node die geselecteerd is 
+    arg = selectNode.args[0];
+    if (arg.isConstantNode) {
+        oudGetal = arg.value;
+        
+        
+        if (isNaN(oudGetal)) { } else {
+            nieuwGetal = oudGetal*10 + digit;
+            nieuwGetalNode = new math.expression.node.ConstantNode(nieuwGetal);
+            substituteSelected(selectIt(nieuwGetalNode), eq);
+            updateLatex(eq);
+            };
+        } else {
+            substituteSelected(selectIt(''+ digit), equation);
+    };    
+};
+
 // SHIFT toetsen
 
 // TEstcase: Times(2,3,Select(Times(6,7)),Times(8,9),10)
@@ -862,7 +958,9 @@ function rightSlurp(eq) {
                 newParent.args.splice(huidigNummer, 2, newSelection)
                 eq = injectAtAdress(newParent, parentAdress, eq);
 
-                updateLatex(equation);
+                // MSS ZIJN DE VOLGENDE TWEE LIJNEN OVERBODIG?
+                eq = flatten(eq);
+                updateLatex(eq);
 
                 return eq;
             };
@@ -872,6 +970,7 @@ function rightSlurp(eq) {
     };
 };
 
+/* 
 function rightSlurpOp(eq) {
 
     // zoek uit of de parent een multifunction is
@@ -902,7 +1001,7 @@ function rightSlurpOp(eq) {
                 newParent.args.splice(huidigNummer, 2, newSelection)
                 eq = injectAtAdress(newParent, parentAdress, eq);
 
-                updateLatex(equation);
+                //updateLatex(equation);
 
                 return eq;
             };
@@ -910,7 +1009,7 @@ function rightSlurpOp(eq) {
             return eq;
         };
     };
-};
+}; */
 
 function leftSlurp(eq) {
 
@@ -940,7 +1039,9 @@ function leftSlurp(eq) {
                 newParent.args.splice(huidigNummer-1, 2, newSelection);
                 eq = injectAtAdress(newParent, parentAdress, eq);
 
-                updateLatex(equation);
+                // MSS ZIJN DE VOLGENDE TWEE LIJNEN OVERBODIG?
+                eq = flatten(eq);
+                updateLatex(eq);
 
                 return eq;
             };
@@ -949,7 +1050,7 @@ function leftSlurp(eq) {
         };
     };
 };
-
+/* 
 function leftSlurpOp(eq) {
 
     // zoek uit of de parent een multifunction is
@@ -986,7 +1087,136 @@ function leftSlurpOp(eq) {
             return eq;
         };
     };
+}; */
+
+/****************************** */
+// Alt - acties
+/****************************** */
+
+// deze code is bijna exact hetzelfde als rightSlurp
+commuteSelectedWithNext = function (eq) {
+     // zoek uit of de parent een multifunction is
+     selectAdress = adresses('Select', eq)[0];
+     parentAdress = returnWithoutLast(selectAdress);
+     parentNode = readAtAdress(parentAdress, eq);
+     if (parentNode.type == 'FunctionNode') {
+         if (multiFunction[parentNode.name] == 1) {
+
+             selectNode = readAtAdress(selectAdress, eq);
+ 
+
+             huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
+             if (huidigNummer < parentNode.args.length - 1) {
+ 
+                 first = selectNode.args[0];
+                 secondAdress = selectAdress;
+ 
+                 secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer + 1) + ']';
+                 second = readAtAdress(secondAdress, eq);
+ 
+ // in dd volgende twee lijnen is het enige verschil met de rightSlurp: 
+                 newSelection = new math.expression.node.FunctionNode(parentNode.name, [second, selectNode]);
+
+                 newSelection = flatten(newSelection);
+                 
+                 //console.log(newSelection);
+ 
+                 newParent = parentNode;
+                 newParent.args.splice(huidigNummer, 2, newSelection)
+                 eq = injectAtAdress(newParent, parentAdress, eq);
+
+                 eq = flatten(eq);
+                 updateLatex(eq);
+                
+ 
+                 return eq;
+             };
+         } else {
+             return eq;
+         };
+     };
+ };
+
+ // deze code is bijna exact hetzelfde als slurpLeft
+ function commuteSelectedWithPrevious(eq) {
+
+    // zoek uit of de parent een multifunction is
+    selectAdress = adresses('Select', eq)[0];
+    parentAdress = returnWithoutLast(selectAdress);
+    parentNode = readAtAdress(parentAdress, eq);
+    if (parentNode.type == 'FunctionNode') {
+        if (multiFunction[parentNode.name] == 1) {
+
+
+            selectNode = readAtAdress(selectAdress, eq);
+
+            first = selectNode.args[0];
+            secondAdress = selectAdress;
+            huidigNummer = Number(/\d+/.exec(selectAdress[selectAdress.length - 1])[0]);
+            if (huidigNummer > 0) {
+
+                secondAdress[secondAdress.length - 1] = 'args[' + (huidigNummer - 1) + ']';
+                second = readAtAdress(secondAdress, eq);
+
+// de tweede wordt hier eerst gezet
+                newSelection = new math.expression.node.FunctionNode(parentNode.name, [selectNode, second]);
+                newSelection = flatten(newSelection);
+
+                console.log('newselect: ' + newSelection.toString());
+
+                newParent = parentNode;
+                newParent.args.splice(huidigNummer-1, 2, newSelection);
+                eq = injectAtAdress(newParent, parentAdress, eq);
+
+                eq = flatten(eq);
+                updateLatex(eq);
+
+                return eq;
+            };
+        } else {
+            return eq;
+        };
+    };
 };
+
+//***************************** */
+// CTRL - functies (rekenregels)
+//***************************** */
+
+function distributeSelected(eq) {
+    selectAdress = adresses('Select', eq)[0];
+    selectNode = readAtAdress(selectAdress, eq);
+    selectedNode = selectNode.args[0];
+
+    if (selectedNode.name == 'Times' & selectedNode.args[1].name == 'Plus') {
+        nieuw = selectedNode.args[1].map(function (node, index, parent) {return new math.expression.node.FunctionNode('Times', [selectedNode.args[0], node ])});
+    };
+    eq = injectAtAdress(selectIt(nieuw), selectAdress, eq);
+    return eq;
+};
+
+function factorSelected(eq) {
+    selectAdress = adresses('Select', eq)[0];
+    selectNode = readAtAdress(selectAdress, eq);
+    selectedNode = selectNode.args[0];
+
+    var sameFactor = true
+
+    if (selectedNode.name == 'Plus') {
+        commonFactor = selectedNode.args[0].args[0];
+        selectedNode.args.forEach(function (node, index, parent) {
+            node.args[0].equals(commonFactor) ? sameFactor = sameFactor : sameFactor = false;
+        });
+        nieuweSom = selectedNode.map(function (node, index, parent) {return node.args[1]});
+        nieuw = new math.expression.node.FunctionNode('Times', [commonFactor, nieuweSom]);
+    };
+    eq = injectAtAdress(selectIt(nieuw), selectAdress, eq);
+    return eq;
+};
+
+//***************************** */
+// Grafiek functies
+//***************************** */
 
 function drawGraph(eq) {
     if (eq != undefined) {

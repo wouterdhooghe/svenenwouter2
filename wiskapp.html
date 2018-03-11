@@ -54,7 +54,7 @@
                     <p> de zes toetsen naast enter zijn standaardbewerkingen</p>
                     <p> ALT en de letter d voor een update van de grafiek</p>
                     <p> ALT en = om een propere vergelijking te krijgen</p>
-                    <p> cijfers (zonder shift) voor cijfers</p>
+                    <p> Cijfers (zonder shift) voor cijfers</p>
                     <p> SHIFT en pijltjes om de selectie uit te breiden</p>
 
                 </div>
@@ -227,10 +227,10 @@ math.import(customFunctions);
 // math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
 math.pow.toTex = function (node, options) {
 
-    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide') {
+    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide' || node.args[0].fn == 'pow') {
         return "\\left("+node.args[0].toTex(options)+"\\right)^{"+node.args[1].toTex(options)+"}";
     } else {
-        return node.args[0].toTex(options)+"^{"+node.args[1].toTex(options)+"}";
+        return "{"+node.args[0].toTex(options)+"}"+"^{"+node.args[1].toTex(options)+"}";
     }
 
 };
@@ -364,6 +364,26 @@ var keyboards = {
         power:   'Backslash',
         equals:  'Slash',
 
+        space:   'Space',
+        tab:     'Tab',
+        escape:  'Escape',
+        enter:   'Enter',
+        apestaart: 'Backquote',
+        backspace: 'Backspace',
+
+        f1:      'F1',
+        f2:      'F2',
+        f3:      'F3',
+        f4:      'F4',
+        f5:      'F5',
+        f6:      'F6',
+        f7:      'F7',
+        f8:      'F8',
+        f9:      'F9',
+        f10:     'F10',
+        f11:     'F11',
+        f12:     'F12',
+
 
         0:       'Digit0',
         1:       'Digit1',
@@ -413,9 +433,20 @@ if (e.shiftKey == 1)
         case 'right': keysList.push('shift right') ; e.preventDefault(); rightSlurp(equation); break;
         case 'down': keysList.push('shift down') ; e.preventDefault(); updateLatex(flatten(equation)); break;
 
-// Speciale cijfers met shift
-        case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
-        case '5': updateLatex(equation); break;
+// Speciale tekens met shift
+        // case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
+
+// Cijfers met shift
+        case '1': e.preventDefault(); inputDigit(1, equation); updateLatex(equation); break; 
+        case '2': e.preventDefault(); inputDigit(2, equation); updateLatex(equation); break;
+        case '3': e.preventDefault(); inputDigit(3, equation); updateLatex(equation); break;
+        case '4': e.preventDefault(); inputDigit(4, equation); updateLatex(equation); break;
+        case '5': e.preventDefault(); inputDigit(5, equation); updateLatex(equation); break;
+        case '6': e.preventDefault(); inputDigit(6, equation); updateLatex(equation); break;
+        case '7': e.preventDefault(); inputDigit(7, equation); updateLatex(equation); break;
+        case '8': e.preventDefault(); inputDigit(8, equation); updateLatex(equation); break;
+        case '9': e.preventDefault(); inputDigit(9, equation); updateLatex(equation); break;
+        case '0': e.preventDefault(); inputDigit(0, equation); updateLatex(equation); break;        
 
 // letters met shift
         case 'a': ; break; // shift a
@@ -432,6 +463,17 @@ else if (e.ctrlKey == 1)
         case 'up': out.innerHTML = 'up'; break;
         case 'right': out.innerHTML = 'right'; break;
         case 'down': out.innerHTML = 'down'; break;
+
+        // letters
+
+//        case 'd': e.preventDefault(); distributeSelected(equation); keysList.push('distributeSelected'); updateLatex(equation); break;
+//        case 's': e.preventDefault(); factorSelected(equation); keysList.push('factorSelected'); updateLatex(equation); break;
+//        case 'a': e.preventDefault(); alert('CTRL - f');
+// case 'x': e.preventDefault(); alert('CTRL - f');
+//  case 'y': e.preventDefault(); alert('CTRL - f');
+// case 'c': e.preventDefault(); alert('CTRL - f');
+// case 'b': e.preventDefault(); alert('CTRL - f');
+
     }
 
 else if (e.metaKey == 1)
@@ -442,15 +484,19 @@ else if (e.metaKey == 1)
         case 'right': out.innerHTML = 'right'; break;
         case 'down': out.innerHTML = 'down'; break;
 
-        case 'f': e.preventDefault(); out.innerHTML = 'meta f'; break;
+        case 'x': e.preventDefault(); alert('meta - x');
+ case 'y': e.preventDefault(); alert('meta - y');
+case 'c': e.preventDefault(); alert('meta - c');
+case 'b': e.preventDefault(); alert('meta - b');
+
     }
 
 else if (e.altKey == 1)
 
     switch (keyLookup[e.code]) {
-        case 'left': out.innerHTML = 'left'; break;
+        case 'left': commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
         case 'up': out.innerHTML = 'up'; break;
-        case 'right': out.innerHTML = 'right'; break;
+        case 'right': commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
         case 'down': out.innerHTML = 'down'; break;
 
 // Specialkeys  
@@ -470,6 +516,10 @@ else if (e.altKey == 1)
 
 else
 
+// ********************************
+//   zonder modifier keys
+// ********************************
+
     switch (keyLookup[e.code]) {
         case 'left': keysList.push('left') ; e.preventDefault(); leftSelect(equation); break;
         case 'up': keysList.push('up') ; e.preventDefault(); upSelect(equation); break;
@@ -485,6 +535,17 @@ else
         case 'nthroot': applyNthroot(); keysList.push('applyNthroot'); break;
         case 'equals':  applyEquality(); keysList.push('applyEquals'); break;
 
+// Extra keys
+        case 'space':  spaceBar(); keysList.push('space'); break;
+        case 'enter':  enter(); keysList.push('enter'); break;
+        case 'backspace':  backspace(); keysList.push('backspace'); break;
+
+// tekens
+        case 'KeyM': komma(); keysList.push('komma'); break;
+        case 'Comma': puntKomma(); keysList.push('puntKomma'); break;
+        case 'Period': dubbelPunt(); keysList.push('puntKomma'); break;
+        case 'IntlBackslash': kleinerDan(); keysList.push('kleinerDan'); break;
+
 // Cijfers
         case '1': e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 
         case '2': e.preventDefault(); substituteSelected(selectIt('2'), equation); updateLatex(equation); break;
@@ -496,38 +557,20 @@ else
         case '8': e.preventDefault(); substituteSelected(selectIt('8'), equation); updateLatex(equation); break;
         case '9': e.preventDefault(); substituteSelected(selectIt('9'), equation); updateLatex(equation); break;
         case '0': e.preventDefault(); substituteSelected(selectIt('0'), equation); updateLatex(equation); break;
-
 // letters
         case 'a': e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
         case 'b': e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
-        case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c
-
-        case 'x': e.preventDefault(); substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  x
-        case 'y': e.preventDefault(); substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  y
-        case 'z': e.preventDefault(); substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  z
+        case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c7
+        case 'x': e.preventDefault(); substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  8
+        case 'y': e.preventDefault(); substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  9
+        case 'z': e.preventDefault(); substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  0
     }
 };
 
-function inputDigit (digit,eq) {
-    selectAdress = adresses('Select',eq)[0];
-    selectNode = readAtAdress(selectAdress,eq);
-// arg is de node die geselecteerd is 
-    arg = selectNode.args[0];
-    if (arg.isSymbolNode) {
-        oudGetal = /\d+/.exec(arg.name);
-        
-        
-        if (isNaN(oudGetal)) { } else {
-            nieuwGetal = oudGetal.concat(digit);
-            substituteSelected(nieuwGetal, eq);
-            updateLatex(eq);
-            };
-        } else {   
-    };    
-};
+
 
 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
-equation = math.parse('x^2 - y^2 == Select(100)');
+equation = math.parse('x^2 + y^2 == Select(1024)');
 updateLatex(equation);
 
 </script>
