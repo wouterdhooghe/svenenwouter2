@@ -1205,7 +1205,7 @@ function spaceBar(eq) {
       // equation = substituteSelected('Select('+uitkomstString+')',eq);
       // updateLatex(equation);
     } else {
-        testregels = ['breukenVermenigvuldigen','uiteenTrekRegel','eenheidsbreukAlsNegatieveExponent'];
+        testregels = ['breukenVermenigvuldigen','uiteenTrekRegel','eenheidsbreukAlsNegatieveExponent','negatieveExponentAlsEenheidsbreuk'];
 
         testregels.forEach(function (testregel) {
             uitkomst = regelTransformSelected(eq, regels[testregel]);

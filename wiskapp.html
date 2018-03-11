@@ -372,6 +372,28 @@
                             unknowns: ['a']
                         }
                     },
+                    negatieveExponentAlsEenheidsbreuk: {
+                        naam: 'negatieve exponent als eenheidsbreuk',
+                        input: {
+                            expr: math.parse('pow(a,unaryMinus(1))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1/a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    vermenigvuldigingMetEenheidsbreuk1: {
+                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
+                        input: {
+                            expr: math.parse('Times(a,1/b)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('a/b'),
+                            unknowns: ['a','b']
+                        }
+                    },
                     
 
 
