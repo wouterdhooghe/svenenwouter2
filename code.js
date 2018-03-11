@@ -1136,20 +1136,7 @@ function spaceBar(eq) {
             // equation = substituteSelected('Select('+uitkomstString+')',eq);
             // updateLatex(equation);
          } else {
-             console.log('trying a-a=0');
-             eq2 = regelTransformSelected(eq,regels.nulOpslorpendVoorPlus);
-             eq3 = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
-             if (eq2.equals(eq)==false) {
-                console.log('nieuwe eq:  ' + eq2.toString());
-                updateLatex(eq2);
-                
-             } 
-             else if (eq3.equals(eq)==false) {
-                console.log('geen a-a=0, testing a/1=a')
-               // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
-                console.log('a/1 getest en mss gedaan')
-                updateLatex(eq3);
-             }
+
              
 
 
@@ -1168,15 +1155,35 @@ function enter(eq) {
     selectAdresses.forEach(function setnodes(item, index) {
         selectNode = readAtAdress(item, equation);
 
-        if (Number.isInteger(math.eval(selectNode.args[0].toString()))) {
-            uitkomstString = math.eval(selectNode.args[0].toString());
+        try {
+            uitkomstString = math.eval(selectNode.args[0].toString())
+            uitkomstIsInteger = Number.isInteger(uitkomstString);
+        } catch (err) {
+            uitkomstIsInteger = false;
+        }
+
+        if (uitkomstIsInteger) {
+            // uitkomstString = math.eval(selectNode.args[0].toString());
 
             substitution = math.parse('Select('+uitkomstString+')');
             equation = injectAtAdress(substitution, item, equation);
 
 
-         } else if (true) {
-
+         } else {
+            console.log('trying a-a=0');
+            eq2 = regelTransformSelected(eq,regels.nulOpslorpendVoorPlus);
+            eq3 = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+            if (eq2.equals(eq)==false) {
+               console.log('nieuwe eq:  ' + eq2.toString());
+               updateLatex(eq2);
+               
+            } 
+            else if (eq3.equals(eq)==false) {
+               console.log('geen a-a=0, testing a/1=a')
+              // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+               console.log('a/1 getest en mss gedaan')
+               updateLatex(eq3);
+            }
          };
 
 
