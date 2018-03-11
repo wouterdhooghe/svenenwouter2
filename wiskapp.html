@@ -361,6 +361,18 @@
                             unknowns: ['a', 'b', 'c', 'd']
                         }
                     },
+                    eenheidsbreukAlsNegatieveExponent: {
+                        naam: 'eenheidsbreuk als negatieve exponent',
+                        input: {
+                            expr: math.parse('1/a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('pow(a,unaryMinus(1))'),
+                            unknowns: ['a']
+                        }
+                    },
+                    
 
 
                 };
