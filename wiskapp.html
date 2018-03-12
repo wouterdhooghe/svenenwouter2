@@ -343,7 +343,7 @@
                         naam: 'breuken vermenigvuldigen',
                         input: {
                             expr: math.parse('Times(a/b,c/d)'),
-                            unknowns: ['a','b','c','d']
+                            unknowns: ['a', 'b', 'c', 'd']
                         },
                         output: {
                             expr: math.parse('Times(a,c)/Times(b,d)'),
@@ -354,7 +354,7 @@
                         naam: 'breuk in factoren uit elkaar trekken',
                         input: {
                             expr: math.parse('Times(a,c)/Times(b,d)'),
-                            unknowns: ['a','b','c','d']
+                            unknowns: ['a', 'b', 'c', 'd']
                         },
                         output: {
                             expr: math.parse('Times(a/b,c/d)'),
@@ -387,17 +387,393 @@
                         naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
                         input: {
                             expr: math.parse('Times(a,1/b)'),
-                            unknowns: ['a','b']
+                            unknowns: ['a', 'b']
                         },
                         output: {
                             expr: math.parse('a/b'),
+                            unknowns: ['a', 'b']
+                        }
+                    },
+                    vermenigvuldigingMetEenheidsbreuk2: {
+                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
+                        input: {
+                            expr: math.parse('Times(1/b,a)'),
+                            unknowns: ['a', 'b']
+                        },
+                        output: {
+                            expr: math.parse('a/b'),
+                            unknowns: ['a', 'b']
+                        }
+                    },
+                    vermenigvuldigingMetEenheidsbreukOmgekeerd: {
+                        naam: 'breuk als getal maar eenheidsbreuk',
+                        input: {
+                            expr: math.parse('a/b'),
+                            unknowns: ['a', 'b']
+                        },
+                        output: {
+                            expr: math.parse('Times(a,1/b)'),
+                            unknowns: ['a', 'b']
+                        }
+                    },
+                    vermenigvuldigingMetEenLinks: {
+                        naam: '1 is neutraal voor vermenigvuldiging',
+                        input: {
+                            expr: math.parse('Times(1,a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    vermenigvuldigingMetEenRechts: {
+                        naam: '1 is neutraal voor vermenigvuldiging',
+                        input: {
+                            expr: math.parse('Times(a,1)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    vermenigvuldigingMetNulLinks: {
+                        naam: '0 is neutraal voor vermenigvuldiging',
+                        input: {
+                            expr: math.parse('Times(0, a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    vermenigvuldigingMetNulRechts: {
+                        naam: '0 is neutraal voor vermenigvuldiging',
+                        input: {
+                            expr: math.parse('Times(a,0)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    wortelInversAanMacht: {
+                        naam: 'wortel heft een macht op',
+                        input: {
+                            expr: math.parse('nthRoot(pow(a,b),b)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    machtInversAanWortel: {
+                        naam: 'macht heft een wortel op',
+                        input: {
+                            expr: math.parse('pow(nthRoot(a,b),b)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    exponentenOptellen: {
+                        naam: 'product van machten telt exponenten op',
+                        input: {
+                            expr: math.parse('Times(pow(x,a),pow(x,b))'),
+                            unknowns: ['x','a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,Plus(a,b))'),
+                            unknowns: ['x','a','b']
+                        }
+                    },
+                    somVanExponentenNaarVermenigvuldiging: {
+                        naam: 'opgetelde exponenten schrijven als een vermenigvuldiging',
+                        input: {
+                            expr: math.parse('pow(x,Plus(a,b))'),
+                            unknowns: ['x','a','b']
+                        },
+                        output: {
+                            expr: math.parse('Times(pow(x,a),pow(x,b))'),
+                            unknowns: ['x','a','b']
+                        }
+                    },
+                    machtTorenAfbreken: {
+                        naam: 'machttoren afbreken',
+                        input: {
+                            expr: math.parse('pow(pow(x,a),b)'),
+                            unknowns: ['x','a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,Times(a,b))'),
+                            unknowns: ['x','a','b']
+                        }
+                    },
+                    machtTorenOpbouwen: {
+                        naam: 'machttoren opbouwen',
+                        input: {
+                            expr: math.parse('pow(x,Times(a,b))'),
+                            unknowns: ['x','a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(pow(x,a),b)'),
+                            unknowns: ['x','a','b']
+                        }
+                    },
+                    machtNaarWortelNotatie: {
+                        naam: 'macht als wortel schrijven',
+                        input: {
+                            expr: math.parse('pow(x,p/q)'),
+                            unknowns: ['x','p','q']
+                        },
+                        output: {
+                            expr: math.parse('nthRoot(pow(x,p),q)'),
+                            unknowns: ['x','p','q']
+                        }
+                    },
+                    wortelNaarMachtNotatie1: {
+                        naam: 'wortel als macht schrijven',
+                        input: {
+                            expr: math.parse('nthRoot(pow(x,p),q)'),
+                            unknowns: ['x','p','q']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,p/q)'),
+                            unknowns: ['x','p','q']
+                        }
+                    },
+                    wortelNaarMachtNotatie2: {
+                        naam: 'wortel als macht schrijven',
+                        input: {
+                            expr: math.parse('pow(nthRoot(x,q),p)'),
+                            unknowns: ['x','p','q']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,p/q)'),
+                            unknowns: ['x','p','q']
+                        }
+                    },
+                    machtVanProduct: {
+                        naam: 'macht van een product',
+                        input: {
+                            expr: math.parse('pow(Times(x,y),n)'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('Times(pow(x,n),pow(y,n))'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    productMetGelijkeExponenten: {
+                        naam: 'product met gelijke exponenten',
+                        input: {
+                            expr: math.parse('Times(pow(x,n),pow(y,n))'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('pow(Times(x,y),n)'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    optellenMetNulLinksDoetNiks: {
+                        naam: 'optellen met nul langs links',
+                        input: {
+                            expr: math.parse('Plus(0,a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    optellenMetNulRechtsDoetNiks: {
+                        naam: 'optellen met nul langs rechts',
+                        input: {
+                            expr: math.parse('Plus(a,0)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    productVanGelijkeWortels: {
+                        naam: 'product van gelijke wortels',
+                        input: {
+                            expr: math.parse('Times(nthRoot(x,n),nthRoot(y,n))'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('nthRoot(Times(x,y),n)'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    productOnderDeWortel: {
+                        naam: 'product onder de wortel',
+                        input: {
+                            expr: math.parse('nthRoot(Times(x,y),n)'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('Times(nthRoot(x,n),nthRoot(y,n))'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    wortelVanBreuk: {
+                        naam: 'wortel van een breuk',
+                        input: {
+                            expr: math.parse('nthRoot(x/y,n)'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('nthRoot(x,n)/nthRoot(y,n)'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    breukVanWortels: {
+                        naam: 'breuk van wortels',
+                        input: {
+                            expr: math.parse('nthRoot(x,n)/nthRoot(y,n)'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('nthRoot(x/y,n)'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    binomium2Expand: {
+                        naam: 'merkwaardig kwadraat uitwerken',
+                        input: {
+                            expr: math.parse('pow(Plus(a,b),2)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Plus(pow(a,2),Times(2,a,b), pow(b,2))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    binomium2Factor: {
+                        naam: 'merkwaardig kwadraat herkennen',
+                        input: {
+                            expr: math.parse('Plus(pow(a,2),Times(2,a,b), pow(b,2))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(Plus(a,b),2)'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    binomium3Expand: {
+                        naam: 'merkwaardige derdemacht uitwerken',
+                        input: {
+                            expr: math.parse('pow(Plus(a,b),3)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Plus(pow(a,3),Times(3,pow(a,2),b),Times(3,a,pow(b,2)), pow(b,3))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    binomium3Factor: {
+                        naam: 'merkwaardig derde macht herkennen',
+                        input: {
+                            expr: math.parse('Plus(pow(a,3),Times(3,pow(a,2),b),Times(3,a,pow(b,2)), pow(b,3))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(Plus(a,b),3)'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    verschilVanKwadratenExpand: {
+                        naam: 'verschil van kwadraten uitwerken',
+                        input: {
+                            expr: math.parse('Plus(pow(a,2),unaryMinus(pow(b,2)))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Times(Plus(a,b),Plus(a,unaryMinus(b)))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    verschilVanKwadratenFactor1: {
+                        naam: 'verschil van kwadraten herkennen',
+                        input: {
+                            expr: math.parse('Times(Plus(a,b),Plus(a,unaryMinus(b)))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Plus(pow(a,2),unaryMinus(pow(b,2)))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    verschilVanKwadratenFactor2: {
+                        naam: 'verschil van kwadraten herkennen',
+                        input: {
+                            expr: math.parse('Times(Plus(a,unaryMinus(b)),Plus(a,b))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Plus(pow(a,2),unaryMinus(pow(b,2)))'),
                             unknowns: ['a','b']
                         }
                     },
                     
-
-
+                    
                 };
+
+                spaceregels = [
+                    'breukenVermenigvuldigen',
+                    'uiteenTrekRegel',
+                    'eenheidsbreukAlsNegatieveExponent',
+                    'negatieveExponentAlsEenheidsbreuk',
+                    'vermenigvuldigingMetEenheidsbreuk1',
+                    'vermenigvuldigingMetEenheidsbreuk2',
+                    'vermenigvuldigingMetEenheidsbreukOmgekeerd',
+                    'exponentenOptellen',
+                    'somVanExponentenNaarVermenigvuldiging',
+                    'machtTorenOpbouwen',
+                    'machtTorenAfbreken',
+                    'machtNaarWortelNotatie',
+                    'wortelNaarMachtNotatie1',
+                    'wortelNaarMachtNotatie2',
+                    'machtVanProduct',
+                    'productMetGelijkeExponenten',
+                    'productOnderDeWortel',
+                    'productVanGelijkeWortels',
+                    'breukVanWortels',
+                    'wortelVanBreuk',
+                    'binomium2Expand',
+                    'binomium2Factor',
+                    'binomium3Expand',
+                    'binomium3Factor',
+                    'verschilVanKwadratenExpand',
+                    'verschilVanKwadratenFactor1',
+                    'verschilVanKwadratenFactor2'
+
+                ];
+
+                enterregels = [
+                    'nulOpslorpendVoorPlus',
+                    'eenOpslorpendVoorMaal',
+                    'schrapUnitaireBreuk',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetEenLinks',
+                    'vermenigvuldigingMetEenRechts',
+                    'vermenigvuldigingMetNulRechts',
+                    'vermenigvuldigingMetNulLinks',
+                    'machtInversAanWortel',
+                    'wortelInversAanMacht',
+                    'optellenMetNulLinksDoetNiks',
+                    'optellenMetNulRechtsDoetNiks'
+                ];
 
                 multiFunction = {
                     'Times': 1,

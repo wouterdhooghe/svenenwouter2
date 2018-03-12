@@ -1205,9 +1205,8 @@ function spaceBar(eq) {
       // equation = substituteSelected('Select('+uitkomstString+')',eq);
       // updateLatex(equation);
     } else {
-        testregels = ['breukenVermenigvuldigen','uiteenTrekRegel','eenheidsbreukAlsNegatieveExponent','negatieveExponentAlsEenheidsbreuk'];
-
-        testregels.forEach(function (testregel) {
+        
+        spaceregels.forEach(function (testregel) {
             uitkomst = regelTransformSelected(eq, regels[testregel]);
             if (uitkomst.equals(eq)==false) {
               console.log("nieuwe eq:  " + uitkomst.toString());
@@ -1247,10 +1246,9 @@ function enter(eq) {
     //   eq5 = regelTransformSelected(eq, regels.omgekeerdeIsInverseVoorMaal1);
     //   eq6 = regelTransformSelected(eq, regels.omgekeerdeIsInverseVoorMaal2);
     //   uitkomsten = [eq2, eq3,eq4,eq5,eq6];
-      testregels = ['nulOpslorpendVoorPlus', 'eenOpslorpendVoorMaal', 'schrapUnitaireBreuk', 'omgekeerdeIsInverseVoorMaal1','omgekeerdeIsInverseVoorMaal2']
+      
 
-
-    testregels.forEach(function (testregel) {
+    enterregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
         if (uitkomst.equals(eq)==false) {
           console.log("nieuwe eq:  " + uitkomst.toString());
