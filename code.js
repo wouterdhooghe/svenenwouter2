@@ -1114,7 +1114,8 @@ function applyEquality() {
     updateLatex(flatten(equation));
   } else if (selectAdress == 'root?') {
     console.log('root!!!')
-    //  HIER MOET EEN GEWONE APPLY EQUALS KOMEN
+    equation = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
+    updateLatex(equation);
   }
 
   /* if (selectNode.args[0].fn == 'equal') {
