@@ -1469,8 +1469,21 @@ function downSelect(eq, actionName) {
 
 function replaceWithDigit(digit, eq) {
   prevEquation = equation.cloneDeep();
-  eq = substituteSelected(selectIt(digit), eq);
-  updateLatex(eq);
+
+
+  tijd = new Date();
+  nu = tijd.getTime();
+  verloop = nu - laatsteDigitTijdStip;
+  laatsteDigitTijdStip = nu;
+
+  if (verloop < 400) {
+    inputDigit(Number(digit), equation);
+  } else {
+    eq = substituteSelected(selectIt(digit), eq);
+    updateLatex(eq);
+  }
+
+
 }
 
 function inputDigit(digit, eq) {
