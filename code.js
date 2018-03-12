@@ -1112,6 +1112,9 @@ function applyEquality() {
     ]);
     equation = substituteSelected(substitution, equation);
     updateLatex(flatten(equation));
+  } else if (selectAdress == 'root?') {
+    console.log('root!!!')
+    //  HIER MOET EEN GEWONE APPLY EQUALS KOMEN
   }
 
   /* if (selectNode.args[0].fn == 'equal') {
