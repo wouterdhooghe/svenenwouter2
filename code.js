@@ -1138,23 +1138,58 @@ function replaceWithEquality() {
 // Functies sin, cos, tan, f, g, h, integrate, derive, log 
 // en de constanten e en pi.
 
-function applyFunctionToSelected(functieString, eq) {
+function applyFunction(functieString, eq) {
   console.log('applyFunctionToSelected: ' + functieString);
+  prevEquation = equation.cloneDeep();
+
+  selectAdresses = adresses("Select", eq);
+
+  // als alle selecties een gelijkheid zijn -> functie aan beide kanten
+  if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+    console.log("vergelijkingen geselecteerd!!");
+
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, eq);
+      links = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0].args[0])
+      ]);
+      rechts = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0].args[1])
+      ]);
+      substitution = new math.expression.node.OperatorNode("==", "equal", [
+        links,
+        rechts
+      ]);
+      eq = injectAtAdress(substitution, item, eq);
+    });
+  } else {
+    // anders functie van de expressie
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, eq);
+      substitution = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0])
+      ]);
+      eq = injectAtAdress(substitution, item, eq);
+    });
+  }
+
+  updateLatex(eq);
+
 }
 
 function applyLog(eq) {
   console.log('applyLog');
   prevEquation = equation.cloneDeep();
 
-  selectAdresses = adresses("Select", equation);
+  selectAdresses = adresses("Select", eq);
   base = math.parse("10");
 
-  // als alle selecties een gelijkheid zijn -> deling aan beide kanten
+  // als alle selecties een gelijkheid zijn -> log aan beide kanten
   if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
     console.log("vergelijkingen geselecteerd!!");
 
     selectAdresses.forEach(function setnodes(item, index) {
-      selectNode = readAtAdress(item, equation);
+      selectNode = readAtAdress(item, eq);
       links = new math.expression.node.FunctionNode("log", [
         selectIt(selectNode.args[0].args[0]),
         base
@@ -1167,21 +1202,21 @@ function applyLog(eq) {
         links,
         rechts
       ]);
-      equation = injectAtAdress(substitution, item, equation);
+      eq = injectAtAdress(substitution, item, eq);
     });
   } else {
-    // anders divide van de expressie
+    // anders log van de expressie
     selectAdresses.forEach(function setnodes(item, index) {
-      selectNode = readAtAdress(item, equation);
+      selectNode = readAtAdress(item, eq);
       substitution = new math.expression.node.FunctionNode("log", [
         selectIt(selectNode.args[0]),
         base
       ]);
-      equation = injectAtAdress(substitution, item, equation);
+      eq = injectAtAdress(substitution, item, eq);
     });
   }
 
-  updateLatex(equation);
+  updateLatex(eq);
 
 }
 
@@ -1203,10 +1238,95 @@ function replaceWithPi(eq) {
 
 function applyIntegral(eq) {
   console.log('applyIntegral');
+
+  //  momenteel Int(uitdrukking, variabele) ipv Int(uitdrukking, variabele, ondergrens, bovengrens)
+
+  prevEquation = equation.cloneDeep();
+  functieString = 'Int';
+  variabele = math.parse('x');
+  // ondergrens = math.parse('0');
+  // bovengrens = math.parse('x');
+
+  selectAdresses = adresses("Select", eq);
+
+  // als alle selecties een gelijkheid zijn -> functie aan beide kanten
+  if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+    console.log("vergelijkingen geselecteerd!!");
+
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, eq);
+      links = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0].args[0]),
+        variabele
+      ]);
+      rechts = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0].args[1]),
+        variabele
+      ]);
+      substitution = new math.expression.node.OperatorNode("==", "equal", [
+        links,
+        rechts
+      ]);
+      eq = injectAtAdress(substitution, item, eq);
+    });
+  } else {
+    // anders functie van de expressie
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, eq);
+      substitution = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0]),
+        variabele
+      ]);
+      eq = injectAtAdress(substitution, item, eq);
+    });
+  }
+
+  updateLatex(eq);
 }
 
 function applyDerivative(eq) {
   console.log('applyDerivative');
+
+  prevEquation = equation.cloneDeep();
+  functieString = 'Derive';
+  variabele = math.parse('x');
+
+  selectAdresses = adresses("Select", eq);
+
+  // als alle selecties een gelijkheid zijn -> functie aan beide kanten
+  if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+    console.log("vergelijkingen geselecteerd!!");
+
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, eq);
+      links = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0].args[0]),
+        variabele
+      ]);
+      rechts = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0].args[1]),
+        variabele
+      ]);
+      substitution = new math.expression.node.OperatorNode("==", "equal", [
+        links,
+        rechts
+      ]);
+      eq = injectAtAdress(substitution, item, eq);
+    });
+  } else {
+    // anders functie van de expressie
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, eq);
+      substitution = new math.expression.node.FunctionNode(functieString, [
+        selectIt(selectNode.args[0]),
+        variabele
+      ]);
+      eq = injectAtAdress(substitution, item, eq);
+    });
+  }
+
+  updateLatex(eq);
+
 }
 
 // Spacebar en Enter

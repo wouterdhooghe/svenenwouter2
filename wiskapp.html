@@ -1028,12 +1028,12 @@
                             case 'y': SelectAllLettersInSelection('y', equation); break; // shift y
                             case 'z': SelectAllLettersInSelection('z', equation); break; // shift z
 
-                            case 's': applyFunctionToSelected('Sin', equation); break;
-                            case 'c': applyFunctionToSelected('Cos', equation); break;
-                            case 't': applyFunctionToSelected('Tan', equation); break; 
-                            case 'f': applyFunctionToSelected('f', equation); break;
-                            case 'g': applyFunctionToSelected('g', equation); break;
-                            case 'h': applyFunctionToSelected('h', equation); break;
+                            case 's': applyFunction('sin', equation); break;
+                            case 'c': applyFunction('cos', equation); break;
+                            case 't': applyFunction('tan', equation); break; 
+                            case 'f': applyFunction('f', equation); break;
+                            case 'g': applyFunction('g', equation); break;
+                            case 'h': applyFunction('h', equation); break;
                             case 'l': applyLog(equation); break;
                             case 'e': e.preventDefault(); replaceWithE(equation); break;
                             case 'p': replaceWithPi(equation); break; 
