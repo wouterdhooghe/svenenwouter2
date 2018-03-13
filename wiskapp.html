@@ -1007,6 +1007,7 @@
 
                             // Speciale tekens met shift
                             // case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
+                            case 'minus': applyUnaryMinus(); keysList.push('applyUnaryMinus'); break;
 
                             // Cijfers met shift
                             case '1': e.preventDefault(); inputDigit(1, equation); break;
@@ -1095,7 +1096,7 @@
                             case 'equals': replaceWithEquality(); keysList.push('replaceEquals'); break;
 
                             // letters
-                            case 'd': drawGraph(equation); break;
+                            case 'd': e.preventDefault(); drawGraph(equation); break;
 
 
                         }

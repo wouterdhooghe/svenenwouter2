@@ -928,6 +928,56 @@ function applyPower() {
   updateLatex(equation);
 }
 
+function applyUnaryMinus() {
+  prevEquation = equation.cloneDeep();
+
+  selectAdresses = adresses("Select", equation);
+
+  // als alle selecties een gelijkheid zijn -> unaryMinus aan beide kanten
+  if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+    console.log("vergelijkingen geselecteerd!!");
+
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, equation);
+      if (selectNode.args[0].args[0].name == "unaryMinus") {
+        links = selectNode.args[0].args[0];
+      } else {
+        links = new math.expression.node.FunctionNode("unaryMinus", [selectNode.args[0].args[0]]);
+      }
+      
+      if (selectNode.args[0].args[1].name == "unaryMinus") {
+         rechts = selectNode.args[0].args[1];
+      } else {
+        rechts = new math.expression.node.FunctionNode("unaryMinus", [selectNode.args[0].args[1]]);
+      }
+  
+        substitution = new math.expression.node.OperatorNode("==", "equal", [
+          selectIt(links),
+          selectIt(rechts)
+        ]);
+
+      equation = injectAtAdress(substitution, item, equation);
+    });
+  } else {
+    // anders unaryMinus van de expressie
+
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, equation);
+      console.log(item);
+
+      if (selectNode.args[0].name == "unaryMinus") {
+      substitution = selectNode.args[0].args[0];
+     } else {
+      substitution = new math.expression.node.FunctionNode("unaryMinus", [selectNode.args[0]]);
+     }
+
+      equation = injectAtAdress(selectIt(substitution), item, equation);
+    });
+  }
+
+  updateLatex(equation);
+}
+
 function replaceWithPower() {
   prevEquation = equation.cloneDeep();
   base = math.parse("Select(a)");
