@@ -1144,6 +1144,45 @@ function applyFunctionToSelected(functieString, eq) {
 
 function applyLog(eq) {
   console.log('applyLog');
+  prevEquation = equation.cloneDeep();
+
+  selectAdresses = adresses("Select", equation);
+  base = math.parse("10");
+
+  // als alle selecties een gelijkheid zijn -> deling aan beide kanten
+  if (selectAdresses.every(vergelijkingIsGeselecteerd)) {
+    console.log("vergelijkingen geselecteerd!!");
+
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, equation);
+      links = new math.expression.node.FunctionNode("log", [
+        selectIt(selectNode.args[0].args[0]),
+        base
+      ]);
+      rechts = new math.expression.node.FunctionNode("log", [
+        selectIt(selectNode.args[0].args[1]),
+        base
+      ]);
+      substitution = new math.expression.node.OperatorNode("==", "equal", [
+        links,
+        rechts
+      ]);
+      equation = injectAtAdress(substitution, item, equation);
+    });
+  } else {
+    // anders divide van de expressie
+    selectAdresses.forEach(function setnodes(item, index) {
+      selectNode = readAtAdress(item, equation);
+      substitution = new math.expression.node.FunctionNode("log", [
+        selectIt(selectNode.args[0]),
+        base
+      ]);
+      equation = injectAtAdress(substitution, item, equation);
+    });
+  }
+
+  updateLatex(equation);
+
 }
 
 function replaceWithE(eq) {
