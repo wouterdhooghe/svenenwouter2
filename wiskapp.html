@@ -283,7 +283,7 @@
                 ///*********************************************************************
 
                 tijd = new Date();
-                laatsteDigitTijdStip = tijd.getTime();
+                laatsteDigitOfLetterTijdStip = tijd.getTime();
 
                 regels = {
                     nulOpslorpendVoorPlus: {
@@ -562,6 +562,17 @@
                             unknowns: ['x','p','q']
                         }
                     },
+                    wortelNaarMachtNotatie3: {
+                        naam: 'wortel als macht schrijven',
+                        input: {
+                            expr: math.parse('nthRoot(x,q)'),
+                            unknowns: ['x','q']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,1/q)'),
+                            unknowns: ['x','q']
+                        }
+                    },
                     machtVanProduct: {
                         naam: 'macht van een product',
                         input: {
@@ -727,6 +738,28 @@
                             unknowns: ['a','b']
                         }
                     },
+                    eersteMachtNeutraal: {
+                        naam: 'eerste macht doet niks',
+                        input: {
+                            expr: math.parse('pow(a,1)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    nuldeMachtIsEen: {
+                        naam: 'nulde macht is 1',
+                        input: {
+                            expr: math.parse('pow(a,0)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: ['a']
+                        }
+                    },
                     
                     
                 };
@@ -746,6 +779,7 @@
                     'machtNaarWortelNotatie',
                     'wortelNaarMachtNotatie1',
                     'wortelNaarMachtNotatie2',
+                    'wortelNaarMachtNotatie3',
                     'machtVanProduct',
                     'productMetGelijkeExponenten',
                     'productOnderDeWortel',
@@ -775,7 +809,9 @@
                     'machtInversAanWortel',
                     'wortelInversAanMacht',
                     'optellenMetNulLinksDoetNiks',
-                    'optellenMetNulRechtsDoetNiks'
+                    'optellenMetNulRechtsDoetNiks',
+                    'eersteMachtNeutraal',
+                    'nuldeMachtIsEen'
                 ];
 
                 multiFunction = {
@@ -918,9 +954,26 @@
                         a: 'KeyQ',
                         b: 'KeyB',
                         c: 'KeyC',
-
                         d: 'KeyD',
-
+                        e: 'KeyE',
+                        f: 'KeyF',
+                        g: 'KeyG',
+                        h: 'KeyH',
+                        i: 'KeyI',
+                        j: 'KeyJ',
+                        k: 'KeyK',
+                        l: 'KeyL',
+                        m: 'KeyM',
+                        n: 'KeyN',
+                        o: 'KeyO',
+                        p: 'KeyP',
+                        q: 'KeyQ',
+                        r: 'KeyR',
+                        s: 'KeyS',
+                        t: 'KeyT',
+                        u: 'KeyU',
+                        v: 'KeyV',
+                        w: 'KeyW',
                         x: 'KeyX',
                         y: 'KeyY',
                         z: 'KeyZ'
@@ -970,10 +1023,22 @@
                             // letters met shift
                             case 'a': SelectAllLettersInSelection('a', equation); break; // shift a
                             case 'b': SelectAllLettersInSelection('b', equation); break; // shift b
-                            case 'c': SelectAllLettersInSelection('c', equation); break; // shift c
+                            // case 'c': SelectAllLettersInSelection('c', equation); break; // shift c
                             case 'x': SelectAllLettersInSelection('x', equation); break; // shift x
                             case 'y': SelectAllLettersInSelection('y', equation); break; // shift y
                             case 'z': SelectAllLettersInSelection('z', equation); break; // shift z
+
+                            case 's': applyFunctionToSelected('Sin', equation); break;
+                            case 'c': applyFunctionToSelected('Cos', equation); break;
+                            case 't': applyFunctionToSelected('Tan', equation); break; 
+                            case 'f': applyFunctionToSelected('f', equation); break;
+                            case 'g': applyFunctionToSelected('g', equation); break;
+                            case 'h': applyFunctionToSelected('h', equation); break;
+                            case 'l': applyLog(equation); break;
+                            case 'e': e.preventDefault(); replaceWithE(equation); break;
+                            case 'p': replaceWithPi(equation); break; 
+                            case 'i': applyIntegral(equation); break; 
+                            case 'd': applyDerivative(equation); break;
                         }
 
 
@@ -1080,12 +1145,12 @@
                             case '9': e.preventDefault(); replaceWithDigit('9', equation); break;
                             case '0': e.preventDefault(); replaceWithDigit('0', equation); break;
                             // letters
-                            case 'a': e.preventDefault(); equation = substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
-                            case 'b': e.preventDefault(); equation = substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
-                            case 'c': e.preventDefault(); equation = substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c7
-                            case 'x': e.preventDefault(); equation = substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  8
-                            case 'y': e.preventDefault(); equation = substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  9
-                            case 'z': e.preventDefault(); equation = substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  0
+                            case 'a': e.preventDefault(); replaceWithLetter('a',equation); break; //  a
+                            case 'b': e.preventDefault(); replaceWithLetter('b',equation); break; //  b
+                            case 'c': e.preventDefault(); replaceWithLetter('c',equation); break; //  c7
+                            case 'x': e.preventDefault(); replaceWithLetter('x',equation); break; //  8
+                            case 'y': e.preventDefault(); replaceWithLetter('y',equation); break; //  9
+                            case 'z': e.preventDefault(); replaceWithLetter('z',equation); //  0
                         }
                 };
 

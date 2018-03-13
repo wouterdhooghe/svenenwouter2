@@ -321,10 +321,12 @@ function SelectAllLettersInSelection(letter, eq) {
   cleanedEquation = cleanEquation(eq);
 
   build = invert(buildPath(cleanedEquation));
+
+  eq = cleanedEquation;
   build[letter].forEach(function(adres) {
-    eq = injectAtAdress(selectIt(letter), adres, cleanedEquation);
+    eq = injectAtAdress(selectIt(letter), adres, eq);
   });
-  equation = cleanedEquation;
+ 
 
   // selectAdresses = adresses('Select', eq);
   // selectAdresses.forEach(function setnodes(selectAdres, index) {
@@ -332,7 +334,7 @@ function SelectAllLettersInSelection(letter, eq) {
 
   // });
 
-  updateLatex(equation);
+  updateLatex(eq);
 }
 
 // werkt voor geen meter
@@ -1133,6 +1135,43 @@ function replaceWithEquality() {
   updateLatex(equation);
 }
 
+// Functies sin, cos, tan, f, g, h, integrate, derive, log 
+// en de constanten e en pi.
+
+function applyFunctionToSelected(functieString, eq) {
+  console.log('applyFunctionToSelected: ' + functieString);
+}
+
+function applyLog(eq) {
+  console.log('applyLog');
+}
+
+function replaceWithE(eq) {
+  console.log('replacewithE');
+  prevEquation = equation.cloneDeep();
+  substitution = "Select(e)";
+  eq = substituteSelected(substitution, eq);
+  updateLatex(eq);
+}
+
+function replaceWithPi(eq) {
+  console.log('replacewithPi');
+  prevEquation = equation.cloneDeep();
+  substitution = "Select(pi)";
+  eq = substituteSelected(substitution, eq);
+  updateLatex(eq);
+}
+
+function applyIntegral(eq) {
+  console.log('applyIntegral');
+}
+
+function applyDerivative(eq) {
+  console.log('applyDerivative');
+}
+
+// Spacebar en Enter
+
 function spaceBar(eq) {
   prevEquation = equation.cloneDeep();
   // selectAdress = adresses('Select', eq)[0];
@@ -1473,8 +1512,8 @@ function replaceWithDigit(digit, eq) {
 
   tijd = new Date();
   nu = tijd.getTime();
-  verloop = nu - laatsteDigitTijdStip;
-  laatsteDigitTijdStip = nu;
+  verloop = nu - laatsteDigitOfLetterTijdStip;
+  laatsteDigitOfLetterTijdStip = nu;
 
   if (verloop < 400) {
     inputDigit(Number(digit), equation);
@@ -1507,6 +1546,32 @@ function inputDigit(digit, eq) {
     updateLatex(eq);
   }
 }
+
+function replaceWithLetter (letterString, eq) {
+  prevEquation = equation.cloneDeep();
+
+
+  tijd = new Date();
+  nu = tijd.getTime();
+  verloop = nu - laatsteDigitOfLetterTijdStip;
+  laatsteDigitOfLetterTijdStip = nu;
+
+  if (verloop < 400) {
+    console.log(verloop);
+    selectAdress = adresses("Select", eq)[0];
+    selectNode = readAtAdress(selectAdress, eq);
+    letterNode = math.parse('Select('+letterString+')');
+    substitution = new math.expression.node.FunctionNode("Times", [selectNode.args[0],letterNode])
+
+    eq = substituteSelected(substitution, eq);
+    flatten(eq);
+    updateLatex(eq);
+} else {
+  eq = substituteSelected(selectIt(letterString), eq);
+  updateLatex(eq);
+}
+}
+
 
 // SHIFT toetsen
 
