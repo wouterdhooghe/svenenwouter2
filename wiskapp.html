@@ -1,253 +1,276 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Wiskunde App</title>
-  <script src="code.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="style.css">
+    <title>Wiskunde App</title>
+    <script src="code.js"></script>
+    <script src="opgaven.js"></script>
+
+    <!-- 
+  <script src="math.min.js"></script>
+  <link rel="stylesheet" href="katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ" crossorigin="anonymous">
+<script src="katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+ -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ"
+        crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
 
 
-<body>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+    <body>
 
 
 
-<div class='container-fluid'>
+        <div class='container-fluid'>
 
-<div class="row">
-    <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
 
-        <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Instellingen </h4>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-
-                  <select id='keyboardType' onchange="changeKeyboardType()">
-                        <option value="wouterCode">Wouter code</option>
-                        <option value="svenCode">Sven code</option>
-                        <option value="wouterkeyCode">Wouter keyCode</option>
-                        <option value="svenkeyCode">Sven Code</option>
-                  </select>
-
-                </div>
-                <div class="card-body">
-                        <b>Parenthesis option:</b>
-                        <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
-                        <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
-                        <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
-                        <br/>
-                        <b>Implicit multiplication:</b>
-                        <input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
-                        <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
-                        <p class="output"> para 2</p>
-                </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-
-        <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Toetsen </h4>
-                    <p> pijltjes om door de vergelijking te bewegen</p>
-                    <p> de zes toetsen naast enter zijn standaardbewerkingen</p>
-                    <p> ALT en de letter d voor een update van de grafiek</p>
-                    <p> ALT en = om een propere vergelijking te krijgen</p>
-                    <p> Cijfers (zonder shift) voor cijfers</p>
-                    <p> SHIFT en pijltjes om de selectie uit te breiden</p>
-
-                </div>
-                
-        </div>
-    </div>      
-</div>
-
-<div class='row'> 
-    <div class='col-md' id="left"> 
-
-            <div > Grafieken </div>
-
-            <div class="card">
-                    <div class="card-body">
-                      <p class="card-text">Grafiek</p>
-
-                      <canvas id="myCanvas" width="300" height="300">
-                            Fallback content, in case the browser does not support Canvas.
-                      </canvas>
-
-                      <input type="range" value="7" min="0"  max="10" name="range">
-
-                      <input type="range" min="0" max="100" value="50" class="vertical" orient="vertical">
-                      
-                    </div>
-            </div>
-
-    </div>
-    <div class='col-md' id="middle">
-
-           <div > Vergelijkingen</div>
-                   
-        
-
-            <div class="card">
-                    <div class='card-header'> Vgl 1</div>
-                    <div class="card-body">
-                      <p class="card-text" id="pretty">$$$$</p>
-                      <p class="card-text" id="result">    </p>
-                      <p class="card-text" id="expr"> </p>
-                    </div>
-            </div>
-
-            <div class="card">
+                    <div class="card">
                         <div class="card-body">
-                          <p class="card-text">Vgl 2</p>
+                            <h4 class="card-title">Instellingen </h4>
+                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+
+                            <select id='keyboardType' onchange="changeKeyboardType()">
+                                <option value="wouterCode">Wouter code</option>
+                                <option value="svenCode">Sven code</option>
+                                <option value="wouterkeyCode">Wouter keyCode</option>
+                                <option value="svenkeyCode">Sven Code</option>
+                            </select>
+
                         </div>
+                        <div class="card-body">
+                            <b>Parenthesis option:</b>
+                            <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
+                            <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
+                            <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
+                            <br/>
+                            <b>Implicit multiplication:</b>
+                            <input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
+                            <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
+                            <p class="output"> para 2</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Toetsen </h4>
+                            <p> pijltjes om door de vergelijking te bewegen</p>
+                            <p> de zes toetsen naast enter zijn standaardbewerkingen</p>
+                            <p> ALT en de letter d voor een update van de grafiek</p>
+                            <p> ALT en = om een propere vergelijking te krijgen</p>
+                            <p> Cijfers (zonder shift) voor cijfers</p>
+                            <p> SHIFT en pijltjes om de selectie uit te breiden</p>
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                    <div class="card-body">
-                      <p class="card-text">Vgl 3</p>
+            <div class='row'>
+                <div class='col-md' id="left">
+
+                    <div> Grafieken </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Grafiek</p>
+
+                            <canvas id="myCanvas" width="300" height="300">
+                                Fallback content, in case the browser does not support Canvas.
+                            </canvas>
+
+                            <input type="range" value="7" min="0" max="10" name="range">
+
+                            <input type="range" min="0" max="100" value="50" class="vertical" orient="vertical">
+
+                        </div>
                     </div>
-        </div>
 
-        <div class="card">
-                <div class="card-body">
-                  <p class="card-text">Vgl 4</p>
                 </div>
-        </div>
+                <div class='col-md' id="middle">
 
-        <div class="card">
-                <div class="card-body">
-                  <p class="card-text">Vgl 5</p>
-                </div>
-        </div>
+                    <div> Vergelijkingen</div>
 
-        <div class="card">
-                <div class="card-body">
-                  <p class="card-text">Vgl 6</p>
-                </div>
-        </div>
 
-        <div class="card">
-                <div class="card-body">
-                  <p class="card-text">Vgl 7</p>
-                </div>
-        </div>
 
-        <div class="card">
-                <div class="card-body">
-                  <p class="card-text">Vgl 5</p>
-                </div>
-        </div>
-
-        <div class="card">
-                <div class="card-body">
-                  <p class="card-text">Vgl 6</p>
-                </div>
-        </div>
-
-        <div class="card">
-                <div class="card-body">
-                  <p class="card-text">Vgl 7</p>
-                </div>
-        </div>        
-        
-            
-    </div>
-    <div class='col-md' id='right'> 
-
-            <div > Rekenregels</div>
-
-            <div class="card">
-                    <div class="card-body">
-                      <p class="card-text">Rekenregel 1</p>
-                      
+                    <div class="card">
+                        <div class='card-header'> Vgl 1</div>
+                        <div class="card-body">
+                            <p class="card-text" id="pretty">$$$$</p>
+                            <p class="card-text" id="result"> </p>
+                            <p class="card-text" id="expr"> </p>
+                        </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 2</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 3</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 4</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 5</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 6</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 7</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 5</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 6</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Vgl 7</p>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class='col-md' id='right'>
+
+                    <div> Rekenregels</div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Rekenregel 1</p>
+
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">Rekenregel 2</p>
+
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="card">
-                    <div class="card-body">
-                      <p class="card-text">Rekenregel 2</p>
-                      
-                    </div>
-            </div>
-        
-    </div>
-</div>
+            <script>  
 
-<script>  
-
-//CANVAS GEDOE
+                //CANVAS GEDOE
 
 
-var canvas = document.getElementById("myCanvas");
-var canvasWidth = canvas.width;
-var canvasHeight = canvas.height;
-var ctx = canvas.getContext("2d");
-var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+                var canvas = document.getElementById("myCanvas");
+                var canvasWidth = canvas.width;
+                var canvasHeight = canvas.height;
+                var ctx = canvas.getContext("2d");
+                var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
 
-// That's how you define the value of a pixel //
-function drawPixel (x, y, r, g, b, a) {
-    var index = (x + y * canvasWidth) * 4;
+                // That's how you define the value of a pixel //
+                function drawPixel(x, y, r, g, b, a) {
+                    var index = (x + y * canvasWidth) * 4;
 
-    canvasData.data[index + 0] = r;
-    canvasData.data[index + 1] = g;
-    canvasData.data[index + 2] = b;
-    canvasData.data[index + 3] = a;
-}
+                    canvasData.data[index + 0] = r;
+                    canvasData.data[index + 1] = g;
+                    canvasData.data[index + 2] = b;
+                    canvasData.data[index + 3] = a;
+                }
 
-// That's how you update the canvas, so that your //
-// modification are taken in consideration //
-function updateCanvas() {
-    ctx.putImageData(canvasData, 0, 0);
-} 
-</script>
+                // That's how you update the canvas, so that your //
+                // modification are taken in consideration //
+                function updateCanvas() {
+                    ctx.putImageData(canvasData, 0, 0);
+                } 
+            </script>
 
 
-          
-         
 
-<script>
 
-// velden in de html benoemen
 
-var out = document.querySelector(".output");
+            <script>
 
-  var expr = document.getElementById('expr'),
-      pretty = document.getElementById('pretty'),
-      result = document.getElementById('result'),
-      transfo = document.getElementById('transfo'),
-      parenthesis = 'keep',
-      implicit = 'hide';
+                // velden in de html benoemen
 
-// Selectfunctie en andere speciale functies importeren
+                var out = document.querySelector(".output");
 
-math.import(customFunctions);
-// math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
-math.pow.toTex = function (node, options) {
+                var expr = document.getElementById('expr'),
+                    pretty = document.getElementById('pretty'),
+                    result = document.getElementById('result'),
+                    transfo = document.getElementById('transfo'),
+                    parenthesis = 'keep',
+                    implicit = 'hide';
 
-    if (multiFunction[node.args[0].name]==1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide' || node.args[0].fn == 'pow') {
-        return "\\left("+node.args[0].toTex(options)+"\\right)^{"+node.args[1].toTex(options)+"}";
-    } else {
-        return "{"+node.args[0].toTex(options)+"}"+"^{"+node.args[1].toTex(options)+"}";
-    }
+                // Selectfunctie en andere speciale functies importeren
 
-};
+                math.import(customFunctions);
+                // math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
+                math.pow.toTex = function (node, options) {
 
-math.unaryMinus.toTex = function (node, options) {
+                    console.log(multiFunction[node.args[0].name] == 1);
+                    console.log(node.args[0].name == 'nthRoot');
+                    console.log(node.args[0].name == 'unaryMinus');
+                    console.log(node.args[0].fn == 'divide');
+                    console.log(node.args[0].fn == 'pow');
 
-if (multiFunction[node.args[0].name]==1) {
-    return "-\\left("+node.args[0].toTex(options)+"\\right)";
-} else {
-    return "-" + node.args[0].toTex(options);
-}
+                    if (multiFunction[node.args[0].name] == 1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide' || node.args[0].fn == 'pow') {
+                        console.log('moethaakjeskrijgen');
+                        return "\\left(" + node.args[0].toTex(options) + "\\right)^{" + node.args[1].toTex(options) + "}";
+                    } else {
+                        return "{" + node.args[0].toTex(options) + "}" + "^{" + node.args[1].toTex(options) + "}";
+                    }
 
-};
+                };
 
-// "-\\left(${args[0]}\\right)"
+                math.unaryMinus.toTex = function (node, options) {
 
-// Initialisatie van de state variabelen: begin met een lege vergelijking en een lege keyslist
+                    if (multiFunction[node.args[0].name] == 1) {
+                        return "-\\left(" + node.args[0].toTex(options) + "\\right)";
+                    } else {
+                        return "-" + node.args[0].toTex(options);
+                    }
+
+                };
+
+                // "-\\left(${args[0]}\\right)"
+
+                // Initialisatie van de state variabelen: begin met een lege vergelijking en een lege keyslist
 
 
 
@@ -256,327 +279,896 @@ if (multiFunction[node.args[0].name]==1) {
 
 
 
-///*********************************************************************
-/// Initialisatie van objecten
-///*********************************************************************
+                ///*********************************************************************
+                /// Initialisatie van objecten
+                ///*********************************************************************
 
-multiFunction = {   'Times': 1,
+                tijd = new Date();
+                laatsteDigitOfLetterTijdStip = tijd.getTime();
+
+                regels = {
+                    nulOpslorpendVoorPlus: {
+                        naam: '0 opslorpend element voor +',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        }
+
+                    },
+                    eenOpslorpendVoorMaal: {
+                        naam: '1 opslorpend element voor *',
+                        input: {
+                            expr: math.parse('a/1'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    schrapUnitaireBreuk: {
+                        naam: 'schrap unitaire breuk',
+                        input: {
+                            expr: math.parse('a/a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: []
+                        }
+                    },
+                    omgekeerdeIsInverseVoorMaal1: {
+                        naam: 'omgekeerde is inverse voor maal',
+                        input: {
+                            expr: math.parse('Times(a,1/a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: []
+                        }
+                    },
+                    omgekeerdeIsInverseVoorMaal2: {
+                        naam: 'omgekeerde is inverse voor maal',
+                        input: {
+                            expr: math.parse('Times(1/a,a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: []
+                        }
+                    },
+                    breukenVermenigvuldigen: {
+                        naam: 'breuken vermenigvuldigen',
+                        input: {
+                            expr: math.parse('Times(a/b,c/d)'),
+                            unknowns: ['a', 'b', 'c', 'd']
+                        },
+                        output: {
+                            expr: math.parse('Times(a,c)/Times(b,d)'),
+                            unknowns: ['a', 'b', 'c', 'd']
+                        }
+                    },
+                    uiteenTrekRegel: {
+                        naam: 'breuk in factoren uit elkaar trekken',
+                        input: {
+                            expr: math.parse('Times(a,c)/Times(b,d)'),
+                            unknowns: ['a', 'b', 'c', 'd']
+                        },
+                        output: {
+                            expr: math.parse('Times(a/b,c/d)'),
+                            unknowns: ['a', 'b', 'c', 'd']
+                        }
+                    },
+                    eenheidsbreukAlsNegatieveExponent: {
+                        naam: 'eenheidsbreuk als negatieve exponent',
+                        input: {
+                            expr: math.parse('1/a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('pow(a,unaryMinus(1))'),
+                            unknowns: ['a']
+                        }
+                    },
+                    negatieveExponentAlsEenheidsbreuk: {
+                        naam: 'negatieve exponent als eenheidsbreuk',
+                        input: {
+                            expr: math.parse('pow(a,unaryMinus(1))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1/a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    vermenigvuldigingMetEenheidsbreuk1: {
+                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
+                        input: {
+                            expr: math.parse('Times(a,1/b)'),
+                            unknowns: ['a', 'b']
+                        },
+                        output: {
+                            expr: math.parse('a/b'),
+                            unknowns: ['a', 'b']
+                        }
+                    },
+                    vermenigvuldigingMetEenheidsbreuk2: {
+                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
+                        input: {
+                            expr: math.parse('Times(1/b,a)'),
+                            unknowns: ['a', 'b']
+                        },
+                        output: {
+                            expr: math.parse('a/b'),
+                            unknowns: ['a', 'b']
+                        }
+                    },
+                    vermenigvuldigingMetEenheidsbreukOmgekeerd: {
+                        naam: 'breuk als getal maar eenheidsbreuk',
+                        input: {
+                            expr: math.parse('a/b'),
+                            unknowns: ['a', 'b']
+                        },
+                        output: {
+                            expr: math.parse('Times(a,1/b)'),
+                            unknowns: ['a', 'b']
+                        }
+                    },
+                    vermenigvuldigingMetEenLinks: {
+                        naam: '1 is neutraal voor vermenigvuldiging',
+                        input: {
+                            expr: math.parse('Times(1,a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    vermenigvuldigingMetEenRechts: {
+                        naam: '1 is neutraal voor vermenigvuldiging',
+                        input: {
+                            expr: math.parse('Times(a,1)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    vermenigvuldigingMetNulLinks: {
+                        naam: '0 is neutraal voor vermenigvuldiging',
+                        input: {
+                            expr: math.parse('Times(0, a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    vermenigvuldigingMetNulRechts: {
+                        naam: '0 is neutraal voor vermenigvuldiging',
+                        input: {
+                            expr: math.parse('Times(a,0)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    wortelInversAanMacht: {
+                        naam: 'wortel heft een macht op',
+                        input: {
+                            expr: math.parse('nthRoot(pow(a,b),b)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    machtInversAanWortel: {
+                        naam: 'macht heft een wortel op',
+                        input: {
+                            expr: math.parse('pow(nthRoot(a,b),b)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    exponentenOptellen: {
+                        naam: 'product van machten telt exponenten op',
+                        input: {
+                            expr: math.parse('Times(pow(x,a),pow(x,b))'),
+                            unknowns: ['x','a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,Plus(a,b))'),
+                            unknowns: ['x','a','b']
+                        }
+                    },
+                    somVanExponentenNaarVermenigvuldiging: {
+                        naam: 'opgetelde exponenten schrijven als een vermenigvuldiging',
+                        input: {
+                            expr: math.parse('pow(x,Plus(a,b))'),
+                            unknowns: ['x','a','b']
+                        },
+                        output: {
+                            expr: math.parse('Times(pow(x,a),pow(x,b))'),
+                            unknowns: ['x','a','b']
+                        }
+                    },
+                    machtTorenAfbreken: {
+                        naam: 'machttoren afbreken',
+                        input: {
+                            expr: math.parse('pow(pow(x,a),b)'),
+                            unknowns: ['x','a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,Times(a,b))'),
+                            unknowns: ['x','a','b']
+                        }
+                    },
+                    machtTorenOpbouwen: {
+                        naam: 'machttoren opbouwen',
+                        input: {
+                            expr: math.parse('pow(x,Times(a,b))'),
+                            unknowns: ['x','a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(pow(x,a),b)'),
+                            unknowns: ['x','a','b']
+                        }
+                    },
+                    machtNaarWortelNotatie: {
+                        naam: 'macht als wortel schrijven',
+                        input: {
+                            expr: math.parse('pow(x,p/q)'),
+                            unknowns: ['x','p','q']
+                        },
+                        output: {
+                            expr: math.parse('nthRoot(pow(x,p),q)'),
+                            unknowns: ['x','p','q']
+                        }
+                    },
+                    wortelNaarMachtNotatie1: {
+                        naam: 'wortel als macht schrijven',
+                        input: {
+                            expr: math.parse('nthRoot(pow(x,p),q)'),
+                            unknowns: ['x','p','q']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,p/q)'),
+                            unknowns: ['x','p','q']
+                        }
+                    },
+                    wortelNaarMachtNotatie2: {
+                        naam: 'wortel als macht schrijven',
+                        input: {
+                            expr: math.parse('pow(nthRoot(x,q),p)'),
+                            unknowns: ['x','p','q']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,p/q)'),
+                            unknowns: ['x','p','q']
+                        }
+                    },
+                    wortelNaarMachtNotatie3: {
+                        naam: 'wortel als macht schrijven',
+                        input: {
+                            expr: math.parse('nthRoot(x,q)'),
+                            unknowns: ['x','q']
+                        },
+                        output: {
+                            expr: math.parse('pow(x,1/q)'),
+                            unknowns: ['x','q']
+                        }
+                    },
+                    machtVanProduct: {
+                        naam: 'macht van een product',
+                        input: {
+                            expr: math.parse('pow(Times(x,y),n)'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('Times(pow(x,n),pow(y,n))'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    productMetGelijkeExponenten: {
+                        naam: 'product met gelijke exponenten',
+                        input: {
+                            expr: math.parse('Times(pow(x,n),pow(y,n))'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('pow(Times(x,y),n)'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    optellenMetNulLinksDoetNiks: {
+                        naam: 'optellen met nul langs links',
+                        input: {
+                            expr: math.parse('Plus(0,a)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    optellenMetNulRechtsDoetNiks: {
+                        naam: 'optellen met nul langs rechts',
+                        input: {
+                            expr: math.parse('Plus(a,0)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    productVanGelijkeWortels: {
+                        naam: 'product van gelijke wortels',
+                        input: {
+                            expr: math.parse('Times(nthRoot(x,n),nthRoot(y,n))'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('nthRoot(Times(x,y),n)'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    productOnderDeWortel: {
+                        naam: 'product onder de wortel',
+                        input: {
+                            expr: math.parse('nthRoot(Times(x,y),n)'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('Times(nthRoot(x,n),nthRoot(y,n))'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    wortelVanBreuk: {
+                        naam: 'wortel van een breuk',
+                        input: {
+                            expr: math.parse('nthRoot(x/y,n)'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('nthRoot(x,n)/nthRoot(y,n)'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    breukVanWortels: {
+                        naam: 'breuk van wortels',
+                        input: {
+                            expr: math.parse('nthRoot(x,n)/nthRoot(y,n)'),
+                            unknowns: ['x','y','n']
+                        },
+                        output: {
+                            expr: math.parse('nthRoot(x/y,n)'),
+                            unknowns: ['x','y','n']
+                        }
+                    },
+                    binomium2Expand: {
+                        naam: 'merkwaardig kwadraat uitwerken',
+                        input: {
+                            expr: math.parse('pow(Plus(a,b),2)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Plus(pow(a,2),Times(2,a,b), pow(b,2))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    binomium2Factor: {
+                        naam: 'merkwaardig kwadraat herkennen',
+                        input: {
+                            expr: math.parse('Plus(pow(a,2),Times(2,a,b), pow(b,2))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(Plus(a,b),2)'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    binomium3Expand: {
+                        naam: 'merkwaardige derdemacht uitwerken',
+                        input: {
+                            expr: math.parse('pow(Plus(a,b),3)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Plus(pow(a,3),Times(3,pow(a,2),b),Times(3,a,pow(b,2)), pow(b,3))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    binomium3Factor: {
+                        naam: 'merkwaardig derde macht herkennen',
+                        input: {
+                            expr: math.parse('Plus(pow(a,3),Times(3,pow(a,2),b),Times(3,a,pow(b,2)), pow(b,3))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('pow(Plus(a,b),3)'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    verschilVanKwadratenExpand: {
+                        naam: 'verschil van kwadraten uitwerken',
+                        input: {
+                            expr: math.parse('Plus(pow(a,2),unaryMinus(pow(b,2)))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Times(Plus(a,b),Plus(a,unaryMinus(b)))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    verschilVanKwadratenFactor1: {
+                        naam: 'verschil van kwadraten herkennen',
+                        input: {
+                            expr: math.parse('Times(Plus(a,b),Plus(a,unaryMinus(b)))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Plus(pow(a,2),unaryMinus(pow(b,2)))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    verschilVanKwadratenFactor2: {
+                        naam: 'verschil van kwadraten herkennen',
+                        input: {
+                            expr: math.parse('Times(Plus(a,unaryMinus(b)),Plus(a,b))'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Plus(pow(a,2),unaryMinus(pow(b,2)))'),
+                            unknowns: ['a','b']
+                        }
+                    },
+                    eersteMachtNeutraal: {
+                        naam: 'eerste macht doet niks',
+                        input: {
+                            expr: math.parse('pow(a,1)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        }
+                    },
+                    nuldeMachtIsEen: {
+                        naam: 'nulde macht is 1',
+                        input: {
+                            expr: math.parse('pow(a,0)'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: ['a']
+                        }
+                    },
+                    
+                    
+                };
+
+                spaceregels = [
+                    'breukenVermenigvuldigen',
+                    'uiteenTrekRegel',
+                    'eenheidsbreukAlsNegatieveExponent',
+                    'negatieveExponentAlsEenheidsbreuk',
+                    'vermenigvuldigingMetEenheidsbreuk1',
+                    'vermenigvuldigingMetEenheidsbreuk2',
+                    'vermenigvuldigingMetEenheidsbreukOmgekeerd',
+                    'exponentenOptellen',
+                    'somVanExponentenNaarVermenigvuldiging',
+                    'machtTorenOpbouwen',
+                    'machtTorenAfbreken',
+                    'machtNaarWortelNotatie',
+                    'wortelNaarMachtNotatie1',
+                    'wortelNaarMachtNotatie2',
+                    'wortelNaarMachtNotatie3',
+                    'machtVanProduct',
+                    'productMetGelijkeExponenten',
+                    'productOnderDeWortel',
+                    'productVanGelijkeWortels',
+                    'breukVanWortels',
+                    'wortelVanBreuk',
+                    'binomium2Expand',
+                    'binomium2Factor',
+                    'binomium3Expand',
+                    'binomium3Factor',
+                    'verschilVanKwadratenExpand',
+                    'verschilVanKwadratenFactor1',
+                    'verschilVanKwadratenFactor2'
+
+                ];
+
+                enterregels = [
+                    'nulOpslorpendVoorPlus',
+                    'eenOpslorpendVoorMaal',
+                    'schrapUnitaireBreuk',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetEenLinks',
+                    'vermenigvuldigingMetEenRechts',
+                    'vermenigvuldigingMetNulRechts',
+                    'vermenigvuldigingMetNulLinks',
+                    'machtInversAanWortel',
+                    'wortelInversAanMacht',
+                    'optellenMetNulLinksDoetNiks',
+                    'optellenMetNulRechtsDoetNiks',
+                    'eersteMachtNeutraal',
+                    'nuldeMachtIsEen'
+                ];
+
+                multiFunction = {
+                    'Times': 1,
                     'Plus': 1,
                     'And': 1,
                     'Or': 1,
                     'add': 1,
                     'multiply': 1
-    };
-
-var equation = math.parse('');
-
-var keysList = [];
-
-updateLatex(equation);
-
-// wat er gebeurt als je iets rechtstreeks invult in de expressiebox
-expr.oninput = function () {
-    
-    equation = math.parse(expr.value)
-    updateLatex(equation);
-    
-}
-
-
-
-///*********************************************************************
-///  Keyboard handling
-///*********************************************************************
-
-var keyboards = {
-    wouterkeyCode: {
-        left:    37,
-        up:      38,
-        right:   39,
-        down:    40,
-
-        minus:   169,  
-        plus:    173,
-        divide:  160,
-        times:   164,
-        nthroot: 165,
-        power:   192,
-        equals:  61,
-
-
-        0:       48,
-        1:       49,
-        2:       50,
-        3:       51,
-        4:       52,
-        5:       53,
-        6:       54,
-        7:       55,
-        8:       56,
-        9:       57,
-
-        a:       65,
-        b:       66,
-        c:       67
-
-    },
-    svenkeyCode:   {
-        left:    37,
-        up:      38,
-        right:   39,
-        down:    40,
-
-        minus:   219,  
-        plus:    189,
-        divide:  221,
-        times:   186,
-        nthroot: 192,
-        power:   220,
-        equals:  187,
-
-
-        0:       48,
-        1:       49,
-        2:       50,
-        3:       51,
-        4:       52,
-        5:       53,
-        6:       54,
-        7:       55,
-        8:       56,
-        9:       57,
-
-        a:       65,
-        b:       66,
-        c:       67
-    },
-     wouterCode:   {
-        left:    'ArrowLeft',
-        up:      'ArrowUp',
-        right:   'ArrowRight',
-        down:    'ArrowDown',
-
-        minus:   'Minus',  
-        plus:    'Equal',
-        divide:  'BracketLeft',
-        times:   'BracketRight',
-        nthroot: 'Quote',
-        power:   'Backslash',
-        equals:  'Slash',
-
-        space:   'Space',
-        tab:     'Tab',
-        escape:  'Escape',
-        enter:   'Enter',
-        apestaart: 'Backquote',
-        backspace: 'Backspace',
-
-        f1:      'F1',
-        f2:      'F2',
-        f3:      'F3',
-        f4:      'F4',
-        f5:      'F5',
-        f6:      'F6',
-        f7:      'F7',
-        f8:      'F8',
-        f9:      'F9',
-        f10:     'F10',
-        f11:     'F11',
-        f12:     'F12',
-
-
-        0:       'Digit0',
-        1:       'Digit1',
-        2:       'Digit2',
-        3:       'Digit3',
-        4:       'Digit4',
-        5:       'Digit5',
-        6:       'Digit6',
-        7:       'Digit7',
-        8:       'Digit8',
-        9:       'Digit9',
-
-        a:       'KeyQ',
-        b:       'KeyB',
-        c:       'KeyC',
-
-        d:       'KeyD',
-
-        x:       'KeyX',
-        y:       'KeyY',
-        z:       'KeyZ'
-    } 
-};
-
-keyboardSelectElement = document.getElementById('keyboardType');
-keyboardType = keyboardSelectElement.value;
-
-function changeKeyboardType() {
-    keyboardSelectElement = document.getElementById('keyboardType');
-    keyboardType = keyboardSelectElement.value;
-};
-
-// maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType
-var keyLookup = invertSimple(keyboards[keyboardType]);
-
-document.onkeydown = keysPressed
-  
-function  keysPressed(e) {
-
-    out.innerHTML = e.code;
-
-if (e.shiftKey == 1)
-    switch (keyLookup[e.code]) {
-// pijltjes met shift
-        case 'left': keysList.push('shift left') ; e.preventDefault(); leftSlurp(equation); break;
-        case 'up': out.innerHTML = 'shift up'; break;
-        case 'right': keysList.push('shift right') ; e.preventDefault(); rightSlurp(equation); break;
-        case 'down': keysList.push('shift down') ; e.preventDefault(); updateLatex(flatten(equation)); break;
-
-// Speciale tekens met shift
-        // case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
-
-// Cijfers met shift
-        case '1': e.preventDefault(); inputDigit(1, equation); updateLatex(equation); break; 
-        case '2': e.preventDefault(); inputDigit(2, equation); updateLatex(equation); break;
-        case '3': e.preventDefault(); inputDigit(3, equation); updateLatex(equation); break;
-        case '4': e.preventDefault(); inputDigit(4, equation); updateLatex(equation); break;
-        case '5': e.preventDefault(); inputDigit(5, equation); updateLatex(equation); break;
-        case '6': e.preventDefault(); inputDigit(6, equation); updateLatex(equation); break;
-        case '7': e.preventDefault(); inputDigit(7, equation); updateLatex(equation); break;
-        case '8': e.preventDefault(); inputDigit(8, equation); updateLatex(equation); break;
-        case '9': e.preventDefault(); inputDigit(9, equation); updateLatex(equation); break;
-        case '0': e.preventDefault(); inputDigit(0, equation); updateLatex(equation); break;        
-
-// letters met shift
-        case 'a': ; break; // shift a
-        case 'b': ; break; // shift b
-        case 'c': ; break; // shift c
-
-    }
-
-
-
-else if (e.ctrlKey == 1)
-    switch (keyLookup[e.code]) {
-        case 'left': out.innerHTML = 'CTRLleft';break;
-        case 'up': out.innerHTML = 'up'; break;
-        case 'right': out.innerHTML = 'right'; break;
-        case 'down': out.innerHTML = 'down'; break;
-
-        // letters
-
-//        case 'd': e.preventDefault(); distributeSelected(equation); keysList.push('distributeSelected'); updateLatex(equation); break;
-//        case 's': e.preventDefault(); factorSelected(equation); keysList.push('factorSelected'); updateLatex(equation); break;
-//        case 'a': e.preventDefault(); alert('CTRL - f');
-// case 'x': e.preventDefault(); alert('CTRL - f');
-//  case 'y': e.preventDefault(); alert('CTRL - f');
-// case 'c': e.preventDefault(); alert('CTRL - f');
-// case 'b': e.preventDefault(); alert('CTRL - f');
-
-    }
-
-else if (e.metaKey == 1)
-
-    switch (keyLookup[e.code]) {
-        case 'left': out.innerHTML = 'left'; break;
-        case 'up': out.innerHTML = 'up'; break;
-        case 'right': out.innerHTML = 'right'; break;
-        case 'down': out.innerHTML = 'down'; break;
-
-        case 'x': e.preventDefault(); alert('meta - x');
- case 'y': e.preventDefault(); alert('meta - y');
-case 'c': e.preventDefault(); alert('meta - c');
-case 'b': e.preventDefault(); alert('meta - b');
-
-    }
-
-else if (e.altKey == 1)
-
-    switch (keyLookup[e.code]) {
-        case 'left': commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
-        case 'up': out.innerHTML = 'up'; break;
-        case 'right': commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
-        case 'down': out.innerHTML = 'down'; break;
-
-// Specialkeys  
-        case 'plus': replaceWithPlus(); keysList.push('replacePlus'); break;
-        case 'times': replaceWithTimes(); keysList.push('replaceTimes'); break;
-        case 'power': replaceWithPower(); keysList.push('replacePower'); break;
-        case 'divide':replaceWithDivide(); keysList.push('replaceDivide'); break;
-        case 'minus': replaceWithMinus(); keysList.push('replaceMinus'); break;
-        case 'nthroot': replaceWithNthroot(); keysList.push('replaceNthroot'); break;
-        case 'equals':  replaceWithEquality(); keysList.push('replaceEquals'); break;
-
-// letters
-        case 'd': drawGraph(equation); break;
-
-        
-    }
-
-else
-
-// ********************************
-//   zonder modifier keys
-// ********************************
-
-    switch (keyLookup[e.code]) {
-        case 'left': keysList.push('left') ; e.preventDefault(); leftSelect(equation); break;
-        case 'up': keysList.push('up') ; e.preventDefault(); upSelect(equation); break;
-        case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
-        case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
-
-// Specialkeys        
-        case 'plus': applyPlus(); keysList.push('applyPlus'); break;
-        case 'times': applyTimes(); keysList.push('applyTimes'); break;
-        case 'power': applyPower(); keysList.push('applyPower'); break;
-        case 'minus': applyMinus(); keysList.push('applyMinus'); break;
-        case 'divide': applyDivide(); keysList.push('applyDivide'); break;
-        case 'nthroot': applyNthroot(); keysList.push('applyNthroot'); break;
-        case 'equals':  applyEquality(); keysList.push('applyEquals'); break;
-
-// Extra keys
-        case 'space':  spaceBar(); keysList.push('space'); break;
-        case 'enter':  enter(); keysList.push('enter'); break;
-        case 'backspace':  backspace(); keysList.push('backspace'); break;
-
-// tekens
-        case 'KeyM': komma(); keysList.push('komma'); break;
-        case 'Comma': puntKomma(); keysList.push('puntKomma'); break;
-        case 'Period': dubbelPunt(); keysList.push('puntKomma'); break;
-        case 'IntlBackslash': kleinerDan(); keysList.push('kleinerDan'); break;
-
-// Cijfers
-        case '1': e.preventDefault(); substituteSelected(selectIt('1'), equation); updateLatex(equation); break; 
-        case '2': e.preventDefault(); substituteSelected(selectIt('2'), equation); updateLatex(equation); break;
-        case '3': e.preventDefault(); substituteSelected(selectIt('3'), equation); updateLatex(equation); break;
-        case '4': e.preventDefault(); substituteSelected(selectIt('4'), equation); updateLatex(equation); break;
-        case '5': e.preventDefault(); substituteSelected(selectIt('5'), equation); updateLatex(equation); break;
-        case '6': e.preventDefault(); substituteSelected(selectIt('6'), equation); updateLatex(equation); break;
-        case '7': e.preventDefault(); substituteSelected(selectIt('7'), equation); updateLatex(equation); break;
-        case '8': e.preventDefault(); substituteSelected(selectIt('8'), equation); updateLatex(equation); break;
-        case '9': e.preventDefault(); substituteSelected(selectIt('9'), equation); updateLatex(equation); break;
-        case '0': e.preventDefault(); substituteSelected(selectIt('0'), equation); updateLatex(equation); break;
-// letters
-        case 'a': e.preventDefault(); substituteSelected(selectIt('a'), equation); updateLatex(equation); break; //  a
-        case 'b': e.preventDefault(); substituteSelected(selectIt('b'), equation); updateLatex(equation); break; //  b
-        case 'c': e.preventDefault(); substituteSelected(selectIt('c'), equation); updateLatex(equation); break; //  c7
-        case 'x': e.preventDefault(); substituteSelected(selectIt('x'), equation); updateLatex(equation); break; //  8
-        case 'y': e.preventDefault(); substituteSelected(selectIt('y'), equation); updateLatex(equation); break; //  9
-        case 'z': e.preventDefault(); substituteSelected(selectIt('z'), equation); updateLatex(equation); break; //  0
-    }
-};
-
-
-
-// plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
-equation = math.parse('x^2 + y^2 == Select(1024)');
-updateLatex(equation);
-
-</script>
-
-
-
-</div>
-
-</body>
+                };
+
+                var equation = math.parse('');
+
+                var keysList = [];
+
+                updateLatex(equation);
+
+                // wat er gebeurt als je iets rechtstreeks invult in de expressiebox
+                expr.oninput = function () {
+
+                    equation = math.parse(expr.value)
+                    updateLatex(equation);
+
+                }
+
+
+
+                ///*********************************************************************
+                ///  Keyboard handling
+                ///*********************************************************************
+
+                var keyboards = {
+                    wouterkeyCode: {
+                        left: 37,
+                        up: 38,
+                        right: 39,
+                        down: 40,
+
+                        minus: 169,
+                        plus: 173,
+                        divide: 160,
+                        times: 164,
+                        nthroot: 165,
+                        power: 192,
+                        equals: 61,
+
+
+                        0: 48,
+                        1: 49,
+                        2: 50,
+                        3: 51,
+                        4: 52,
+                        5: 53,
+                        6: 54,
+                        7: 55,
+                        8: 56,
+                        9: 57,
+
+                        a: 65,
+                        b: 66,
+                        c: 67
+
+                    },
+                    svenkeyCode: {
+                        left: 37,
+                        up: 38,
+                        right: 39,
+                        down: 40,
+
+                        minus: 219,
+                        plus: 189,
+                        divide: 221,
+                        times: 186,
+                        nthroot: 192,
+                        power: 220,
+                        equals: 187,
+
+
+                        0: 48,
+                        1: 49,
+                        2: 50,
+                        3: 51,
+                        4: 52,
+                        5: 53,
+                        6: 54,
+                        7: 55,
+                        8: 56,
+                        9: 57,
+
+                        a: 65,
+                        b: 66,
+                        c: 67
+                    },
+                    wouterCode: {
+                        left: 'ArrowLeft',
+                        up: 'ArrowUp',
+                        right: 'ArrowRight',
+                        down: 'ArrowDown',
+
+                        minus: 'Minus',
+                        plus: 'Equal',
+                        divide: 'BracketLeft',
+                        times: 'BracketRight',
+                        nthroot: 'Quote',
+                        power: 'Backslash',
+                        equals: 'Slash',
+
+                        space: 'Space',
+                        tab: 'Tab',
+                        escape: 'Escape',
+                        enter: 'Enter',
+                        apestaart: 'Backquote',
+                        backspace: 'Backspace',
+
+                        f1: 'F1',
+                        f2: 'F2',
+                        f3: 'F3',
+                        f4: 'F4',
+                        f5: 'F5',
+                        f6: 'F6',
+                        f7: 'F7',
+                        f8: 'F8',
+                        f9: 'F9',
+                        f10: 'F10',
+                        f11: 'F11',
+                        f12: 'F12',
+
+
+                        0: 'Digit0',
+                        1: 'Digit1',
+                        2: 'Digit2',
+                        3: 'Digit3',
+                        4: 'Digit4',
+                        5: 'Digit5',
+                        6: 'Digit6',
+                        7: 'Digit7',
+                        8: 'Digit8',
+                        9: 'Digit9',
+
+                        a: 'KeyQ',
+                        b: 'KeyB',
+                        c: 'KeyC',
+                        d: 'KeyD',
+                        e: 'KeyE',
+                        f: 'KeyF',
+                        g: 'KeyG',
+                        h: 'KeyH',
+                        i: 'KeyI',
+                        j: 'KeyJ',
+                        k: 'KeyK',
+                        l: 'KeyL',
+                        m: 'KeyM',
+                        n: 'KeyN',
+                        o: 'KeyO',
+                        p: 'KeyP',
+                        q: 'KeyQ',
+                        r: 'KeyR',
+                        s: 'KeyS',
+                        t: 'KeyT',
+                        u: 'KeyU',
+                        v: 'KeyV',
+                        w: 'KeyW',
+                        x: 'KeyX',
+                        y: 'KeyY',
+                        z: 'KeyZ'
+                    }
+                };
+
+                keyboardSelectElement = document.getElementById('keyboardType');
+                keyboardType = keyboardSelectElement.value;
+
+                function changeKeyboardType() {
+                    keyboardSelectElement = document.getElementById('keyboardType');
+                    keyboardType = keyboardSelectElement.value;
+                };
+
+                // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType
+                var keyLookup = invertSimple(keyboards[keyboardType]);
+
+                document.onkeydown = keysPressed
+
+                function keysPressed(e) {
+
+                    out.innerHTML = e.code;
+
+                    if (e.shiftKey == 1)
+                        switch (keyLookup[e.code]) {
+                            // pijltjes met shift
+                            case 'left': keysList.push('shift left'); e.preventDefault(); leftSlurp(equation); break;
+                            case 'up': out.innerHTML = 'shift up'; break;
+                            case 'right': keysList.push('shift right'); e.preventDefault(); rightSlurp(equation); break;
+                            case 'down': keysList.push('shift down'); e.preventDefault(); updateLatex(flatten(equation)); break;
+
+                            // Speciale tekens met shift
+                            // case 'equals': equation = math.parse(expr.value); updateLatex(equation); break;
+                            case 'minus': applyUnaryMinus(); keysList.push('applyUnaryMinus'); break;
+
+                            // Cijfers met shift
+                            case '1': e.preventDefault(); inputDigit(1, equation); break;
+                            case '2': e.preventDefault(); inputDigit(2, equation); break;
+                            case '3': e.preventDefault(); inputDigit(3, equation); break;
+                            case '4': e.preventDefault(); inputDigit(4, equation); break;
+                            case '5': e.preventDefault(); inputDigit(5, equation); break;
+                            case '6': e.preventDefault(); inputDigit(6, equation); break;
+                            case '7': e.preventDefault(); inputDigit(7, equation); break;
+                            case '8': e.preventDefault(); inputDigit(8, equation); break;
+                            case '9': e.preventDefault(); inputDigit(9, equation); break;
+                            case '0': e.preventDefault(); inputDigit(0, equation); break;
+
+                            // letters met shift
+                            case 'a': SelectAllLettersInSelection('a', equation); break; // shift a
+                            case 'b': SelectAllLettersInSelection('b', equation); break; // shift b
+                            // case 'c': SelectAllLettersInSelection('c', equation); break; // shift c
+                            case 'x': SelectAllLettersInSelection('x', equation); break; // shift x
+                            case 'y': SelectAllLettersInSelection('y', equation); break; // shift y
+                            case 'z': SelectAllLettersInSelection('z', equation); break; // shift z
+
+                            case 's': applyFunction('sin', equation); break;
+                            case 'c': applyFunction('cos', equation); break;
+                            case 't': applyFunction('tan', equation); break; 
+                            case 'f': applyFunction('f', equation); break;
+                            case 'g': applyFunction('g', equation); break;
+                            case 'h': applyFunction('h', equation); break;
+                            case 'l': applyLog(equation); break;
+                            case 'e': e.preventDefault(); replaceWithE(equation); break;
+                            case 'p': replaceWithPi(equation); break; 
+                            case 'i': applyIntegral(equation); break; 
+                            case 'd': applyDerivative(equation); break;
+                        }
+
+
+
+                    else if (e.ctrlKey == 1)
+                        switch (keyLookup[e.code]) {
+                            case 'left': out.innerHTML = 'CTRLleft'; break;
+                            case 'up': out.innerHTML = 'up'; break;
+                            case 'right': out.innerHTML = 'right'; break;
+                            case 'down': out.innerHTML = 'down'; break;
+
+                            // letters
+
+                            case 'd': e.preventDefault(); updateLatex(distributeOrFactorSelectedLeft(equation)); keysList.push('distributeOrFactorSelectedLeft'); updateLatex(equation); break;
+                            //        case 's': e.preventDefault(); factorSelected(equation); keysList.push('factorSelected'); updateLatex(equation); break;
+                            //        case 'a': e.preventDefault(); alert('CTRL - f');
+                            // case 'x': e.preventDefault(); alert('CTRL - f');
+                            //  case 'y': e.preventDefault(); alert('CTRL - f');
+                            // case 'c': e.preventDefault(); alert('CTRL - f');
+                            // case 'b': e.preventDefault(); alert('CTRL - f');
+
+                        }
+
+                    else if (e.metaKey == 1)
+
+                        switch (keyLookup[e.code]) {
+                            case 'left': out.innerHTML = 'left'; break;
+                            case 'up': out.innerHTML = 'up'; break;
+                            case 'right': out.innerHTML = 'right'; break;
+                            case 'down': out.innerHTML = 'down'; break;
+
+                            case 'x': e.preventDefault(); alert('meta - x');
+                            case 'y': e.preventDefault(); alert('meta - y');
+                            case 'c': e.preventDefault(); alert('meta - c');
+                            case 'b': e.preventDefault(); alert('meta - b');
+
+                        }
+
+                    else if (e.altKey == 1)
+
+                        switch (keyLookup[e.code]) {
+                            case 'left': e.preventDefault(); commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
+                            case 'up': e.preventDefault(); out.innerHTML = 'up'; break;
+                            case 'right': e.preventDefault(); commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
+                            case 'down': e.preventDefault(); out.innerHTML = 'down'; break;
+
+                            // Specialkeys  
+                            case 'plus': replaceWithPlus(); keysList.push('replacePlus'); break;
+                            case 'times': replaceWithTimes(); keysList.push('replaceTimes'); break;
+                            case 'power': replaceWithPower(); keysList.push('replacePower'); break;
+                            case 'divide': replaceWithDivide(); keysList.push('replaceDivide'); break;
+                            case 'minus': replaceWithMinus(); keysList.push('replaceMinus'); break;
+                            case 'nthroot': replaceWithNthroot(); keysList.push('replaceNthroot'); break;
+                            case 'equals': replaceWithEquality(); keysList.push('replaceEquals'); break;
+
+                            // letters
+                            case 'd': e.preventDefault(); drawGraph(equation); break;
+
+
+                        }
+
+                    else
+
+                        // ********************************
+                        //   zonder modifier keys
+                        // ********************************
+
+                        switch (keyLookup[e.code]) {
+                            case 'left': keysList.push('left'); e.preventDefault(); leftSelect(equation); break;
+                            case 'up': keysList.push('up'); e.preventDefault(); upSelect(equation); break;
+                            case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
+                            case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
+
+                            // Specialkeys        
+                            case 'plus': applyPlus(); keysList.push('applyPlus'); break;
+                            case 'times': applyTimes(); keysList.push('applyTimes'); break;
+                            case 'power': applyPower(); keysList.push('applyPower'); break;
+                            case 'minus': applyMinus(); keysList.push('applyMinus'); break;
+                            case 'divide': applyDivide(); keysList.push('applyDivide'); break;
+                            case 'nthroot': applyNthroot(); keysList.push('applyNthroot'); break;
+                            case 'equals': applyEquality(); keysList.push('applyEquals'); break;
+
+                            // Extra keys
+                            case 'space': e.preventDefault(); keysList.push('space'); spaceBar(equation); break;
+                            case 'enter': enter(equation
+                            ); keysList.push('enter'); break;
+                            case 'backspace': backSpace(); keysList.push('backspace'); break;
+
+                            // tekens
+                            case 'KeyM': komma(); keysList.push('komma'); break;
+                            case 'Comma': puntKomma(); keysList.push('puntKomma'); break;
+                            case 'Period': dubbelPunt(); keysList.push('puntKomma'); break;
+                            case 'IntlBackslash': kleinerDan(); keysList.push('kleinerDan'); break;
+
+                            // Cijfers
+                            case '1': e.preventDefault(); replaceWithDigit('1', equation); break;
+                            case '2': e.preventDefault(); replaceWithDigit('2', equation); break;
+                            case '3': e.preventDefault(); replaceWithDigit('3', equation); break;
+                            case '4': e.preventDefault(); replaceWithDigit('4', equation); break;
+                            case '5': e.preventDefault(); replaceWithDigit('5', equation); break;
+                            case '6': e.preventDefault(); replaceWithDigit('6', equation); break;
+                            case '7': e.preventDefault(); replaceWithDigit('7', equation); break;
+                            case '8': e.preventDefault(); replaceWithDigit('8', equation); break;
+                            case '9': e.preventDefault(); replaceWithDigit('9', equation); break;
+                            case '0': e.preventDefault(); replaceWithDigit('0', equation); break;
+                            // letters
+                            case 'a': e.preventDefault(); replaceWithLetter('a',equation); break; //  a
+                            case 'b': e.preventDefault(); replaceWithLetter('b',equation); break; //  b
+                            case 'c': e.preventDefault(); replaceWithLetter('c',equation); break; //  c7
+                            case 'x': e.preventDefault(); replaceWithLetter('x',equation); break; //  8
+                            case 'y': e.preventDefault(); replaceWithLetter('y',equation); break; //  9
+                            case 'z': e.preventDefault(); replaceWithLetter('z',equation); //  0
+                        }
+                };
+
+
+
+                // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
+                // equation = math.parse('Select(Times(4,9))^2( + y^2 == Select(Times(2,512))');
+                equation = math.parse('Select(pow(Times(a,Plus(9,a)),2))==a');
+
+                prevEquation = equation;
+                updateLatex(equation);
+
+            </script>
+
+
+
+        </div>
+
+    </body>
