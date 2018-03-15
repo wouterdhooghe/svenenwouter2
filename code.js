@@ -2173,7 +2173,7 @@ function drawGraph(eq) {
       // fullSmooth = 255-Math.floor(255*(point.result-minResult)/resultRange);
       // logDiff = math.log(point.result);
       // squareDiff = 255 - point.result;
-      drawPixel(point.pixelX, point.pixelY, 0, 0, 0, squareDiff(point.result));
+      drawPixel(point.pixelX, point.pixelY, 0, 0, 0, 10*logDiff(point.result));
     });
 
     updateCanvas();

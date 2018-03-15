@@ -6,12 +6,7 @@
     <script src="code.js"></script>
     <script src="opgaven.js"></script>
 
-    <!-- 
-  <script src="math.min.js"></script>
-  <link rel="stylesheet" href="katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ" crossorigin="anonymous">
-<script src="katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
- -->
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ"
@@ -133,7 +128,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-body">
                             <p class="card-text">Vgl 5</p>
                         </div>
@@ -167,7 +162,7 @@
                         <div class="card-body">
                             <p class="card-text">Vgl 7</p>
                         </div>
-                    </div>
+                    </div> -->
 
 
                 </div>
@@ -190,6 +185,13 @@
                     </div>
 
                 </div>
+            </div>
+
+            <div class='row'>
+                    <div class='col-md' id='bottom'>
+            </div>
+
+
             </div>
 
             <script>  
@@ -287,8 +289,8 @@
                 laatsteDigitOfLetterTijdStip = tijd.getTime();
 
                 regels = {
-                    nulOpslorpendVoorPlus: {
-                        naam: '0 opslorpend element voor +',
+                    nulNeutraalVoorPlus: {
+                        naam: '0 neutraal element voor +',
                         input: {
                             expr: math.parse('Plus(a,unaryMinus(a))'),
                             unknowns: ['a']
@@ -299,8 +301,8 @@
                         }
 
                     },
-                    eenOpslorpendVoorMaal: {
-                        naam: '1 opslorpend element voor *',
+                    eenNeutraalVoorMaal: {
+                        naam: '1 neutraal element voor *',
                         input: {
                             expr: math.parse('a/1'),
                             unknowns: ['a']
@@ -798,8 +800,8 @@
                 ];
 
                 enterregels = [
-                    'nulOpslorpendVoorPlus',
-                    'eenOpslorpendVoorMaal',
+                    'nulNeutraalVoorPlus',
+                    'eenNeutraalVoorMaal',
                     'schrapUnitaireBreuk',
                     'omgekeerdeIsInverseVoorMaal1',
                     'omgekeerdeIsInverseVoorMaal2',
@@ -952,7 +954,7 @@
                         8: 'Digit8',
                         9: 'Digit9',
 
-                        a: 'KeyQ',
+                        a: 'KeyA',
                         b: 'KeyB',
                         c: 'KeyC',
                         d: 'KeyD',
