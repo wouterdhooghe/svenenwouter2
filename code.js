@@ -1416,7 +1416,8 @@ function substitueerExpr(vgl, exprNode, substitutie) {
   return newVgl;
   }
 
-function substitueerNaarBoven(eq) {
+function substitueerNaar(eq, locatie) {
+  prevEquation = equation.cloneDeep();
   // check of we in een kant van een vgl zitten
   // check of we een letter geselecteerd hebben
   // check of hierboven een vlg staat
@@ -1425,36 +1426,38 @@ selectNode = readAtAdress(selectAdres, eq);
 pad = buildPath(eq);
 parentAdres = returnWithoutLast(selectAdres);
 grandParentAdres = returnWithoutLast(parentAdres);
+grandParentNode = readAtAdress(grandParentAdres,eq);
 vglNummer = Number(/\d+/.exec(parentAdres[parentAdres.length-1]));
 lidVanVgl = Number(/\d+/.exec(selectAdres[selectAdres.length-1]));
+nummerLaatsteVgl = grandParentNode.args.length
+switch (locatie) {
+  case "boven": bestemmingVglNummer = vglNummer - 1; break;
+  case "onder": bestemmingVglNummer = vglNummer + 1; break;
+}
 
- 
-if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && vglNummer !== 0 && lidVanVgl < 2) {
+bestemmingBestaat = (bestemmingVglNummer <= nummerLaatsteVgl && bestemmingVglNummer >= 0)
+
+if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && bestemmingBestaat && lidVanVgl < 2) {
 
   console.log('voorwaarden voor substitutie voldaan!')
 
   // letter = selectNode.args[0].name;
   exprNode = selectNode.args[0];
-  bovenVgl = readAtAdress(grandParentAdres,eq).args[vglNummer-1];
-  bovenVglAdres = grandParentAdres;
-  bovenVglAdres.push("args[" + (vglNummer -1)+ "]");
+  bestemmingVgl = readAtAdress(grandParentAdres,eq).args[bestemmingVglNummer];
+  bestemmingVglAdres = grandParentAdres;
+  bestemmingVglAdres.push("args[" + (bestemmingVglNummer)+ "]");
   substitutie = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
 //  alleen voor letters
-  // eq = injectAtAdress( selectIt(substitueerLetter(bovenVgl, letter, substitutie)), bovenVglAdres ,cleanEquation(eq));
-  nieuweBovenste = substitueerExpr(bovenVgl, exprNode, substitutie);
-  if (nieuweBovenste.equals(bovenVgl)) {
-    console.log("geen substitutiemogelijkheid hierboven");
+  // eq = injectAtAdress( selectIt(substitueerLetter(bestemmingVgl, letter, substitutie)), bestemmingVglAdres ,cleanEquation(eq));
+  nieuwebestemming = substitueerExpr(bestemmingVgl, exprNode, substitutie);
+  if (nieuwebestemming.equals(bestemmingVgl)) {
+    console.log("geen substitutiemogelijkheid hierbestemming");
   } else {
-    eq = injectAtAdress( selectIt(nieuweBovenste), bovenVglAdres ,cleanEquation(eq));
+    eq = injectAtAdress( selectIt(nieuwebestemming), bestemmingVglAdres ,cleanEquation(eq));
   }
-  
-  
-
   updateLatex(eq);
 }
-
 console.log('voorwaarden voor substitutie NIET voldaan!')
-
 }
 
 // Spacebar en Enter
