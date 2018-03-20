@@ -60,7 +60,7 @@ customFunctions.Plus.toTex = function(node, options) {
     value.name == "unaryMinus" ? (plusTeken = "") : (plusTeken = "+");
     index == 0 ? (output = output) : (output += plusTeken);
     output += value.toTex(options);
-    console.log("plustex:" + output);
+    // console.log("plustex:" + output);
   });
   // return '(' + output + ')';
   return output;
@@ -155,7 +155,7 @@ customFunctions.minus.toTex = function(node, options) {
   return node.args[0].toTex(options) + node.name + node.args[1].toTex(options);
 };
 customFunctions.Select.toTex = function(node, options) {
-  console.log("slct");
+  // console.log("slct");
   return "\\textcolor{red}{" + node.args[0].toTex(options) + "}";
 };
 
@@ -575,15 +575,15 @@ function readAtAdress(adress, bignode) {
     switch (arg.slice(0, 4)) {
       case "root":
         node = bignode;
-        console.log("readroot");
+     // console.log("readroot");
         break;
       case "args":
         node = node.args[/\d+/.exec(arg)];
-        console.log("readargs[" + /\d+/.exec(arg) + "]");
+     // console.log("readargs[" + /\d+/.exec(arg) + "]");
         break;
       case "cont":
         node = node.content;
-        console.log("readcontent");
+     // console.log("readcontent");
         break;
       default:
         alert("error: non-valid adress: " + arg);

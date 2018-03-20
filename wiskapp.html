@@ -247,14 +247,14 @@
                 // math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
                 math.pow.toTex = function (node, options) {
 
-                    console.log(multiFunction[node.args[0].name] == 1);
-                    console.log(node.args[0].name == 'nthRoot');
-                    console.log(node.args[0].name == 'unaryMinus');
-                    console.log(node.args[0].fn == 'divide');
-                    console.log(node.args[0].fn == 'pow');
+                    // console.log(multiFunction[node.args[0].name] == 1);
+                    // console.log(node.args[0].name == 'nthRoot');
+                    // console.log(node.args[0].name == 'unaryMinus');
+                    // console.log(node.args[0].fn == 'divide');
+                    // console.log(node.args[0].fn == 'pow');
 
                     if (multiFunction[node.args[0].name] == 1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide' || node.args[0].fn == 'pow') {
-                        console.log('moethaakjeskrijgen');
+                    // console.log('moethaakjeskrijgen');
                         return "\\left(" + node.args[0].toTex(options) + "\\right)^{" + node.args[1].toTex(options) + "}";
                     } else {
                         return "{" + node.args[0].toTex(options) + "}" + "^{" + node.args[1].toTex(options) + "}";
