@@ -1379,6 +1379,22 @@ function applyDerivative(eq) {
 
 }
 
+function substitueerLetter(vgl, letterString, substitutie) {
+
+newVgl = vgl.cloneDeep();
+
+newVgl.traverse(function(node, index, parent) {
+
+  if (node.name == letterString) {
+    indexnum = Number(/\d+/.exec(index));
+    parent.args[indexnum] = substitutie;
+  }
+  
+});
+
+return newVgl;
+}
+
 // Spacebar en Enter
 
 function spaceBar(eq) {
