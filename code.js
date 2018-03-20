@@ -1395,6 +1395,30 @@ newVgl.traverse(function(node, index, parent) {
 return newVgl;
 }
 
+function substitueerNaarBoven(eq) {
+  // check of we in een kant van een vgl zitten
+  // check of we een letter geselecteerd hebben
+  // check of hierboven een vlg staat
+selectAdres = adresses("Select", eq)[0];
+selectNode = readAtAdress(selectAdres, eq);
+pad = buildPath(eq);
+parentAdres = returnWithoutLast(selectAdres);
+grandParentAdres = returnWithoutLast(parentAdres);
+vglNummer = Number(/\d+/.exec(parentAdres[parentAdres.length-1]));
+lidVanVgl = Number(/\d+/.exec(selectAdres[selectAdres.length-1]));
+ 
+if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && selectNode.isSymbolNode && vglNummer !== 0 && lidVanVgl < 2) {
+
+  letter = selectNode.name;
+  bovenVgl = readAtAdress(grandParentAdres,eq).args[vglNummer-1];
+  substitutie = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
+  eq = injectAtAdress( substitueerLetter(bovenVgl, letter, substitutie), bovengVglAdres , eq);
+  
+  updateLatex(eq);
+}
+
+}
+
 // Spacebar en Enter
 
 function spaceBar(eq) {
