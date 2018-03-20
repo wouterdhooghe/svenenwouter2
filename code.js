@@ -1395,6 +1395,22 @@ newVgl.traverse(function(node, index, parent) {
 return newVgl;
 }
 
+function substitueerExpr(vgl, exprNode, substitutie) {
+
+  newVgl = vgl.cloneDeep();
+  
+  newVgl.traverse(function(node, index, parent) {
+  
+    if (node.equals(exprNode)) {
+      indexnum = Number(/\d+/.exec(index));
+      parent.args[indexnum] = substitutie;
+    }
+    
+  });
+  
+  return newVgl;
+  }
+
 function substitueerNaarBoven(eq) {
   // check of we in een kant van een vgl zitten
   // check of we een letter geselecteerd hebben
@@ -1406,16 +1422,33 @@ parentAdres = returnWithoutLast(selectAdres);
 grandParentAdres = returnWithoutLast(parentAdres);
 vglNummer = Number(/\d+/.exec(parentAdres[parentAdres.length-1]));
 lidVanVgl = Number(/\d+/.exec(selectAdres[selectAdres.length-1]));
- 
-if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && selectNode.isSymbolNode && vglNummer !== 0 && lidVanVgl < 2) {
 
-  letter = selectNode.name;
+ 
+if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && vglNummer !== 0 && lidVanVgl < 2) {
+
+  console.log('voorwaarden voor substitutie voldaan!')
+
+  // letter = selectNode.args[0].name;
+  exprNode = selectNode.args[0];
   bovenVgl = readAtAdress(grandParentAdres,eq).args[vglNummer-1];
+  bovenVglAdres = grandParentAdres;
+  bovenVglAdres.push("args[" + (vglNummer -1)+ "]");
   substitutie = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
-  eq = injectAtAdress( substitueerLetter(bovenVgl, letter, substitutie), bovengVglAdres , eq);
+//  alleen voor letters
+  // eq = injectAtAdress( selectIt(substitueerLetter(bovenVgl, letter, substitutie)), bovenVglAdres ,cleanEquation(eq));
+  nieuweBovenste = substitueerExpr(bovenVgl, exprNode, substitutie);
+  if (nieuweBovenste.equals(bovenVgl)) {
+    console.log("geen substitutiemogelijkheid hierboven");
+  } else {
+    eq = injectAtAdress( selectIt(nieuweBovenste), bovenVglAdres ,cleanEquation(eq));
+  }
   
+  
+
   updateLatex(eq);
 }
+
+console.log('voorwaarden voor substitutie NIET voldaan!')
 
 }
 
