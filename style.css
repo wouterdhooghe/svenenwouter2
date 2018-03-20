@@ -12,9 +12,9 @@
     position: absolute;
     top: 20%;
     bottom: 0;
-    left: 10%;
+    left: 0;
     overflow-y: scroll;
-    width: 70%;
+    width: 80%;
   }
   
   #right {
@@ -27,12 +27,12 @@
   }
 
   #bottom {
-    position: relative;
-    top: 0;
+    position: absolute;
+    top: 90%;
     bottom: 0;
     right: 0;
     overflow-y: scroll;
-    width: 20%;
+    width: 100%;
   }
 }
 
@@ -55,7 +55,7 @@
   }
 
   #bottom {
-    height:20%;
-    background-color: rgb(196, 196, 196);
+    height:100%;
+    background-color: rgb(161, 119, 119);
     text-align: center;
   }
