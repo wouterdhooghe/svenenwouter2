@@ -700,8 +700,13 @@ selected = function(node) {
 //************************************* */
 
 updateEval = function(node) {
-  antwoord = equation.compile().eval();
-  antwoord ? (result.innerHTML = antwoord.toString()) : (result.value = "");
+  try {
+    antwoord = equation.compile().eval();
+    antwoord ? (result.innerHTML = antwoord.toString()) : (result.value = "");
+  } catch(err) {
+    console.log("exressie kan niet geevalueerd worden");
+  }
+  
 };
 
 updateLatex = function(eq) {
