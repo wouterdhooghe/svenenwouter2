@@ -763,6 +763,29 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
 // ACTIES
 //************************************* */
 
+// applyRule
+
+function applyRule(regelNode,eq) {
+  alert("clicked1" + regelNode.toString());
+
+  prevEquation = eq.cloneDeep();
+  selectAdress = adresses("Select", equation)[0];
+  selectNode = readAtAdress(selectAdress, equation);
+
+    tweedeVgl = regelNode;
+    neweq = new math.expression.node.FunctionNode("And", [
+      eq,
+      tweedeVgl
+    ]);
+    
+    updateLatex(flatten(neweq));
+  
+}
+
+
+
+  
+
 // laat meerdere selecties toe!!!
 function applyPlus() {
   prevEquation = equation.cloneDeep();

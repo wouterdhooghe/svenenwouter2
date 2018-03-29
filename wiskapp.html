@@ -151,19 +151,29 @@
 
                     <div> Rekenregels</div>
 
-                    <div class="card">
+                    <div class="card" onclick="applyRule(regelNode1,equation)">
+                        <div class='card-header'> regel 1</div>
                         <div class="card-body">
-                            <p class="card-text">Rekenregel 1</p>
+                        <p class="card-text" id="regel1">$$$$</p>
 
                         </div>
                     </div>
 
                     <div class="card">
+                        <div class='card-header'> regel 2</div>
                         <div class="card-body">
-                            <p class="card-text">Rekenregel 2</p>
+                        <p class="card-text" id="regel2">$$$$</p>
 
                         </div>
                     </div>
+
+                    <div class="card">
+                            <div class='card-header'> regel 3</div>
+                            <div class="card-body">
+                            <p class="card-text" id="regel3">$$$$</p>
+    
+                            </div>
+                        </div>
 
                 </div>
             </div>
@@ -240,6 +250,14 @@
                     transfo = document.getElementById('transfo'),
                     parenthesis = 'keep',
                     implicit = 'hide';
+
+                    
+
+                // rekenregels
+
+                var regel1 = document.getElementById('regel1'),
+                    regel2 = document.getElementById('regel2'),
+                    regel3 = document.getElementById('regel3')
 
                 // Selectfunctie en andere speciale functies importeren
 
@@ -833,6 +851,17 @@
                 var keysList = [];
 
                 updateLatex(equation);
+
+// om toch maar iets in de regelbox te schrijven
+                regelString1 = "Times(a,Plus(b,c))==Plus(Times(a,b),Times(a,c))";
+                regelNode1 = math.parse(regelString1);
+                var latex = regelNode1.toTex({
+                   parenthesis: parenthesis,
+                    implicit: implicit
+                       });
+                var largeLatex = "\\large " + latex;
+                    katex.render(largeLatex, regel1);
+// einde toch maar iets in regelbox schrijven
 
                 // wat er gebeurt als je iets rechtstreeks invult in de expressiebox
                 expr.oninput = function () {
