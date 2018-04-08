@@ -1591,8 +1591,10 @@ function enter(eq) {
 
     if (uitkomstIsInteger) {
       // uitkomstString = math.eval(selectNode.args[0].toString());
+      uitkomstString < 0 ? 
+      substitution = math.parse("Select(unaryMinus(" + -1*uitkomstString + "))") 
+      : substitution = math.parse("Select(" + uitkomstString + ")");
 
-      substitution = math.parse("Select(" + uitkomstString + ")");
       equation = injectAtAdress(substitution, item, equation);
     } else {
 

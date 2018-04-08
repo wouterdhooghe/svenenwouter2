@@ -387,7 +387,7 @@
                             unknowns: ['a', 'b', 'c', 'd']
                         }
                     },
-                    eenheidsbreukAlsNegatieveExponent: {
+                    eenheidsbreukAlsMinEenExponent: {
                         naam: 'eenheidsbreuk als negatieve exponent',
                         input: {
                             expr: math.parse('1/a'),
@@ -398,7 +398,7 @@
                             unknowns: ['a']
                         }
                     },
-                    negatieveExponentAlsEenheidsbreuk: {
+                    minEenExponentAlsEenheidsbreuk: {
                         naam: 'negatieve exponent als eenheidsbreuk',
                         input: {
                             expr: math.parse('pow(a,unaryMinus(1))'),
@@ -409,6 +409,32 @@
                             unknowns: ['a']
                         }
                     },
+
+                    eenheidsbreukAlsNegatieveExponent: {
+                        naam: 'eenheidsbreuk als negatieve exponent',
+                        input: {
+                            expr: math.parse('1/pow(a,n)'),
+                            unknowns: ['a','n']
+                        },
+                        output: {
+                            expr: math.parse('pow(a,unaryMinus(n))'),
+                            unknowns: ['a','n']
+                        }
+                    },
+
+                    negatieveExponentAlsEenheidsbreuk: {
+                        naam: 'negatieve exponent als eenheidsbreuk',
+                        input: {
+                            expr: math.parse('pow(a,unaryMinus(n))'),
+                            unknowns: ['a','n']
+                        },
+                        output: {
+                            expr: math.parse('1/pow(a,n)'),
+                            unknowns: ['a','n']
+                        }
+                    },
+
+
                     vermenigvuldigingMetEenheidsbreuk1: {
                         naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
                         input: {
@@ -801,6 +827,8 @@
                 spaceregels = [
                     'breukenVermenigvuldigen',
                     'uiteenTrekRegel',
+                    'minEenExponentAlsEenheidsbreuk',
+                    'eenheidsbreukAlsMinEenExponent',
                     'eenheidsbreukAlsNegatieveExponent',
                     'negatieveExponentAlsEenheidsbreuk',
                     'vermenigvuldigingMetEenheidsbreuk1',
