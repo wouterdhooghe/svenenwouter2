@@ -1610,6 +1610,9 @@ function enter(eq) {
     //   uitkomsten = [eq2, eq3,eq4,eq5,eq6];
       
 
+    var breakException = {};
+    
+    try {
     enterregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
         if (uitkomst.equals(eq)==false) {
@@ -1617,6 +1620,8 @@ function enter(eq) {
             updateLatex(uitkomst);
         }
     })
+    }
+    catch(e) { };
 
     //   if (eq2.equals(eq) == false) {
     //     console.log("nieuwe eq:  " + eq2.toString());
