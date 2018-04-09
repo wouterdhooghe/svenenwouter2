@@ -1561,14 +1561,18 @@ function spaceBar(eq) {
       // equation = substituteSelected('Select('+uitkomstString+')',eq);
       // updateLatex(equation);
     } else {
-        
+              
+      try {
         spaceregels.forEach(function (testregel) {
             uitkomst = regelTransformSelected(eq, regels[testregel]);
             if (uitkomst.equals(eq)==false) {
               console.log("nieuwe eq:  " + uitkomst.toString());
                 updateLatex(uitkomst);
+                throw breakException;
             }
         })
+
+      } catch(e) {}
     }
   });
   flatten(equation);
