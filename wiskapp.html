@@ -59,6 +59,12 @@
                 <div class="col-md-6">
 
                     <div class="card">
+                            <div class="card-body">
+                                    <h4 class="card-title"> Modus </h4>
+                                    <input type="radio" name="modus" value="bouwmodus" onclick="modus = 'bouw'; expr.oninput();" checked>bouwmodus
+                                    <input type="radio" name="modus" value="manipulatiemodus" onclick="modus = 'manipulatie'; expr.oninput();" >manipulatiemodus
+        
+                                </div>
                         <div class="card-body">
                             <h4 class="card-title">Toetsen </h4>
                             <p> pijltjes om door de vergelijking te bewegen</p>
@@ -249,7 +255,8 @@
                     result = document.getElementById('result'),
                     transfo = document.getElementById('transfo'),
                     parenthesis = 'keep',
-                    implicit = 'hide';
+                    implicit = 'hide',
+                    modus = 'bouw';
 
                     
 
