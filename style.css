@@ -37,25 +37,25 @@
 }
 
 #left {
-  background-color: rgb(200, 194, 218);
+  background-color: rgb(245, 240, 240);
   text-align: center;
   height:80%;
 }
 
 #right {
   height:100%;
-  background-color: rgb(175, 215, 230);
+  background-color: rgb(255, 255, 255);
   text-align: center;
 }
 
 #middle {
     height:80%;
-    background-color: rgb(196, 196, 196);
+    background-color: rgb(255, 255, 255);
     text-align: center;
   }
 
   #bottom {
     height:100%;
-    background-color: rgb(161, 119, 119);
+    background-color: rgb(255, 255, 255);
     text-align: center;
   }
