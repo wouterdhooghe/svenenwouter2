@@ -1,3 +1,6 @@
+
+
+
 //************************************* */
 // CUSTOM FUNCTIES
 //************************************* */
@@ -158,6 +161,12 @@ customFunctions.Select.toTex = function(node, options) {
   // console.log("slct");
   return "\\textcolor{red}{" + node.args[0].toTex(options) + "}";
 };
+
+//************************************* */
+// f knoppen
+//************************************* */
+
+
 
 //************************************* */
 // UTILITY
