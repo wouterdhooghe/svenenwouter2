@@ -29,48 +29,20 @@
 
             <div class='row'>
 
-                    <div class="btn-group">
-                            <button type="button" class="btn btn-primary">Apple</button>
-                            <button type="button" class="btn btn-primary">Samsung</button>
-                            <button type="button" class="btn btn-primary">Sony</button>
-                          </div>
+                <button type="button" class="btn btn-primary" id="f1" on-hold="f1_hold" on-release="f1_release">  Z </button>
+                <button type="button" class="btn btn-primary" id="f2" on-hold="f2_hold" on-release="f2_release">  plus </button>
+                <button type="button" class="btn btn-primary" id="f3" on-hold="f3_hold" on-release="f3_release">  times </button>
+                <button type="button" class="btn btn-primary" id="f4" on-hold="f4_hold" on-release="f4_release">  min </button>
+                <button type="button" class="btn btn-primary" id="f5" on-hold="f5_hold" on-release="f5_release">  fraction </button>
+                <button type="button" class="btn btn-primary" id="f6" on-hold="f6_hold" on-release="f6_release">  power </button>
+                <button type="button" class="btn btn-primary" id="f7" on-hold="f7_hold" on-release="f7_release">  exp </button>
+                <button type="button" class="btn btn-primary" id="f8" on-hold="f8_hold" on-release="f8_release">  root </button>
+                <button type="button" class="btn btn-primary" id="f9" on-hold="f9_hold" on-release="f9_release">  log </button>
+                <button type="button" class="btn btn-primary" id="f10" on-hold="f10_hold" on-release="f10_release">  equals </button>
+                <button type="button" class="btn btn-primary" id="f11" on-hold="f11_hold" on-release="f11_release">  > </button>
+                <button type="button" class="btn btn-primary" id="f12" on-hold="f12_hold" on-release="f12_release">  < </button>
 
-                <button id="f1" on-hold="f1_hold" on-release="f1_release">
-                    Z
-                </button>
-                <button id="f2">
-                    plus
-                </button>
-                <button>
-                    times
-                </button>
-                <button>
-                    min
-                </button>
-                <button>
-                    fraction
-                </button>
-                <button>
-                    power
-                </button>
-                <button>
-                    exp
-                </button>
-                <button>
-                    root
-                </button>
-                <button>
-                    log
-                </button>
-                <button>
-                    equals
-                </button>
-                <button>
-                    >
-                </button>
-                <button>
-                    <
-                </button>
+
             </div>
 
             <div class='row'>
@@ -1279,6 +1251,9 @@
                             case 'x': e.preventDefault(); replaceWithLetter('x',equation); break; //  8
                             case 'y': e.preventDefault(); replaceWithLetter('y',equation); break; //  9
                             case 'z': e.preventDefault(); replaceWithLetter('z',equation); //  0
+
+                            // Functieknoppen
+                            case 'F1': e.preventDefault(); ; break;
                         }
                 };
 
