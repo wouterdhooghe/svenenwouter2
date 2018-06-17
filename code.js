@@ -1619,6 +1619,7 @@ if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && bestemmingBest
     console.log("geen substitutiemogelijkheid hierbestemming");
   } else {
     eq = injectAtAdress( selectIt(nieuwebestemming), bestemmingVglAdres ,cleanEquation(eq));
+    
   }
   updateLatex(eq);
 }
