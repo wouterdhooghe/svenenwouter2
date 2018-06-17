@@ -29,18 +29,18 @@
 
             <div class='row'>
 
-                <button type="button" class="btn btn-primary" id="f1" on-hold="f1_hold" on-release="f1_release">  Z </button>
-                <button type="button" class="btn btn-primary" id="f2" on-hold="f2_hold" on-release="f2_release">  plus </button>
-                <button type="button" class="btn btn-primary" id="f3" on-hold="f3_hold" on-release="f3_release">  times </button>
-                <button type="button" class="btn btn-primary" id="f4" on-hold="f4_hold" on-release="f4_release">  min </button>
-                <button type="button" class="btn btn-primary" id="f5" on-hold="f5_hold" on-release="f5_release">  fraction </button>
-                <button type="button" class="btn btn-primary" id="f6" on-hold="f6_hold" on-release="f6_release">  power </button>
-                <button type="button" class="btn btn-primary" id="f7" on-hold="f7_hold" on-release="f7_release">  exp </button>
-                <button type="button" class="btn btn-primary" id="f8" on-hold="f8_hold" on-release="f8_release">  root </button>
-                <button type="button" class="btn btn-primary" id="f9" on-hold="f9_hold" on-release="f9_release">  log </button>
-                <button type="button" class="btn btn-primary" id="f10" on-hold="f10_hold" on-release="f10_release">  equals </button>
-                <button type="button" class="btn btn-primary" id="f11" on-hold="f11_hold" on-release="f11_release">  > </button>
-                <button type="button" class="btn btn-primary" id="f12" on-hold="f12_hold" on-release="f12_release">  < </button>
+                <button type="button" class="btn btn-primary" id="f1" onclick="f1_release(equation)">  Z </button>
+                <button type="button" class="btn btn-primary" id="f2" onclick="f2_release(equation);">  plus </button>
+                <button type="button" class="btn btn-primary" id="f3" onclick="f3_release(equation);">  times </button>
+                <button type="button" class="btn btn-primary" id="f4" onclick="f4_release(equation);">  min </button>
+                <button type="button" class="btn btn-primary" id="f5" onclick="f5_release(equation);">  fraction </button>
+                <button type="button" class="btn btn-primary" id="f6" onclick="f6_release(equation);">  power </button>
+                <button type="button" class="btn btn-primary" id="f7" onclick="f7_release(equation);">  exp </button>
+                <button type="button" class="btn btn-primary" id="f8" onclick="f8_release(equation);">  root </button>
+                <button type="button" class="btn btn-primary" id="f9" onclick="f9_release(equation);">  log </button>
+                <button type="button" class="btn btn-primary" id="f10" onclick="f10_release(equation);">  equals </button>
+                <button type="button" class="btn btn-primary" id="f11" onclick="f11_release(equation);">  > </button>
+                <button type="button" class="btn btn-primary" id="f12" onclick="f12_release(equation);">  < </button>
 
 
             </div>
@@ -1273,18 +1273,18 @@
                             case 'z': e.preventDefault(); replaceWithLetter('z',equation); //  0
 
                             // Functieknoppen
-                            case 'F1': e.preventDefault(); F1(equation); break;
-                            case 'F2': e.preventDefault(); F2(equation); break;
-                            case 'F3': e.preventDefault(); F3(equation); break;
-                            case 'F4': e.preventDefault(); F4(equation); break;
-                            case 'F5': e.preventDefault(); F5(equation); break;
-                            case 'F6': e.preventDefault(); F6(equation); break;
-                            case 'F7': e.preventDefault(); F7(equation); break;
-                            case 'F8': e.preventDefault(); F8(equation); break;
-                            case 'F9': e.preventDefault(); F9(equation); break;
-                            case 'F10': e.preventDefault(); F10(equation); break;
-                            case 'F11': e.preventDefault(); F11(equation); break;
-                            case 'F12': e.preventDefault(); F12(equation); break;
+                            case 'f1': e.preventDefault(); f1(equation); break;
+                            case 'f2': e.preventDefault(); f2(equation); break;
+                            case 'f3': e.preventDefault(); f3(equation); break;
+                            case 'f4': e.preventDefault(); f4(equation); break;
+                            case 'f5': e.preventDefault(); f5(equation); break;
+                            case 'f6': e.preventDefault(); f6(equation); break;
+                            case 'f7': e.preventDefault(); f7(equation); break;
+                            case 'f8': e.preventDefault(); f8(equation); break;
+                            case 'f9': e.preventDefault(); f9(equation); break;
+                            case 'f10': e.preventDefault(); f10(equation); break;
+                            case 'f11': e.preventDefault(); f11(equation); break;
+                            case 'f12': e.preventDefault(); f12(equation); break;
                         }
                 };
 
