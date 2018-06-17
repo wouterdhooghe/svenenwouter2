@@ -849,13 +849,14 @@
                     factorBuitenhalen: {
                         naam: 'factor buitenhalen',
                         input: {
-                            expr: math.parse('Times(a,b)'),
+                            expr: math.parse('Plus(a,b)'),
                             unknowns: ['a','b']
                         },
                         output: {
-                            expr: math.parse('And(Times(c,Plus(a/c,b/c)),c==c)'),
-                            unknowns: ['a','b','c']
-                        }
+                            expr: math.parse('Times(c,Plus(a/c,b/c))'),
+                            unknowns: ['a','b']
+                        },
+                        extraEquation: math.parse('c==c')
                     },
 
                     vergelijkingNegeren: {

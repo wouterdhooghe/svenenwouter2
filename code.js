@@ -258,7 +258,8 @@ function naarplus(eq) {
           console.log('uitkomst = ' + uitkomst);
           if (uitkomst) {
             console.log("nieuwe eq:  " + uitkomst.toString());
-              updateLatex(uitkomst);
+              
+              updateLatex(flatten(uitkomst));
               throw breakException;
           }
       })
@@ -538,7 +539,7 @@ console.log(unknownOutArr);
   }
 }
 
-// verandert equation maar doet nog geen update
+// heeft volledige equation als output
 function transformSelected(
   eq,
   inputPatternNode,
@@ -557,12 +558,16 @@ function transformSelected(
       inputPatternNode,
       outputPatternNode,
       unknownInArr,
-      unknownOutArr
+      unknownOutArr,
+      extraEquation
     );
     
     if (transformed) { 
       eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
       console.log('uitdrukking vervangen via regel: ' + transformed.toString() );
+      if (extraEquation) {
+        eq = XXX
+      }
       
     } else {
       console.log('uitdrukking niet vervangen via regel');
