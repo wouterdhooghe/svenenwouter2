@@ -255,7 +255,8 @@ function naarplus(eq) {
     try {
       naarplusregels.forEach(function (testregel) {
           uitkomst = regelTransformSelected(eq, regels[testregel]);
-          if (uitkomst.equals(eq)==false) {
+          console.log('uitkomst = ' + uitkomst);
+          if (uitkomst) {
             console.log("nieuwe eq:  " + uitkomst.toString());
               updateLatex(uitkomst);
               throw breakException;
@@ -533,7 +534,7 @@ console.log(unknownOutArr);
 
     return outputPatternNode;
   } else {
-    return cleanedEq;
+    return false;
   }
 }
 
@@ -558,8 +559,16 @@ function transformSelected(
       unknownInArr,
       unknownOutArr
     );
-    eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
-    // return injectAtAdress(selectIt(transformed),selectAdres, eq);
+    
+    if (transformed) { 
+      eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
+      console.log('uitdrukking vervangen via regel: ' + transformed.toString() );
+      
+    } else {
+      console.log('uitdrukking niet vervangen via regel');
+      eq = false;
+     };
+     
   });
   return eq;
 }
@@ -1672,7 +1681,7 @@ function spaceBar(eq) {
       try {
         spaceregels.forEach(function (testregel) {
             uitkomst = regelTransformSelected(eq, regels[testregel]);
-            if (uitkomst.equals(eq)==false) {
+            if (uitkomst) {
               console.log("nieuwe eq:  " + uitkomst.toString());
                 updateLatex(uitkomst);
                 throw breakException;
@@ -1722,7 +1731,7 @@ function enter(eq) {
     try {
     enterregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
-        if (uitkomst.equals(eq)==false) {
+        if (uitkomst) {
           console.log("nieuwe eq:  " + uitkomst.toString());
             updateLatex(uitkomst);
         }
