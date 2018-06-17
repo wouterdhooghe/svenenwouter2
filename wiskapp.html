@@ -845,6 +845,18 @@
                             unknowns: ['a','n','m']
                         }
                     },
+                    /// TODO DIT WERKT NOG NIET GOED ALS JE Buitenhaalt in een SUBEXPRESSIE!
+                    FactorBuitenhalen: {
+                        naam: 'factor buitenhalen',
+                        input: {
+                            expr: math.parse('Times(a,b)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('And(Times(c,Plus(a/c,b/c)),c==c)'),
+                            unknowns: ['a','b','c']
+                        }
+                    },
                     
                     
                 };
