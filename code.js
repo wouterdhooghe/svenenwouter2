@@ -545,7 +545,8 @@ function transformSelected(
   inputPatternNode,
   outputPatternNode,
   unknownInArr,
-  unknownOutArr
+  unknownOutArr,
+  extraEquation
 ) {
   console.log(
     "doe transformSelected met inputPattern: " + inputPatternNode.toString()
@@ -566,7 +567,11 @@ function transformSelected(
       eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
       console.log('uitdrukking vervangen via regel: ' + transformed.toString() );
       if (extraEquation) {
-        eq = XXX
+        eq = new math.expression.node.FunctionNode("And", [
+          cleanEquation(eq),
+          extraEquation
+        ]);
+        
       }
       
     } else {
@@ -587,7 +592,8 @@ function regelTransformSelected(eq, regel) {
     regel.input.expr,
     regel.output.expr,
     regel.input.unknowns,
-    regel.output.unknowns
+    regel.output.unknowns,
+    regel.extraEquation
   );
   // updateLatex(eq);
 }
