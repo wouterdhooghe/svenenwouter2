@@ -1287,7 +1287,7 @@
                             case 'enter': enter(equation
                             ); keysList.push('enter'); break;
                             case 'backspace': backSpace(); keysList.push('backspace'); break;
-                            case 'tab': substitueerNaar(equation,'boven'); keysList.push('tab'); break;
+                            case 'tab': e.preventDefault(); substitueerNaar(equation,'boven'); keysList.push('tab'); break;
 
                             // tekens
                             case 'KeyM': komma(); keysList.push('komma'); break;
