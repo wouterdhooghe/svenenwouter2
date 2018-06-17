@@ -244,9 +244,16 @@ function f12(eq) {
 }
 
 function naarplus(eq) {
-    // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, 
+    // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, factorBuitenhalen
     // 
+ /// idee: voor alle regels in naarPlus, bereken de uitkomst. Alle uitkomsten presenteren aan de gebruiker.
+ // gebruiker kiest en de keuze wordt geimplementeerd.
+
     uitkomst = regelTransformSelected(eq, regels[binomium2Expand]);
+    if (uitkomst.equals(eq)==false) {
+      console.log("nieuwe eq:  " + uitkomst.toString());
+        updateLatex(uitkomst);
+    }
 }
 
 //************************************* */
