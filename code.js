@@ -166,6 +166,33 @@ customFunctions.Select.toTex = function(node, options) {
 // f knoppen
 //************************************* */
 
+function f1_hold(eq) {}
+function f2_hold(eq) {}
+function f3_hold(eq) {}
+function f4_hold(eq) {}
+function f5_hold(eq) {}
+function f6_hold(eq) {}
+function f7_hold(eq) {}
+function f8_hold(eq) {}
+function f9_hold(eq) {}
+function f10_hold(eq) {}
+function f11_hold(eq) {}
+function f12_hold(eq) {}
+
+function f1_release(eq) { f1(equation)}
+function f2_release(eq) { f2(equation)}
+function f3_release(eq) { f3(equation)}
+function f4_release(eq) { f4(equation)}
+function f5_release(eq) { f5(equation)}
+function f6_release(eq) { f6(equation)}
+function f7_release(eq) { f7(equation)}
+function f8_release(eq) { f8(equation)}
+function f9_release(eq) { f9(equation)}
+function f10_release(eq) {f10(equation)}
+function f11_release(eq) {f11(equation)}
+function f12_release(eq) {f12(equation)}
+
+
 function f1(eq) {
 
 }
