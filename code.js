@@ -166,7 +166,53 @@ customFunctions.Select.toTex = function(node, options) {
 // f knoppen
 //************************************* */
 
+function f1(eq) {
 
+}
+
+function f2(eq) {
+  
+}
+
+function f3(eq) {
+  
+}
+
+function f4(eq) {
+  
+}
+
+function f5(eq) {
+  
+}
+
+function f6(eq) {
+  
+}
+
+function f7(eq) {
+  
+}
+
+function f8(eq) {
+  
+}
+
+function f9(eq) {
+  
+}
+
+function f10(eq) {
+  
+}
+
+function f11(eq) {
+  
+}
+
+function f12(eq) {
+  
+}
 
 //************************************* */
 // UTILITY
