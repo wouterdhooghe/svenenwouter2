@@ -845,7 +845,20 @@
                             unknowns: ['a','n','m']
                         }
                     },
-                    /// TODO DIT WERKT NOG NIET GOED ALS JE Buitenhaalt in een SUBEXPRESSIE!
+
+                    nulDelenDoorIets: {
+                        naam: 'nul delen door iets is nul',
+                        input: {
+                            expr: math.parse('0/a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        }
+                    },
+                    
+                    
                     factorBuitenhalen: {
                         naam: 'factor buitenhalen',
                         input: {
@@ -934,6 +947,7 @@
                     'nulNeutraalVoorPlus',
                     'eenNeutraalVoorMaal',
                     'schrapUnitaireBreuk',
+                    'nulDelenDoorIets',
                     'omgekeerdeIsInverseVoorMaal1',
                     'omgekeerdeIsInverseVoorMaal2',
                     'vermenigvuldigingMetEenLinks',
