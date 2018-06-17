@@ -194,11 +194,13 @@ function f12_release(eq) {f12(equation)}
 
 
 function f1(eq) {
-
+  
 }
 
 function f2(eq) {
-  
+
+naarplus(eq);
+
 }
 
 function f3(eq) {
@@ -239,6 +241,12 @@ function f11(eq) {
 
 function f12(eq) {
   
+}
+
+function naarplus(eq) {
+    // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, 
+    // 
+    uitkomst = regelTransformSelected(eq, regels[binomium2Expand]);
 }
 
 //************************************* */

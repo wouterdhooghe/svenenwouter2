@@ -790,7 +790,7 @@
                             unknowns: ['a','b']
                         }
                     },
-                    verschilVanKwadratenFactor1: {
+                    verschilVanKwadratenExpand1: {
                         naam: 'verschil van kwadraten herkennen',
                         input: {
                             expr: math.parse('Times(Plus(a,b),Plus(a,unaryMinus(b)))'),
@@ -801,7 +801,7 @@
                             unknowns: ['a','b']
                         }
                     },
-                    verschilVanKwadratenFactor2: {
+                    verschilVanKwadratenExpand2: {
                         naam: 'verschil van kwadraten herkennen',
                         input: {
                             expr: math.parse('Times(Plus(a,unaryMinus(b)),Plus(a,b))'),
@@ -878,9 +878,16 @@
                     'binomium3Expand',
                     'binomium3Factor',
                     'verschilVanKwadratenExpand',
-                    'verschilVanKwadratenFactor1',
-                    'verschilVanKwadratenFactor2'
+                    'verschilVanKwadratenExpand1',
+                    'verschilVanKwadratenExpand2'
 
+                ];
+
+                naarplusregels = [
+                    'binomium2Expand',
+                    'binomium3Expand',
+                    'verschilVanKwadratenExpand1',
+                    'verschilVanKwadratenExpand2'
                 ];
 
                 enterregels = [
