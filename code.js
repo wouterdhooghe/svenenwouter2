@@ -1591,12 +1591,27 @@ if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && bestemmingBest
 
   console.log('voorwaarden voor substitutie voldaan!')
 
-  // letter = selectNode.args[0].name;
-  exprNode = selectNode.args[0];
+  // versie waarbij je de te elimineren expressie moet selecteren
+  // exprNode = selectNode.args[0];
+  // substitutie = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
+
+  // versie waarbij je de te kopieren expressie moet selecteren
+  substitutie = selectNode.args[0];
+  exprNode = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
+
   bestemmingVgl = readAtAdress(grandParentAdres,eq).args[bestemmingVglNummer];
   bestemmingVglAdres = grandParentAdres;
   bestemmingVglAdres.push("args[" + (bestemmingVglNummer)+ "]");
-  substitutie = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
+  
+
+  // als er aan de overkant een letter staat dan mag je de huidige selectie gebruiken als vervangexpressie ipv de overkant
+  // if (substitutie.isSymbolNode) {
+  //   console.log('symbool aan andere kant!');
+  //   exprNode = substitutie;
+  //   substitutie = cleanEquation(readAtAdress(parentAdres,eq).args[lidVanVgl]);
+    
+  // }
+
 //  alleen voor letters
   // eq = injectAtAdress( selectIt(substitueerLetter(bestemmingVgl, letter, substitutie)), bestemmingVglAdres ,cleanEquation(eq));
   nieuwebestemming = substitueerExpr(bestemmingVgl, exprNode, substitutie);
