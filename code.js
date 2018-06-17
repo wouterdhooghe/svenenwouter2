@@ -246,14 +246,14 @@ function f12(eq) {
 function naarplus(eq) {
     // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, factorBuitenhalen
     // momenteel wordt de eerste van alle mogelijke regels uitgevoerd, en dan stopt het.
-    
+
  /// idee: voor alle regels in naarPlus, bereken de uitkomst. Alle uitkomsten presenteren aan de gebruiker.
  // gebruiker kiest en de keuze wordt geimplementeerd.
 
  console.log('naarplus gestart');
 
     try {
-      naarplus.forEach(function (testregel) {
+      naarplusregels.forEach(function (testregel) {
           uitkomst = regelTransformSelected(eq, regels[testregel]);
           if (uitkomst.equals(eq)==false) {
             console.log("nieuwe eq:  " + uitkomst.toString());
