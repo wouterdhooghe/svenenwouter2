@@ -857,6 +857,18 @@
                             unknowns: ['a','b','c']
                         }
                     },
+
+                    nulBijtellen: {
+                        naam: 'nul bijtellen',
+                        input: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('Plus(a,0))'),
+                            unknowns: ['a']
+                        }
+                    },
                     
                     
                 };
@@ -900,7 +912,8 @@
                     'binomium3Expand',
                     'verschilVanKwadratenExpand1',
                     'verschilVanKwadratenExpand2',
-                    'factorBuitenhalen'
+                    'factorBuitenhalen',
+                    'nulBijtellen'
                 ];
 
                 enterregels = [
