@@ -756,6 +756,41 @@ function injectAtAdress(subst, adress, bignode) {
   return eq;
 }
 
+function deleteAtAdress(adress, bignode) {
+
+  var eq = bignode.cloneDeep();
+  var adressText = "";
+
+  for (i = 0; i < adress.length; i++) {
+    arg = adress[i];
+    switch (arg.slice(0, 4)) {
+      case "root":
+        adressText = ""; /* console.log(arg, adressText) */
+        break;
+      case "args":
+        adressText =
+          adressText +
+          ".args[" +
+          /\d+/.exec(arg) +
+          "]"; /* console.log(arg, adressText) */
+        break;
+      case "cont":
+        adressText = adressText + ".content"; /* console.log(arg, adressText) */
+        break;
+      default:
+        alert("error: non-valid adress" + arg);
+    }
+  }
+
+  //   console.log('adrestext:' + adressText + ' subst: ' + subst);
+  // PAS OP WANT DIT IS DESTRUCTIEF en vERANDERT DE OORSPRONKELIJKE VARIABELE !!!
+  // IS DAT ECHT ZO? CHECK DIT!
+  console.log(adressText);
+  adressText = adressText.slice(0,length[adressText]-length[arg]);
+  eval("equation" + adressText + '.args' + ".splice(1,1)");
+  return eq;
+}
+
 // zet een Select() rond de gegeven uitdrukking (mag in stringvorm of in objectvorm zijn)
 function selectIt(node) {
   if (typeof node === "string") {
@@ -1618,6 +1653,10 @@ if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && bestemmingBest
   if (nieuwebestemming.equals(bestemmingVgl)) {
     console.log("geen substitutiemogelijkheid hierbestemming");
   } else {
+    oorsprongAdres = parentAdres;
+    //oorsprongAdres.push("args[" + (vglNummer)+ "]");
+    console.log('delete op adres: ' + oorsprongAdres);
+    deleteAtAdress(oorsprongAdres,eq);
     eq = injectAtAdress( selectIt(nieuwebestemming), bestemmingVglAdres ,cleanEquation(eq));
     
   }
