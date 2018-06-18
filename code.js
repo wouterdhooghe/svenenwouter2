@@ -318,13 +318,13 @@ function flatten(eq) {
           indexnum = Number(/\d+/.exec(index));
 
           // args van de parent vervangen door eerste deel parent.args, dan child.args, dan tweede deel parents.args
-          //                    console.log('indexnum:' + indexnum);
-          //                    console.log('eerste deel:');
-          //                    console.log(parent.args.slice(0, indexnum));
-          //                    console.log('tweede deel:');
-          //                    console.log(node.args);
-          //                    console.log('derde deel:');
-          //                    console.log(parent.args.slice(indexnum + 1, parent.args.length));
+                            //  console.log('indexnum:' + indexnum);
+                            //  console.log('eerste deel:');
+                            //  console.log(parent.args.slice(0, indexnum));
+                            //  console.log('tweede deel:');
+                            //  console.log(node.args);
+                            //  console.log('derde deel:');
+                            //  console.log(parent.args.slice(indexnum + 1, parent.args.length));
 
           parent.args = parent.args
             .slice(0, indexnum)
@@ -565,14 +565,12 @@ function transformSelected(
     
     if (transformed) { 
       
+      eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
+
       if (extraEquation) {
-        transformedMetExtra = new math.expression.node.FunctionNode("And", [
-          transformed,
-          extraEquation
-        ]);
-        eq = flatten(injectAtAdress(transformedMetExtra, selectAdres, eq));
-      } else {
-        eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
+
+        applyEquality(extraEquation);
+
       }
 
       
@@ -1346,12 +1344,54 @@ function replaceWithNthroot() {
   updateLatex(equation);
 }
 
-function applyEquality() {
+function selectThisEquality(eq) {
+  // als Select al de root is: doe niks
+  if (eq.fn == "Select") {
+    return;
+  }
+  // bereken het nieuwe adres voor select
+
+  // dit is maar 1 enkel selectadres dus momenteel werkt deze functie alleen voor enkele selecties
+  selectAdress = adresses("Select", eq)[0];
+  console.log("selectAdress: ");
+  console.log(selectAdress);
+
+  
+  upAdress = returnWithoutLast(selectAdress);
+  console.log('upAdress');
+  console.log(upAdress);
+  while (true) {
+    upNode = readAtAdress(upAdress,eq);
+    console.log(upNode);
+    if (upNode.isFunctionNode) {
+      if (upNode.fn == 'equal') {
+        console.log('equality found!')
+        break;
+      }
+    }
+    upAdress.pop()
+    if (upNode == undefined) {break};
+  }
+  
+  console.log(" upAdress: ");
+  console.log(upAdress);
+
+  MoveSelectToAdress(selectAdress, upAdress, eq);
+
+  equation = flatten(equation);
+
+  updateLatex(equation);
+}
+
+function applyEquality(extraVgl) {
   prevEquation = equation.cloneDeep();
   selectAdress = adresses("Select", equation)[0];
   selectNode = readAtAdress(selectAdress, equation);
+
+  tweedeVgl = math.parse("Select(a)==b");
+  if (extraVgl) {tweedeVgl=extraVgl}
   if (selectNode.args[0].name == "And" || selectNode.args[0].fn == "equal") {
-    tweedeVgl = math.parse("Select(a)==b");
+
     substitution = new math.expression.node.FunctionNode("And", [
       selectNode.args[0],
       tweedeVgl
