@@ -1500,7 +1500,7 @@ function enter(eq) {
     //   uitkomsten = [eq2, eq3,eq4,eq5,eq6];
       
 
-    enterregels.forEach(function (testregel) {
+    simplificatieregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
         if (uitkomst.equals(eq)==false) {
           console.log("nieuwe eq:  " + uitkomst.toString());
