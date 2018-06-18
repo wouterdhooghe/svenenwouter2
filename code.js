@@ -564,15 +564,19 @@ function transformSelected(
     );
     
     if (transformed) { 
-      eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
-      console.log('uitdrukking vervangen via regel: ' + transformed.toString() );
+      
       if (extraEquation) {
-        eq = new math.expression.node.FunctionNode("And", [
-          cleanEquation(eq),
+        transformedMetExtra = new math.expression.node.FunctionNode("And", [
+          transformed,
           extraEquation
         ]);
-        
+        eq = flatten(injectAtAdress(transformedMetExtra, selectAdres, eq));
+      } else {
+        eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
       }
+
+      
+      console.log('uitdrukking vervangen via regel: ' + transformed.toString() );
       
     } else {
       console.log('uitdrukking niet vervangen via regel');
@@ -786,8 +790,8 @@ function deleteAtAdress(adress, bignode) {
   // PAS OP WANT DIT IS DESTRUCTIEF en vERANDERT DE OORSPRONKELIJKE VARIABELE !!!
   // IS DAT ECHT ZO? CHECK DIT!
   console.log(adressText);
-  adressText = adressText.slice(0,length[adressText]-length[arg]);
-  eval("equation" + adressText + '.args' + ".splice(1,1)");
+  adressText = adressText.slice(0,adressText.length - arg.length);
+  eval("equation" + adressText + 'args' + ".splice(1,1)");
   return eq;
 }
 
