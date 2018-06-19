@@ -1383,7 +1383,7 @@ function selectThisEquality(eq) {
   if (upAdress.length>0) {
 
     console.log('moveselectoadress');
-   MoveSelectToAdress(selectAdress, upAdress, eq);
+   MoveSelectToAdress(selectAdress, upAdress, equation);
 
    equation = flatten(equation);
 
@@ -1404,17 +1404,20 @@ function applyEquality(extraVgl) {
       selectNode.args[0],
       tweedeVgl
     ]);
-    equation = substituteSelected(substitution, equation);
-    updateLatex(flatten(equation));
+    // equation = substituteSelected(substitution, equation);
+    // updateLatex(flatten(equation));
+    return flatten(substituteSelected(substitution, equation));
   } else if (selectAdress == 'root?') {
     console.log('root!!!')
-    equation = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
-    updateLatex(equation);
+    // equation = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
+    // updateLatex(equation);
+    neweq = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
+    return neweq;
   } else {
     console.log('nog geen vgl geselecteerd!');
     selectThisEquality(equation);
     console.log('huidige vgl: ' + equation.toString());
-    applyEquality(extraVgl);
+    return applyEquality(extraVgl);
   }
 
   /* if (selectNode.args[0].fn == 'equal') {
