@@ -568,7 +568,7 @@ function transformSelected(
       eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
 
       if (extraEquation) {
-
+        console.log('extra equation toevoegen');
         applyEquality(extraEquation);
 
       }
@@ -1382,6 +1382,7 @@ function selectThisEquality(eq) {
 
   if (upAdress.length>0) {
 
+    console.log('moveselectoadress');
    MoveSelectToAdress(selectAdress, upAdress, eq);
 
    equation = flatten(equation);
@@ -1409,6 +1410,11 @@ function applyEquality(extraVgl) {
     console.log('root!!!')
     equation = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
     updateLatex(equation);
+  } else {
+    console.log('nog geen vgl geselecteerd!');
+    selectThisEquality(equation);
+    console.log('huidige vgl: ' + equation.toString());
+    applyEquality(extraVgl);
   }
 
   /* if (selectNode.args[0].fn == 'equal') {
