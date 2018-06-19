@@ -1839,7 +1839,7 @@ function enter(eq) {
     var breakException = {};
     
     try {
-    enterregels.forEach(function (testregel) {
+      simplificatieregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
         if (uitkomst) {
           console.log("nieuwe eq:  " + uitkomst.toString());
