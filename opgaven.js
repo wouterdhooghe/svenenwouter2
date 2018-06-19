@@ -11,7 +11,7 @@ opgaven = [
     {
         naam: "coole 3e graad vgl",
         opgave: "Times(pow(x, 2), Plus(x, Select(34))) == pow(y, 2)"
-    }
+    },
     {
         naam: "typische rationale functie",
         opgave: "Select(Times(2, x) / Plus(1, pow(x, 2))) == y"

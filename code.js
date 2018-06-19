@@ -1,3 +1,6 @@
+
+
+
 //************************************* */
 // CUSTOM FUNCTIES
 //************************************* */
@@ -60,7 +63,7 @@ customFunctions.Plus.toTex = function(node, options) {
     value.name == "unaryMinus" ? (plusTeken = "") : (plusTeken = "+");
     index == 0 ? (output = output) : (output += plusTeken);
     output += value.toTex(options);
-    console.log("plustex:" + output);
+    // console.log("plustex:" + output);
   });
   // return '(' + output + ')';
   return output;
@@ -155,9 +158,115 @@ customFunctions.minus.toTex = function(node, options) {
   return node.args[0].toTex(options) + node.name + node.args[1].toTex(options);
 };
 customFunctions.Select.toTex = function(node, options) {
-  console.log("slct");
+  // console.log("slct");
   return "\\textcolor{red}{" + node.args[0].toTex(options) + "}";
 };
+
+//************************************* */
+// f knoppen
+//************************************* */
+
+function f1_hold(eq) {};
+function f2_hold(eq) {};
+function f3_hold(eq) {};
+function f4_hold(eq) {};
+function f5_hold(eq) {};
+function f6_hold(eq) {};
+function f7_hold(eq) {};
+function f8_hold(eq) {};
+function f9_hold(eq) {};
+function f10_hold(eq) {};
+function f11_hold(eq) {};
+function f12_hold(eq) {};
+
+function f1_release(eq) { f1(eq)};
+function f2_release(eq) { f2(eq)};
+function f3_release(eq) { f3(eq)};
+function f4_release(eq) { f4(eq)};
+function f5_release(eq) { f5(eq)};
+function f6_release(eq) { f6(eq)};
+function f7_release(eq) { f7(eq)};
+function f8_release(eq) { f8(eq)};
+function f9_release(eq) { f9(eq)};
+function f10_release(eq) {f10(eq)};
+function f11_release(eq) {f11(eq)};
+function f12_release(eq) {f12(eq)};
+
+
+function f1(eq) {
+  
+}
+
+function f2(eq) {
+
+naarplus(eq);
+
+}
+
+function f3(eq) {
+  
+}
+
+function f4(eq) {
+  
+}
+
+function f5(eq) {
+  
+}
+
+function f6(eq) {
+  
+}
+
+function f7(eq) {
+  
+}
+
+function f8(eq) {
+  
+}
+
+function f9(eq) {
+  
+}
+
+function f10(eq) {
+  
+}
+
+function f11(eq) {
+  
+}
+
+function f12(eq) {
+  
+}
+
+function naarplus(eq) {
+    // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, factorBuitenhalen
+    // momenteel wordt de eerste van alle mogelijke regels uitgevoerd, en dan stopt het.
+
+ /// idee: voor alle regels in naarPlus, bereken de uitkomst. Alle uitkomsten presenteren aan de gebruiker.
+ // gebruiker kiest en de keuze wordt geimplementeerd.
+
+ console.log('naarplus gestart');
+
+    try {
+      naarplusregels.forEach(function (testregel) {
+          uitkomst = regelTransformSelected(eq, regels[testregel]);
+          console.log('uitkomst = ' + uitkomst);
+          if (uitkomst) {
+            console.log("nieuwe eq:  " + uitkomst.toString());
+              
+              updateLatex(flatten(uitkomst));
+              throw breakException;
+          }
+      })
+
+    } catch(e) {}
+
+}
 
 //************************************* */
 // UTILITY
@@ -209,13 +318,13 @@ function flatten(eq) {
           indexnum = Number(/\d+/.exec(index));
 
           // args van de parent vervangen door eerste deel parent.args, dan child.args, dan tweede deel parents.args
-          //                    console.log('indexnum:' + indexnum);
-          //                    console.log('eerste deel:');
-          //                    console.log(parent.args.slice(0, indexnum));
-          //                    console.log('tweede deel:');
-          //                    console.log(node.args);
-          //                    console.log('derde deel:');
-          //                    console.log(parent.args.slice(indexnum + 1, parent.args.length));
+                            //  console.log('indexnum:' + indexnum);
+                            //  console.log('eerste deel:');
+                            //  console.log(parent.args.slice(0, indexnum));
+                            //  console.log('tweede deel:');
+                            //  console.log(node.args);
+                            //  console.log('derde deel:');
+                            //  console.log(parent.args.slice(indexnum + 1, parent.args.length));
 
           parent.args = parent.args
             .slice(0, indexnum)
@@ -426,17 +535,18 @@ console.log(unknownOutArr);
 
     return outputPatternNode;
   } else {
-    return cleanedEq;
+    return false;
   }
 }
 
-// verandert equation maar doet nog geen update
+// heeft volledige equation als output
 function transformSelected(
   eq,
   inputPatternNode,
   outputPatternNode,
   unknownInArr,
-  unknownOutArr
+  unknownOutArr,
+  extraEquation
 ) {
   console.log(
     "doe transformSelected met inputPattern: " + inputPatternNode.toString()
@@ -449,10 +559,28 @@ function transformSelected(
       inputPatternNode,
       outputPatternNode,
       unknownInArr,
-      unknownOutArr
+      unknownOutArr,
+      extraEquation
     );
-    eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
-    // return injectAtAdress(selectIt(transformed),selectAdres, eq);
+    
+    if (transformed) { 
+      
+      eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
+
+      if (extraEquation) {
+
+        applyEquality(extraEquation);
+
+      }
+
+      
+      console.log('uitdrukking vervangen via regel: ' + transformed.toString() );
+      
+    } else {
+      console.log('uitdrukking niet vervangen via regel');
+      eq = false;
+     };
+     
   });
   return eq;
 }
@@ -466,7 +594,8 @@ function regelTransformSelected(eq, regel) {
     regel.input.expr,
     regel.output.expr,
     regel.input.unknowns,
-    regel.output.unknowns
+    regel.output.unknowns,
+    regel.extraEquation
   );
   // updateLatex(eq);
 }
@@ -575,15 +704,15 @@ function readAtAdress(adress, bignode) {
     switch (arg.slice(0, 4)) {
       case "root":
         node = bignode;
-        console.log("readroot");
+     // console.log("readroot");
         break;
       case "args":
         node = node.args[/\d+/.exec(arg)];
-        console.log("readargs[" + /\d+/.exec(arg) + "]");
+     // console.log("readargs[" + /\d+/.exec(arg) + "]");
         break;
       case "cont":
         node = node.content;
-        console.log("readcontent");
+     // console.log("readcontent");
         break;
       default:
         alert("error: non-valid adress: " + arg);
@@ -626,6 +755,41 @@ function injectAtAdress(subst, adress, bignode) {
   // PAS OP WANT DIT IS DESTRUCTIEF en vERANDERT DE OORSPRONKELIJKE VARIABELE !!!
   // IS DAT ECHT ZO? CHECK DIT!
   eval("eq" + adressText + "= subst");
+  return eq;
+}
+
+function deleteAtAdress(adress, bignode) {
+
+  var eq = bignode.cloneDeep();
+  var adressText = "";
+
+  for (i = 0; i < adress.length; i++) {
+    arg = adress[i];
+    switch (arg.slice(0, 4)) {
+      case "root":
+        adressText = ""; /* console.log(arg, adressText) */
+        break;
+      case "args":
+        adressText =
+          adressText +
+          ".args[" +
+          /\d+/.exec(arg) +
+          "]"; /* console.log(arg, adressText) */
+        break;
+      case "cont":
+        adressText = adressText + ".content"; /* console.log(arg, adressText) */
+        break;
+      default:
+        alert("error: non-valid adress" + arg);
+    }
+  }
+
+  //   console.log('adrestext:' + adressText + ' subst: ' + subst);
+  // PAS OP WANT DIT IS DESTRUCTIEF en vERANDERT DE OORSPRONKELIJKE VARIABELE !!!
+  // IS DAT ECHT ZO? CHECK DIT!
+  console.log(adressText);
+  adressText = adressText.slice(0,adressText.length - arg.length);
+  eval("equation" + adressText + 'args' + ".splice(1,1)");
   return eq;
 }
 
@@ -700,8 +864,13 @@ selected = function(node) {
 //************************************* */
 
 updateEval = function(node) {
-  antwoord = equation.compile().eval();
-  antwoord ? (result.innerHTML = antwoord.toString()) : (result.value = "");
+  try {
+    antwoord = equation.compile().eval();
+    antwoord ? (result.innerHTML = antwoord.toString()) : (result.value = "");
+  } catch(err) {
+    console.log("exressie kan niet geevalueerd worden");
+  }
+  
 };
 
 updateLatex = function(eq) {
@@ -757,6 +926,29 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
 //************************************* */
 // ACTIES
 //************************************* */
+
+// applyRule
+
+function applyRule(regelNode,eq) {
+  alert("clicked1" + regelNode.toString());
+
+  prevEquation = eq.cloneDeep();
+  selectAdress = adresses("Select", equation)[0];
+  selectNode = readAtAdress(selectAdress, equation);
+
+    tweedeVgl = regelNode;
+    neweq = new math.expression.node.FunctionNode("And", [
+      eq,
+      tweedeVgl
+    ]);
+    
+    updateLatex(flatten(neweq));
+  
+}
+
+
+
+  
 
 // laat meerdere selecties toe!!!
 function applyPlus() {
@@ -1152,12 +1344,54 @@ function replaceWithNthroot() {
   updateLatex(equation);
 }
 
-function applyEquality() {
+function selectThisEquality(eq) {
+  // als Select al de root is: doe niks
+  if (eq.fn == "Select") {
+    return;
+  }
+  // bereken het nieuwe adres voor select
+
+  // dit is maar 1 enkel selectadres dus momenteel werkt deze functie alleen voor enkele selecties
+  selectAdress = adresses("Select", eq)[0];
+  console.log("selectAdress: ");
+  console.log(selectAdress);
+
+  
+  upAdress = returnWithoutLast(selectAdress);
+  console.log('upAdress');
+  console.log(upAdress);
+  while (true) {
+    upNode = readAtAdress(upAdress,eq);
+    console.log(upNode);
+    if (upNode.isFunctionNode) {
+      if (upNode.fn == 'equal') {
+        console.log('equality found!')
+        break;
+      }
+    }
+    upAdress.pop()
+    if (upNode == undefined) {break};
+  }
+  
+  console.log(" upAdress: ");
+  console.log(upAdress);
+
+  MoveSelectToAdress(selectAdress, upAdress, eq);
+
+  equation = flatten(equation);
+
+  updateLatex(equation);
+}
+
+function applyEquality(extraVgl) {
   prevEquation = equation.cloneDeep();
   selectAdress = adresses("Select", equation)[0];
   selectNode = readAtAdress(selectAdress, equation);
+
+  tweedeVgl = math.parse("Select(a)==b");
+  if (extraVgl) {tweedeVgl=extraVgl}
   if (selectNode.args[0].name == "And" || selectNode.args[0].fn == "equal") {
-    tweedeVgl = math.parse("Select(a)==b");
+
     substitution = new math.expression.node.FunctionNode("And", [
       selectNode.args[0],
       tweedeVgl
@@ -1379,6 +1613,102 @@ function applyDerivative(eq) {
 
 }
 
+function substitueerLetter(vgl, letterString, substitutie) {
+
+newVgl = vgl.cloneDeep();
+
+newVgl.traverse(function(node, index, parent) {
+
+  if (node.name == letterString) {
+    indexnum = Number(/\d+/.exec(index));
+    parent.args[indexnum] = substitutie;
+  }
+  
+});
+
+return newVgl;
+}
+
+function substitueerExpr(vgl, exprNode, substitutie) {
+
+  newVgl = vgl.cloneDeep();
+  
+  newVgl.traverse(function(node, index, parent) {
+  
+    if (node.equals(exprNode)) {
+      indexnum = Number(/\d+/.exec(index));
+      parent.args[indexnum] = substitutie;
+    }
+    
+  });
+  
+  return newVgl;
+  }
+
+function substitueerNaar(eq, locatie) {
+  prevEquation = equation.cloneDeep();
+  // check of we in een kant van een vgl zitten
+  // check of we een letter geselecteerd hebben
+  // check of hierboven een vlg staat
+selectAdres = adresses("Select", eq)[0];
+selectNode = readAtAdress(selectAdres, eq);
+pad = buildPath(eq);
+parentAdres = returnWithoutLast(selectAdres);
+grandParentAdres = returnWithoutLast(parentAdres);
+grandParentNode = readAtAdress(grandParentAdres,eq);
+vglNummer = Number(/\d+/.exec(parentAdres[parentAdres.length-1]));
+lidVanVgl = Number(/\d+/.exec(selectAdres[selectAdres.length-1]));
+nummerLaatsteVgl = grandParentNode.args.length
+switch (locatie) {
+  case "boven": bestemmingVglNummer = vglNummer - 1; break;
+  case "onder": bestemmingVglNummer = vglNummer + 1; break;
+}
+
+bestemmingBestaat = (bestemmingVglNummer <= nummerLaatsteVgl && bestemmingVglNummer >= 0)
+
+if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && bestemmingBestaat && lidVanVgl < 2) {
+
+  console.log('voorwaarden voor substitutie voldaan!')
+
+  // versie waarbij je de te elimineren expressie moet selecteren
+  // exprNode = selectNode.args[0];
+  // substitutie = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
+
+  // versie waarbij je de te kopieren expressie moet selecteren
+  substitutie = selectNode.args[0];
+  exprNode = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
+
+  bestemmingVgl = readAtAdress(grandParentAdres,eq).args[bestemmingVglNummer];
+  bestemmingVglAdres = grandParentAdres;
+  bestemmingVglAdres.push("args[" + (bestemmingVglNummer)+ "]");
+  
+
+  // als er aan de overkant een letter staat dan mag je de huidige selectie gebruiken als vervangexpressie ipv de overkant
+  // if (substitutie.isSymbolNode) {
+  //   console.log('symbool aan andere kant!');
+  //   exprNode = substitutie;
+  //   substitutie = cleanEquation(readAtAdress(parentAdres,eq).args[lidVanVgl]);
+    
+  // }
+
+//  alleen voor letters
+  // eq = injectAtAdress( selectIt(substitueerLetter(bestemmingVgl, letter, substitutie)), bestemmingVglAdres ,cleanEquation(eq));
+  nieuwebestemming = substitueerExpr(bestemmingVgl, exprNode, substitutie);
+  if (nieuwebestemming.equals(bestemmingVgl)) {
+    console.log("geen substitutiemogelijkheid hierbestemming");
+  } else {
+    oorsprongAdres = parentAdres;
+    //oorsprongAdres.push("args[" + (vglNummer)+ "]");
+    console.log('delete op adres: ' + oorsprongAdres);
+    deleteAtAdress(oorsprongAdres,eq);
+    eq = injectAtAdress( selectIt(nieuwebestemming), bestemmingVglAdres ,cleanEquation(eq));
+    
+  }
+  updateLatex(eq);
+}
+console.log('voorwaarden voor substitutie NIET voldaan!')
+}
+
 // Spacebar en Enter
 
 function spaceBar(eq) {
@@ -1457,14 +1787,18 @@ function spaceBar(eq) {
       // equation = substituteSelected('Select('+uitkomstString+')',eq);
       // updateLatex(equation);
     } else {
-        
+              
+      try {
         spaceregels.forEach(function (testregel) {
             uitkomst = regelTransformSelected(eq, regels[testregel]);
-            if (uitkomst.equals(eq)==false) {
+            if (uitkomst) {
               console.log("nieuwe eq:  " + uitkomst.toString());
                 updateLatex(uitkomst);
+                throw breakException;
             }
         })
+
+      } catch(e) {}
     }
   });
   flatten(equation);
@@ -1487,8 +1821,10 @@ function enter(eq) {
 
     if (uitkomstIsInteger) {
       // uitkomstString = math.eval(selectNode.args[0].toString());
+      uitkomstString < 0 ? 
+      substitution = math.parse("Select(unaryMinus(" + -1*uitkomstString + "))") 
+      : substitution = math.parse("Select(" + uitkomstString + ")");
 
-      substitution = math.parse("Select(" + uitkomstString + ")");
       equation = injectAtAdress(substitution, item, equation);
     } else {
 
@@ -1500,13 +1836,18 @@ function enter(eq) {
     //   uitkomsten = [eq2, eq3,eq4,eq5,eq6];
       
 
-    simplificatieregels.forEach(function (testregel) {
+    var breakException = {};
+    
+    try {
+    enterregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
-        if (uitkomst.equals(eq)==false) {
+        if (uitkomst) {
           console.log("nieuwe eq:  " + uitkomst.toString());
             updateLatex(uitkomst);
         }
     })
+    }
+    catch(e) { };
 
     //   if (eq2.equals(eq) == false) {
     //     console.log("nieuwe eq:  " + eq2.toString());
@@ -2173,7 +2514,7 @@ function drawGraph(eq) {
       // fullSmooth = 255-Math.floor(255*(point.result-minResult)/resultRange);
       // logDiff = math.log(point.result);
       // squareDiff = 255 - point.result;
-      drawPixel(point.pixelX, point.pixelY, 0, 0, 0, squareDiff(point.result));
+      drawPixel(point.pixelX, point.pixelY, 0, 0, 0, 10*logDiff(point.result));
     });
 
     updateCanvas();

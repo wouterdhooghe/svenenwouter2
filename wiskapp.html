@@ -6,12 +6,7 @@
     <script src="code.js"></script>
     <script src="opgaven.js"></script>
 
-    <!-- 
-  <script src="math.min.js"></script>
-  <link rel="stylesheet" href="katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ" crossorigin="anonymous">
-<script src="katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
- -->
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ"
@@ -31,6 +26,26 @@
 
 
         <div class='container-fluid'>
+
+            <div class='row'>
+
+                <button type="button" class="btn btn-primary" id="f1" onclick="f1_release(equation)">  Z </button>
+                <button type="button" class="btn btn-primary" id="f2" onclick="f2_release(equation);">  plus </button>
+                <button type="button" class="btn btn-primary" id="f3" onclick="f3_release(equation);">  times </button>
+                <button type="button" class="btn btn-primary" id="f4" onclick="f4_release(equation);">  min </button>
+                <button type="button" class="btn btn-primary" id="f5" onclick="f5_release(equation);">  fraction </button>
+                <button type="button" class="btn btn-primary" id="f6" onclick="f6_release(equation);">  power </button>
+                <button type="button" class="btn btn-primary" id="f7" onclick="f7_release(equation);">  exp </button>
+                <button type="button" class="btn btn-primary" id="f8" onclick="f8_release(equation);">  root </button>
+                <button type="button" class="btn btn-primary" id="f9" onclick="f9_release(equation);">  log </button>
+                <button type="button" class="btn btn-primary" id="f10" onclick="f10_release(equation);">  equals </button>
+                <button type="button" class="btn btn-primary" id="f11" onclick="f11_release(equation);">  > </button>
+                <button type="button" class="btn btn-primary" id="f12" onclick="f12_release(equation);">  < </button>
+
+
+            </div>
+
+            <div class='row'>
 
             <div class="row">
                 <div class="col-md-6">
@@ -64,6 +79,12 @@
                 <div class="col-md-6">
 
                     <div class="card">
+                            <div class="card-body">
+                                    <h4 class="card-title"> Modus </h4>
+                                    <input type="radio" name="modus" value="bouwmodus" onclick="modus = 'bouw'; expr.oninput();" checked>bouwmodus
+                                    <input type="radio" name="modus" value="manipulatiemodus" onclick="modus = 'manipulatie'; expr.oninput();" >manipulatiemodus
+        
+                                </div>
                         <div class="card-body">
                             <h4 class="card-title">Toetsen?</h4>
                             <p> pijltjes om door de vergelijking te bewegen</p>
@@ -79,27 +100,6 @@
                 </div>
             </div>
 
-            <div class='row'>
-                <div class='col-md' id="left">
-
-                    <div> Grafieken </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Grafiek</p>
-
-                            <canvas id="myCanvas" width="300" height="300">
-                                Fallback content, in case the browser does not support Canvas.
-                            </canvas>
-
-                            <input type="range" value="7" min="0" max="10" name="range">
-
-                            <input type="range" min="0" max="100" value="50" class="vertical" orient="vertical">
-
-                        </div>
-                    </div>
-
-                </div>
                 <div class='col-md' id="middle">
 
                     <div> Vergelijkingen</div>
@@ -175,21 +175,59 @@
 
                     <div> Rekenregels</div>
 
-                    <div class="card">
+                    <div class="card" onclick="applyRule(regelNode1,equation)">
+                        <div class='card-header'> regel 1</div>
                         <div class="card-body">
-                            <p class="card-text">Rekenregel 1</p>
+                        <p class="card-text" id="regel1">$$$$</p>
 
                         </div>
                     </div>
 
                     <div class="card">
+                        <div class='card-header'> regel 2</div>
                         <div class="card-body">
-                            <p class="card-text">Rekenregel 2</p>
+                        <p class="card-text" id="regel2">$$$$</p>
 
                         </div>
                     </div>
+
+                    <div class="card">
+                            <div class='card-header'> regel 3</div>
+                            <div class="card-body">
+                            <p class="card-text" id="regel3">$$$$</p>
+    
+                            </div>
+                        </div>
 
                 </div>
+            </div>
+
+            <div class='row'>
+                    <!-- <div class='col-md' id='bottom'>
+            </div> -->
+
+            <div class='col-md' id="bottom">
+
+                <div> Grafieken </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">Grafiek</p>
+
+                        <canvas id="myCanvas" width="300" height="300">
+                            Fallback content, in case the browser does not support Canvas.
+                        </canvas>
+
+                        <input type="range" value="7" min="0" max="10" name="range">
+
+                        <input type="range" min="0" max="100" value="50" class="vertical" orient="vertical">
+
+                    </div>
+                </div>
+
+            </div>
+
+
             </div>
 
             <script>  
@@ -235,7 +273,16 @@
                     result = document.getElementById('result'),
                     transfo = document.getElementById('transfo'),
                     parenthesis = 'keep',
-                    implicit = 'hide';
+                    implicit = 'hide',
+                    modus = 'bouw';
+
+                    
+
+                // rekenregels
+
+                var regel1 = document.getElementById('regel1'),
+                    regel2 = document.getElementById('regel2'),
+                    regel3 = document.getElementById('regel3')
 
                 // Selectfunctie en andere speciale functies importeren
 
@@ -243,14 +290,14 @@
                 // math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
                 math.pow.toTex = function (node, options) {
 
-                    console.log(multiFunction[node.args[0].name] == 1);
-                    console.log(node.args[0].name == 'nthRoot');
-                    console.log(node.args[0].name == 'unaryMinus');
-                    console.log(node.args[0].fn == 'divide');
-                    console.log(node.args[0].fn == 'pow');
+                    // console.log(multiFunction[node.args[0].name] == 1);
+                    // console.log(node.args[0].name == 'nthRoot');
+                    // console.log(node.args[0].name == 'unaryMinus');
+                    // console.log(node.args[0].fn == 'divide');
+                    // console.log(node.args[0].fn == 'pow');
 
                     if (multiFunction[node.args[0].name] == 1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide' || node.args[0].fn == 'pow') {
-                        console.log('moethaakjeskrijgen');
+                    // console.log('moethaakjeskrijgen');
                         return "\\left(" + node.args[0].toTex(options) + "\\right)^{" + node.args[1].toTex(options) + "}";
                     } else {
                         return "{" + node.args[0].toTex(options) + "}" + "^{" + node.args[1].toTex(options) + "}";
@@ -287,8 +334,8 @@
                 laatsteDigitOfLetterTijdStip = tijd.getTime();
 
                 regels = {
-                    nulOpslorpendVoorPlus: {
-                        naam: '0 opslorpend element voor +',
+                    nulNeutraalVoorPlus: {
+                        naam: '0 neutraal element voor +',
                         input: {
                             expr: math.parse('Plus(a,unaryMinus(a))'),
                             unknowns: ['a']
@@ -299,8 +346,8 @@
                         }
 
                     },
-                    eenOpslorpendVoorMaal: {
-                        naam: '1 opslorpend element voor *',
+                    eenNeutraalVoorMaal: {
+                        naam: '1 neutraal element voor *',
                         input: {
                             expr: math.parse('a/1'),
                             unknowns: ['a']
@@ -365,7 +412,7 @@
                             unknowns: ['a', 'b', 'c', 'd']
                         }
                     },
-                    eenheidsbreukAlsNegatieveExponent: {
+                    eenheidsbreukAlsMinEenExponent: {
                         naam: 'eenheidsbreuk als negatieve exponent',
                         input: {
                             expr: math.parse('1/a'),
@@ -376,7 +423,7 @@
                             unknowns: ['a']
                         }
                     },
-                    negatieveExponentAlsEenheidsbreuk: {
+                    minEenExponentAlsEenheidsbreuk: {
                         naam: 'negatieve exponent als eenheidsbreuk',
                         input: {
                             expr: math.parse('pow(a,unaryMinus(1))'),
@@ -387,6 +434,32 @@
                             unknowns: ['a']
                         }
                     },
+
+                    eenheidsbreukAlsNegatieveExponent: {
+                        naam: 'eenheidsbreuk als negatieve exponent',
+                        input: {
+                            expr: math.parse('1/pow(a,n)'),
+                            unknowns: ['a','n']
+                        },
+                        output: {
+                            expr: math.parse('pow(a,unaryMinus(n))'),
+                            unknowns: ['a','n']
+                        }
+                    },
+
+                    negatieveExponentAlsEenheidsbreuk: {
+                        naam: 'negatieve exponent als eenheidsbreuk',
+                        input: {
+                            expr: math.parse('pow(a,unaryMinus(n))'),
+                            unknowns: ['a','n']
+                        },
+                        output: {
+                            expr: math.parse('1/pow(a,n)'),
+                            unknowns: ['a','n']
+                        }
+                    },
+
+
                     vermenigvuldigingMetEenheidsbreuk1: {
                         naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
                         input: {
@@ -717,7 +790,7 @@
                             unknowns: ['a','b']
                         }
                     },
-                    verschilVanKwadratenFactor1: {
+                    verschilVanKwadratenExpand1: {
                         naam: 'verschil van kwadraten herkennen',
                         input: {
                             expr: math.parse('Times(Plus(a,b),Plus(a,unaryMinus(b)))'),
@@ -728,7 +801,7 @@
                             unknowns: ['a','b']
                         }
                     },
-                    verschilVanKwadratenFactor2: {
+                    verschilVanKwadratenExpand2: {
                         naam: 'verschil van kwadraten herkennen',
                         input: {
                             expr: math.parse('Times(Plus(a,unaryMinus(b)),Plus(a,b))'),
@@ -761,6 +834,67 @@
                             unknowns: ['a']
                         }
                     },
+                    BreukAlsVerschilVanExponenten: {
+                        naam: 'breuk van machten is het verschil van exponenten',
+                        input: {
+                            expr: math.parse('pow(a,n)/pow(a,m)'),
+                            unknowns: ['a','n','m']
+                        },
+                        output: {
+                            expr: math.parse('pow(a,n-m)'),
+                            unknowns: ['a','n','m']
+                        }
+                    },
+
+                    nulDelenDoorIets: {
+                        naam: 'nul delen door iets is nul',
+                        input: {
+                            expr: math.parse('0/a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        }
+                    },
+                    
+                    
+                    factorBuitenhalen: {
+                        naam: 'factor buitenhalen',
+                        input: {
+                            expr: math.parse('Plus(a,b)'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('Times(c,Plus(a/c,b/c))'),
+                            unknowns: ['a','b']
+                        },
+                        extraEquation: math.parse('c==Select(c)')
+                    },
+
+                    vergelijkingNegeren: {
+                        naam: 'negeer vergelijking',
+                        input: {
+                            expr: math.parse('a==b'),
+                            unknowns: ['a','b']
+                        },
+                        output: {
+                            expr: math.parse('a==b'),
+                            unknowns: ['a','b']
+                        }
+                    },                    
+
+                    nulBijtellen: {
+                        naam: 'nul bijtellen',
+                        input: {
+                            expr: math.parse('a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('Plus(a,0)'),
+                            unknowns: ['a']
+                        }
+                    },
                     
                     
                 };
@@ -768,6 +902,8 @@
                 spaceregels = [
                     'breukenVermenigvuldigen',
                     'uiteenTrekRegel',
+                    'minEenExponentAlsEenheidsbreuk',
+                    'eenheidsbreukAlsMinEenExponent',
                     'eenheidsbreukAlsNegatieveExponent',
                     'negatieveExponentAlsEenheidsbreuk',
                     'vermenigvuldigingMetEenheidsbreuk1',
@@ -792,15 +928,26 @@
                     'binomium3Expand',
                     'binomium3Factor',
                     'verschilVanKwadratenExpand',
-                    'verschilVanKwadratenFactor1',
-                    'verschilVanKwadratenFactor2'
+                    'verschilVanKwadratenExpand1',
+                    'verschilVanKwadratenExpand2'
 
                 ];
 
-                simplificatieregels = [
-                    'nulOpslorpendVoorPlus',
-                    'eenOpslorpendVoorMaal',
+                naarplusregels = [
+                    'vergelijkingNegeren',
+                    'binomium2Expand',
+                    'binomium3Expand',
+                    'verschilVanKwadratenExpand1',
+                    'verschilVanKwadratenExpand2',
+                    'factorBuitenhalen',
+                    'nulBijtellen'
+                ];
+
+                enterregels = [
+                    'nulNeutraalVoorPlus',
+                    'eenNeutraalVoorMaal',
                     'schrapUnitaireBreuk',
+                    'nulDelenDoorIets',
                     'omgekeerdeIsInverseVoorMaal1',
                     'omgekeerdeIsInverseVoorMaal2',
                     'vermenigvuldigingMetEenLinks',
@@ -812,7 +959,8 @@
                     'optellenMetNulLinksDoetNiks',
                     'optellenMetNulRechtsDoetNiks',
                     'eersteMachtNeutraal',
-                    'nuldeMachtIsEen'
+                    'nuldeMachtIsEen',
+                    'BreukAlsVerschilVanExponenten'
                 ];
 
                 multiFunction = {
@@ -829,6 +977,17 @@
                 var keysList = [];
 
                 updateLatex(equation);
+
+// om toch maar iets in de regelbox te schrijven
+                regelString1 = "Times(a,Plus(b,c))==Plus(Times(a,b),Times(a,c))";
+                regelNode1 = math.parse(regelString1);
+                var latex = regelNode1.toTex({
+                   parenthesis: parenthesis,
+                    implicit: implicit
+                       });
+                var largeLatex = "\\large " + latex;
+                    katex.render(largeLatex, regel1);
+// einde toch maar iets in regelbox schrijven
 
                 // wat er gebeurt als je iets rechtstreeks invult in de expressiebox
                 expr.oninput = function () {
@@ -952,7 +1111,7 @@
                         8: 'Digit8',
                         9: 'Digit9',
 
-                        a: 'KeyQ',
+                        a: 'KeyA',
                         b: 'KeyB',
                         c: 'KeyC',
                         d: 'KeyD',
@@ -1083,9 +1242,9 @@
 
                         switch (keyLookup[e.code]) {
                             case 'left': e.preventDefault(); commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
-                            case 'up': e.preventDefault(); out.innerHTML = 'up'; break;
+                            case 'up': e.preventDefault(); substitueerNaar(equation, "boven"); break;
                             case 'right': e.preventDefault(); commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
-                            case 'down': e.preventDefault(); out.innerHTML = 'down'; break;
+                            case 'down': e.preventDefault(); substitueerNaar(equation, "onder"); break;
 
                             // Specialkeys  
                             case 'plus': replaceWithPlus(); keysList.push('replacePlus'); break;
@@ -1128,6 +1287,7 @@
                             case 'enter': enter(equation
                             ); keysList.push('enter'); break;
                             case 'backspace': backSpace(); keysList.push('backspace'); break;
+                            case 'tab': e.preventDefault(); substitueerNaar(equation,'boven'); keysList.push('tab'); break;
 
                             // tekens
                             case 'KeyM': komma(); keysList.push('komma'); break;
@@ -1153,6 +1313,20 @@
                             case 'x': e.preventDefault(); replaceWithLetter('x',equation); break; //  8
                             case 'y': e.preventDefault(); replaceWithLetter('y',equation); break; //  9
                             case 'z': e.preventDefault(); replaceWithLetter('z',equation); //  0
+
+                            // Functieknoppen
+                            case 'f1': e.preventDefault(); f1(equation); break;
+                            case 'f2': e.preventDefault(); f2(equation); break;
+                            case 'f3': e.preventDefault(); f3(equation); break;
+                            case 'f4': e.preventDefault(); f4(equation); break;
+                            case 'f5': e.preventDefault(); f5(equation); break;
+                            case 'f6': e.preventDefault(); f6(equation); break;
+                            case 'f7': e.preventDefault(); f7(equation); break;
+                            case 'f8': e.preventDefault(); f8(equation); break;
+                            case 'f9': e.preventDefault(); f9(equation); break;
+                            case 'f10': e.preventDefault(); f10(equation); break;
+                            case 'f11': e.preventDefault(); f11(equation); break;
+                            case 'f12': e.preventDefault(); f12(equation); break;
                         }
                 };
 
