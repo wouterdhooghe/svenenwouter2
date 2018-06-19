@@ -1358,29 +1358,36 @@ function selectThisEquality(eq) {
 
   
   upAdress = returnWithoutLast(selectAdress);
+  i = 1;
   console.log('upAdress');
   console.log(upAdress);
-  while (true) {
+  while (upAdress.length > 0) {
+    i = i +1
+    // if (i==100) { break;}
     upNode = readAtAdress(upAdress,eq);
     console.log(upNode);
-    if (upNode.isFunctionNode) {
+    if (upNode.isOperatorNode) {
       if (upNode.fn == 'equal') {
         console.log('equality found!')
         break;
       }
     }
     upAdress.pop()
-    if (upNode == undefined) {break};
+    // if (upNode == []) {break};
+    console.log(i);
   }
   
   console.log(" upAdress: ");
   console.log(upAdress);
 
-  MoveSelectToAdress(selectAdress, upAdress, eq);
+  if (upAdress.length>0) {
 
-  equation = flatten(equation);
+   MoveSelectToAdress(selectAdress, upAdress, eq);
+
+   equation = flatten(equation);
 
   updateLatex(equation);
+  }
 }
 
 function applyEquality(extraVgl) {

@@ -895,6 +895,18 @@
                             unknowns: ['a']
                         }
                     },
+
+                    aGedeeldDoorA: {
+                        naam: 'a delen door a is 1',
+                        input: {
+                            expr: math.parse('a/a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: []
+                        }
+                    },                    
                     
                     
                 };
@@ -960,7 +972,8 @@
                     'optellenMetNulRechtsDoetNiks',
                     'eersteMachtNeutraal',
                     'nuldeMachtIsEen',
-                    'BreukAlsVerschilVanExponenten'
+                    'BreukAlsVerschilVanExponenten',
+                    'aGedeeldDoorA'
                 ];
 
                 multiFunction = {
