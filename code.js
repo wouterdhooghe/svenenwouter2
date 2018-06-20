@@ -1402,7 +1402,7 @@ function selectThisEquality(eq) {
   if (upAdress.length>0) {
 
     console.log('moveselectoadress');
-   return eqWithSelectMovedToAdress(selectAdress, upAdress, equation);
+   return eqWithSelectMovedToAdress(selectAdress, upAdress, eq);
 
   }
 }
@@ -1422,7 +1422,8 @@ function applyEquality(extraVgl,eq) {
     ]);
     // equation = substituteSelected(substitution, equation);
     // updateLatex(flatten(equation));
-    return flatten(substituteSelected(substitution, equation));
+    // return flatten(substituteSelected(substitution, eq));
+    return flatten(substitution);
   } else if (selectAdress == 'root?') {
     console.log('root!!!')
     // equation = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
