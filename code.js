@@ -922,6 +922,26 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
   equation = eq;
 }
 
+function eqWithSelectMovedToAdress(selectAdress, newAdress, eq) {
+  // select eruit halen (dit werkt is getest)
+  var cleanedEquation = eq.transform(function(child, path, parent) {
+    if (child.fn == "Select") {
+      return child.args[0];
+    } else {
+      return child;
+    }
+  });
+  console.log("cleaned");
+
+  eq = injectAtAdress(
+    selectIt(readAtAdress(newAdress, cleanedEquation)),
+    newAdress,
+    cleanedEquation
+  );
+  console.log("injected");
+  return eq;
+}
+
 //************************************* */
 // ACTIES
 //************************************* */
@@ -1382,11 +1402,8 @@ function selectThisEquality(eq) {
   if (upAdress.length>0) {
 
     console.log('moveselectoadress');
-   MoveSelectToAdress(selectAdress, upAdress, equation);
+   return eqWithSelectMovedToAdress(selectAdress, upAdress, equation);
 
-   equation = flatten(equation);
-
-  updateLatex(equation);
   }
 }
 
