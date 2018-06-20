@@ -872,8 +872,35 @@
                         extraEquation: math.parse('c==Select(c)')
                     },
 
-                    expandMetFunctie: {
-                        naam: 'factor binnen multiplus brengen met functie',
+                    brengLinkseFactorBinnenMetFunctie: {
+                        naam: 'factor langs links binnen multiplus brengen met functie',
+                        input: {
+                            expr: [],
+                            unknowns: [],
+
+                        },
+                        output: {
+                            expr: [],
+                            unknowns: [],
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args[1].name == 'Plus') {
+                                    console.log('good one');
+                                    generatorArray = expr.args;
+                                    console.log(generatorArray);
+                                    combos = oneCombinations(generatorArray);
+                                    return makeMulti('Plus', combos.map(paar => makeMulti('Times', paar)));
+
+                                }
+                            }
+                            // return math.parse('Times(l,o,l)');
+                        }
+
+                    },
+
+                    expandDoorMetFunctie: {
+                        naam: 'product van multiplussen terugbrengen tot lange som met functie',
                         input: {
                             expr: [],
                             unknowns: [],
@@ -890,6 +917,7 @@
                                     generatorArray = [];
                                     expr.args.forEach(factor => (factor.name == 'Plus') ? generatorArray.push(factor.args) : generatorArray.push(factor));
                                     console.log(generatorArray);
+                            //  TODO: vervang oneCombinations hier door nCombinations!
                                     combos = oneCombinations(generatorArray);
                                     return makeMulti('Plus', combos.map(paar => makeMulti('Times', paar)));
 
@@ -979,7 +1007,7 @@
                     'binomium3Expand',
                     'verschilVanKwadratenExpand1',
                     'verschilVanKwadratenExpand2',
-                    'expandMetFunctie',
+                    'brengLinkseFactorBinnenMetFunctie',
                     'factorBuitenhalen',
                     'nulBijtellen'
                 ];
