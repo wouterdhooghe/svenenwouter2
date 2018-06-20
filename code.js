@@ -1391,10 +1391,10 @@ function selectThisEquality(eq) {
   }
 }
 
-function applyEquality(extraVgl) {
+function applyEquality(extraVgl,eq) {
   prevEquation = equation.cloneDeep();
-  selectAdress = adresses("Select", equation)[0];
-  selectNode = readAtAdress(selectAdress, equation);
+  selectAdress = adresses("Select", eq)[0];
+  selectNode = readAtAdress(selectAdress, eq);
 
   tweedeVgl = math.parse("Select(a)==b");
   if (extraVgl) {tweedeVgl=extraVgl}
@@ -1415,9 +1415,9 @@ function applyEquality(extraVgl) {
     return neweq;
   } else {
     console.log('nog geen vgl geselecteerd!');
-    selectThisEquality(equation);
-    console.log('huidige vgl: ' + equation.toString());
-    return applyEquality(extraVgl);
+    selectThisEquality(eq);
+    console.log('huidige vgl: ' + eq.toString());
+    return applyEquality(extraVgl,eq);
   }
 
   /* if (selectNode.args[0].fn == 'equal') {
