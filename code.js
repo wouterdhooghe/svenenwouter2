@@ -1476,6 +1476,32 @@ function applyEquality(eq,extraVgl) {
     } */
 }
 
+function ontvouwMulti(eq,multi) {
+  neweq = eq.transform(function (node, index, parent) {
+    if (node.name == multi && node.args.length>2) {
+      newMulti = new math.expression.node.FunctionNode(
+        multi,
+        node.args.slice(1)
+      );
+      newMultiArgs = [node.args[0],newMulti];
+      newnode = new math.expression.node.FunctionNode(
+        multi,
+        newMultiArgs
+      );
+      return newnode;
+    } else {
+      return node;
+    }
+  })
+return neweq;
+}
+
+function ontvouwMultis(eq,multis) {
+  // kies een multi om te ontvouwen met multis
+  multis.forEach(ontvouwMulti(eq,multi));
+    
+}
+
 function replaceWithEquality() {
   prevEquation = equation.cloneDeep();
   equation = math.parse("y==Select(x)");
