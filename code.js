@@ -559,8 +559,7 @@ function transformSelected(
       inputPatternNode,
       outputPatternNode,
       unknownInArr,
-      unknownOutArr,
-      extraEquation
+      unknownOutArr
     );
     
     if (transformed) { 
@@ -1415,9 +1414,9 @@ function applyEquality(extraVgl,eq) {
     return neweq;
   } else {
     console.log('nog geen vgl geselecteerd!');
-    selectThisEquality(eq);
-    console.log('huidige vgl: ' + eq.toString());
-    return applyEquality(extraVgl,eq);
+    
+    metEqualityGeselecteerd = selectThisEquality(eq);
+    return applyEquality(extraVgl,metEqualityGeselecteerd);
   }
 
   /* if (selectNode.args[0].fn == 'equal') {
