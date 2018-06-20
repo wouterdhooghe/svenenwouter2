@@ -306,14 +306,40 @@ function returnWithoutLast(arr) {
   return newarr;
 }
 
+function verwijderEnkeleMultifunctionsCallBack(node, index, parent) {
+                      // // als er maar een argument is vervalt de functie
+                      if (multiFunction[node.name] == 1) {
+                        if (node.args.length == 1) {
+                        console.log('multifunction node heeft maar 1 arg');
+                        console.log('node = ' + node.toString());
+                        console.log('child = ' + node.args[0].toString());
+                        return node.args[0];
+                      } else {
+                        return node;
+                      }
+                      } else {
+                        return node;
+                      }
+};
+
+function verwijderEnkeleMultifunctions(eq) {
+ // neweq = verwijderEnkeleMultifunctionsCallBack(eq);
+  neweq = eq.transform(verwijderEnkeleMultifunctionsCallBack);
+  return neweq;
+}
+
 // brengt geneste multifunctions Plus en Times samen in 1 niveau.
 // Niet destructief!
 function flatten(eq) {
   neweq = eq.cloneDeep();
   neweq.traverse(function(node, index, parent) {
+
     if (parent != null) {
       //           console.log(node);
-      if (node.type == "FunctionNode") {
+
+
+
+     if (node.type == "FunctionNode") {
         if ((multiFunction[parent.name] == 1) & (node.name == parent.name)) {
           indexnum = Number(/\d+/.exec(index));
 
@@ -335,6 +361,8 @@ function flatten(eq) {
           console.log("flattened");
           console.log(parent.args.length);
         }
+
+
       }
     }
   });
