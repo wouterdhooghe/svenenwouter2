@@ -333,6 +333,7 @@ function verwijderEnkeleMultifunctions(eq) {
 // Niet destructief!
 function flatten(eq) {
   neweq = eq.cloneDeep();
+  neweq = verwijderEnkeleMultifunctions(neweq);
   neweq.traverse(function(node, index, parent) {
 
     if (parent != null) {
@@ -1863,7 +1864,7 @@ function spaceBar(eq) {
       } catch(e) {}
     }
   });
-  flatten(equation);
+  equation = flatten(equation);
   updateLatex(equation);
 }
 
@@ -2176,7 +2177,7 @@ function replaceWithLetter (letterString, eq) {
     substitution = new math.expression.node.FunctionNode("Times", [selectNode.args[0],letterNode])
 
     eq = substituteSelected(substitution, eq);
-    flatten(eq);
+    eq = flatten(eq);
     updateLatex(eq);
 } else {
   eq = substituteSelected(selectIt(letterString), eq);
