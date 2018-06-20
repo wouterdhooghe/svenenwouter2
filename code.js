@@ -1767,7 +1767,7 @@ if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && bestemmingBest
     eq = injectAtAdress( selectIt(nieuwebestemming), bestemmingVglAdres ,cleanEquation(eq));
     
   }
-  updateLatex(eq);
+  updateLatex(flatten(eq));
 }
 console.log('voorwaarden voor substitutie NIET voldaan!')
 }
