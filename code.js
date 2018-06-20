@@ -569,7 +569,7 @@ function transformSelected(
 
       if (extraEquation) {
         console.log('extra equation toevoegen');
-        applyEquality(extraEquation);
+        eq = applyEquality(extraEquation,eq);
 
       }
 
