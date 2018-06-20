@@ -204,6 +204,8 @@ naarplus(eq);
 }
 
 function f3(eq) {
+
+naartimes(eq);  
   
 }
 
@@ -265,6 +267,26 @@ function naarplus(eq) {
       })
 
     } catch(e) {}
+
+}
+
+function naartimes(eq) {
+
+  console.log('naartimes gestart');
+
+  try {
+    naartimesregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        console.log('uitkomst = ' + uitkomst);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            
+            updateLatex(flatten(uitkomst));
+            throw breakException;
+        }
+    })
+
+  } catch(e) {}
 
 }
 
