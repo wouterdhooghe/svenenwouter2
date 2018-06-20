@@ -598,7 +598,7 @@ function transformSelected(
 
       if (extraEquation) {
         console.log('extra equation toevoegen');
-        eq = applyEquality(extraEquation,eq);
+        eq = applyEquality(eq,extraEquation);
 
       }
 
@@ -1437,7 +1437,7 @@ function selectThisEquality(eq) {
   }
 }
 
-function applyEquality(extraVgl,eq) {
+function applyEquality(eq,extraVgl) {
   prevEquation = equation.cloneDeep();
   selectAdress = adresses("Select", eq)[0];
   selectNode = readAtAdress(selectAdress, eq);
@@ -1464,7 +1464,7 @@ function applyEquality(extraVgl,eq) {
     console.log('nog geen vgl geselecteerd!');
     
     metEqualityGeselecteerd = selectThisEquality(eq);
-    return applyEquality(extraVgl,metEqualityGeselecteerd);
+    return applyEquality(metEqualityGeselecteerd,extraVgl);
   }
 
   /* if (selectNode.args[0].fn == 'equal') {

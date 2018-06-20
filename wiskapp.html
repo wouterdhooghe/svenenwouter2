@@ -1293,7 +1293,7 @@
                             case 'minus': applyMinus(); keysList.push('applyMinus'); break;
                             case 'divide': applyDivide(); keysList.push('applyDivide'); break;
                             case 'nthroot': applyNthroot(); keysList.push('applyNthroot'); break;
-                            case 'equals': applyEquality(); keysList.push('applyEquals'); break;
+                            case 'equals': updateLatex(applyEquality(equation)); keysList.push('applyEquals'); break;
 
                             // Extra keys
                             case 'space': e.preventDefault(); keysList.push('space'); spaceBar(equation); break;
