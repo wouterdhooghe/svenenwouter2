@@ -576,21 +576,32 @@ function transformSelected(
   outputPatternNode,
   unknownInArr,
   unknownOutArr,
+  functie,
   extraEquation
 ) {
-  console.log(
-    "doe transformSelected met inputPattern: " + inputPatternNode.toString()
-  );
+  
   selectAdresses = adresses("Select", eq);
   selectAdresses.forEach(function setnodes(selectAdres, index) {
-    selectNode = readAtAdress(selectAdres, equation);
-    transformed = transformNode(
-      selectNode.args[0],
-      inputPatternNode,
-      outputPatternNode,
-      unknownInArr,
-      unknownOutArr
-    );
+    selectNode = readAtAdress(selectAdres, eq);
+
+    if (functie) {
+      console.log(
+        "doe transformSelected met functie: "
+      );
+      transformed = functie(selectNode.args[0]);
+    } else {
+      console.log(
+        "doe transformSelected met inputPattern: " + inputPatternNode.toString()
+      );
+      transformed = transformNode(
+        selectNode.args[0],
+        inputPatternNode,
+        outputPatternNode,
+        unknownInArr,
+        unknownOutArr
+      );
+    }
+
     
     if (transformed) { 
       
@@ -624,10 +635,16 @@ function regelTransformSelected(eq, regel) {
     regel.output.expr,
     regel.input.unknowns,
     regel.output.unknowns,
+    regel.functie,
     regel.extraEquation
   );
   // updateLatex(eq);
 }
+
+function oneCombinations([node,arr]) {oneComb = []; arr.forEach(s => oneComb.push([node,s])); return oneComb};
+function twoCombinations(genArray) { twoComb = []; genArray[0].forEach( s => twoComb.push(oneCombinations(s,genArray[1])));return twoComb }
+
+function makeMulti(multiName, multiArgs) { return new math.expression.node.FunctionNode(multiName, multiArgs); }
 
 //************************************* */
 // SELECTIES

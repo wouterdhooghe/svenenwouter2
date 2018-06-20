@@ -872,6 +872,34 @@
                         extraEquation: math.parse('c==Select(c)')
                     },
 
+                    expandMetFunctie: {
+                        naam: 'factor binnen multiplus brengen met functie',
+                        input: {
+                            expr: [],
+                            unknowns: [],
+
+                        },
+                        output: {
+                            expr: [],
+                            unknowns: [],
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.name == 'Plus')) {
+                                    console.log('good one');
+                                    generatorArray = [];
+                                    expr.args.forEach(factor => (factor.name == 'Plus') ? generatorArray.push(factor.args) : generatorArray.push(factor));
+                                    console.log(generatorArray);
+                                    combos = oneCombinations(generatorArray);
+                                    return makeMulti('Plus', combos.map(paar => makeMulti('Times', paar)));
+
+                                }
+                            }
+                            return math.parse('Times(l,o,l)');
+                        }
+
+                    },
+
                     vergelijkingNegeren: {
                         naam: 'negeer vergelijking',
                         input: {
@@ -951,6 +979,7 @@
                     'binomium3Expand',
                     'verschilVanKwadratenExpand1',
                     'verschilVanKwadratenExpand2',
+                    'expandMetFunctie',
                     'factorBuitenhalen',
                     'nulBijtellen'
                 ];
