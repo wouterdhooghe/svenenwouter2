@@ -322,6 +322,7 @@ function verwijderEnkeleMultifunctionsCallBack(node, index, parent) {
                       }
 };
 
+// deze is in principel desctuructief denk ik want gebruikt geen DeepClone
 function verwijderEnkeleMultifunctions(eq) {
  // neweq = verwijderEnkeleMultifunctionsCallBack(eq);
   neweq = eq.transform(verwijderEnkeleMultifunctionsCallBack);
