@@ -872,6 +872,34 @@
                         extraEquation: math.parse('c==Select(c)')
                     },
 
+                    productAlsMacht: {
+                        naam: 'gelijke factoren als een macht schrijven met functie',
+                        input: {
+                            expr: [],
+                            unknowns: [],
+
+                        },
+                        output: {
+                            expr: [],
+                            unknowns: [],
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                base = expr.args[0];
+                                if (expr.args.every( factor => factor.equals(base))) {
+                                    console.log('good one');
+                                    exponent = expr.args.length;
+                                    console.log('exponent = '+ exponent);
+                                    console.log('base = ' + base.toString());
+                                    return new math.expression.node.FunctionNode('pow', [base, math.parse(exponent)]);
+
+                                }
+                            }
+                            // return math.parse('Times(l,o,l)');
+                        }
+
+                    },
+
                     brengLinkseFactorBinnenMetFunctie: {
                         naam: 'factor langs links binnen multiplus brengen met functie',
                         input: {
@@ -967,6 +995,27 @@
                     
                 };
 
+                simplificatieregels = [
+                    'nulNeutraalVoorPlus',
+                    'eenNeutraalVoorMaal',
+                    'schrapUnitaireBreuk',
+                    'nulDelenDoorIets',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetEenLinks',
+                    'vermenigvuldigingMetEenRechts',
+                    'vermenigvuldigingMetNulRechts',
+                    'vermenigvuldigingMetNulLinks',
+                    'machtInversAanWortel',
+                    'wortelInversAanMacht',
+                    'optellenMetNulLinksDoetNiks',
+                    'optellenMetNulRechtsDoetNiks',
+                    'eersteMachtNeutraal',
+                    'nuldeMachtIsEen',
+                    'BreukAlsVerschilVanExponenten',
+                    'aGedeeldDoorA'
+                ];
+
                 spaceregels = [
                     'breukenVermenigvuldigen',
                     'uiteenTrekRegel',
@@ -1001,6 +1050,18 @@
 
                 ];
 
+                naargetalregels = [
+                    'vergelijkingNegeren',
+                    'nuldeMachtIsEen',
+                    'aGedeeldDoorA',
+                    'vermenigvuldigingMetNulRechts',
+                    'vermenigvuldigingMetNulLinks',
+                    'nulDelenDoorIets',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+
+                ];
+
                 naarplusregels = [
                     'vergelijkingNegeren',
                     'binomium2Expand',
@@ -1013,29 +1074,45 @@
 
                 naartimesregels = [
                     'vergelijkingNegeren',
+                    'verschilVanKwadratenExpand',
+                    'uiteenTrekRegel',
                     'factorBuitenhalen'
                 ];
 
-                simplificatieregels = [
-                    'nulNeutraalVoorPlus',
-                    'eenNeutraalVoorMaal',
-                    'schrapUnitaireBreuk',
-                    'nulDelenDoorIets',
-                    'omgekeerdeIsInverseVoorMaal1',
-                    'omgekeerdeIsInverseVoorMaal2',
-                    'vermenigvuldigingMetEenLinks',
-                    'vermenigvuldigingMetEenRechts',
-                    'vermenigvuldigingMetNulRechts',
-                    'vermenigvuldigingMetNulLinks',
-                    'machtInversAanWortel',
-                    'wortelInversAanMacht',
-                    'optellenMetNulLinksDoetNiks',
-                    'optellenMetNulRechtsDoetNiks',
-                    'eersteMachtNeutraal',
-                    'nuldeMachtIsEen',
-                    'BreukAlsVerschilVanExponenten',
-                    'aGedeeldDoorA'
+                naarminregels = [
+                    'vergelijkingNegeren'
                 ];
+
+                naarbreukregels = [
+                    'vergelijkingNegeren',
+                    'breukenVermenigvuldigen',
+                    'wortelVanBreuk'
+                ];
+
+                naarmachtregels = [
+                    'vergelijkingNegeren',
+                    'productAlsMacht',
+                    'productMetGelijkeExponenten',
+                    'wortelNaarMachtNotatie1',
+                    'wortelNaarMachtNotatie2',
+                    'wortelNaarMachtNotatie3'
+                ];
+
+                naarexpregels = [
+                    'vergelijkingNegeren'
+                ];
+
+                naarwortelregels = [
+                    'vergelijkingNegeren',
+                    'productVanGelijkeWortels',
+                    'breukVanWortels'
+                ]
+
+                naarlogregels = [
+                    'vergelijkingNegeren'
+                ];
+
+
 
                 multiFunction = {
                     'Times': 1,

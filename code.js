@@ -218,7 +218,8 @@ function f5(eq) {
 }
 
 function f6(eq) {
-  
+// naarmacht(eq);
+naar(naarmachtregels,eq);
 }
 
 function f7(eq) {
@@ -243,6 +244,26 @@ function f11(eq) {
 
 function f12(eq) {
   
+}
+
+function naargetal(eq) {
+
+  console.log('naargetal gestart');
+
+  try {
+    naargetalregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        console.log('uitkomst = ' + uitkomst);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            
+            updateLatex(flatten(uitkomst));
+            throw breakException;
+        }
+    })
+
+  } catch(e) {}
+
 }
 
 function naarplus(eq) {
@@ -289,6 +310,127 @@ function naartimes(eq) {
   } catch(e) {}
 
 }
+
+function naarmin(eq) {
+
+  console.log('naarmin gestart');
+
+  try {
+    naarminregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        console.log('uitkomst = ' + uitkomst);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            
+            updateLatex(flatten(uitkomst));
+            throw breakException;
+        }
+    })
+
+  } catch(e) {}
+
+}
+
+function naarbreuk(eq) {
+
+  console.log('naarbreuk gestart');
+
+  try {
+    naarbreukregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        console.log('uitkomst = ' + uitkomst);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            
+            updateLatex(flatten(uitkomst));
+            throw breakException;
+        }
+    })
+
+  } catch(e) {}
+
+}
+
+function naarmacht(eq) {
+
+  console.log('naarmacht gestart');
+
+  try {
+    naarmachtregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        console.log('uitkomst = ' + uitkomst);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            
+            updateLatex(flatten(uitkomst));
+            throw breakException;
+        }
+    })
+
+  } catch(e) {}
+
+}
+
+function naarexp(eq) {
+
+  console.log('naarexp gestart');
+
+  try {
+    naarexpregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        console.log('uitkomst = ' + uitkomst);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            
+            updateLatex(flatten(uitkomst));
+            throw breakException;
+        }
+    })
+
+  } catch(e) {}
+
+}
+
+function naarwortel(eq) {
+
+  console.log('naarwortel gestart');
+
+  try {
+    naarwortelregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        console.log('uitkomst = ' + uitkomst);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            
+            updateLatex(flatten(uitkomst));
+            throw breakException;
+        }
+    })
+
+  } catch(e) {}
+
+}
+
+function naarlog(eq) {
+
+  console.log('naarlog gestart');
+
+  try {
+    naarlogregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        console.log('uitkomst = ' + uitkomst);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            
+            updateLatex(flatten(uitkomst));
+            throw breakException;
+        }
+    })
+
+  } catch(e) {}
+
+}
+
 
 //************************************* */
 // UTILITY
@@ -517,6 +659,7 @@ function patternContents(cleanedNode, patternNode, unknownArr) {
   return output;
 }
 
+//  TODO: matchesPattern aanpassen zodat het niet meer matchet als er nog een stuk achteraan komt
 function matchesPattern(cleanedNode, patternNode, unknownArr) {
   patpad = buildPath(patternNode);
   bigpad = buildPath(cleanedNode);
@@ -547,12 +690,21 @@ function matchesPattern(cleanedNode, patternNode, unknownArr) {
         checker[currentplaceholder]
           ? (match = match && checker[currentplaceholder].equals(subexp))
           : (checker[currentplaceholder] = subexp);
+
+          // weggecommente poging om overmatching te vermijden werkt niet... geen idee waarom
+          // keys(bigpad).forEach( key => {if (key.includes(place)) {  bigpad[key]}});
+
       }
     }
 
     console.log("place match =" + match);
+    
+    
   }
+  // rest = Object.keys(bigpad).length
+  // console.log('rest = ' + rest );
   console.log("pattern match =" + match);
+  // return match && rest==0;
   return match;
 }
 
