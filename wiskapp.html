@@ -526,8 +526,8 @@
                     },
 
 
-                    vermenigvuldigingMetEenheidsbreuk1: {
-                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
+                    vermenigvuldigingMetEenheidsbreuk: {
+                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk (dyadisch)',
                         input: {
                             expr: math.parse('Times(a,1/b)'),
                             unknowns: ['a', 'b']
@@ -535,17 +535,51 @@
                         output: {
                             expr: math.parse('a/b'),
                             unknowns: ['a', 'b']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.fn == 'divide' && s.args[0]==1)) {
+                                    console.log('product bevat eenheidsbreuk');
+                                    if (expr.args.length == 2) {
+                                        expr.args.forEach(factor => factor.fn == 'divide' ? eenheidsBreuk = factor : andereFactor = factor);
+
+                                    }
+
+                                    newexp = new math.expression.node.OperatorNode("/", "divide", [andereFactor, eenheidsBreuk.args[1]]);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        
                         }
                     },
-                    vermenigvuldigingMetEenheidsbreuk2: {
-                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
+                    vermenigvuldigingGetalMetEenheidsbreuk: {
+                        naam: 'vermenigvuldiging getal met eenheidsbreuk geeft breuk',
                         input: {
-                            expr: math.parse('Times(1/b,a)'),
-                            unknowns: ['a', 'b']
+                            expr: math.parse('Times(a/b,c)'),
+                            unknowns: ['a', 'b', 'c']
                         },
                         output: {
-                            expr: math.parse('a/b'),
-                            unknowns: ['a', 'b']
+                            expr: math.parse('Times(a,c)/b'),
+                            unknowns: ['a', 'b','c']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.fn == 'divide')) {
+                                    console.log('product bevat breuk');
+                                    if (expr.args.length == 2) {
+                                        expr.args.forEach(factor => factor.fn == 'divide' ? eenheidsBreuk = factor : andereFactor = factor);
+                                        if (andereFactor.fn != 'divide') {
+                                            newexp = new math.expression.node.OperatorNode("/", "divide", [andereFactor, eenheidsBreuk.args[1]]);
+                                            console.log('newexp =' + newexp.toString());
+                                            return newexp;
+                                        }
+                                    }
+
+                            
+                                }
+                            }
+                        
                         }
                     },
                     vermenigvuldigingMetEenheidsbreukOmgekeerd: {
@@ -1092,8 +1126,8 @@
                     'eenheidsbreukAlsMinEenExponent',
                     'eenheidsbreukAlsNegatieveExponent',
                     'negatieveExponentAlsEenheidsbreuk',
-                    'vermenigvuldigingMetEenheidsbreuk1',
-                    'vermenigvuldigingMetEenheidsbreuk2',
+                    'vermenigvuldigingMetEenheidsbreuk',
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
                     'vermenigvuldigingMetEenheidsbreukOmgekeerd',
                     'exponentenOptellen',
                     'somVanExponentenNaarVermenigvuldiging',
@@ -1160,8 +1194,8 @@
                     'breukenVermenigvuldigen',
                     'minEenExponentAlsEenheidsbreuk',
                     'negatieveExponentAlsEenheidsbreuk',
-                    'vermenigvuldigingMetEenheidsbreuk1',
-                    'vermenigvuldigingMetEenheidsbreuk2',
+                    'vermenigvuldigingMetEenheidsbreuk',
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
                     'wortelVanBreuk'
                 ];
 
