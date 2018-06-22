@@ -450,7 +450,7 @@
                         
                     },
                     uiteenTrekRegel: {
-                        naam: 'breuk in factoren uit elkaar trekken',
+                        naam: 'breuk in factoren uit elkaar trekken (eerste breuk eraf trekken)',
                         input: {
                             expr: math.parse('Times(a,c)/Times(b,d)'),
                             unknowns: ['a', 'b', 'c', 'd']
@@ -458,6 +458,24 @@
                         output: {
                             expr: math.parse('Times(a/b,c/d)'),
                             unknowns: ['a', 'b', 'c', 'd']
+                        },
+                        functie: function(expr) {
+                            if (expr.fn == 'divide') {
+                                if (expr.args.every(s => s.name == 'Times')) {
+                                    console.log('breuk bestaat uit producten');
+                                    teller = expr.args[0];
+                                    noemer = expr.args[1];
+                                    eersteBreuk = new math.expression.node.OperatorNode("/", "divide", [teller.args[0], noemer.args[0]]);
+                                    tweedeTeller = makeMulti('Times',teller.args.slice(1,));
+                                    tweedeNoemer = makeMulti('Times',noemer.args.slice(1));
+                                    tweedeBreuk = new math.expression.node.OperatorNode("/", "divide", [tweedeTeller, tweedeNoemer]);
+
+                                    newexp = makeMulti('Times', [eersteBreuk,tweedeBreuk]);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        
                         }
                     },
                     eenheidsbreukAlsMinEenExponent: {
