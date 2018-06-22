@@ -194,6 +194,7 @@ function f12_release(eq) {f12(eq)};
 
 
 function f1(eq) {
+  naargetal(eq);
   
 }
 
@@ -210,28 +211,28 @@ naartimes(eq);
 }
 
 function f4(eq) {
-  
+  naarmin(eq);
 }
 
 function f5(eq) {
-  
+  naarbreuk(eq);
 }
 
 function f6(eq) {
 // naarmacht(eq);
-naar(naarmachtregels,eq);
+naarmacht(eq);
 }
 
 function f7(eq) {
-  
+naarexp(eq);  
 }
 
 function f8(eq) {
-  
+naarwortel(eq);  
 }
 
 function f9(eq) {
-  
+  naarlog(eq);
 }
 
 function f10(eq) {
@@ -257,7 +258,7 @@ function naargetal(eq) {
         if (uitkomst) {
           console.log("nieuwe eq:  " + uitkomst.toString());
             
-            updateLatex(flatten(uitkomst));
+            updateLatex(uitkomst);
             throw breakException;
         }
     })
@@ -780,7 +781,7 @@ function transformSelected(
     if (transformed) { 
       
       eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
-
+      eq = flatten(eq);
       if (extraEquation) {
         console.log('extra equation toevoegen');
         eq = applyEquality(eq,extraEquation);
@@ -2124,6 +2125,7 @@ function enter(eq) {
         if (uitkomst) {
           console.log("nieuwe eq:  " + uitkomst.toString());
             updateLatex(uitkomst);
+            throw(e);
         }
     })
     }

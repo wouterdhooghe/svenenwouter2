@@ -349,13 +349,13 @@
                                 if (expr.args.some(s => s.value == 0)) {
                                     console.log('good onez');
                                     newterms = [];
-                                    expr.args.forEach(term => {if (term.value !== 0) {newterms.push(term)}});
+                                    expr.args.forEach(term => {if (term.value != 0) {newterms.push(term)}});
                                     newexp = makeMulti('Plus', newterms);
                                     console.log('newexp =' + newexp.toString());
                                     return newexp;
-                                }
-                            }
-                        return expr;
+                                } 
+                            } 
+                        
                         }
 
                     },
@@ -380,7 +380,7 @@
                                     return newexp;
                                 }
                             }
-                        return expr;
+                        
                         }
 
                     },
@@ -520,30 +520,30 @@
                             unknowns: ['a', 'b']
                         }
                     },
-                    vermenigvuldigingMetEenLinks: {
-                        naam: '1 is neutraal voor vermenigvuldiging',
-                        input: {
-                            expr: math.parse('Times(1,a)'),
-                            unknowns: ['a']
-                        },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
-                        }
-                    },
-                    vermenigvuldigingMetEenRechts: {
-                        naam: '1 is neutraal voor vermenigvuldiging',
-                        input: {
-                            expr: math.parse('Times(a,1)'),
-                            unknowns: ['a']
-                        },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
-                        }
-                    },
-                    vermenigvuldigingMetNulLinks: {
-                        naam: '0 is neutraal voor vermenigvuldiging',
+                    // vermenigvuldigingMetEenLinks: {
+                    //     naam: '1 is neutraal voor vermenigvuldiging',
+                    //     input: {
+                    //         expr: math.parse('Times(1,a)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
+                    // vermenigvuldigingMetEenRechts: {
+                    //     naam: '1 is neutraal voor vermenigvuldiging',
+                    //     input: {
+                    //         expr: math.parse('Times(a,1)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
+                    vermenigvuldigingMetNul: {
+                        naam: '0 is opslorpend voor vermenigvuldiging',
                         input: {
                             expr: math.parse('Times(0, a)'),
                             unknowns: ['a']
@@ -551,6 +551,15 @@
                         output: {
                             expr: math.parse('a'),
                             unknowns: ['a']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.value == 0)) {
+                                    console.log('bevat factor met 0');
+                                    newexp = new math.expression.node.ConstantNode(0);
+                                    return newexp;
+                                }
+                            }
                         }
                     },
                     vermenigvuldigingMetNulRechts: {
@@ -1025,22 +1034,16 @@
                 simplificatieregels = [
                     'nulNeutraalVoorPlus',
                     'eenNeutraalVoorMaal',
-                    'schrapUnitaireBreuk',
-                    'nulDelenDoorIets',
-                    'omgekeerdeIsInverseVoorMaal1',
-                    'omgekeerdeIsInverseVoorMaal2',
-                    // 'vermenigvuldigingMetEenLinks',
-                    // 'vermenigvuldigingMetEenRechts',
-                    'vermenigvuldigingMetNulRechts',
-                    'vermenigvuldigingMetNulLinks',
-                    'machtInversAanWortel',
-                    'wortelInversAanMacht',
-                    'optellenMetNulLinksDoetNiks',
-                    'optellenMetNulRechtsDoetNiks',
-                    'eersteMachtNeutraal',
-                    'nuldeMachtIsEen',
-                    'BreukAlsVerschilVanExponenten',
-                    'aGedeeldDoorA'
+                    // 'schrapUnitaireBreuk',
+                    // 'nulDelenDoorIets',
+                    // 'omgekeerdeIsInverseVoorMaal1',
+                    // 'omgekeerdeIsInverseVoorMaal2',
+                    // 'vermenigvuldigingMetNul',
+                    // 'machtInversAanWortel',
+                    // 'wortelInversAanMacht',
+                    // 'nuldeMachtIsEen',
+                    // 'BreukAlsVerschilVanExponenten',
+                    // 'aGedeeldDoorA'
                 ];
 
                 spaceregels = [
@@ -1079,13 +1082,15 @@
 
                 naargetalregels = [
                     'vergelijkingNegeren',
-                    'nuldeMachtIsEen',
-                    'aGedeeldDoorA',
-                    'vermenigvuldigingMetNulRechts',
-                    'vermenigvuldigingMetNulLinks',
-                    'nulDelenDoorIets',
+                    'nulNeutraalVoorPlus',
+                    'eenNeutraalVoorMaal',
+                    'schrapUnitaireBreuk',
                     'omgekeerdeIsInverseVoorMaal1',
                     'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetNul',
+                    'nuldeMachtIsEen',
+                    'aGedeeldDoorA',
+                    'nulDelenDoorIets',
 
                 ];
 
@@ -1101,8 +1106,9 @@
 
                 naartimesregels = [
                     'vergelijkingNegeren',
-                    'verschilVanKwadratenExpand',
                     'uiteenTrekRegel',
+                    'vermenigvuldigingMetEenheidsbreukOmgekeerd',
+                    'verschilVanKwadratenExpand',
                     'factorBuitenhalen'
                 ];
 
@@ -1113,11 +1119,17 @@
                 naarbreukregels = [
                     'vergelijkingNegeren',
                     'breukenVermenigvuldigen',
+                    'minEenExponentAlsEenheidsbreuk',
+                    'negatieveExponentAlsEenheidsbreuk',
+                    'vermenigvuldigingMetEenheidsbreuk1',
+                    'vermenigvuldigingMetEenheidsbreuk2',
                     'wortelVanBreuk'
                 ];
 
                 naarmachtregels = [
                     'vergelijkingNegeren',
+                    'eenheidsbreukAlsMinEenExponent',
+                    'eenheidsbreukAlsNegatieveExponent',
                     'productAlsMacht',
                     'productMetGelijkeExponenten',
                     'wortelNaarMachtNotatie1',
