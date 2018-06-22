@@ -635,17 +635,17 @@
                             }
                         }
                     },
-                    vermenigvuldigingMetNulRechts: {
-                        naam: '0 is neutraal voor vermenigvuldiging',
-                        input: {
-                            expr: math.parse('Times(a,0)'),
-                            unknowns: ['a']
-                        },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
-                        }
-                    },
+                    // vermenigvuldigingMetNulRechts: {
+                    //     naam: '0 is neutraal voor vermenigvuldiging',
+                    //     input: {
+                    //         expr: math.parse('Times(a,0)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
                     wortelInversAanMacht: {
                         naam: 'wortel heft een macht op',
                         input: {
@@ -669,7 +669,7 @@
                         }
                     },
                     exponentenOptellen: {
-                        naam: 'product van machten telt exponenten op',
+                        naam: 'product van machten (= zelfde basis) telt exponenten op',
                         input: {
                             expr: math.parse('Times(pow(x,a),pow(x,b))'),
                             unknowns: ['x','a','b']
@@ -677,6 +677,26 @@
                         output: {
                             expr: math.parse('pow(x,Plus(a,b))'),
                             unknowns: ['x','a','b']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.every(s => s.name == 'pow')) {
+                                    console.log('good one');
+                                    base = expr.args[0].args[0];
+                                    exponentArray = [];
+                                    expr.args.forEach(factor => {if (factor.args[0].equals(base)) {exponentArray.push(factor.args[1])} } )
+                                    console.log(exponentArray);
+                                    // alleen verdergaan als ALLE machten dezelfde basis hebben
+                                    if (exponentArray.length == expr.args.length) {
+                                        exponent = makeMulti('Plus', exponentArray);
+                                        return new math.expression.node.FunctionNode("pow", [base,exponent]);
+
+                                    }
+              
+             
+                                }
+                            }
+                            return math.parse('Times(l,o,l)');
                         }
                     },
                     somVanExponentenNaarVermenigvuldiging: {
@@ -1107,16 +1127,16 @@
                 simplificatieregels = [
                     'nulNeutraalVoorPlus',
                     'eenNeutraalVoorMaal',
-                    // 'schrapUnitaireBreuk',
-                    // 'nulDelenDoorIets',
-                    // 'omgekeerdeIsInverseVoorMaal1',
-                    // 'omgekeerdeIsInverseVoorMaal2',
-                    // 'vermenigvuldigingMetNul',
-                    // 'machtInversAanWortel',
-                    // 'wortelInversAanMacht',
-                    // 'nuldeMachtIsEen',
-                    // 'BreukAlsVerschilVanExponenten',
-                    // 'aGedeeldDoorA'
+                    'schrapUnitaireBreuk',
+                    'nulDelenDoorIets',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetNul',
+                    'machtInversAanWortel',
+                    'wortelInversAanMacht',
+                    'nuldeMachtIsEen',
+                    'BreukAlsVerschilVanExponenten',
+                    'aGedeeldDoorA'
                 ];
 
                 spaceregels = [
@@ -1158,6 +1178,8 @@
                     'nulNeutraalVoorPlus',
                     'eenNeutraalVoorMaal',
                     'schrapUnitaireBreuk',
+                    'wortelInversAanMacht',
+                    'machtInversAanWortel',
                     'omgekeerdeIsInverseVoorMaal1',
                     'omgekeerdeIsInverseVoorMaal2',
                     'vermenigvuldigingMetNul',
@@ -1180,6 +1202,7 @@
                 naartimesregels = [
                     'vergelijkingNegeren',
                     'uiteenTrekRegel',
+                    'simpeleBreukUitElkaarTrekken',
                     'vermenigvuldigingMetEenheidsbreukOmgekeerd',
                     'verschilVanKwadratenExpand',
                     'factorBuitenhalen'
@@ -1204,6 +1227,7 @@
                     'eenheidsbreukAlsMinEenExponent',
                     'eenheidsbreukAlsNegatieveExponent',
                     'productAlsMacht',
+                    'exponentenOptellen',
                     'productMetGelijkeExponenten',
                     'wortelNaarMachtNotatie1',
                     'wortelNaarMachtNotatie2',
