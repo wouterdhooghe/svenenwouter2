@@ -739,6 +739,18 @@
                         output: {
                             expr: math.parse('pow(pow(x,a),b)'),
                             unknowns: ['x','a','b']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'pow' && expr.args[1].name == "Times") {
+                                console.log('good one');
+                                base = expr.args[0];
+                                exponentArray = expr.args[1].args;
+                                lastExponent = exponentArray.pop();
+                                restProduct = makeMulti('Times', exponentArray);
+                                newBase = new math.expression.node.FunctionNode('pow', [base,restProduct]);
+                                newexpr = new math.expression.node.FunctionNode('pow', [newBase,lastExponent]);
+                                return newexpr;
+                            }
                         }
                     },
                     machtNaarWortelNotatie: {
@@ -807,28 +819,28 @@
                             unknowns: ['x','y','n']
                         }
                     },
-                    optellenMetNulLinksDoetNiks: {
-                        naam: 'optellen met nul langs links',
-                        input: {
-                            expr: math.parse('Plus(0,a)'),
-                            unknowns: ['a']
-                        },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
-                        }
-                    },
-                    optellenMetNulRechtsDoetNiks: {
-                        naam: 'optellen met nul langs rechts',
-                        input: {
-                            expr: math.parse('Plus(a,0)'),
-                            unknowns: ['a']
-                        },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
-                        }
-                    },
+                    // optellenMetNulLinksDoetNiks: {
+                    //     naam: 'optellen met nul langs links',
+                    //     input: {
+                    //         expr: math.parse('Plus(0,a)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
+                    // optellenMetNulRechtsDoetNiks: {
+                    //     naam: 'optellen met nul langs rechts',
+                    //     input: {
+                    //         expr: math.parse('Plus(a,0)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
                     productVanGelijkeWortels: {
                         naam: 'product van gelijke wortels',
                         input: {
@@ -1160,8 +1172,8 @@
                     'simpeleBreukUitElkaarTrekken',
                     'exponentenOptellen',
                     'somVanExponentenNaarVermenigvuldiging',
-                    'machtTorenOpbouwen',
                     'machtTorenAfbreken',
+                    'machtTorenOpbouwen',
                     'machtNaarWortelNotatie',
                     'wortelNaarMachtNotatie1',
                     'wortelNaarMachtNotatie2',
