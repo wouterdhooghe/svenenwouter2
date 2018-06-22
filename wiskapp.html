@@ -685,20 +685,31 @@
                         },
                         functie: function(expr) {
                             if (expr.name == 'Times') {
-                                if (expr.args.every(s => s.name == 'pow')) {
-                                    console.log('good one');
-                                    base = expr.args[0].args[0];
-                                    exponentArray = [];
-                                    expr.args.forEach(factor => {if (factor.args[0].equals(base)) {exponentArray.push(factor.args[1])} } )
-                                    console.log(exponentArray);
-                                    // alleen verdergaan als ALLE machten dezelfde basis hebben
-                                    if (exponentArray.length == expr.args.length) {
-                                        exponent = makeMulti('Plus', exponentArray);
-                                        return new math.expression.node.FunctionNode("pow", [base,exponent]);
-
+                                baseArray = [];
+                                exponentArray = [];
+                                one = math.parse('1');
+                                expr.args.forEach(factor => {
+                                    if (factor.name == 'pow') {
+                                        baseArray.push(factor.args[0]);
+                                         exponentArray.push(factor.args[1]);
+                                    } else { 
+                                        baseArray.push(factor);
+                                        exponentArray.push(one);
                                     }
-              
-             
+                                });
+                                base = baseArray[0];
+                                if (baseArray.every(s => s.equals(base))) {
+                                    console.log('good one');
+                                    // console.log(exponentArray);
+                                    zonderOnes = [];
+                                    i = 0;
+                                    exponentArray.forEach(exp => {if (exp.equals(one)) {i++} else {zonderOnes.push(exp)} });
+                                    // als het allemaal eentjes zijn tellen we ze ineens op (als enige exponent)
+                                    if (0 == zonderOnes.length) {
+                                        exponentArray = [math.parse(String(i))];
+                                    };
+                                    exponent = makeMulti('Plus', exponentArray);
+                                    return new math.expression.node.FunctionNode("pow", [base,exponent]);
                                 }
                             }
                            
