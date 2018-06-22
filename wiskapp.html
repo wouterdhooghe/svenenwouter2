@@ -343,6 +343,19 @@
                         output: {
                             expr: math.parse('0'),
                             unknowns: []
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Plus') {
+                                if (expr.args.some(s => s.value == 0)) {
+                                    console.log('good onez');
+                                    newterms = [];
+                                    expr.args.forEach(term => {if (term.value !== 0) {newterms.push(term)}});
+                                    newexp = makeMulti('Plus', newterms);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        return expr;
                         }
 
                     },
