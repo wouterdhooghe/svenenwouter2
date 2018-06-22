@@ -797,6 +797,7 @@ function transformSelected(
      };
      
   });
+  console.log('eq op einde = ' + eq.toString());
   return eq;
 }
 

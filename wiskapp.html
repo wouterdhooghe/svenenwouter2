@@ -563,14 +563,19 @@
                             expr: math.parse('Times(a,c)/b'),
                             unknowns: ['a', 'b','c']
                         },
+                        //  TODO oorspronkelijke volgorde van breuk en andere factor respecteren in output
                         functie: function(expr) {
                             if (expr.name == 'Times') {
                                 if (expr.args.some(s => s.fn == 'divide')) {
                                     console.log('product bevat breuk');
                                     if (expr.args.length == 2) {
-                                        expr.args.forEach(factor => factor.fn == 'divide' ? eenheidsBreuk = factor : andereFactor = factor);
-                                        if (andereFactor.fn != 'divide') {
-                                            newexp = new math.expression.node.OperatorNode("/", "divide", [andereFactor, eenheidsBreuk.args[1]]);
+                                        expr.args.forEach(factor => factor.fn == 'divide' ? breuk = factor : andereFactor = factor);
+                                       console.log('breuk = ' + breuk.toString());
+                                       console.log('andere factor = ' + andereFactor.toString());
+                                        if (andereFactor.type != 'OperatorNode' && andereFactor.fn != 'divide') {
+                                            console.log('andere Factor is geen operatornode');
+                                            nieuweTeller = makeMulti('Times', [breuk.args[0] , andereFactor]);
+                                            newexp = new math.expression.node.OperatorNode("/", "divide", [nieuweTeller, breuk.args[1]]);
                                             console.log('newexp =' + newexp.toString());
                                             return newexp;
                                         }
@@ -1019,8 +1024,7 @@
                             unknowns: []
                         }
                     },
-                    
-                     // TODO functie voor schrijven
+        
                     factorBuitenhalen: {
                         naam: 'factor buitenhalen',
                         input: {
@@ -1030,6 +1034,21 @@
                         output: {
                             expr: math.parse('Times(c,Plus(a/c,b/c))'),
                             unknowns: ['a','b']
+                        },
+                        functie: function(expr) {
+                            
+                            if (expr.name == 'Plus') {
+                                
+                                    console.log('good one');
+                                    generatorArray = [];
+                                    divisor = math.parse('c');
+                                    newTermsArray = expr.args.map(term => new math.expression.node.OperatorNode("/", "divide", [term, divisor]));
+                                    newPlus = makeMulti('Plus', newTermsArray);
+        
+                                    return makeMulti('Times', [divisor, newPlus]);
+                                
+                            }
+                        
                         },
                         extraEquation: math.parse('c==Select(c)')
                     },
@@ -1202,7 +1221,8 @@
                     'binomium3Factor',
                     'verschilVanKwadratenExpand',
                     'verschilVanKwadratenExpand1',
-                    'verschilVanKwadratenExpand2'
+                    'verschilVanKwadratenExpand2',
+                    'factorBuitenhalen'
 
                 ];
 
@@ -1239,7 +1259,8 @@
                     'vermenigvuldigingMetEenheidsbreukOmgekeerd',
                     'somVanExponentenNaarVermenigvuldiging',
                     'verschilVanKwadratenExpand',
-                    'factorBuitenhalen'
+                    'factorBuitenhalen',
+                    
                 ];
 
                 naarminregels = [
@@ -1247,11 +1268,11 @@
                 ];
 
                 naarbreukregels = [
-                    'vergelijkingNegeren',
-                    'breukenVermenigvuldigen',
-                    'minEenExponentAlsEenheidsbreuk',
-                    'negatieveExponentAlsEenheidsbreuk',
-                    'vermenigvuldigingMetEenheidsbreuk',
+                    // 'vergelijkingNegeren',
+                    // 'breukenVermenigvuldigen',
+                    // 'minEenExponentAlsEenheidsbreuk',
+                    // 'negatieveExponentAlsEenheidsbreuk',
+                    // 'vermenigvuldigingMetEenheidsbreuk',
                     'vermenigvuldigingGetalMetEenheidsbreuk',
                     'wortelVanBreuk'
                 ];
