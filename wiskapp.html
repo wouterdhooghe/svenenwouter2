@@ -426,7 +426,28 @@
                         output: {
                             expr: math.parse('Times(a,c)/Times(b,d)'),
                             unknowns: ['a', 'b', 'c', 'd']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.every(s => s.fn == 'divide')) {
+                                    console.log('bevat enkel breuken');
+                                    tellerArgs = [];
+                                    noemerArgs = [];
+                                    expr.args.forEach(breuk => {
+                                        tellerArgs.push(breuk.args[0]);
+                                        noemerArgs.push(breuk.args[1]);
+                                    } );
+                                    teller = makeMulti('Times', tellerArgs);
+                                    noemer = makeMulti('Times', noemerArgs);
+                                    newexp = new math.expression.node.OperatorNode("/", "divide", [teller, noemer]);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        
                         }
+
+                        
                     },
                     uiteenTrekRegel: {
                         naam: 'breuk in factoren uit elkaar trekken',
