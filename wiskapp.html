@@ -368,7 +368,21 @@
                         output: {
                             expr: math.parse('a'),
                             unknowns: ['a']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.value == 1)) {
+                                    console.log('bevat product met 1');
+                                    newfactors = [];
+                                    expr.args.forEach(factor => {if (factor.value != 1) {console.log('notone =' + factor.toString()); newfactors.push(factor)}});
+                                    newexp = makeMulti('Times', newfactors);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        return expr;
                         }
+
                     },
                     schrapUnitaireBreuk: {
                         naam: 'schrap unitaire breuk',
@@ -1015,8 +1029,8 @@
                     'nulDelenDoorIets',
                     'omgekeerdeIsInverseVoorMaal1',
                     'omgekeerdeIsInverseVoorMaal2',
-                    'vermenigvuldigingMetEenLinks',
-                    'vermenigvuldigingMetEenRechts',
+                    // 'vermenigvuldigingMetEenLinks',
+                    // 'vermenigvuldigingMetEenRechts',
                     'vermenigvuldigingMetNulRechts',
                     'vermenigvuldigingMetNulLinks',
                     'machtInversAanWortel',
