@@ -980,6 +980,27 @@ function injectAtAdress(subst, adress, bignode) {
   return eq;
 }
 
+function test(expr) {
+  if (expr.name == 'Times') {
+      
+      if (expr.args.every(factor => factor.fn = "pow")) {
+          console.log('good one');
+          baseArray = [];
+          exponent = expr.args[0].args[1];
+          expr.args.forEach( factor => {if (factor.args[1].equals(exponent)) {baseArray.push(factor.args[0])} });
+          console.log('aantal gelijke exp = ' + baseArray.length);
+          // powArray = baseArray.map( base => new math.expression.node.FunctionNode('pow', [base, exponent]));
+          if (baseArray.length === expr.args.length) {
+              product = makeMulti('Times', baseArray);
+             macht = new math.expression.node.FunctionNode("pow", [product, exponent]);
+             console.log('macht = ' + macht.toString());
+             return macht;
+          }
+      }
+  }
+
+}
+
 function deleteAtAdress(adress, bignode) {
 
   var eq = bignode.cloneDeep();
@@ -1994,7 +2015,7 @@ console.log('voorwaarden voor substitutie NIET voldaan!')
 // Spacebar en Enter
 
 function spaceBar(eq) {
-  prevEquation = equation.cloneDeep();
+     prevEquation = equation.cloneDeep();
   // selectAdress = adresses('Select', eq)[0];
   // selectNode = readAtAdress(selectAdress, eq);
 

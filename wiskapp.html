@@ -845,6 +845,26 @@
                         output: {
                             expr: math.parse('pow(Times(x,y),n)'),
                             unknowns: ['x','y','n']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                
+                                if (expr.args.every(factor => factor.fn = 'pow')) {
+                                    console.log('good one');
+                                    baseArray = [];
+                                    exponent = expr.args[0].args[1];
+                                    expr.args.forEach( factor => {if (factor.args[1].equals(exponent)) {baseArray.push(factor.args[0])} });
+                                    console.log('aantal gelijke exp = ' + baseArray.length);
+                                    // powArray = baseArray.map( base => new math.expression.node.FunctionNode('pow', [base, exponent]));
+                                    if (baseArray.length === expr.args.length) {
+                                        product = makeMulti('Times', baseArray);
+                                       macht = new math.expression.node.FunctionNode('pow', [product, exponent]);
+                                       console.log('macht = ' + macht.toString());
+                                       return macht;
+                                    }
+                                }
+                            }
+                         
                         }
                     },
                     // optellenMetNulLinksDoetNiks: {
@@ -1097,7 +1117,7 @@
 
                                 }
                             }
-                            // return math.parse('Times(l,o,l)');
+                         
                         }
 
                     },
@@ -1213,37 +1233,37 @@
                 ];
 
                 spaceregels = [
-                    'breukenVermenigvuldigen',
-                    'uiteenTrekRegel',
-                    'minEenExponentAlsEenheidsbreuk',
-                    'eenheidsbreukAlsMinEenExponent',
-                    'eenheidsbreukAlsNegatieveExponent',
-                    'negatieveExponentAlsEenheidsbreuk',
-                    'vermenigvuldigingMetEenheidsbreuk',
-                    'vermenigvuldigingGetalMetEenheidsbreuk',
-                    'simpeleBreukUitElkaarTrekken',
-                    'exponentenOptellen',
-                    'somVanExponentenNaarVermenigvuldiging',
-                    'machtTorenAfbreken',
-                    'machtTorenOpbouwen',
-                    'machtNaarWortelNotatie',
-                    'wortelNaarMachtNotatie1',
-                    'wortelNaarMachtNotatie2',
-                    'wortelNaarMachtNotatie3',
-                    'machtVanProduct',
+                    // 'breukenVermenigvuldigen',
+                    // 'uiteenTrekRegel',
+                    // 'minEenExponentAlsEenheidsbreuk',
+                    // 'eenheidsbreukAlsMinEenExponent',
+                    // 'eenheidsbreukAlsNegatieveExponent',
+                    // 'negatieveExponentAlsEenheidsbreuk',
+                    // 'vermenigvuldigingMetEenheidsbreuk',
+                    // 'vermenigvuldigingGetalMetEenheidsbreuk',
+                    // 'simpeleBreukUitElkaarTrekken',
+                    // 'exponentenOptellen',
+                    // 'somVanExponentenNaarVermenigvuldiging',
+                    // 'machtTorenAfbreken',
+                    // 'machtTorenOpbouwen',
+                    // 'machtNaarWortelNotatie',
+                    // 'wortelNaarMachtNotatie1',
+                    // 'wortelNaarMachtNotatie2',
+                    // 'wortelNaarMachtNotatie3',
+                    // 'machtVanProduct',
                     'productMetGelijkeExponenten',
-                    'productOnderDeWortel',
-                    'productVanGelijkeWortels',
-                    'breukVanWortels',
-                    'wortelVanBreuk',
-                    'binomium2Expand',
-                    'binomium2Factor',
-                    'binomium3Expand',
-                    'binomium3Factor',
-                    'verschilVanKwadratenExpand',
-                    'verschilVanKwadratenExpand1',
-                    'verschilVanKwadratenExpand2',
-                    'factorBuitenhalen'
+                    // 'productOnderDeWortel',
+                    // 'productVanGelijkeWortels',
+                    // 'breukVanWortels',
+                    // 'wortelVanBreuk',
+                    // 'binomium2Expand',
+                    // 'binomium2Factor',
+                    // 'binomium3Expand',
+                    // 'binomium3Factor',
+                    // 'verschilVanKwadratenExpand',
+                    // 'verschilVanKwadratenExpand1',
+                    // 'verschilVanKwadratenExpand2',
+                    // 'factorBuitenhalen'
 
                 ];
 
