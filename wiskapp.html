@@ -813,7 +813,7 @@
                             unknowns: ['x','q']
                         }
                     },
-                    // TODO functie voor schrijven
+                   
                     machtVanProduct: {
                         naam: 'macht van een product',
                         input: {
@@ -823,6 +823,16 @@
                         output: {
                             expr: math.parse('Times(pow(x,n),pow(y,n))'),
                             unknowns: ['x','y','n']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'pow' && expr.args[0].name == "Times") {
+                                console.log('good one');
+                                exponent = expr.args[1];
+                                baseArray = expr.args[0].args;
+                                machtArray = baseArray.map(base => new math.expression.node.FunctionNode("pow", [base,exponent]) )
+                                return makeMulti('Times', machtArray);
+                            }
+
                         }
                     },
                      // TODO functie voor schrijven
