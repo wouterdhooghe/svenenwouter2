@@ -949,7 +949,8 @@ function injectAtAdress(subst, adress, bignode) {
     subst = math.parse(subst);
   }
 
-  var eq = bignode.cloneDeep();
+  // clone ipv cloneDeep omdat er anders een vuile foutmelding komt (geen idee waarom!)
+  var equat = bignode.clone();
   var adressText = "";
 
   for (i = 0; i < adress.length; i++) {
@@ -976,8 +977,8 @@ function injectAtAdress(subst, adress, bignode) {
   //   console.log('adrestext:' + adressText + ' subst: ' + subst);
   // PAS OP WANT DIT IS DESTRUCTIEF en vERANDERT DE OORSPRONKELIJKE VARIABELE !!!
   // IS DAT ECHT ZO? CHECK DIT!
-  eval("eq" + adressText + "= subst");
-  return eq;
+  eval("equat" + adressText + "= subst");
+  return equat;
 }
 
 function test(expr) {

@@ -905,7 +905,28 @@
                         output: {
                             expr: math.parse('nthRoot(Times(x,y),n)'),
                             unknowns: ['x','y','n']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                
+                                if (expr.args.every(factor => factor.fn = 'nthRoot')) {
+                                    console.log('good one');
+                                    baseArray = [];
+                                    n = expr.args[0].args[1];
+                                    expr.args.forEach( factor => {if (factor.args[1].equals(n)) {baseArray.push(factor.args[0])} });
+                                    console.log('aantal gelijke exp = ' + baseArray.length);
+                                   
+                                    if (baseArray.length === expr.args.length) {
+                                       product = makeMulti('Times', baseArray);
+                                       wortel = new math.expression.node.FunctionNode('nthRoot', [product, n]);
+                                       console.log('wortel = ' + wortel.toString());
+                                       return wortel;
+                                    }
+                                }
+                            }
+                         
                         }
+                        
                     },
                      
                     productOnderDeWortel: {
@@ -1288,18 +1309,18 @@
                 ];
 
                 naargetalregels = [
-                    'vergelijkingNegeren',
+                    // 'vergelijkingNegeren',
                     'nulNeutraalVoorPlus',
-                    'eenNeutraalVoorMaal',
-                    'schrapUnitaireBreuk',
-                    'wortelInversAanMacht',
-                    'machtInversAanWortel',
-                    'omgekeerdeIsInverseVoorMaal1',
-                    'omgekeerdeIsInverseVoorMaal2',
-                    'vermenigvuldigingMetNul',
-                    'nuldeMachtIsEen',
-                    'aGedeeldDoorA',
-                    'nulDelenDoorIets',
+                    // 'eenNeutraalVoorMaal',
+                    // 'schrapUnitaireBreuk',
+                    // 'wortelInversAanMacht',
+                    // 'machtInversAanWortel',
+                    // 'omgekeerdeIsInverseVoorMaal1',
+                    // 'omgekeerdeIsInverseVoorMaal2',
+                    // 'vermenigvuldigingMetNul',
+                    // 'nuldeMachtIsEen',
+                    // 'aGedeeldDoorA',
+                    // 'nulDelenDoorIets',
 
                 ];
 
