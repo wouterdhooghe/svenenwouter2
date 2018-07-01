@@ -497,7 +497,7 @@ function verwijderEnkeleMultifunctions(eq) {
 // brengt geneste multifunctions Plus en Times samen in 1 niveau.
 // Niet destructief!
 function flatten(eq) {
-  neweq = eq.cloneDeep();
+  neweq = eq.clone();
   neweq = verwijderEnkeleMultifunctions(neweq);
   neweq.traverse(function(node, index, parent) {
 
@@ -540,7 +540,7 @@ function flatten(eq) {
 // brengt geneste multifunctions add en times samen in 1 niveau.
 // Niet destructief!
 function flattenOp(eq) {
-  neweq = eq.cloneDeep();
+  neweq = eq.clone();
   neweq.traverse(function(node, index, parent) {
     if (parent != null) {
       //           console.log(node);
@@ -1004,7 +1004,7 @@ function test(expr) {
 
 function deleteAtAdress(adress, bignode) {
 
-  var eq = bignode.cloneDeep();
+  var eq = bignode.clone();
   var adressText = "";
 
   for (i = 0; i < adress.length; i++) {
@@ -1196,7 +1196,7 @@ function eqWithSelectMovedToAdress(selectAdress, newAdress, eq) {
 function applyRule(regelNode,eq) {
   alert("clicked1" + regelNode.toString());
 
-  prevEquation = eq.cloneDeep();
+  prevEquation = eq.clone();
   selectAdress = adresses("Select", equation)[0];
   selectNode = readAtAdress(selectAdress, equation);
 
@@ -1216,7 +1216,7 @@ function applyRule(regelNode,eq) {
 
 // laat meerdere selecties toe!!!
 function applyPlus() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
   secondTerm = math.parse("Select(b)");
 
@@ -1260,7 +1260,7 @@ function applyPlus() {
 
 /* function applyAdd() {
 
-    prevEquation = equation.cloneDeep();
+    prevEquation = equation.clone();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondTerm = math.parse('Select(b)');
@@ -1273,7 +1273,7 @@ function applyPlus() {
 function replaceWithPlus() {
   //    expr.value = 'Plus(3, Times(3, Select(4), 5), 7)';
 
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   substitution = "Plus(Select(a),b)";
 
   equation = substituteSelected(substitution, equation);
@@ -1282,7 +1282,7 @@ function replaceWithPlus() {
 }
 
 function applyTimes() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
   secondFactor = math.parse("Select(b)");
 
@@ -1325,7 +1325,7 @@ function applyTimes() {
 
 /* function applyMultiply() {
 
-    prevEquation = equation.cloneDeep();
+    prevEquation = equation.clone();
     selectAdress = adresses('Select', equation)[0];
     selectNode = readAtAdress(selectAdress, equation);
     secondTerm = math.parse('Select(b)');
@@ -1336,14 +1336,14 @@ function applyTimes() {
 } */
 
 function replaceWithTimes() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   substitution = "Times(Select(a),b)";
   equation = substituteSelected(substitution, equation);
   updateLatex(equation);
 }
 
 function applyPower() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   exponent = math.parse("Select(b)");
 
   selectAdresses = adresses("Select", equation);
@@ -1385,7 +1385,7 @@ function applyPower() {
 }
 
 function applyUnaryMinus() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
   selectAdresses = adresses("Select", equation);
 
@@ -1435,7 +1435,7 @@ function applyUnaryMinus() {
 }
 
 function replaceWithPower() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   base = math.parse("Select(a)");
   exponent = math.parse("b");
   substitution = new math.expression.node.FunctionNode("pow", [base, exponent]);
@@ -1445,7 +1445,7 @@ function replaceWithPower() {
 
 // function applyMinusOp() {
 
-//     prevEquation = equation.cloneDeep();
+//     prevEquation = equation.clone();
 //     selectAdress = adresses('Select', equation)[0];
 //     selectNode = readAtAdress(selectAdress, equation);
 //     substractor = math.parse('Select(-b)');
@@ -1456,7 +1456,7 @@ function replaceWithPower() {
 // }
 
 function applyMinus() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   // selectAdress = adresses('Select', equation)[0];
   // selectNode = readAtAdress(selectAdress, equation);
   substractor = new math.expression.node.FunctionNode("unaryMinus", [
@@ -1503,14 +1503,14 @@ function applyMinus() {
 }
 
 function replaceWithMinus() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   substitution = "(Select(a)-b)";
   equation = substituteSelected(substitution, equation);
   updateLatex(equation);
 }
 
 function applyDivide() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
   selectAdresses = adresses("Select", equation);
   divisor = math.parse("Select(b)");
@@ -1551,14 +1551,14 @@ function applyDivide() {
 }
 
 function replaceWithDivide() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   substitution = "Select(a) / b";
   equation = substituteSelected(substitution, equation);
   updateLatex(equation);
 }
 
 function applyNthroot() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
   rootnumber = math.parse("Select(b)");
 
@@ -1602,7 +1602,7 @@ function applyNthroot() {
 }
 
 function replaceWithNthroot() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   substitution = "nthRoot(Select(a),b)";
   equation = substituteSelected(substitution, equation);
   updateLatex(equation);
@@ -1653,7 +1653,7 @@ function selectThisEquality(eq) {
 }
 
 function applyEquality(eq,extraVgl) {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   selectAdress = adresses("Select", eq)[0];
   selectNode = readAtAdress(selectAdress, eq);
 
@@ -1718,7 +1718,7 @@ function ontvouwMultis(eq,multis) {
 }
 
 function replaceWithEquality() {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   equation = math.parse("y==Select(x)");
   updateLatex(equation);
 }
@@ -1728,7 +1728,7 @@ function replaceWithEquality() {
 
 function applyFunction(functieString, eq) {
   console.log('applyFunctionToSelected: ' + functieString);
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
   selectAdresses = adresses("Select", eq);
 
@@ -1767,7 +1767,7 @@ function applyFunction(functieString, eq) {
 
 function applyLog(eq) {
   console.log('applyLog');
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
   selectAdresses = adresses("Select", eq);
   base = math.parse("10");
@@ -1810,7 +1810,7 @@ function applyLog(eq) {
 
 function replaceWithE(eq) {
   console.log('replacewithE');
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   substitution = "Select(e)";
   eq = substituteSelected(substitution, eq);
   updateLatex(eq);
@@ -1818,7 +1818,7 @@ function replaceWithE(eq) {
 
 function replaceWithPi(eq) {
   console.log('replacewithPi');
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   substitution = "Select(pi)";
   eq = substituteSelected(substitution, eq);
   updateLatex(eq);
@@ -1829,7 +1829,7 @@ function applyIntegral(eq) {
 
   //  momenteel Int(uitdrukking, variabele) ipv Int(uitdrukking, variabele, ondergrens, bovengrens)
 
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   functieString = 'Int';
   variabele = math.parse('x');
   // ondergrens = math.parse('0');
@@ -1875,7 +1875,7 @@ function applyIntegral(eq) {
 function applyDerivative(eq) {
   console.log('applyDerivative');
 
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   functieString = 'Derive';
   variabele = math.parse('x');
 
@@ -1919,7 +1919,7 @@ function applyDerivative(eq) {
 
 function substitueerLetter(vgl, letterString, substitutie) {
 
-newVgl = vgl.cloneDeep();
+newVgl = vgl.clone();
 
 newVgl.traverse(function(node, index, parent) {
 
@@ -1935,7 +1935,7 @@ return newVgl;
 
 function substitueerExpr(vgl, exprNode, substitutie) {
 
-  newVgl = vgl.cloneDeep();
+  newVgl = vgl.clone();
   
   newVgl.traverse(function(node, index, parent) {
   
@@ -1950,7 +1950,7 @@ function substitueerExpr(vgl, exprNode, substitutie) {
   }
 
 function substitueerNaar(eq, locatie) {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   // check of we in een kant van een vgl zitten
   // check of we een letter geselecteerd hebben
   // check of hierboven een vlg staat
@@ -2016,7 +2016,7 @@ console.log('voorwaarden voor substitutie NIET voldaan!')
 // Spacebar en Enter
 
 function spaceBar(eq) {
-     prevEquation = equation.cloneDeep();
+     prevEquation = equation.clone();
   // selectAdress = adresses('Select', eq)[0];
   // selectNode = readAtAdress(selectAdress, eq);
 
@@ -2110,7 +2110,7 @@ function spaceBar(eq) {
 }
 
 function enter(eq) {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
   selectAdresses = adresses("Select", equation);
   selectAdresses.forEach(function setnodes(item, index) {
@@ -2362,7 +2362,7 @@ function downSelect(eq, actionName) {
 }
 
 function replaceWithDigit(digit, eq) {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
 
   tijd = new Date();
@@ -2381,7 +2381,7 @@ function replaceWithDigit(digit, eq) {
 }
 
 function inputDigit(digit, eq) {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
   selectAdress = adresses("Select", eq)[0];
   selectNode = readAtAdress(selectAdress, eq);
   // arg is de node die geselecteerd is
@@ -2403,7 +2403,7 @@ function inputDigit(digit, eq) {
 }
 
 function replaceWithLetter (letterString, eq) {
-  prevEquation = equation.cloneDeep();
+  prevEquation = equation.clone();
 
 
   tijd = new Date();
