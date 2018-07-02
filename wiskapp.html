@@ -8,7 +8,7 @@
 
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.0.1/math.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ"
         crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6"
@@ -918,9 +918,17 @@
                                    
                                     if (baseArray.length === expr.args.length) {
                                        product = makeMulti('Times', baseArray);
-                                       wortel = new math.expression.node.FunctionNode('nthRoot', [product, n]);
-                                       console.log('wortel = ' + wortel.toString());
-                                       return wortel;
+                                       wortel = new math.expression.node.FunctionNode("nthRoot", [product, n]);
+
+                                       parsewortel = math.parse("nthRoot(a,b)");
+                                       parsewortel.args[0] = product;
+                                       parsewortel.args[1] = n;
+                                       
+                                    //    console.log('wortel = ' + wortel.toString());
+                                    //    return wortel;
+
+                                    console.log('parsewortel = ' + parsewortel.toString());
+                                       return parsewortel;
                                     }
                                 }
                             }
@@ -946,7 +954,7 @@
                                     console.log('good one');
                                     factorArray = expr.args[0].args;
                                     n = expr.args[1];
-                                       wortelArray = factorArray.map(factor => new math.expression.node.FunctionNode('nthRoot', [factor, n]))
+                                       wortelArray = factorArray.map(factor => new math.expression.node.FunctionNode("nthRoot", [factor, n]))
                                        product = makeMulti('Times', wortelArray);
                                        console.log('product = ' + product.toString());
                                        return product;
@@ -1377,9 +1385,9 @@
                 ];
 
                 naarwortelregels = [
-                    'vergelijkingNegeren',
+                    // 'vergelijkingNegeren',
                     'productVanGelijkeWortels',
-                    'breukVanWortels'
+                    // 'breukVanWortels'
                 ]
 
                 naarlogregels = [
