@@ -835,7 +835,7 @@
 
                         }
                     },
-                     // TODO functie voor schrijven
+                     
                     productMetGelijkeExponenten: {
                         naam: 'product met gelijke exponenten',
                         input: {
@@ -846,29 +846,27 @@
                             expr: math.parse('pow(Times(x,y),n)'),
                             unknowns: ['x','y','n']
                         },
-                        // 
-                        // DEZE FUNCTIE WEGGEDAAN OMDAT DIE EEN U|NTRACEBABLE BUG PRODUCEERT in de Equals functie :( ) 
-
-                        // functie: function(expr) {
-                        //     if (expr.name == 'Times') {
+                       
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
                                 
-                        //         if (expr.args.every(factor => factor.fn = 'pow')) {
-                        //             console.log('good one');
-                        //             baseArray = [];
-                        //             exponent = expr.args[0].args[1];
-                        //             expr.args.forEach( factor => {if (factor.args[1].equals(exponent)) {baseArray.push(factor.args[0])} });
-                        //             console.log('aantal gelijke exp = ' + baseArray.length);
-                        //             // powArray = baseArray.map( base => new math.expression.node.FunctionNode('pow', [base, exponent]));
-                        //             if (baseArray.length === expr.args.length) {
-                        //                product = makeMulti('Times', baseArray);
-                        //                macht = new math.expression.node.FunctionNode('pow', [product, exponent]);
-                        //                console.log('macht = ' + macht.toString());
-                        //                return macht;
-                        //             }
-                        //         }
-                        //     }
+                                if (expr.args.every(factor => factor.fn == 'pow')) {
+                                    console.log('good one');
+                                    baseArray = [];
+                                    exponent = expr.args[0].args[1];
+                                    expr.args.forEach( factor => {if (factor.args[1].equals(exponent)) {baseArray.push(factor.args[0])} });
+                                    console.log('aantal gelijke exp = ' + baseArray.length);
+                                    // powArray = baseArray.map( base => new math.expression.node.FunctionNode('pow', [base, exponent]));
+                                    if (baseArray.length === expr.args.length) {
+                                       product = makeMulti('Times', baseArray);
+                                       macht = new math.expression.node.FunctionNode('pow', [product, exponent]);
+                                       console.log('macht = ' + macht.toString());
+                                       return macht;
+                                    }
+                                }
+                            }
                          
-                        // }
+                        }
 
               
                     },
@@ -895,7 +893,6 @@
                     //     }
                     // },
 
-                     // TODO functie voor schrijven
                     productVanGelijkeWortels: {
                         naam: 'product van gelijke wortels',
                         input: {
@@ -909,7 +906,7 @@
                         functie: function(expr) {
                             if (expr.name == 'Times') {
                                 
-                                if (expr.args.every(factor => factor.fn = 'nthRoot')) {
+                                if (expr.args.every(factor => factor.fn == 'nthRoot')) {
                                     console.log('good one');
                                     baseArray = [];
                                     n = expr.args[0].args[1];
@@ -920,20 +917,23 @@
                                        product = makeMulti('Times', baseArray);
                                        wortel = new math.expression.node.FunctionNode("nthRoot", [product, n]);
 
-                                       parsewortel = math.parse("nthRoot(a,b)");
-                                       parsewortel.args[0] = product;
-                                       parsewortel.args[1] = n;
+                                    //    parsewortel = math.parse("nthRoot(a,b)");
+                                    //    parsewortel.args[0] = product;
+                                    //    parsewortel.args[1] = n;
                                        
-                                    //    console.log('wortel = ' + wortel.toString());
-                                    //    return wortel;
+                                       console.log('wortel = ' + wortel.toString());
+                                       return wortel;
 
-                                    console.log('parsewortel = ' + parsewortel.toString());
-                                       return parsewortel;
+                                    // console.log('parsewortel = ' + parsewortel.toString());
+                                    //    return parsewortel;
                                     }
                                 }
                             }
                          
-                        }
+                        },
+
+                                       
+                        
                         
                     },
                      
