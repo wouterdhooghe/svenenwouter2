@@ -194,7 +194,7 @@ function f12_release(eq) {f12(eq)};
 
 
 function f1(eq) {
-  naargetal(eq);
+  updateLatex(naargetal(eq)[0]);
   
 }
 
@@ -228,7 +228,6 @@ naarexp(eq);
 }
 
 function f8(eq) {
-  eersteeq = equation.cloneDeep();
 naarwortel(eq);  
 }
 
@@ -263,7 +262,10 @@ function naargetal(eq) {
         if (neweq) {
           console.log("nieuwe eq:  " + neweq.toString());
             
-            updateLatex(neweq);
+            // updateLatex(neweq);
+            // updateFs(newnode,"f1_button");
+
+            return [neweq, newnode];
             throw breakException;
         }
     })
@@ -1121,11 +1123,34 @@ selected = function(node) {
 // UPDATES
 //************************************* */
 
-function updateFs() {
+function updateFs(nieuweNode, fknopString) {
+
+  try {
+
+    fknopString.value = nieuweNode;
+    
+
+    // export the expression to LaTeX
+    var latex = nieuweNode
+      ? nieuweNode.toTex({
+          parenthesis: parenthesis,
+          implicit: implicit
+        })
+      : "";
+         console.log('LaTeX expression:', latex);
+    var largeLatex = "\\large " + latex;
+    var hugeLatex = "\\Huge " + latex;
+
+    // display and re-render the expression
+    katex.render(latex, eval(fknopString));
+  } catch (err) {
+    fknopString.innerHTML = "error!!!";
+  }
+  
 
 };
 
-updateEval = function(node) {
+function updateEval(node) {
   try {
     antwoord = equation.compile().eval();
     antwoord ? (result.innerHTML = antwoord.toString()) : (result.value = "");
@@ -1135,11 +1160,8 @@ updateEval = function(node) {
   
 };
 
-updateLatex = function(eq) {
+function updateLatex(eq) {
   try {
-    // update de globale variabele equation
-    //       equation = flatten(eq);
-
     equation = eq;
     // update expression
     expr.value = eq;
@@ -1162,6 +1184,11 @@ updateLatex = function(eq) {
   }
   updateEval(eq);
 };
+
+function newUpdateLatex(eq) {
+  updateFs(naargetal(eq),"f1_button");
+};
+
 
 // verplaatst de selectie naar het gevraagde adress
 // past global variabele equation aan!
