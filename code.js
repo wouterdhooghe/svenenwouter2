@@ -255,11 +255,15 @@ function naargetal(eq) {
   try {
     naargetalregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
-        console.log('uitkomst = ' + uitkomst);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
+        neweq = uitkomst[0];
+        newnode = uitkomst[1];
+
+        console.log('neweq = ' + neweq.toString());
+        console.log('newnode = ' + newnode.toString())
+        if (neweq) {
+          console.log("nieuwe eq:  " + neweq.toString());
             
-            updateLatex(uitkomst);
+            updateLatex(neweq);
             throw breakException;
         }
     })
@@ -747,7 +751,7 @@ console.log(unknownOutArr);
   }
 }
 
-// heeft volledige equation als output
+// heeft volledige equation als 1e output, en transformed als 2e output
 function transformSelected(
   eq,
   inputPatternNode,
@@ -783,16 +787,8 @@ function transformSelected(
     
     if (transformed) { 
 
-      console.log("eq net voor de inject");
-      eqvoor = equation.cloneDeep();
-      
       eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
-
-      eqna = equation.cloneDeep()
-
       eq = flatten(eq);
-
-      eqnaflatten = equation.cloneDeep();
 
       if (extraEquation) {
         console.log('extra equation toevoegen');
@@ -810,16 +806,12 @@ function transformSelected(
      
   });
   console.log('eq op einde = ' + eq.toString());
-  return eq;
+  return [eq,transformed];
 }
 
 function regelTransformSelected(eq, regel) {
   console.log("doe regeltransformSelected op: ");
   console.log(regel.naam);
-
-  console.log('eq voor transform selected')
-  eqvoorvoor = equation.cloneDeep();
-
 
   // console.log(multiFunction);
   return transformSelected(
@@ -1128,6 +1120,10 @@ selected = function(node) {
 //************************************* */
 // UPDATES
 //************************************* */
+
+function updateFs() {
+
+};
 
 updateEval = function(node) {
   try {

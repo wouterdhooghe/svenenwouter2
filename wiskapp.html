@@ -29,18 +29,18 @@
 
             <div class='row'>
 
-                <button type="button" class="btn btn-primary" id="f1" onclick="f1_release(equation)">  Z </button>
-                <button type="button" class="btn btn-primary" id="f2" onclick="f2_release(equation);">  plus </button>
-                <button type="button" class="btn btn-primary" id="f3" onclick="f3_release(equation);">  times </button>
-                <button type="button" class="btn btn-primary" id="f4" onclick="f4_release(equation);">  min </button>
-                <button type="button" class="btn btn-primary" id="f5" onclick="f5_release(equation);">  fraction </button>
-                <button type="button" class="btn btn-primary" id="f6" onclick="f6_release(equation);">  power </button>
-                <button type="button" class="btn btn-primary" id="f7" onclick="f7_release(equation);">  exp </button>
-                <button type="button" class="btn btn-primary" id="f8" onclick="f8_release(equation);">  root </button>
-                <button type="button" class="btn btn-primary" id="f9" onclick="f9_release(equation);">  log </button>
-                <button type="button" class="btn btn-primary" id="f10" onclick="f10_release(equation);">  equals </button>
-                <button type="button" class="btn btn-primary" id="f11" onclick="f11_release(equation);">  > </button>
-                <button type="button" class="btn btn-primary" id="f12" onclick="f12_release(equation);">  < </button>
+                <button type="button" class="btn btn-primary" id="button_f1" onclick="f1_release(equation)">  Z </button>
+                <button type="button" class="btn btn-primary" id="button_f2" onclick="f2_release(equation);">  plus </button>
+                <button type="button" class="btn btn-primary" id="button_f3" onclick="f3_release(equation);">  times </button>
+                <button type="button" class="btn btn-primary" id="button_f4" onclick="f4_release(equation);">  min </button>
+                <button type="button" class="btn btn-primary" id="button_f5" onclick="f5_release(equation);">  fraction </button>
+                <button type="button" class="btn btn-primary" id="button_f6" onclick="f6_release(equation);">  power </button>
+                <button type="button" class="btn btn-primary" id="button_f7" onclick="f7_release(equation);">  exp </button>
+                <button type="button" class="btn btn-primary" id="button_f8" onclick="f8_release(equation);">  root </button>
+                <button type="button" class="btn btn-primary" id="button_f9" onclick="f9_release(equation);">  log </button>
+                <button type="button" class="btn btn-primary" id="button_f10" onclick="f10_release(equation);">  equals </button>
+                <button type="button" class="btn btn-primary" id="button_f11" onclick="f11_release(equation);">  > </button>
+                <button type="button" class="btn btn-primary" id="button_f12" onclick="f12_release(equation);">  < </button>
 
 
             </div>
@@ -51,7 +51,7 @@
                         <div class="card">
                         <div class='card-header'> F1</div>
                         <div class="card-body">
-                            <p class="card-text" id="f1">$$$$</p>
+                            <p class="card-text" id="f1_latex">$$$$</p>
 
                         </div>
                         </div>
@@ -65,7 +65,7 @@
                         <div class="card">
                         <div class='card-header'> F2</div>
                         <div class="card-body">
-                            <p class="card-text" id="f2">$$$$</p>
+                            <p class="card-text" id="f2_latex">$$$$</p>
                         </div>
                         </div>
 
@@ -223,7 +223,7 @@
                                  <button type="button" class="btn btn-primary" id="up_pos" style="position:relative;left:50%;top:0%" onclick="upSelect(equation)">  up </button>
                                  <button type="button" class="btn btn-primary" id="left_pos" style="position:relative;left:20%;top:50%" onclick="leftSelect(equation)">  left </button>
                            
-                                 <button type="button" class="btn btn-primary" id="current_pos" style="position:relative;left:20%;top:50%" onclick="">  dAiS6JXm </button>
+                                 <button type="button" class="btn btn-primary" id="current_pos" style="position:relative;left:20%;top:50%" onclick="">  Selectie </button>
                                  <button type="button" class="btn btn-primary" id="right_pos" style="position:relative;left:20%;top:50%" onclick="upSelect(equation)">  right </button>
                  
                                  <button type="button" class="btn btn-primary" id="down_pos" style="position:relative;left:-15%;top:100%" onclick="downSelect(equation)">  down </button>
@@ -399,6 +399,19 @@
                     parenthesis = 'keep',
                     implicit = 'hide',
                     modus = 'bouw';
+
+                var f1 = document.getElementById('f1'),
+                    f2 = document.getElementById('f2'),
+                    f3 = document.getElementById('f3'),
+                    f4 = document.getElementById('f4'),
+                    f5 = document.getElementById('f5'),
+                    f6 = document.getElementById('f6'),
+                    f7 = document.getElementById('f7'),
+                    f8 = document.getElementById('f8'),
+                    f9 = document.getElementById('f9'),
+                    f10 = document.getElementById('f10'),
+                    f11 = document.getElementById('f11'),
+                    f12 = document.getElementById('f12');    
 
                     
 
@@ -1441,18 +1454,18 @@
                 ];
 
                 naargetalregels = [
-                    // 'vergelijkingNegeren',
+                    'vergelijkingNegeren',
                     'nulNeutraalVoorPlus',
-                    // 'eenNeutraalVoorMaal',
-                    // 'schrapUnitaireBreuk',
-                    // 'wortelInversAanMacht',
-                    // 'machtInversAanWortel',
-                    // 'omgekeerdeIsInverseVoorMaal1',
-                    // 'omgekeerdeIsInverseVoorMaal2',
-                    // 'vermenigvuldigingMetNul',
-                    // 'nuldeMachtIsEen',
-                    // 'aGedeeldDoorA',
-                    // 'nulDelenDoorIets',
+                    'eenNeutraalVoorMaal',
+                    'schrapUnitaireBreuk',
+                    'wortelInversAanMacht',
+                    'machtInversAanWortel',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetNul',
+                    'nuldeMachtIsEen',
+                    'aGedeeldDoorA',
+                    'nulDelenDoorIets',
 
                 ];
 
