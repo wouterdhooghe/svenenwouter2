@@ -682,6 +682,7 @@ function cleanEquation(eq) {
   return cleanedEquation;
 }
 
+//  TODO wat doet deze functie eigenlijk, en is ze compatibel met het idee van de previews?
 function SelectAllLettersInSelection(letter, eq) {
   cleanedEquation = cleanEquation(eq);
 
@@ -1366,8 +1367,9 @@ function applyPlus() {
     });
   }
 
+
   equation = flatten(equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 /* function applyAdd() {
@@ -1390,7 +1392,7 @@ function replaceWithPlus() {
 
   equation = substituteSelected(substitution, equation);
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyTimes() {
@@ -1432,7 +1434,7 @@ function applyTimes() {
     });
   }
   equation = flatten(equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 /* function applyMultiply() {
@@ -1451,7 +1453,7 @@ function replaceWithTimes() {
   prevEquation = equation.cloneDeep();
   substitution = "Times(Select(a),b)";
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyPower() {
@@ -1493,7 +1495,7 @@ function applyPower() {
     });
   }
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyUnaryMinus() {
@@ -1543,7 +1545,7 @@ function applyUnaryMinus() {
     });
   }
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithPower() {
@@ -1552,7 +1554,7 @@ function replaceWithPower() {
   exponent = math.parse("b");
   substitution = new math.expression.node.FunctionNode("pow", [base, exponent]);
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 // function applyMinusOp() {
@@ -1611,14 +1613,14 @@ function applyMinus() {
   }
 
   equation = flatten(equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithMinus() {
   prevEquation = equation.cloneDeep();
   substitution = "(Select(a)-b)";
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyDivide() {
@@ -1659,14 +1661,14 @@ function applyDivide() {
     });
   }
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithDivide() {
   prevEquation = equation.cloneDeep();
   substitution = "Select(a) / b";
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyNthroot() {
@@ -1710,14 +1712,14 @@ function applyNthroot() {
     });
   }
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithNthroot() {
   prevEquation = equation.cloneDeep();
   substitution = "nthRoot(Select(a),b)";
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function selectThisEquality(eq) {
@@ -1832,7 +1834,7 @@ function ontvouwMultis(eq,multis) {
 function replaceWithEquality() {
   prevEquation = equation.cloneDeep();
   equation = math.parse("y==Select(x)");
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 // Functies sin, cos, tan, f, g, h, integrate, derive, log 
@@ -1873,7 +1875,7 @@ function applyFunction(functieString, eq) {
     });
   }
 
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 
 }
 
@@ -1916,7 +1918,7 @@ function applyLog(eq) {
     });
   }
 
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 
 }
 
@@ -1925,7 +1927,7 @@ function replaceWithE(eq) {
   prevEquation = equation.cloneDeep();
   substitution = "Select(e)";
   eq = substituteSelected(substitution, eq);
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 }
 
 function replaceWithPi(eq) {
@@ -1933,7 +1935,7 @@ function replaceWithPi(eq) {
   prevEquation = equation.cloneDeep();
   substitution = "Select(pi)";
   eq = substituteSelected(substitution, eq);
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 }
 
 function applyIntegral(eq) {
@@ -1981,7 +1983,7 @@ function applyIntegral(eq) {
     });
   }
 
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 }
 
 function applyDerivative(eq) {
@@ -2025,7 +2027,7 @@ function applyDerivative(eq) {
     });
   }
 
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 
 }
 
@@ -2120,7 +2122,7 @@ if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && bestemmingBest
     eq = injectAtAdress( selectIt(nieuwebestemming), bestemmingVglAdres ,cleanEquation(eq));
     
   }
-  updateLatex(flatten(eq));
+  updateLatexAndFs(flatten(eq));
 }
 console.log('voorwaarden voor substitutie NIET voldaan!')
 }
@@ -2287,7 +2289,7 @@ function backSpace() {
   console.log("prevequation: ");
   console.log(prevEquation);
   equation = prevEquation;
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function leftSelect(eq) {
@@ -2337,7 +2339,7 @@ function leftSelect(eq) {
 
   MoveSelectToAdress(selectAdress, leftAdress, eq);
 
-  updateLatex(flatten(equation));
+  updateLatexAndFs(flatten(equation));
 }
 
 function rightSelect(eq) {
@@ -2391,7 +2393,7 @@ function rightSelect(eq) {
   MoveSelectToAdress(selectAdress, rightAdress, eq);
 
   // updateLatex(equation);
-  updateLatex(flatten(equation));
+  updateLatexAndFs(flatten(equation));
 }
 
 function upSelect(eq) {
@@ -2424,7 +2426,7 @@ function upSelect(eq) {
 
   equation = flatten(equation);
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function downSelect(eq, actionName) {
@@ -2470,7 +2472,7 @@ function downSelect(eq, actionName) {
   // keysList.push(actionName);
 
   // update de latexweergave
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithDigit(digit, eq) {
@@ -2486,7 +2488,7 @@ function replaceWithDigit(digit, eq) {
     inputDigit(Number(digit), equation);
   } else {
     eq = substituteSelected(selectIt(digit), eq);
-    updateLatex(eq);
+    updateLatexAndFs(eq);
   }
 
 
@@ -2506,11 +2508,11 @@ function inputDigit(digit, eq) {
       nieuwGetal = oudGetal * 10 + digit;
       nieuwGetalNode = new math.expression.node.ConstantNode(nieuwGetal);
       eq = substituteSelected(selectIt(nieuwGetalNode), eq);
-      updateLatex(eq);
+      updateLatexAndFs(eq);
     }
   } else {
     eq = substituteSelected(selectIt("" + digit), eq);
-    updateLatex(eq);
+    updateLatexAndFs(eq);
   }
 }
 
@@ -2532,10 +2534,10 @@ function replaceWithLetter (letterString, eq) {
 
     eq = substituteSelected(substitution, eq);
     eq = flatten(eq);
-    updateLatex(eq);
+    updateLatexAndFs(eq);
 } else {
   eq = substituteSelected(selectIt(letterString), eq);
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 }
 }
 
@@ -2576,7 +2578,7 @@ function rightSlurp(eq) {
 
         // MSS ZIJN DE VOLGENDE TWEE LIJNEN OVERBODIG?
         eq = flatten(eq);
-        updateLatex(eq);
+        updateLatexAndFs(eq);
 
         return eq;
       }
@@ -2659,7 +2661,7 @@ function leftSlurp(eq) {
 
         // MSS ZIJN DE VOLGENDE TWEE LIJNEN OVERBODIG?
         eq = flatten(eq);
-        updateLatex(eq);
+        updateLatexAndFs(eq);
 
         return eq;
       }
@@ -2747,7 +2749,7 @@ commuteSelectedWithNext = function(eq) {
         eq = injectAtAdress(newParent, parentAdress, eq);
 
         eq = flatten(eq);
-        updateLatex(eq);
+        updateLatexAndFs(eq);
 
         return eq;
       }
@@ -2791,7 +2793,7 @@ function commuteSelectedWithPrevious(eq) {
         eq = injectAtAdress(newParent, parentAdress, eq);
 
         eq = flatten(eq);
-        updateLatex(eq);
+        updateLatexAndFs(eq);
 
         return eq;
       }
