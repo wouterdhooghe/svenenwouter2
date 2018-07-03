@@ -194,46 +194,81 @@ function f12_release(eq) {f12(eq)};
 
 
 function f1(eq) {
-  updateLatex(naargetal(eq)[0]);
-  updateFs(naargetal(eq)[1],"f1_button");
+  // updateLatex(toegekendeFunctie["f1"](eq)[0]);
+  // updateFs(naar(eq,"getal")[1],"f1_button");
+
+  updateLatexAndFs(toegekendeFunctie["f1"](eq)[0]);
   
 }
 
 function f2(eq) {
 
-naarplus(eq);
+  var bewerking = toegekendeBewerking["f2"];
+  
+  // updateLatex(naar(eq,bewerking)[0]);
+  // updateFs(naar(eq,bewerking)[1],"f2_button");
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+
+// naarplus(eq);
 
 }
 
 function f3(eq) {
 
-naartimes(eq);  
+  var bewerking = toegekendeBewerking["f3"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+
+// naartimes(eq);  
   
 }
 
 function f4(eq) {
-  naarmin(eq);
+
+  var bewerking = toegekendeBewerking["f4"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+
+  // naarmin(eq);
 }
 
 function f5(eq) {
-  naarbreuk(eq);
+  
+  var bewerking = toegekendeBewerking["f5"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+  
+  // naarbreuk(eq);
 }
 
 function f6(eq) {
 // naarmacht(eq);
-naarmacht(eq);
+
+var bewerking = toegekendeBewerking["f6"];
+
+updateLatexAndFs(naar(eq,bewerking)[0]);
 }
 
 function f7(eq) {
-naarexp(eq);  
+  var bewerking = toegekendeBewerking["f7"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+// naarexp(eq);  
 }
 
 function f8(eq) {
-naarwortel(eq);  
+// naarwortel(eq);  
+var bewerking = toegekendeBewerking["f8"];
+
+updateLatexAndFs(naar(eq,bewerking)[0]);
 }
 
 function f9(eq) {
-  naarlog(eq);
+  var bewerking = toegekendeBewerking["f3"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+  // naarlog(eq);
 }
 
 function f10(eq) {
@@ -248,11 +283,31 @@ function f12(eq) {
   
 }
 
+function naar(eq, bewerking) {
+  console.log('naar' + bewerking + " gestart");
+
+  regelArray = eval("naar" + bewerking + "regels");
+
+  for (i in regelArray) {
+    testregel = regelArray[i];
+    uitkomst = regelTransformSelected(eq, regels[testregel]);
+        neweq = uitkomst[0];
+        newnode = uitkomst[1];
+
+        if (neweq) {
+          console.log("nieuwe eq:  " + neweq.toString());
+
+            return [neweq, newnode];
+            console.log('als je dit kan lezen is er iets mislukt')
+
+        }
+  };
+
+}
+
 function naargetal(eq) {
 
   console.log('naargetal gestart');
-
-  // try {
 
   for (i in naargetalregels) {
     testregel = naargetalregels[i];
@@ -260,40 +315,14 @@ function naargetal(eq) {
         neweq = uitkomst[0];
         newnode = uitkomst[1];
 
-        console.log('neweq = ' + neweq.toString());
-        console.log('newnode = ' + newnode.toString())
         if (neweq) {
           console.log("nieuwe eq:  " + neweq.toString());
-            
-            // updateLatex(neweq);
-            // updateFs(newnode,"f1_button");
 
             return [neweq, newnode];
             console.log('als je dit kan lezen is er iets mislukt')
-            // throw breakException;
+
         }
   };
-
-    // naargetalregels.forEach(function (testregel) {
-    //     uitkomst = regelTransformSelected(eq, regels[testregel]);
-    //     neweq = uitkomst[0];
-    //     newnode = uitkomst[1];
-
-    //     console.log('neweq = ' + neweq.toString());
-    //     console.log('newnode = ' + newnode.toString())
-    //     if (neweq) {
-    //       console.log("nieuwe eq:  " + neweq.toString());
-            
-    //         // updateLatex(neweq);
-    //         // updateFs(newnode,"f1_button");
-
-    //         return [neweq, newnode];
-    //         console.log('als je dit kan lezen is er iets mislukt')
-    //         // throw breakException;
-    //     }
-    // })
-
-  // } catch(e) {}
 
 }
 
@@ -1208,8 +1237,23 @@ function updateLatex(eq) {
   updateEval(eq);
 };
 
-function newUpdateLatex(eq) {
-  updateFs(naargetal(eq),"f1_button");
+function updateLatexAndFs(eq) {
+  updateLatex(eq);
+
+  for (var f in toegekendeBewerking) {
+    // console.log( "ffffffffffffff: " + f);
+    // console.log( "toegk bew: " + toegekendeBewerking[f]);
+    var previewArr = naar(eq,toegekendeBewerking[f]);
+    var knop = f + "_button";
+    if (previewArr) {
+      updateFs(previewArr[1],knop);
+    } else {
+      updateFs(math.parse(""),knop);
+    }
+    
+  };
+  // updateFs(naargetal(eq)[1],"f1_button");
+  // updateFs(naarplus(eq)[1],"f2_button");
 };
 
 
