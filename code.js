@@ -195,6 +195,7 @@ function f12_release(eq) {f12(eq)};
 
 function f1(eq) {
   updateLatex(naargetal(eq)[0]);
+  updateFs(naargetal(eq)[1],"f1_button");
   
 }
 
@@ -251,9 +252,11 @@ function naargetal(eq) {
 
   console.log('naargetal gestart');
 
-  try {
-    naargetalregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
+  // try {
+
+  for (i in naargetalregels) {
+    testregel = naargetalregels[i];
+    uitkomst = regelTransformSelected(eq, regels[testregel]);
         neweq = uitkomst[0];
         newnode = uitkomst[1];
 
@@ -266,11 +269,31 @@ function naargetal(eq) {
             // updateFs(newnode,"f1_button");
 
             return [neweq, newnode];
-            throw breakException;
+            console.log('als je dit kan lezen is er iets mislukt')
+            // throw breakException;
         }
-    })
+  };
 
-  } catch(e) {}
+    // naargetalregels.forEach(function (testregel) {
+    //     uitkomst = regelTransformSelected(eq, regels[testregel]);
+    //     neweq = uitkomst[0];
+    //     newnode = uitkomst[1];
+
+    //     console.log('neweq = ' + neweq.toString());
+    //     console.log('newnode = ' + newnode.toString())
+    //     if (neweq) {
+    //       console.log("nieuwe eq:  " + neweq.toString());
+            
+    //         // updateLatex(neweq);
+    //         // updateFs(newnode,"f1_button");
+
+    //         return [neweq, newnode];
+    //         console.log('als je dit kan lezen is er iets mislukt')
+    //         // throw breakException;
+    //     }
+    // })
+
+  // } catch(e) {}
 
 }
 
