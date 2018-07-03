@@ -197,7 +197,13 @@ function f1(eq) {
   // updateLatex(toegekendeFunctie["f1"](eq)[0]);
   // updateFs(naar(eq,"getal")[1],"f1_button");
 
-  updateLatexAndFs(toegekendeFunctie["f1"](eq)[0]);
+  // updateLatexAndFs(toegekendeFunctie["f1"](eq)[0]);
+
+  var bewerking = toegekendeBewerking["f1"];
+  var uit = naar(eq,bewerking);
+  
+  if (uit) {updateLatexAndFs(uit[0]);}
+  
   
 }
 
@@ -1242,8 +1248,8 @@ function updateLatexAndFs(eq) {
   updateLatex(eq);
 
   for (var f in toegekendeBewerking) {
-    // console.log( "ffffffffffffff: " + f);
-    // console.log( "toegk bew: " + toegekendeBewerking[f]);
+     console.log( "ffffffffffffff: " + f);
+     console.log( "toegk bew: " + toegekendeBewerking[f]);
     var previewArr = naar(eq,toegekendeBewerking[f]);
     var knop = f + "_button";
     if (previewArr) {
