@@ -195,7 +195,7 @@ function f12_release(eq) {f12(eq)};
 
 function f1(eq) {
   // updateLatex(toegekendeFunctie["f1"](eq)[0]);
-  // updateFs(naar(eq,"getal")[1],"f1_button");
+  // updateF(naar(eq,"getal")[1],"f1_button");
 
   // updateLatexAndFs(toegekendeFunctie["f1"](eq)[0]);
 
@@ -212,7 +212,7 @@ function f2(eq) {
   var bewerking = toegekendeBewerking["f2"];
   
   // updateLatex(naar(eq,bewerking)[0]);
-  // updateFs(naar(eq,bewerking)[1],"f2_button");
+  // updateF(naar(eq,bewerking)[1],"f2_button");
 
   updateLatexAndFs(naar(eq,bewerking)[0]);
 
@@ -733,10 +733,10 @@ function matchesPattern(cleanedNode, patternNode, unknownArr) {
   patpad = buildPath(patternNode);
   bigpad = buildPath(cleanedNode);
 
-  console.log("patpad ");
-  console.log(patpad);
-  console.log("bigpad ");
-  console.log(bigpad);
+  // console.log("patpad ");
+  // console.log(patpad);
+  // console.log("bigpad ");
+  // console.log(bigpad);
 
   // placeholders = ['a','b','c','d','x','y','z'];
   checker = {};
@@ -749,13 +749,13 @@ function matchesPattern(cleanedNode, patternNode, unknownArr) {
         unknownArr.includes(currentplaceholder));
     if (unknownArr.includes(currentplaceholder)) {
       if (bigpad[place] == undefined) {
-        console.log("adres bestaat niet in cleanednode ");
+        // console.log("adres bestaat niet in cleanednode ");
         return false;
       } else {
-        console.log("place " + place);
+        // console.log("place " + place);
         adres = place.split(",");
         subexp = readAtAdress(adres, cleanedNode);
-        console.log("subexp = " + subexp.toString());
+        // console.log("subexp = " + subexp.toString());
         checker[currentplaceholder]
           ? (match = match && checker[currentplaceholder].equals(subexp))
           : (checker[currentplaceholder] = subexp);
@@ -836,6 +836,9 @@ function transformSelected(
       console.log(
         "doe transformSelected met inputPattern: " + inputPatternNode.toString()
       );
+
+      //  SKIP VOOR TEST DE HELE MATCH CRAP VAN VROEGER
+
       transformed = transformNode(
         selectNode.args[0],
         inputPatternNode,
@@ -843,6 +846,11 @@ function transformSelected(
         unknownInArr,
         unknownOutArr
       );
+
+      //  EN DOE GEWOON ALTIJD DEZE F|UNCTIE
+      // TODO DIT TERUG VERWIJDEREN EN MSS optermijn de oude crap echt vervangen door functies
+
+      // transformed = regels.eenNeutraalVoorMaal.functie(selectNode.args[0]);
     }
 
     
@@ -1182,7 +1190,7 @@ selected = function(node) {
 // UPDATES
 //************************************* */
 
-function updateFs(nieuweNode, fknopString) {
+function updateF(nieuweNode, fknopString) {
 
   try {
 
@@ -1253,14 +1261,16 @@ function updateLatexAndFs(eq) {
     var previewArr = naar(eq,toegekendeBewerking[f]);
     var knop = f + "_button";
     if (previewArr) {
-      updateFs(previewArr[1],knop);
+      updateF(previewArr[1],knop);
     } else {
-      updateFs(math.parse(""),knop);
+      // DIT IS TE TRAAG OM ALTIJD TE DOEN dus liever direct de innerHTML
+      // updateF(math.parse("geen naar gevonden"),knop);
+      eval(knop).innerHTML = "niks!!!";
     }
     
   };
-  // updateFs(naargetal(eq)[1],"f1_button");
-  // updateFs(naarplus(eq)[1],"f2_button");
+  // updateF(naargetal(eq)[1],"f1_button");
+  // updateF(naarplus(eq)[1],"f2_button");
 };
 
 
