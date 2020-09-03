@@ -1156,6 +1156,9 @@
                 function keysPressed(e) {
 
                     out.innerHTML = e.code;
+                    
+                    console.log(keyLookup[e.code]);
+                  
 
                     if (e.shiftKey == 1)
                         switch (keyLookup[e.code]) {
