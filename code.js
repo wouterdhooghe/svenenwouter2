@@ -2256,7 +2256,7 @@ function enter(eq) {
     if (uitkomstIsInteger) {
       // uitkomstString = math.eval(selectNode.args[0].toString());
       uitkomstString < 0 ? 
-      substitution = math.parse("Select(unaryMinus(" + -1*uitkomstString + "))") 
+      substitution = math.parse("Select(" + '-1*' + -1*uitkomstString + ")") 
       : substitution = math.parse("Select(" + uitkomstString + ")");
 
       equation = injectAtAdress(substitution, item, equation);
@@ -2270,19 +2270,19 @@ function enter(eq) {
     //   uitkomsten = [eq2, eq3,eq4,eq5,eq6];
       
 
-    var breakException = {};
+//    var breakException = {};
     
-    try {
-    simplificatieregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
-            updateLatex(uitkomst);
-            throw(e);
-        }
-    })
-    }
-    catch(e) { };
+//     try {
+//     simplificatieregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
+//             updateLatex(uitkomst);
+//  //           throw(e);
+//         }
+//     })
+//     }
+//     catch(e) { console.Log('fout tijdens simplificatieregels');  };
 
     //   if (eq2.equals(eq) == false) {
     //     console.log("nieuwe eq:  " + eq2.toString());
@@ -2902,6 +2902,74 @@ function distributeOrFactorSelectedLeft(eq) {
   eq = injectAtAdress(selectIt(nieuw), selectAdress, eq);
   return eq;
 }
+
+
+// voor ctrl up en down splits in termen functies
+
+
+function herbalanceertermen(eq, richting) {
+selectAdress = adresses("Select", eq)[0];
+selectNode = readAtAdress(selectAdress, eq);
+selectedNode = selectNode.args[0];
+
+if (richting == 'opwaarts') {sprong = -1}
+if (richting == 'neerwaarts') {sprong = 1}
+
+// als het een gewone integer is
+if (selectedNode.isConstantNode) {
+   getal = selectedNode.value;
+
+// getal direct eentje aftrekken of bijdoen
+    
+//   if (Number.isInteger(getal)) {
+//     nieuwlinksgetal = getal + sprong;
+//     nieuwesom = math.parse( nieuwlinksgetal +"+"+ -sprong)
+//     }
+// }
+
+// beter is: eerst getal + 0 van maken
+
+  if (Number.isInteger(getal)) {
+    nieuwesom = math.parse( "Plus("+ getal + "," +  0 + ")")
+    }
+} else {
+
+  if ((selectedNode.name == 'Plus') & (selectedNode.args.length == 2)) {
+    links = selectedNode.args[0]; linkswaarde = links.value;
+    rechts = selectedNode.args[1]; rechtswaarde = rechts.value;
+    if (links.name == 'unaryMinus') {links = links.args[0]; linkswaarde = links.value * -1;}
+    if (rechts.name == 'unaryMinus') {rechts = rechts.args[0]; rechtswaarde = rechts.value * -1;}
+
+    if (links.isConstantNode & rechts.isConstantNode) {
+  
+      if (Number.isInteger(linkswaarde) & Number.isInteger(rechtswaarde)) {
+        nieuwesom = new math.expression.node.FunctionNode("Plus", [
+        ((linkswaarde - sprong) < 0)? math.parse( "" + 'unaryMinus('+(sprong - linkswaarde)+")" ) : math.parse( "" + (linkswaarde - sprong) ),
+        ((rechtswaarde + sprong) < 0)? math.parse( "" + 'unaryMinus('+(-sprong - rechtswaarde)+")" ) : math.parse( "" + (rechtswaarde + sprong) )
+      ]);
+      }
+  
+    }
+  }
+
+
+}
+
+
+
+
+
+
+
+// als selectie een gewonen integer is -> maak er een som van met 1 + (n-1)
+// als selectie een som van twee integers is -> verhoog linkse en verlaag rechtse (of omgekeerd)
+
+eq = injectAtAdress(selectIt(nieuwesom), selectAdress, eq);
+return eq;
+
+}
+
+
 
 //***************************** */
 // Grafiek functies

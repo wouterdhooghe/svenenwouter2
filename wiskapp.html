@@ -304,9 +304,11 @@
     
                                 <select id='keyboardType' onchange="changeKeyboardType()">
                                     <option value="wouterCode">Wouter code</option>
+                                    <option value="wouterCodeNumpad">Wouter met numpad</option>
                                     <option value="svenCode">Sven code</option>
                                     <option value="wouterkeyCode">Wouter keyCode</option>
                                     <option value="svenkeyCode">Sven Code</option>
+
                                 </select>
     
                             </div>
@@ -1616,6 +1618,102 @@
                 ///  Keyboard handling
                 ///*********************************************************************
 
+                var keyboardlookups = {
+                    wouterCodeNumpad: {
+                        ArrowLeft: 'left',
+                        ArrowUp: 'up',
+                        ArrowRight: 'right',
+                        ArrowDown: 'down',
+
+                        Minus: 'minus',
+                        Equal: 'plus',
+                        BracketLeft: 'divide',
+                        BracketRight: 'times',
+                        Quote: 'nthroot',
+                        Backslash: 'power',
+                        Slash: 'equals',
+
+                        Space: 'space',
+                        Tab: 'tab',
+                        Escape: 'escape',
+                        Enter: 'enter',
+                        Backquote: 'apestaart',
+                        Backspace: 'backspace',
+
+                        NumpadSubtract: 'minus',
+                        NumpadAdd: 'plus',
+                        NumpadDivide: 'divide',
+                        NumpadMultiply: 'times',
+                        NumpadEnter: 'enter',
+                        Quote: 'nthroot',
+                        Backslash: 'power',
+                        Slash: 'equals',
+
+                        F1: 'f1',
+                        F2: 'f2',
+                        F3: 'f3',
+                        F4: 'f4',
+                        F5: 'f5',
+                        F6: 'f6',
+                        F7: 'f7',
+                        F8: 'f8',
+                        F9: 'f9',
+                        F10: 'f10',
+                        F11: 'f11',
+                        F12: 'f12',
+
+                        Digit0: '0',
+                        Digit1: '1',
+                        Digit2: '2',
+                        Digit3: '3',
+                        Digit4: '4',
+                        Digit5: '5',
+                        Digit6: '6',
+                        Digit7: '7',
+                        Digit8: '8',
+                        Digit9: '9',
+
+                        Numpad0: '0',
+                        Numpad1: '1',
+                        Numpad2: '2',
+                        Numpad3: '3',
+                        Numpad4: '4',
+                        Numpad5: '5',
+                        Numpad6: '6',
+                        Numpad7: '7',
+                        Numpad8: '8',
+                        Numpad9: '9',
+
+                        KeyA: 'a',
+                        KeyB: 'b',
+                        KeyC: 'c',
+                        KeyD: 'd',
+                        KeyE: 'e',
+                        KeyF: 'f',
+                        KeyG: 'g',
+                        KeyH: 'h',
+                        KeyI: 'i',
+                        KeyJ: 'j',
+                        KeyK: 'k',
+                        KeyL: 'l',
+                        KeyM: 'm',
+                        KeyN: 'n',
+                        KeyO: 'o',
+                        KeyP: 'p',
+                        KeyQ: 'q',
+                        KeyR: 'r',
+                        KeyS: 's',
+                        KeyT: 't',
+                        KeyU: 'u',
+                        KeyV: 'v',
+                        KeyW: 'w',
+                        KeyX: 'x',
+                        KeyY: 'y',
+                        KeyZ: 'z'
+
+                    }
+                }
+
                 var keyboards = {
                     wouterkeyCode: {
                         left: 37,
@@ -1750,6 +1848,90 @@
                         x: 'KeyX',
                         y: 'KeyY',
                         z: 'KeyZ'
+                    },
+                    wouterCodeNumpad: {
+                        left: 'ArrowLeft',
+                        up: 'ArrowUp',
+                        right: 'ArrowRight',
+                        down: 'ArrowDown',
+
+                        minus: 'Minus',
+                        plus: 'Equal',
+                        divide: 'BracketLeft',
+                        times: 'BracketRight',
+                        nthroot: 'Quote',
+                        power: 'Backslash',
+                        equals: 'Slash',
+
+                        space: 'Space',
+                        tab: 'Tab',
+                        escape: 'Escape',
+                        enter: 'Enter',
+                        apestaart: 'Backquote',
+                        backspace: 'Backspace',
+
+
+                        f1: 'F1',
+                        f2: 'F2',
+                        f3: 'F3',
+                        f4: 'F4',
+                        f5: 'F5',
+                        f6: 'F6',
+                        f7: 'F7',
+                        f8: 'F8',
+                        f9: 'F9',
+                        f10: 'F10',
+                        f11: 'F11',
+                        f12: 'F12',
+
+                        0: 'Digit0',
+                        1: 'Digit1',
+                        2: 'Digit2',
+                        3: 'Digit3',
+                        4: 'Digit4',
+                        5: 'Digit5',
+                        6: 'Digit6',
+                        7: 'Digit7',
+                        8: 'Digit8',
+                        9: 'Digit9',
+
+                        0: 'Numpad0',
+                        1: 'Numpad1',
+                        2: 'Numpad2',
+                        3: 'Numpad3',
+                        4: 'Numpad4',
+                        5: 'Numpad5',
+                        6: 'Numpad6',
+                        7: 'Numpad7',
+                        8: 'Numpad8',
+                        9: 'Numpad9',
+
+                        a: 'KeyA',
+                        b: 'KeyB',
+                        c: 'KeyC',
+                        d: 'KeyD',
+                        e: 'KeyE',
+                        f: 'KeyF',
+                        g: 'KeyG',
+                        h: 'KeyH',
+                        i: 'KeyI',
+                        j: 'KeyJ',
+                        k: 'KeyK',
+                        l: 'KeyL',
+                        m: 'KeyM',
+                        n: 'KeyN',
+                        o: 'KeyO',
+                        p: 'KeyP',
+                        q: 'KeyQ',
+                        r: 'KeyR',
+                        s: 'KeyS',
+                        t: 'KeyT',
+                        u: 'KeyU',
+                        v: 'KeyV',
+                        w: 'KeyW',
+                        x: 'KeyX',
+                        y: 'KeyY',
+                        z: 'KeyZ'
                     }
                 };
 
@@ -1759,10 +1941,12 @@
                 function changeKeyboardType() {
                     keyboardSelectElement = document.getElementById('keyboardType');
                     keyboardType = keyboardSelectElement.value;
+                    keyLookup = keyboardType in keyboardlookups? keyboardlookups[keyboardType] : invertSimple(keyboards[keyboardType]);
                 };
 
-                // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType
-                var keyLookup = invertSimple(keyboards[keyboardType]);
+                // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType (voor de oude versies was het met invert door stommiteiten)
+                var keyLookup = keyboardType in keyboardlookups? keyboardlookups[keyboardType] : invertSimple(keyboards[keyboardType]);
+
 
                 document.onkeydown = keysPressed
 
@@ -1820,9 +2004,9 @@
                     else if (e.ctrlKey == 1)
                         switch (keyLookup[e.code]) {
                             case 'left': out.innerHTML = 'CTRLleft'; break;
-                            case 'up': out.innerHTML = 'up'; break;
-                            case 'right': out.innerHTML = 'right'; break;
-                            case 'down': out.innerHTML = 'down'; break;
+                            case 'up': out.innerHTML = 'CTRLup'; updateLatex(herbalanceertermen(equation,'opwaarts')); keysList.push('herbalanceertermen'); updateLatex(equation);break;
+                            case 'right': out.innerHTML = 'CTRLright'; break;
+                            case 'down': out.innerHTML = 'CTRLdown'; updateLatex(herbalanceertermen(equation,'neerwaarts')); keysList.push('herbalanceertermen'); updateLatex(equation);break;
 
                             // letters
 
