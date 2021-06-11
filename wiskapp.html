@@ -52,7 +52,7 @@
                         <div class="card">
                         <div class='card-header'> F1: naar getal</div>
                         <div class="card-body">
-                            <p class="card-text" id="f1_button">$$$$</p>
+                            <p class="card-text" id="f1_button" onclick="f1(equation)">$$$$</p>
 
                         </div>
                         </div>
@@ -66,7 +66,7 @@
                         <div class="card">
                         <div class='card-header'> F2: naar plus </div>
                         <div class="card-body">
-                            <p class="card-text" id="f2_button">$$$$</p>
+                            <p class="card-text" id="f2_button" onclick="f2(equation)">$$$$</p>
                         </div>
                         </div>
 
@@ -76,35 +76,35 @@
                         <div class="card">
                         <div class='card-header'> F3: naar maal</div>
                         <div class="card-body">
-                            <p class="card-text" id="f3_button">$$$$</p>
+                            <p class="card-text" id="f3_button" onclick="f3(equation)">$$$$</p>
                         </div>
                         </div>
 
                         <div class="card">
                         <div class='card-header'> F5: naar breuk </div>
                         <div class="card-body">
-                            <p class="card-text" id="f5_button">$$$$</p>
+                            <p class="card-text" id="f5_button" onclick="f5(equation)">$$$$</p>
                         </div>
                         </div>
 
                         <div class="card">
                         <div class='card-header'> F7: naar exp </div>
                         <div class="card-body">
-                            <p class="card-text" id="f7_button">$$$$</p>
+                            <p class="card-text" id="f7_button" onclick="f7(equation)">$$$$</p>
                         </div>
                         </div>
 
                         <div class="card">
                         <div class='card-header'> F9: naar log </div>
                         <div class="card-body">
-                            <p class="card-text" id="f9_button">$$$$</p>
+                            <p class="card-text" id="f9_button" onclick="f9(equation)">$$$$</p>
                         </div>
                         </div>
 
                 </div>
 
                 <!-- <div class='col-md' id="middle"> -->
-                <div class='col-md-6'>
+                <div class='col-md-6' id="rondhoofdvergelijking">
 
                     <div class="card" id="hoofdvergelijking">
                         <div class='card-header'> Vgl 1</div>
@@ -176,28 +176,28 @@
                         <div class="card">
                                 <div class='card-header'> F4: naar min</div>
                                 <div class="card-body">
-                                    <p class="card-text" id="f4_button">$$$$</p>
+                                    <p class="card-text" id="f4_button" onclick="f4(equation)">$$$$</p>
                                 </div>
                         </div>
 
                         <div class="card">
                         <div class='card-header'> F6: naar macht</div>
                         <div class="card-body">
-                            <p class="card-text" id="f6_button">$$$$</p>
+                            <p class="card-text" id="f6_button" onclick="f6(equation)">$$$$</p>
                         </div>
                         </div>
 
                         <div class="card">
                         <div class='card-header'> F8: naar wortel</div>
                         <div class="card-body">
-                            <p class="card-text" id="f8_button">$$$$</p>
+                            <p class="card-text" id="f8_button" onclick="f8(equation)">$$$$</p>
                         </div>
                         </div>
 
                         <div class="card">
                         <div class='card-header'> F10</div>
                         <div class="card-body">
-                            <p class="card-text" id="f10_button">$$$$</p>
+                            <p class="card-text" id="f10_button" onclick="f10(equation)">$$$$</p>
                         </div>
                         </div>
                 </div>
@@ -304,8 +304,8 @@
                                 <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
     
                                 <select id='keyboardType' onchange="changeKeyboardType()">
-                                    <option value="wouterCode">Wouter code</option>
                                     <option value="wouterCodeNumpad">Wouter met numpad</option>
+                                    <option value="wouterCode">Wouter code</option>
                                     <option value="svenCode">Sven code</option>
                                     <option value="wouterkeyCode">Wouter keyCode</option>
                                     <option value="svenkeyCode">Sven Code</option>
@@ -1948,14 +1948,84 @@
                 // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType (voor de oude versies was het met invert door stommiteiten)
                 var keyLookup = keyboardType in keyboardlookups? keyboardlookups[keyboardType] : invertSimple(keyboards[keyboardType]);
 
+                ///// ************************
+                //// *** TOUCH EVENTS! ! !
+                //// ************************
+
                 // zingtouch listen region gedefinieerd. Dan enkel kijken naar een knop of daar geklikt is.
                 // natuurlijk wil ik eigenlijk gewoon swipes over het hele document detecteren en mappen naar de pijltjes commandos
                 var zt = new ZingTouch.Region(document.body);
-                var myElement = document.getElementById('f1_button');
-                    zt.bind(myElement, 'tap', function(e){
+
+                var tweevingerswipe = new ZingTouch.Swipe({numInputs: 2});
+                var drievingerswipe = new ZingTouch.Swipe({numInputs: 3});
+
+                // eerst maakte ik het heledocument swipebaar. nu enkel nog de omgeving vd hoofdvergelijking
+                var heledocument = document.body;
+                var midden = document.getElementById('rondhoofdvergelijking');
+
+                // 1 vinger swipe 
+
+                    zt.bind(midden, 'swipe', function(e){
                         //Actions here
-                        console.log("zingtouch tap geactiveerd!")
+                        richting = e.detail.data[0].currentDirection;
+                        rechtsswipe = (richting < 45 || richting > 315);
+                        linksswipe = (richting > 135 && richting < 225);
+                        upswipe = (richting > 45 && richting < 135);
+                        downswipe = (richting > 225 && richting < 315);
+                        console.log("een vinger!" + richting);
+                        if(rechtsswipe) {console.log("rechtsswipe!"); kant = "right";}
+                        if(linksswipe) {console.log("linksswipe!"); kant= "left";}
+                        if(upswipe) {console.log("upswipe!"); kant = "up";}
+                        if(downswipe) {console.log("downswipe!"); kant = "down";}
+
+                        switch (kant) {
+                            case 'left': keysList.push('left'); e.preventDefault(); leftSelect(equation); break;
+                            case 'up': keysList.push('up'); e.preventDefault(); upSelect(equation); break;
+                            case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
+                            case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
+                        }
+
+
+                        console.log(e);
                     }, false);
+
+                    // distance (voor de versies van 1 (bvb 7/7) en de versies van 0 (bvb 4-4) en de splitsingen van getallen (bvb 34 = 33+1) ) 
+                    // MAAR BLIJKBAAR BESTAAT DISTANCE NIET MEER IN ZINGTOUCH!!!
+                
+
+                // // 2 vinger swipe
+                //     zt.bind(heledocument, tweevingerswipe, function(e){
+                //         //Actions here
+                //         richting = e.detail.data[1].currentDirection;
+                //         rechtsswipe = (richting < 45 || richting > 315);
+                //         linksswipe = (richting > 135 && richting < 225);
+                //         upswipe = (richting > 45 && richting < 135);
+                //         downswipe = (richting > 225 && richting < 315);
+                //         console.log("2 vingers!" + richting);
+                //         if(rechtsswipe) {console.log("rechtsswipe!")}
+                //         if(linksswipe) {console.log("linksswipe!")}
+                //         if(upswipe) {console.log("upswipe!")}
+                //         if(downswipe) {console.log("downswipe!")}
+                //         console.log(e);
+                //     }, false);
+
+                // /// 3 finger swipe
+                //     zt.bind(heledocument, drievingerswipe, function(e){
+                //         //Actions here
+                //         richting = e.detail.data[2].currentDirection;
+                //         rechtsswipe = (richting < 45 || richting > 315);
+                //         linksswipe = (richting > 135 && richting < 225);
+                //         upswipe = (richting > 45 && richting < 135);
+                //         downswipe = (richting > 225 && richting < 315);
+                //         console.log("2 vingers!" + richting);
+                //         if(rechtsswipe) {console.log("rechtsswipe!")}
+                //         if(linksswipe) {console.log("linksswipe!")}
+                //         if(upswipe) {console.log("upswipe!")}
+                //         if(downswipe) {console.log("downswipe!")}
+                //         console.log(e);
+                //     }, false);
+
+                document.onkeydown = keysPressed;
 
                 function keysPressed(e) {
 
