@@ -332,172 +332,174 @@ function naargetal(eq) {
 
 }
 
-function naarplus(eq) {
-    // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, factorBuitenhalen
-    // momenteel wordt de eerste van alle mogelijke regels uitgevoerd, en dan stopt het.
+// naarplus, naartimes etc gebruiken nog niet het idee dat regeltransformselected een array output heeft. Maar ze worden ook niet meer gebruikt nu dus weg.
 
- /// idee: voor alle regels in naarPlus, bereken de uitkomst. Alle uitkomsten presenteren aan de gebruiker.
- // gebruiker kiest en de keuze wordt geimplementeerd.
+// function naarplus(eq) {
+//     // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, factorBuitenhalen
+//     // momenteel wordt de eerste van alle mogelijke regels uitgevoerd, en dan stopt het.
 
- console.log('naarplus gestart');
+//  /// idee: voor alle regels in naarPlus, bereken de uitkomst. Alle uitkomsten presenteren aan de gebruiker.
+//  // gebruiker kiest en de keuze wordt geimplementeerd.
 
-    try {
-      naarplusregels.forEach(function (testregel) {
-          uitkomst = regelTransformSelected(eq, regels[testregel]);
-          console.log('uitkomst = ' + uitkomst);
-          if (uitkomst) {
-            console.log("nieuwe eq:  " + uitkomst.toString());
+//  console.log('naarplus gestart');
+
+//     try {
+//       naarplusregels.forEach(function (testregel) {
+//           uitkomst = regelTransformSelected(eq, regels[testregel]);
+//           console.log('uitkomst = ' + uitkomst);
+//           if (uitkomst) {
+//             console.log("nieuwe eq:  " + uitkomst.toString());
               
-              updateLatex(flatten(uitkomst));
-              throw breakException;
-          }
-      })
+//               updateLatex(flatten(uitkomst));
+//               throw breakException;
+//           }
+//       })
 
-    } catch(e) {}
+//     } catch(e) {}
 
-}
+// }
 
-function naartimes(eq) {
+// function naartimes(eq) {
 
-  console.log('naartimes gestart');
+//   console.log('naartimes gestart');
 
-  try {
-    naartimesregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
-        console.log('uitkomst = ' + uitkomst);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
+//   try {
+//     naartimesregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
             
-            updateLatex(flatten(uitkomst));
-            throw breakException;
-        }
-    })
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
 
-  } catch(e) {}
+//   } catch(e) {}
 
-}
+// }
 
-function naarmin(eq) {
+// function naarmin(eq) {
 
-  console.log('naarmin gestart');
+//   console.log('naarmin gestart');
 
-  try {
-    naarminregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
-        console.log('uitkomst = ' + uitkomst);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
+//   try {
+//     naarminregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
             
-            updateLatex(flatten(uitkomst));
-            throw breakException;
-        }
-    })
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
 
-  } catch(e) {}
+//   } catch(e) {}
 
-}
+// }
 
-function naarbreuk(eq) {
+// function naarbreuk(eq) {
 
-  console.log('naarbreuk gestart');
+//   console.log('naarbreuk gestart');
 
-  try {
-    naarbreukregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
-        console.log('uitkomst = ' + uitkomst);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
+//   try {
+//     naarbreukregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
             
-            updateLatex(flatten(uitkomst));
-            throw breakException;
-        }
-    })
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
 
-  } catch(e) {}
+//   } catch(e) {}
 
-}
+// }
 
-function naarmacht(eq) {
+// function naarmacht(eq) {
 
-  console.log('naarmacht gestart');
+//   console.log('naarmacht gestart');
 
-  try {
-    naarmachtregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
-        console.log('uitkomst = ' + uitkomst);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
+//   try {
+//     naarmachtregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
             
-            updateLatex(flatten(uitkomst));
-            throw breakException;
-        }
-    })
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
 
-  } catch(e) {}
+//   } catch(e) {}
 
-}
+// }
 
-function naarexp(eq) {
+// function naarexp(eq) {
 
-  console.log('naarexp gestart');
+//   console.log('naarexp gestart');
 
-  try {
-    naarexpregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
-        console.log('uitkomst = ' + uitkomst);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
+//   try {
+//     naarexpregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
             
-            updateLatex(flatten(uitkomst));
-            throw breakException;
-        }
-    })
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
 
-  } catch(e) {}
+//   } catch(e) {}
 
-}
+// }
 
-function naarwortel(eq) {
+// function naarwortel(eq) {
 
-  console.log('naarwortel gestart');
+//   console.log('naarwortel gestart');
 
-  eqvoorvoorvoor = equation.cloneDeep();
+//   eqvoorvoorvoor = equation.cloneDeep();
 
-  try {
-    naarwortelregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
-        console.log('uitkomst = ' + uitkomst);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
+//   try {
+//     naarwortelregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
             
-            updateLatex(flatten(uitkomst));
-            throw breakException;
-        }
-    })
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
 
-  } catch(e) {}
+//   } catch(e) {}
 
-}
+// }
 
-function naarlog(eq) {
+// function naarlog(eq) {
 
-  console.log('naarlog gestart');
+//   console.log('naarlog gestart');
 
-  try {
-    naarlogregels.forEach(function (testregel) {
-        uitkomst = regelTransformSelected(eq, regels[testregel]);
-        console.log('uitkomst = ' + uitkomst);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
+//   try {
+//     naarlogregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
             
-            updateLatex(flatten(uitkomst));
-            throw breakException;
-        }
-    })
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
 
-  } catch(e) {}
+//   } catch(e) {}
 
-}
+// }
 
 
 //************************************* */
@@ -2270,29 +2272,29 @@ function enter(eq) {
     //   uitkomsten = [eq2, eq3,eq4,eq5,eq6];
       
 
-//    var breakException = {};
+   var breakException = {};
     
-//     try {
-//     simplificatieregels.forEach(function (testregel) {
-//         uitkomst = regelTransformSelected(eq, regels[testregel]);
-//         if (uitkomst) {
-//           console.log("nieuwe eq:  " + uitkomst.toString());
-//             updateLatex(uitkomst);
-//  //           throw(e);
-//         }
-//     })
-//     }
-//     catch(e) { console.Log('fout tijdens simplificatieregels');  };
+    try {
+    simplificatieregels.forEach(function (testregel) {
+        uitkomst = regelTransformSelected(eq, regels[testregel]);
+        if (uitkomst) {
+          console.log("nieuwe eq:  " + uitkomst.toString());
+            updateLatex(uitkomst);
+ //           throw(e);
+        }
+    })
+    }
+    catch(e) { console.Log('fout tijdens simplificatieregels');  };
 
-    //   if (eq2.equals(eq) == false) {
-    //     console.log("nieuwe eq:  " + eq2.toString());
-    //     updateLatex(eq2);
-    //   } else if (eq3.equals(eq) == false) {
-    //     console.log("geen a-a=0, testing a/1=a");
-    //     // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
-    //     console.log("a/1 getest en mss gedaan");
-    //     updateLatex(eq3);
-    //   }
+      if (eq2.equals(eq) == false) {
+        console.log("nieuwe eq:  " + eq2.toString());
+        updateLatex(eq2);
+      } else if (eq3.equals(eq) == false) {
+        console.log("geen a-a=0, testing a/1=a");
+        // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+        console.log("a/1 getest en mss gedaan");
+        updateLatex(eq3);
+      }
     }
   });
 
