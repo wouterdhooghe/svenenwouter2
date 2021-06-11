@@ -1948,13 +1948,14 @@
                 // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType (voor de oude versies was het met invert door stommiteiten)
                 var keyLookup = keyboardType in keyboardlookups? keyboardlookups[keyboardType] : invertSimple(keyboards[keyboardType]);
 
-                document.onpointerdown = pointerdown
-
-                function pointerdown(e) {
-                    console.log("pointerdown!");
-                }
-
-                document.onkeydown = keysPressed
+                // zingtouch listen region gedefinieerd. Dan enkel kijken naar een knop of daar geklikt is.
+                // natuurlijk wil ik eigenlijk gewoon swipes over het hele document detecteren en mappen naar de pijltjes commandos
+                var zt = new ZingTouch.Region(document.body);
+                var myElement = document.getElementById('f1_button');
+                    zt.bind(myElement, 'tap', function(e){
+                        //Actions here
+                        console.log("zingtouch tap geactiveerd!")
+                    }, false);
 
                 function keysPressed(e) {
 
