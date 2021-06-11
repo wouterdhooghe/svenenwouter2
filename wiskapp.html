@@ -480,7 +480,8 @@
                     "f6": "macht",
                     "f7": "exp",
                     "f8": "wortel",
-                    "f9": "log"
+                    "f9": "log",
+
                 };
 
                 // hoort bij de oude methodes van naarplus, naartimes etc ipv de nieuwe naar(bewerking, ...)
@@ -498,6 +499,7 @@
                 // };
 
                 regels = {
+
                     aMinA: {
                         naam: 'a min a',
                         input: {
@@ -1572,10 +1574,14 @@
                     'vergelijkingNegeren',
                     'productVanGelijkeWortels',
                     'breukVanWortels'
-                ]
+                ];
 
                 naarlogregels = [
                     'vergelijkingNegeren'
+                ];
+
+                naaropgaveregels = [
+                    'leesOpgaveNummer'
                 ];
 
 
@@ -2209,7 +2215,10 @@
 
                 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
                 // equation = math.parse('Select(Times(4,9))^2( + y^2 == Select(Times(2,512))');
-                equation = math.parse('Select(pow(Times(a,Plus(9,a)),2))==a');
+                var equationnummer = 0;
+                equation = math.parse('Select(pow(Times(x,Plus(9,x)),2))==x');
+
+                equation = math.parse(opgaven[equationnummer].opgave);
 
                 prevEquation = equation;
                 updateLatex(equation);
