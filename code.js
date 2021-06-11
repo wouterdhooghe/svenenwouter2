@@ -1267,7 +1267,7 @@ function updateLatexAndFs(eq) {
     } else {
       // DIT IS TE TRAAG OM ALTIJD TE DOEN dus liever direct de innerHTML
       // updateF(math.parse("geen naar gevonden"),knop);
-      eval(knop).innerHTML = "niks!!!";
+      eval(knop).innerHTML = "...";
     }
     
   };
@@ -2227,9 +2227,9 @@ function spaceBar(eq) {
       try {
         spaceregels.forEach(function (testregel) {
             uitkomst = regelTransformSelected(eq, regels[testregel]);
-            if (uitkomst) {
-              console.log("nieuwe eq:  " + uitkomst.toString());
-                updateLatex(uitkomst);
+            if (uitkomst[0]) {
+              console.log("nieuwe eq:  " + uitkomst[0].toString());
+                updateLatex(uitkomst[0]);
                 throw breakException;
             }
         })
@@ -2277,24 +2277,24 @@ function enter(eq) {
     try {
     simplificatieregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
-            updateLatex(uitkomst);
+        if (uitkomst[0]) {
+          console.log("nieuwe eq:  " + uitkomst[0].toString());
+            updateLatex(uitkomst[0]);
  //           throw(e);
         }
     })
     }
     catch(e) { console.Log('fout tijdens simplificatieregels');  };
 
-      if (eq2.equals(eq) == false) {
-        console.log("nieuwe eq:  " + eq2.toString());
-        updateLatex(eq2);
-      } else if (eq3.equals(eq) == false) {
-        console.log("geen a-a=0, testing a/1=a");
-        // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
-        console.log("a/1 getest en mss gedaan");
-        updateLatex(eq3);
-      }
+      // if (eq2.equals(eq) == false) {
+      //   console.log("nieuwe eq:  " + eq2.toString());
+      //   updateLatex(eq2);
+      // } else if (eq3.equals(eq) == false) {
+      //   console.log("geen a-a=0, testing a/1=a");
+      //   // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+      //   console.log("a/1 getest en mss gedaan");
+      //   updateLatex(eq3);
+      // }
     }
   });
 
