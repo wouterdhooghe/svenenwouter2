@@ -5,10 +5,11 @@
     <title>Wiskunde App</title>
     <script src="code.js"></script>
     <script src="opgaven.js"></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/zingtouch/1.0.6/zingtouch.min.js></script>
 
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.0.1/math.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ"
         crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6"
@@ -27,86 +28,85 @@
 
         <div class='container-fluid'>
 
+            <!-- <div class='row'>
+
+                <button type="button" class="btn btn-primary" id="button_f1" onclick="f1_release(equation)">  Z </button>
+                <button type="button" class="btn btn-primary" id="button_f2" onclick="f2_release(equation);">  plus </button>
+                <button type="button" class="btn btn-primary" id="button_f3" onclick="f3_release(equation);">  times </button>
+                <button type="button" class="btn btn-primary" id="button_f4" onclick="f4_release(equation);">  min </button>
+                <button type="button" class="btn btn-primary" id="button_f5" onclick="f5_release(equation);">  fraction </button>
+                <button type="button" class="btn btn-primary" id="button_f6" onclick="f6_release(equation);">  power </button>
+                <button type="button" class="btn btn-primary" id="button_f7" onclick="f7_release(equation);">  exp </button>
+                <button type="button" class="btn btn-primary" id="button_f8" onclick="f8_release(equation);">  root </button>
+                <button type="button" class="btn btn-primary" id="button_f9" onclick="f9_release(equation);">  log </button>
+                <button type="button" class="btn btn-primary" id="button_f10" onclick="f10_release(equation);">  equals </button>
+                <button type="button" class="btn btn-primary" id="button_f11" onclick="f11_release(equation);">  > </button>
+                <button type="button" class="btn btn-primary" id="button_f12" onclick="f12_release(equation);">  < </button>
+
+
+            </div> -->
+
             <div class='row'>
 
-                <button type="button" class="btn btn-primary" id="f1" onclick="f1_release(equation)">  Z </button>
-                <button type="button" class="btn btn-primary" id="f2" onclick="f2_release(equation);">  plus </button>
-                <button type="button" class="btn btn-primary" id="f3" onclick="f3_release(equation);">  times </button>
-                <button type="button" class="btn btn-primary" id="f4" onclick="f4_release(equation);">  min </button>
-                <button type="button" class="btn btn-primary" id="f5" onclick="f5_release(equation);">  fraction </button>
-                <button type="button" class="btn btn-primary" id="f6" onclick="f6_release(equation);">  power </button>
-                <button type="button" class="btn btn-primary" id="f7" onclick="f7_release(equation);">  exp </button>
-                <button type="button" class="btn btn-primary" id="f8" onclick="f8_release(equation);">  root </button>
-                <button type="button" class="btn btn-primary" id="f9" onclick="f9_release(equation);">  log </button>
-                <button type="button" class="btn btn-primary" id="f10" onclick="f10_release(equation);">  equals </button>
-                <button type="button" class="btn btn-primary" id="f11" onclick="f11_release(equation);">  > </button>
-                <button type="button" class="btn btn-primary" id="f12" onclick="f12_release(equation);">  < </button>
-
-
-            </div>
-
-            <div class='row'>
-
-            <div class="row">
-                <div class="col-md-6">
-
-                    <div class="card">
+                <div class='col-md-4'>
+                        <div class="card">
+                        <div class='card-header'> F1: naar getal</div>
                         <div class="card-body">
-                            <h4 class="card-title">Instellingen </h4>
-                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-
-                            <select id='keyboardType' onchange="changeKeyboardType()">
-                                <option value="wouterCode">Wouter code</option>
-                                <option value="svenCode">Sven code</option>
-                                <option value="wouterkeyCode">Wouter keyCode</option>
-                                <option value="svenkeyCode">Sven Code</option>
-                            </select>
+                            <p class="card-text" id="f1_button" onclick="f1(equation)">$$$$</p>
 
                         </div>
-                        <div class="card-body">
-                            <b>Parenthesis option:</b>
-                            <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
-                            <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
-                            <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
-                            <br/>
-                            <b>Implicit multiplication:</b>
-                            <input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
-                            <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
-                            <p class="output"> para 2</p>
                         </div>
-                    </div>
                 </div>
-                <div class="col-md-6">
 
-                    <div class="card">
-                            <div class="card-body">
-                                    <h4 class="card-title"> Modus </h4>
-                                    <input type="radio" name="modus" value="bouwmodus" onclick="modus = 'bouw'; expr.oninput();" checked>bouwmodus
-                                    <input type="radio" name="modus" value="manipulatiemodus" onclick="modus = 'manipulatie'; expr.oninput();" >manipulatiemodus
-        
-                                </div>
+                <div class='col-md-4'>
+
+                </div>
+
+                <div class='col-md-4'>
+                        <div class="card">
+                        <div class='card-header'> F2: naar plus </div>
                         <div class="card-body">
-                            <h4 class="card-title">Toetsen?</h4>
-                            <p> pijltjes om door de vergelijking te bewegen</p>
-                            <p> de zes toetsen naast enter zijn standaardbewerkingen</p>
-                            <p> ALT en de letter d voor een update van de grafiek</p>
-                            <p> ALT en = om een propere vergelijking te krijgen</p>
-                            <p> Cijfers (zonder shift) voor cijfers</p>
-                            <p> SHIFT en pijltjes om de selectie uit te breiden</p>
-
+                            <p class="card-text" id="f2_button" onclick="f2(equation)">$$$$</p>
+                        </div>
                         </div>
 
-                    </div>
                 </div>
-            </div>
 
-                <div class='col-md' id="middle">
+                <div class='col-md-3'>
+                        <div class="card">
+                        <div class='card-header'> F3: naar maal</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f3_button" onclick="f3(equation)">$$$$</p>
+                        </div>
+                        </div>
 
-                    <div> Vergelijkingen</div>
+                        <div class="card">
+                        <div class='card-header'> F5: naar breuk </div>
+                        <div class="card-body">
+                            <p class="card-text" id="f5_button" onclick="f5(equation)">$$$$</p>
+                        </div>
+                        </div>
 
+                        <div class="card">
+                        <div class='card-header'> F7: naar exp </div>
+                        <div class="card-body">
+                            <p class="card-text" id="f7_button" onclick="f7(equation)">$$$$</p>
+                        </div>
+                        </div>
 
+                        <div class="card">
+                        <div class='card-header'> F9: naar log </div>
+                        <div class="card-body">
+                            <p class="card-text" id="f9_button" onclick="f9(equation)">$$$$</p>
+                        </div>
+                        </div>
 
-                    <div class="card">
+                </div>
+
+                <!-- <div class='col-md' id="middle"> -->
+                <div class='col-md-6' id="rondhoofdvergelijking">
+
+                    <div class="card" id="hoofdvergelijking">
                         <div class='card-header'> Vgl 1</div>
                         <div class="card-body">
                             <p class="card-text" id="pretty">$$$$</p>
@@ -115,7 +115,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-body">
                             <p class="card-text">Vgl 2</p>
                         </div>
@@ -167,46 +167,86 @@
                         <div class="card-body">
                             <p class="card-text">Vgl 7</p>
                         </div>
-                    </div>
+                    </div> -->
 
 
                 </div>
-                <div class='col-md' id='right'>
 
-                    <div> Rekenregels</div>
+                <div class='col-md-3'>
+                        <div class="card">
+                                <div class='card-header'> F4: naar min</div>
+                                <div class="card-body">
+                                    <p class="card-text" id="f4_button" onclick="f4(equation)">$$$$</p>
+                                </div>
+                        </div>
 
-                    <div class="card" onclick="applyRule(regelNode1,equation)">
-                        <div class='card-header'> regel 1</div>
+                        <div class="card">
+                        <div class='card-header'> F6: naar macht</div>
                         <div class="card-body">
-                        <p class="card-text" id="regel1">$$$$</p>
-
+                            <p class="card-text" id="f6_button" onclick="f6(equation)">$$$$</p>
                         </div>
-                    </div>
+                        </div>
 
-                    <div class="card">
-                        <div class='card-header'> regel 2</div>
+                        <div class="card">
+                        <div class='card-header'> F8: naar wortel</div>
                         <div class="card-body">
-                        <p class="card-text" id="regel2">$$$$</p>
-
+                            <p class="card-text" id="f8_button" onclick="f8(equation)">$$$$</p>
                         </div>
-                    </div>
-
-                    <div class="card">
-                            <div class='card-header'> regel 3</div>
-                            <div class="card-body">
-                            <p class="card-text" id="regel3">$$$$</p>
-    
-                            </div>
                         </div>
 
+                        <div class="card">
+                        <div class='card-header'> F10</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f10_button" onclick="f10(equation)">$$$$</p>
+                        </div>
+                        </div>
                 </div>
+
+
+                
+                
             </div>
+
+            <div class='row'>
+
+                    <div class='col-md-4'>
+                            <div class="card">
+                            <div class='card-header'> F11</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f11_button">$$$$</p>
+                            </div>
+                            </div>
+    
+                    </div>
+
+                    <div class='col-md-4'>
+
+                                 <button type="button" class="btn btn-primary" id="up_pos" style="position:relative;left:50%;top:-20%" onclick="upSelect(equation)">  up </button>
+                                 <button type="button" class="btn btn-primary" id="left_pos" style="position:relative;left:20%;top:30%" onclick="leftSelect(equation)">  left </button>
+                                 <button type="button" class="btn btn-primary" id="current_pos" style="position:relative;left:20%;top:30%" onclick="">  Selectie </button>
+                                 <button type="button" class="btn btn-primary" id="right_pos" style="position:relative;left:20%;top:30%" onclick="rightSelect(equation)">  right </button>
+                                 <button type="button" class="btn btn-primary" id="down_pos" style="position:relative;left:-15%;top:80%" onclick="downSelect(equation)">  down </button>
+                    </div>
+
+                    <div class='col-md-4'>
+                            <div class="card">
+                            <div class='card-header'> F12</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f12_button">$$$$</p>
+                            </div>
+                            </div>
+    
+                    </div>
+
+            </div>
+
+
 
             <div class='row'>
                     <!-- <div class='col-md' id='bottom'>
             </div> -->
 
-            <div class='col-md' id="bottom">
+            <div class='col-md'>
 
                 <div> Grafieken </div>
 
@@ -222,6 +262,91 @@
 
                         <input type="range" min="0" max="100" value="50" class="vertical" orient="vertical">
 
+                    </div>
+                </div>
+
+                <div class='row'>
+
+                        <div> Rekenregels</div>
+    
+                        <div class="card" onclick="applyRule(regelNode1,equation)">
+                            <div class='card-header'> regel 1</div>
+                            <div class="card-body">
+                            <p class="card-text" id="regel1">$$$$</p>
+    
+                            </div>
+                        </div>
+    
+                        <div class="card">
+                            <div class='card-header'> regel 2</div>
+                            <div class="card-body">
+                            <p class="card-text" id="regel2">$$$$</p>
+    
+                            </div>
+                        </div>
+    
+                        <div class="card">
+                                <div class='card-header'> regel 3</div>
+                                <div class="card-body">
+                                <p class="card-text" id="regel3">$$$$</p>
+        
+                                </div>
+                            </div>
+    
+                    </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+    
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Instellingen </h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+    
+                                <select id='keyboardType' onchange="changeKeyboardType()">
+                                    <option value="wouterCodeNumpad">Wouter met numpad</option>
+                                    <option value="wouterCode">Wouter code</option>
+                                    <option value="svenCode">Sven code</option>
+                                    <option value="wouterkeyCode">Wouter keyCode</option>
+                                    <option value="svenkeyCode">Sven Code</option>
+
+                                </select>
+    
+                            </div>
+                            <div class="card-body">
+                                <b>Parenthesis option:</b>
+                                <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
+                                <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
+                                <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
+                                <br/>
+                                <b>Implicit multiplication:</b>
+                                <input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
+                                <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
+                                <p class="output"> para 2</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+    
+                        <div class="card">
+                                <div class="card-body">
+                                        <h4 class="card-title"> Modus </h4>
+                                        <input type="radio" name="modus" value="bouwmodus" onclick="modus = 'bouw'; expr.oninput();" checked>bouwmodus
+                                        <input type="radio" name="modus" value="manipulatiemodus" onclick="modus = 'manipulatie'; expr.oninput();" >manipulatiemodus
+            
+                                    </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Toetsen </h4>
+                                <p> pijltjes om door de vergelijking te bewegen</p>
+                                <p> de zes toetsen naast enter zijn standaardbewerkingen</p>
+                                <p> ALT en de letter d voor een update van de grafiek</p>
+                                <p> ALT en = om een propere vergelijking te krijgen</p>
+                                <p> Cijfers (zonder shift) voor cijfers</p>
+                                <p> SHIFT en pijltjes om de selectie uit te breiden</p>
+    
+                            </div>
+    
+                        </div>
                     </div>
                 </div>
 
@@ -275,6 +400,19 @@
                     parenthesis = 'keep',
                     implicit = 'hide',
                     modus = 'bouw';
+
+                var f1_button = document.getElementById('f1_button'),
+                    f2_button = document.getElementById('f2_button'),
+                    f3_button = document.getElementById('f3_button'),
+                    f4_button = document.getElementById('f4_button'),
+                    f5_button = document.getElementById('f5_button'),
+                    f6_button = document.getElementById('f6_button'),
+                    f7_button = document.getElementById('f7_button'),
+                    f8_button = document.getElementById('f8_button'),
+                    f9_button = document.getElementById('f9_button'),
+                    f10_button = document.getElementById('f10_button'),
+                    f11_button = document.getElementById('f11_button'),
+                    f12_button = document.getElementById('f12_button');    
 
                     
 
@@ -333,7 +471,47 @@
                 tijd = new Date();
                 laatsteDigitOfLetterTijdStip = tijd.getTime();
 
+                toegekendeBewerking = {
+                    "f1": "getal",
+                    "f2": "plus",
+                    "f3": "times",
+                    "f4": "min",
+                    "f5": "breuk",
+                    "f6": "macht",
+                    "f7": "exp",
+                    "f8": "wortel",
+                    "f9": "log",
+
+                };
+
+                // hoort bij de oude methodes van naarplus, naartimes etc ipv de nieuwe naar(bewerking, ...)
+
+                // toegekendeFunctie = {
+                //     "f1": naargetal,
+                //     "f2": naarplus,
+                //     "f3": naartimes,
+                //     "f4": naarmin,
+                //     "f5": naarbreuk,
+                //     "f6": naarmacht,
+                //     "f7": naarexp,
+                //     "f8": naarwortel,
+                //     "f9": naarlog
+                // };
+
                 regels = {
+
+                    aMinA: {
+                        naam: 'a min a',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    },
+
                     nulNeutraalVoorPlus: {
                         naam: '0 neutraal element voor +',
                         input: {
@@ -343,6 +521,19 @@
                         output: {
                             expr: math.parse('0'),
                             unknowns: []
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Plus') {
+                                if (expr.args.some(s => s.value == 0)) {
+                                    console.log('good onez');
+                                    newterms = [];
+                                    expr.args.forEach(term => {if (term.value != 0) {newterms.push(term)}});
+                                    newexp = makeMulti('Plus', newterms);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                } 
+                            } 
+                        
                         }
 
                     },
@@ -355,7 +546,21 @@
                         output: {
                             expr: math.parse('a'),
                             unknowns: ['a']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.value == 1)) {
+                                    console.log('bevat product met 1');
+                                    newfactors = [];
+                                    expr.args.forEach(factor => {if (factor.value != 1) {console.log('notone =' + factor.toString()); newfactors.push(factor)}});
+                                    newexp = makeMulti('Times', newfactors);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        
                         }
+
                     },
                     schrapUnitaireBreuk: {
                         naam: 'schrap unitaire breuk',
@@ -399,10 +604,31 @@
                         output: {
                             expr: math.parse('Times(a,c)/Times(b,d)'),
                             unknowns: ['a', 'b', 'c', 'd']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.every(s => s.fn == 'divide')) {
+                                    console.log('bevat enkel breuken');
+                                    tellerArgs = [];
+                                    noemerArgs = [];
+                                    expr.args.forEach(breuk => {
+                                        tellerArgs.push(breuk.args[0]);
+                                        noemerArgs.push(breuk.args[1]);
+                                    } );
+                                    teller = makeMulti('Times', tellerArgs);
+                                    noemer = makeMulti('Times', noemerArgs);
+                                    newexp = new math.expression.node.OperatorNode("/", "divide", [teller, noemer]);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        
                         }
+
+                        
                     },
                     uiteenTrekRegel: {
-                        naam: 'breuk in factoren uit elkaar trekken',
+                        naam: 'breuk in factoren uit elkaar trekken (eerste breuk eraf trekken)',
                         input: {
                             expr: math.parse('Times(a,c)/Times(b,d)'),
                             unknowns: ['a', 'b', 'c', 'd']
@@ -410,6 +636,24 @@
                         output: {
                             expr: math.parse('Times(a/b,c/d)'),
                             unknowns: ['a', 'b', 'c', 'd']
+                        },
+                        functie: function(expr) {
+                            if (expr.fn == 'divide') {
+                                if (expr.args.every(s => s.name == 'Times')) {
+                                    console.log('breuk bestaat uit producten');
+                                    teller = expr.args[0];
+                                    noemer = expr.args[1];
+                                    eersteBreuk = new math.expression.node.OperatorNode("/", "divide", [teller.args[0], noemer.args[0]]);
+                                    tweedeTeller = makeMulti('Times',teller.args.slice(1,));
+                                    tweedeNoemer = makeMulti('Times',noemer.args.slice(1));
+                                    tweedeBreuk = new math.expression.node.OperatorNode("/", "divide", [tweedeTeller, tweedeNoemer]);
+
+                                    newexp = makeMulti('Times', [eersteBreuk,tweedeBreuk]);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        
                         }
                     },
                     eenheidsbreukAlsMinEenExponent: {
@@ -460,8 +704,8 @@
                     },
 
 
-                    vermenigvuldigingMetEenheidsbreuk1: {
-                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
+                    vermenigvuldigingMetEenheidsbreuk: {
+                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk (dyadisch)',
                         input: {
                             expr: math.parse('Times(a,1/b)'),
                             unknowns: ['a', 'b']
@@ -469,21 +713,60 @@
                         output: {
                             expr: math.parse('a/b'),
                             unknowns: ['a', 'b']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.fn == 'divide' && s.args[0]==1)) {
+                                    console.log('product bevat eenheidsbreuk');
+                                    if (expr.args.length == 2) {
+                                        expr.args.forEach(factor => factor.fn == 'divide' ? eenheidsBreuk = factor : andereFactor = factor);
+
+                                    }
+
+                                    newexp = new math.expression.node.OperatorNode("/", "divide", [andereFactor, eenheidsBreuk.args[1]]);
+                                    console.log('newexp =' + newexp.toString());
+                                    return newexp;
+                                }
+                            }
+                        
                         }
                     },
-                    vermenigvuldigingMetEenheidsbreuk2: {
-                        naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk',
+                    vermenigvuldigingGetalMetEenheidsbreuk: {
+                        naam: 'vermenigvuldiging getal met eenheidsbreuk geeft breuk',
                         input: {
-                            expr: math.parse('Times(1/b,a)'),
-                            unknowns: ['a', 'b']
+                            expr: math.parse('Times(a/b,c)'),
+                            unknowns: ['a', 'b', 'c']
                         },
                         output: {
-                            expr: math.parse('a/b'),
-                            unknowns: ['a', 'b']
+                            expr: math.parse('Times(a,c)/b'),
+                            unknowns: ['a', 'b','c']
+                        },
+                        //  TODO oorspronkelijke volgorde van breuk en andere factor respecteren in output
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.fn == 'divide')) {
+                                    console.log('product bevat breuk');
+                                    if (expr.args.length == 2) {
+                                        expr.args.forEach(factor => factor.fn == 'divide' ? breuk = factor : andereFactor = factor);
+                                       console.log('breuk = ' + breuk.toString());
+                                       console.log('andere factor = ' + andereFactor.toString());
+                                        if (andereFactor.type != 'OperatorNode' && andereFactor.fn != 'divide') {
+                                            console.log('andere Factor is geen operatornode');
+                                            nieuweTeller = makeMulti('Times', [breuk.args[0] , andereFactor]);
+                                            newexp = new math.expression.node.OperatorNode("/", "divide", [nieuweTeller, breuk.args[1]]);
+                                            console.log('newexp =' + newexp.toString());
+                                            return newexp;
+                                        }
+                                    }
+
+                            
+                                }
+                            }
+                        
                         }
                     },
-                    vermenigvuldigingMetEenheidsbreukOmgekeerd: {
-                        naam: 'breuk als getal maar eenheidsbreuk',
+                    simpeleBreukUitElkaarTrekken: {
+                        naam: 'breuk als getal maal eenheidsbreuk',
                         input: {
                             expr: math.parse('a/b'),
                             unknowns: ['a', 'b']
@@ -493,30 +776,30 @@
                             unknowns: ['a', 'b']
                         }
                     },
-                    vermenigvuldigingMetEenLinks: {
-                        naam: '1 is neutraal voor vermenigvuldiging',
-                        input: {
-                            expr: math.parse('Times(1,a)'),
-                            unknowns: ['a']
-                        },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
-                        }
-                    },
-                    vermenigvuldigingMetEenRechts: {
-                        naam: '1 is neutraal voor vermenigvuldiging',
-                        input: {
-                            expr: math.parse('Times(a,1)'),
-                            unknowns: ['a']
-                        },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
-                        }
-                    },
-                    vermenigvuldigingMetNulLinks: {
-                        naam: '0 is neutraal voor vermenigvuldiging',
+                    // vermenigvuldigingMetEenLinks: {
+                    //     naam: '1 is neutraal voor vermenigvuldiging',
+                    //     input: {
+                    //         expr: math.parse('Times(1,a)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
+                    // vermenigvuldigingMetEenRechts: {
+                    //     naam: '1 is neutraal voor vermenigvuldiging',
+                    //     input: {
+                    //         expr: math.parse('Times(a,1)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
+                    vermenigvuldigingMetNul: {
+                        naam: '0 is opslorpend voor vermenigvuldiging',
                         input: {
                             expr: math.parse('Times(0, a)'),
                             unknowns: ['a']
@@ -524,19 +807,28 @@
                         output: {
                             expr: math.parse('a'),
                             unknowns: ['a']
-                        }
-                    },
-                    vermenigvuldigingMetNulRechts: {
-                        naam: '0 is neutraal voor vermenigvuldiging',
-                        input: {
-                            expr: math.parse('Times(a,0)'),
-                            unknowns: ['a']
                         },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.value == 0)) {
+                                    console.log('bevat factor met 0');
+                                    newexp = new math.expression.node.ConstantNode(0);
+                                    return newexp;
+                                }
+                            }
                         }
                     },
+                    // vermenigvuldigingMetNulRechts: {
+                    //     naam: '0 is neutraal voor vermenigvuldiging',
+                    //     input: {
+                    //         expr: math.parse('Times(a,0)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
                     wortelInversAanMacht: {
                         naam: 'wortel heft een macht op',
                         input: {
@@ -560,7 +852,7 @@
                         }
                     },
                     exponentenOptellen: {
-                        naam: 'product van machten telt exponenten op',
+                        naam: 'product van machten (= zelfde basis) telt exponenten op',
                         input: {
                             expr: math.parse('Times(pow(x,a),pow(x,b))'),
                             unknowns: ['x','a','b']
@@ -568,6 +860,37 @@
                         output: {
                             expr: math.parse('pow(x,Plus(a,b))'),
                             unknowns: ['x','a','b']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                baseArray = [];
+                                exponentArray = [];
+                                one = math.parse('1');
+                                expr.args.forEach(factor => {
+                                    if (factor.name == 'pow') {
+                                        baseArray.push(factor.args[0]);
+                                         exponentArray.push(factor.args[1]);
+                                    } else { 
+                                        baseArray.push(factor);
+                                        exponentArray.push(one);
+                                    }
+                                });
+                                base = baseArray[0];
+                                if (baseArray.every(s => s.equals(base))) {
+                                    console.log('good one');
+                                    // console.log(exponentArray);
+                                    zonderOnes = [];
+                                    i = 0;
+                                    exponentArray.forEach(exp => {if (exp.equals(one)) {i++} else {zonderOnes.push(exp)} });
+                                    // als het allemaal eentjes zijn tellen we ze ineens op (als enige exponent)
+                                    if (0 == zonderOnes.length) {
+                                        exponentArray = [math.parse(String(i))];
+                                    };
+                                    exponent = makeMulti('Plus', exponentArray);
+                                    return new math.expression.node.FunctionNode("pow", [base,exponent]);
+                                }
+                            }
+                           
                         }
                     },
                     somVanExponentenNaarVermenigvuldiging: {
@@ -579,6 +902,15 @@
                         output: {
                             expr: math.parse('Times(pow(x,a),pow(x,b))'),
                             unknowns: ['x','a','b']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'pow' && expr.args[1].name == "Plus") {
+                                console.log('good one');
+                                base = expr.args[0];
+                                exponentArray = expr.args[1].args;
+                                machtArray = exponentArray.map(exponent => new math.expression.node.FunctionNode("pow", [base,exponent]) )
+                                return makeMulti('Times', machtArray);
+                            }
                         }
                     },
                     machtTorenAfbreken: {
@@ -601,6 +933,18 @@
                         output: {
                             expr: math.parse('pow(pow(x,a),b)'),
                             unknowns: ['x','a','b']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'pow' && expr.args[1].name == "Times") {
+                                console.log('good one');
+                                base = expr.args[0];
+                                exponentArray = expr.args[1].args;
+                                lastExponent = exponentArray.pop();
+                                restProduct = makeMulti('Times', exponentArray);
+                                newBase = new math.expression.node.FunctionNode('pow', [base,restProduct]);
+                                newexpr = new math.expression.node.FunctionNode('pow', [newBase,lastExponent]);
+                                return newexpr;
+                            }
                         }
                     },
                     machtNaarWortelNotatie: {
@@ -647,6 +991,7 @@
                             unknowns: ['x','q']
                         }
                     },
+                   
                     machtVanProduct: {
                         naam: 'macht van een product',
                         input: {
@@ -656,8 +1001,19 @@
                         output: {
                             expr: math.parse('Times(pow(x,n),pow(y,n))'),
                             unknowns: ['x','y','n']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'pow' && expr.args[0].name == "Times") {
+                                console.log('good one');
+                                exponent = expr.args[1];
+                                baseArray = expr.args[0].args;
+                                machtArray = baseArray.map(base => new math.expression.node.FunctionNode("pow", [base,exponent]) )
+                                return makeMulti('Times', machtArray);
+                            }
+
                         }
                     },
+                     
                     productMetGelijkeExponenten: {
                         naam: 'product met gelijke exponenten',
                         input: {
@@ -667,30 +1023,54 @@
                         output: {
                             expr: math.parse('pow(Times(x,y),n)'),
                             unknowns: ['x','y','n']
-                        }
-                    },
-                    optellenMetNulLinksDoetNiks: {
-                        naam: 'optellen met nul langs links',
-                        input: {
-                            expr: math.parse('Plus(0,a)'),
-                            unknowns: ['a']
                         },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
+                       
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                
+                                if (expr.args.every(factor => factor.fn == 'pow')) {
+                                    console.log('good one');
+                                    baseArray = [];
+                                    exponent = expr.args[0].args[1];
+                                    expr.args.forEach( factor => {if (factor.args[1].equals(exponent)) {baseArray.push(factor.args[0])} });
+                                    console.log('aantal gelijke exp = ' + baseArray.length);
+                                    // powArray = baseArray.map( base => new math.expression.node.FunctionNode('pow', [base, exponent]));
+                                    if (baseArray.length === expr.args.length) {
+                                       product = makeMulti('Times', baseArray);
+                                       macht = new math.expression.node.FunctionNode('pow', [product, exponent]);
+                                       console.log('macht = ' + macht.toString());
+                                       return macht;
+                                    }
+                                }
+                            }
+                         
                         }
+
+              
                     },
-                    optellenMetNulRechtsDoetNiks: {
-                        naam: 'optellen met nul langs rechts',
-                        input: {
-                            expr: math.parse('Plus(a,0)'),
-                            unknowns: ['a']
-                        },
-                        output: {
-                            expr: math.parse('a'),
-                            unknowns: ['a']
-                        }
-                    },
+                    // optellenMetNulLinksDoetNiks: {
+                    //     naam: 'optellen met nul langs links',
+                    //     input: {
+                    //         expr: math.parse('Plus(0,a)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
+                    // optellenMetNulRechtsDoetNiks: {
+                    //     naam: 'optellen met nul langs rechts',
+                    //     input: {
+                    //         expr: math.parse('Plus(a,0)'),
+                    //         unknowns: ['a']
+                    //     },
+                    //     output: {
+                    //         expr: math.parse('a'),
+                    //         unknowns: ['a']
+                    //     }
+                    // },
+
                     productVanGelijkeWortels: {
                         naam: 'product van gelijke wortels',
                         input: {
@@ -700,8 +1080,41 @@
                         output: {
                             expr: math.parse('nthRoot(Times(x,y),n)'),
                             unknowns: ['x','y','n']
-                        }
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                
+                                if (expr.args.every(factor => factor.fn == 'nthRoot')) {
+                                    console.log('good one');
+                                    baseArray = [];
+                                    n = expr.args[0].args[1];
+                                    expr.args.forEach( factor => {if (factor.args[1].equals(n)) {baseArray.push(factor.args[0])} });
+                                    console.log('aantal gelijke exp = ' + baseArray.length);
+                                   
+                                    if (baseArray.length === expr.args.length) {
+                                       product = makeMulti('Times', baseArray);
+                                       wortel = new math.expression.node.FunctionNode("nthRoot", [product, n]);
+
+                                    //    parsewortel = math.parse("nthRoot(a,b)");
+                                    //    parsewortel.args[0] = product;
+                                    //    parsewortel.args[1] = n;
+                                       
+                                       console.log('wortel = ' + wortel.toString());
+                                       return wortel;
+
+                                    // console.log('parsewortel = ' + parsewortel.toString());
+                                    //    return parsewortel;
+                                    }
+                                }
+                            }
+                         
+                        },
+
+                                       
+                        
+                        
                     },
+                     
                     productOnderDeWortel: {
                         naam: 'product onder de wortel',
                         input: {
@@ -711,6 +1124,21 @@
                         output: {
                             expr: math.parse('Times(nthRoot(x,n),nthRoot(y,n))'),
                             unknowns: ['x','y','n']
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'nthRoot') {
+                                
+                                if (expr.args[0].name == 'Times') {
+                                    console.log('good one');
+                                    factorArray = expr.args[0].args;
+                                    n = expr.args[1];
+                                       wortelArray = factorArray.map(factor => new math.expression.node.FunctionNode("nthRoot", [factor, n]))
+                                       product = makeMulti('Times', wortelArray);
+                                       console.log('product = ' + product.toString());
+                                       return product;
+                                    
+                                }
+                            }
                         }
                     },
                     wortelVanBreuk: {
@@ -735,6 +1163,7 @@
                             unknowns: ['x','y','n']
                         }
                     },
+                     // TODO functie voor schrijven
                     binomium2Expand: {
                         naam: 'merkwaardig kwadraat uitwerken',
                         input: {
@@ -746,6 +1175,7 @@
                             unknowns: ['a','b']
                         }
                     },
+                     // TODO functie voor schrijven zodat het niet langere plussen meeherkent!
                     binomium2Factor: {
                         naam: 'merkwaardig kwadraat herkennen',
                         input: {
@@ -757,6 +1187,7 @@
                             unknowns: ['a','b']
                         }
                     },
+                     // TODO functie voor schrijven
                     binomium3Expand: {
                         naam: 'merkwaardige derdemacht uitwerken',
                         input: {
@@ -768,6 +1199,7 @@
                             unknowns: ['a','b']
                         }
                     },
+                     // TODO functie voor schrijven
                     binomium3Factor: {
                         naam: 'merkwaardig derde macht herkennen',
                         input: {
@@ -779,6 +1211,7 @@
                             unknowns: ['a','b']
                         }
                     },
+                     // TODO functie voor schrijven
                     verschilVanKwadratenExpand: {
                         naam: 'verschil van kwadraten uitwerken',
                         input: {
@@ -790,6 +1223,7 @@
                             unknowns: ['a','b']
                         }
                     },
+                     // TODO functie voor schrijven
                     verschilVanKwadratenExpand1: {
                         naam: 'verschil van kwadraten herkennen',
                         input: {
@@ -801,6 +1235,7 @@
                             unknowns: ['a','b']
                         }
                     },
+                     // TODO functie voor schrijven
                     verschilVanKwadratenExpand2: {
                         naam: 'verschil van kwadraten herkennen',
                         input: {
@@ -857,8 +1292,7 @@
                             unknowns: []
                         }
                     },
-                    
-                    
+        
                     factorBuitenhalen: {
                         naam: 'factor buitenhalen',
                         input: {
@@ -869,7 +1303,106 @@
                             expr: math.parse('Times(c,Plus(a/c,b/c))'),
                             unknowns: ['a','b']
                         },
+                        functie: function(expr) {
+                            
+                            if (expr.name == 'Plus') {
+                                
+                                    console.log('good one');
+                                    generatorArray = [];
+                                    divisor = math.parse('c');
+                                    newTermsArray = expr.args.map(term => new math.expression.node.OperatorNode("/", "divide", [term, divisor]));
+                                    newPlus = makeMulti('Plus', newTermsArray);
+        
+                                    return makeMulti('Times', [divisor, newPlus]);
+                                
+                            }
+                        
+                        },
                         extraEquation: math.parse('c==Select(c)')
+                    },
+
+                    productAlsMacht: {
+                        naam: 'gelijke factoren als een macht schrijven met functie',
+                        input: {
+                            expr: [],
+                            unknowns: [],
+
+                        },
+                        output: {
+                            expr: [],
+                            unknowns: [],
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                base = expr.args[0];
+                                if (expr.args.every( factor => factor.equals(base))) {
+                                    console.log('good one');
+                                    exponent = expr.args.length;
+                                    console.log('exponent = '+ exponent);
+                                    console.log('base = ' + base.toString());
+                                    return new math.expression.node.FunctionNode('pow', [base, math.parse(exponent)]);
+
+                                }
+                            }
+                         
+                        }
+
+                    },
+
+                    brengLinkseFactorBinnenMetFunctie: {
+                        naam: 'factor langs links binnen multiplus brengen met functie',
+                        input: {
+                            expr: [],
+                            unknowns: [],
+
+                        },
+                        output: {
+                            expr: [],
+                            unknowns: [],
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args[1].name == 'Plus') {
+                                    console.log('good one');
+                                    generatorArray = expr.args;
+                                    console.log(generatorArray);
+                                    combos = oneCombinations(generatorArray);
+                                    return makeMulti('Plus', combos.map(paar => makeMulti('Times', paar)));
+
+                                }
+                            }
+                            // return math.parse('Times(l,o,l)');
+                        }
+
+                    },
+
+                    expandDoorMetFunctie: {
+                        naam: 'product van multiplussen terugbrengen tot lange som met functie',
+                        input: {
+                            expr: [],
+                            unknowns: [],
+
+                        },
+                        output: {
+                            expr: [],
+                            unknowns: [],
+                        },
+                        functie: function(expr) {
+                            if (expr.name == 'Times') {
+                                if (expr.args.some(s => s.name == 'Plus')) {
+                                    console.log('good one');
+                                    generatorArray = [];
+                                    expr.args.forEach(factor => (factor.name == 'Plus') ? generatorArray.push(factor.args) : generatorArray.push(factor));
+                                    console.log(generatorArray);
+                            //  TODO: vervang oneCombinations hier door nCombinations!
+                                    combos = oneCombinations(generatorArray);
+                                    return makeMulti('Plus', combos.map(paar => makeMulti('Times', paar)));
+
+                                }
+                            }
+                            return math.parse('Times(l,o,l)');
+                        }
+
                     },
 
                     vergelijkingNegeren: {
@@ -881,6 +1414,12 @@
                         output: {
                             expr: math.parse('a==b'),
                             unknowns: ['a','b']
+                        },
+                        functie: function(expr) {
+                            if (expr.fn == 'equal') {
+                                return math.parse("vgl dus gn omvorm");
+                            }
+
                         }
                     },                    
 
@@ -895,9 +1434,36 @@
                             unknowns: ['a']
                         }
                     },
+
+                    aGedeeldDoorA: {
+                        naam: 'a delen door a is 1',
+                        input: {
+                            expr: math.parse('a/a'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('1'),
+                            unknowns: []
+                        }
+                    },                    
                     
                     
                 };
+
+                simplificatieregels = [
+                    'nulNeutraalVoorPlus',
+                    'eenNeutraalVoorMaal',
+                    'schrapUnitaireBreuk',
+                    'nulDelenDoorIets',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetNul',
+                    'machtInversAanWortel',
+                    'wortelInversAanMacht',
+                    'nuldeMachtIsEen',
+                    'BreukAlsVerschilVanExponenten',
+                    'aGedeeldDoorA'
+                ];
 
                 spaceregels = [
                     'breukenVermenigvuldigen',
@@ -906,13 +1472,13 @@
                     'eenheidsbreukAlsMinEenExponent',
                     'eenheidsbreukAlsNegatieveExponent',
                     'negatieveExponentAlsEenheidsbreuk',
-                    'vermenigvuldigingMetEenheidsbreuk1',
-                    'vermenigvuldigingMetEenheidsbreuk2',
-                    'vermenigvuldigingMetEenheidsbreukOmgekeerd',
+                    'vermenigvuldigingMetEenheidsbreuk',
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
+                    'simpeleBreukUitElkaarTrekken',
                     'exponentenOptellen',
                     'somVanExponentenNaarVermenigvuldiging',
-                    'machtTorenOpbouwen',
                     'machtTorenAfbreken',
+                    'machtTorenOpbouwen',
                     'machtNaarWortelNotatie',
                     'wortelNaarMachtNotatie1',
                     'wortelNaarMachtNotatie2',
@@ -933,35 +1499,92 @@
 
                 ];
 
+                naargetalregels = [
+                    'vergelijkingNegeren',
+                    'aMinA',
+                    'nulNeutraalVoorPlus',
+                    'eenNeutraalVoorMaal',
+                    'schrapUnitaireBreuk',
+                    'wortelInversAanMacht',
+                    'machtInversAanWortel',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetNul',
+                    'nuldeMachtIsEen',
+                    'aGedeeldDoorA',
+                    'nulDelenDoorIets',
+
+                ];
+
                 naarplusregels = [
                     'vergelijkingNegeren',
                     'binomium2Expand',
                     'binomium3Expand',
                     'verschilVanKwadratenExpand1',
                     'verschilVanKwadratenExpand2',
-                    'factorBuitenhalen',
+                    'brengLinkseFactorBinnenMetFunctie',
                     'nulBijtellen'
                 ];
 
-                enterregels = [
-                    'nulNeutraalVoorPlus',
-                    'eenNeutraalVoorMaal',
-                    'schrapUnitaireBreuk',
-                    'nulDelenDoorIets',
-                    'omgekeerdeIsInverseVoorMaal1',
-                    'omgekeerdeIsInverseVoorMaal2',
-                    'vermenigvuldigingMetEenLinks',
-                    'vermenigvuldigingMetEenRechts',
-                    'vermenigvuldigingMetNulRechts',
-                    'vermenigvuldigingMetNulLinks',
-                    'machtInversAanWortel',
-                    'wortelInversAanMacht',
-                    'optellenMetNulLinksDoetNiks',
-                    'optellenMetNulRechtsDoetNiks',
-                    'eersteMachtNeutraal',
-                    'nuldeMachtIsEen',
-                    'BreukAlsVerschilVanExponenten'
+                naartimesregels = [
+                    'vergelijkingNegeren',
+                    'machtVanProduct',
+                    'productOnderDeWortel',
+                    'uiteenTrekRegel',
+                    'simpeleBreukUitElkaarTrekken',
+                    // 'vermenigvuldigingMetEenheidsbreukOmgekeerd',
+                    // TODO vermenigvuldigingMetEenheidsbreukOmgekeerd maken
+                    'somVanExponentenNaarVermenigvuldiging',
+                    'verschilVanKwadratenExpand',
+                    'factorBuitenhalen',
+                    
                 ];
+
+                naarminregels = [
+                    'vergelijkingNegeren'
+                ];
+
+                naarbreukregels = [
+                    'vergelijkingNegeren',
+                    'breukenVermenigvuldigen',
+                    'minEenExponentAlsEenheidsbreuk',
+                    'negatieveExponentAlsEenheidsbreuk',
+                    'vermenigvuldigingMetEenheidsbreuk',
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
+                    'wortelVanBreuk'
+                ];
+
+                naarmachtregels = [
+                    'vergelijkingNegeren',
+                    'eenheidsbreukAlsMinEenExponent',
+                    'eenheidsbreukAlsNegatieveExponent',
+                    'productAlsMacht',
+                    'exponentenOptellen',
+                    'productMetGelijkeExponenten',
+                    'wortelNaarMachtNotatie1',
+                    'wortelNaarMachtNotatie2',
+                    'wortelNaarMachtNotatie3'
+                ];
+
+                naarexpregels = [
+                    'vergelijkingNegeren'
+                ];
+
+                naarwortelregels = [
+                    'vergelijkingNegeren',
+                    'productVanGelijkeWortels',
+                    'breukVanWortels'
+                ];
+
+                naarlogregels = [
+                    'vergelijkingNegeren'
+                ];
+
+                naaropgaveregels = [
+                    'leesOpgaveNummer'
+                ];
+
+
 
                 multiFunction = {
                     'Times': 1,
@@ -1002,6 +1625,102 @@
                 ///*********************************************************************
                 ///  Keyboard handling
                 ///*********************************************************************
+
+                var keyboardlookups = {
+                    wouterCodeNumpad: {
+                        ArrowLeft: 'left',
+                        ArrowUp: 'up',
+                        ArrowRight: 'right',
+                        ArrowDown: 'down',
+
+                        Minus: 'minus',
+                        Equal: 'plus',
+                        BracketLeft: 'divide',
+                        BracketRight: 'times',
+                        Quote: 'nthroot',
+                        Backslash: 'power',
+                        Slash: 'equals',
+
+                        Space: 'space',
+                        Tab: 'tab',
+                        Escape: 'escape',
+                        Enter: 'enter',
+                        Backquote: 'apestaart',
+                        Backspace: 'backspace',
+
+                        NumpadSubtract: 'minus',
+                        NumpadAdd: 'plus',
+                        NumpadDivide: 'divide',
+                        NumpadMultiply: 'times',
+                        NumpadEnter: 'enter',
+                        Quote: 'nthroot',
+                        Backslash: 'power',
+                        Slash: 'equals',
+
+                        F1: 'f1',
+                        F2: 'f2',
+                        F3: 'f3',
+                        F4: 'f4',
+                        F5: 'f5',
+                        F6: 'f6',
+                        F7: 'f7',
+                        F8: 'f8',
+                        F9: 'f9',
+                        F10: 'f10',
+                        F11: 'f11',
+                        F12: 'f12',
+
+                        Digit0: '0',
+                        Digit1: '1',
+                        Digit2: '2',
+                        Digit3: '3',
+                        Digit4: '4',
+                        Digit5: '5',
+                        Digit6: '6',
+                        Digit7: '7',
+                        Digit8: '8',
+                        Digit9: '9',
+
+                        Numpad0: '0',
+                        Numpad1: '1',
+                        Numpad2: '2',
+                        Numpad3: '3',
+                        Numpad4: '4',
+                        Numpad5: '5',
+                        Numpad6: '6',
+                        Numpad7: '7',
+                        Numpad8: '8',
+                        Numpad9: '9',
+
+                        KeyA: 'a',
+                        KeyB: 'b',
+                        KeyC: 'c',
+                        KeyD: 'd',
+                        KeyE: 'e',
+                        KeyF: 'f',
+                        KeyG: 'g',
+                        KeyH: 'h',
+                        KeyI: 'i',
+                        KeyJ: 'j',
+                        KeyK: 'k',
+                        KeyL: 'l',
+                        KeyM: 'm',
+                        KeyN: 'n',
+                        KeyO: 'o',
+                        KeyP: 'p',
+                        KeyQ: 'q',
+                        KeyR: 'r',
+                        KeyS: 's',
+                        KeyT: 't',
+                        KeyU: 'u',
+                        KeyV: 'v',
+                        KeyW: 'w',
+                        KeyX: 'x',
+                        KeyY: 'y',
+                        KeyZ: 'z'
+
+                    }
+                }
 
                 var keyboards = {
                     wouterkeyCode: {
@@ -1137,6 +1856,90 @@
                         x: 'KeyX',
                         y: 'KeyY',
                         z: 'KeyZ'
+                    },
+                    wouterCodeNumpad: {
+                        left: 'ArrowLeft',
+                        up: 'ArrowUp',
+                        right: 'ArrowRight',
+                        down: 'ArrowDown',
+
+                        minus: 'Minus',
+                        plus: 'Equal',
+                        divide: 'BracketLeft',
+                        times: 'BracketRight',
+                        nthroot: 'Quote',
+                        power: 'Backslash',
+                        equals: 'Slash',
+
+                        space: 'Space',
+                        tab: 'Tab',
+                        escape: 'Escape',
+                        enter: 'Enter',
+                        apestaart: 'Backquote',
+                        backspace: 'Backspace',
+
+
+                        f1: 'F1',
+                        f2: 'F2',
+                        f3: 'F3',
+                        f4: 'F4',
+                        f5: 'F5',
+                        f6: 'F6',
+                        f7: 'F7',
+                        f8: 'F8',
+                        f9: 'F9',
+                        f10: 'F10',
+                        f11: 'F11',
+                        f12: 'F12',
+
+                        0: 'Digit0',
+                        1: 'Digit1',
+                        2: 'Digit2',
+                        3: 'Digit3',
+                        4: 'Digit4',
+                        5: 'Digit5',
+                        6: 'Digit6',
+                        7: 'Digit7',
+                        8: 'Digit8',
+                        9: 'Digit9',
+
+                        0: 'Numpad0',
+                        1: 'Numpad1',
+                        2: 'Numpad2',
+                        3: 'Numpad3',
+                        4: 'Numpad4',
+                        5: 'Numpad5',
+                        6: 'Numpad6',
+                        7: 'Numpad7',
+                        8: 'Numpad8',
+                        9: 'Numpad9',
+
+                        a: 'KeyA',
+                        b: 'KeyB',
+                        c: 'KeyC',
+                        d: 'KeyD',
+                        e: 'KeyE',
+                        f: 'KeyF',
+                        g: 'KeyG',
+                        h: 'KeyH',
+                        i: 'KeyI',
+                        j: 'KeyJ',
+                        k: 'KeyK',
+                        l: 'KeyL',
+                        m: 'KeyM',
+                        n: 'KeyN',
+                        o: 'KeyO',
+                        p: 'KeyP',
+                        q: 'KeyQ',
+                        r: 'KeyR',
+                        s: 'KeyS',
+                        t: 'KeyT',
+                        u: 'KeyU',
+                        v: 'KeyV',
+                        w: 'KeyW',
+                        x: 'KeyX',
+                        y: 'KeyY',
+                        z: 'KeyZ'
                     }
                 };
 
@@ -1146,12 +1949,90 @@
                 function changeKeyboardType() {
                     keyboardSelectElement = document.getElementById('keyboardType');
                     keyboardType = keyboardSelectElement.value;
+                    keyLookup = keyboardType in keyboardlookups? keyboardlookups[keyboardType] : invertSimple(keyboards[keyboardType]);
                 };
 
-                // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType
-                var keyLookup = invertSimple(keyboards[keyboardType]);
+                // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType (voor de oude versies was het met invert door stommiteiten)
+                var keyLookup = keyboardType in keyboardlookups? keyboardlookups[keyboardType] : invertSimple(keyboards[keyboardType]);
 
-                document.onkeydown = keysPressed
+                ///// ************************
+                //// *** TOUCH EVENTS! ! !
+                //// ************************
+
+                // zingtouch listen region gedefinieerd. Dan enkel kijken naar een knop of daar geklikt is.
+                // natuurlijk wil ik eigenlijk gewoon swipes over het hele document detecteren en mappen naar de pijltjes commandos
+                var zt = new ZingTouch.Region(document.body);
+
+                var tweevingerswipe = new ZingTouch.Swipe({numInputs: 2});
+                var drievingerswipe = new ZingTouch.Swipe({numInputs: 3});
+
+                // eerst maakte ik het heledocument swipebaar. nu enkel nog de omgeving vd hoofdvergelijking
+                var heledocument = document.body;
+                var midden = document.getElementById('rondhoofdvergelijking');
+
+                // 1 vinger swipe 
+
+                    zt.bind(midden, 'swipe', function(e){
+                        //Actions here
+                        richting = e.detail.data[0].currentDirection;
+                        rechtsswipe = (richting < 45 || richting > 315);
+                        linksswipe = (richting > 135 && richting < 225);
+                        upswipe = (richting > 45 && richting < 135);
+                        downswipe = (richting > 225 && richting < 315);
+                        console.log("een vinger!" + richting);
+                        if(rechtsswipe) {console.log("rechtsswipe!"); kant = "right";}
+                        if(linksswipe) {console.log("linksswipe!"); kant= "left";}
+                        if(upswipe) {console.log("upswipe!"); kant = "up";}
+                        if(downswipe) {console.log("downswipe!"); kant = "down";}
+
+                        switch (kant) {
+                            case 'left': keysList.push('left'); e.preventDefault(); leftSelect(equation); break;
+                            case 'up': keysList.push('up'); e.preventDefault(); upSelect(equation); break;
+                            case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
+                            case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
+                        }
+
+
+                        console.log(e);
+                    }, false);
+
+                    // distance (voor de versies van 1 (bvb 7/7) en de versies van 0 (bvb 4-4) en de splitsingen van getallen (bvb 34 = 33+1) ) 
+                    // MAAR BLIJKBAAR BESTAAT DISTANCE NIET MEER IN ZINGTOUCH!!!
+                
+
+                // // 2 vinger swipe
+                //     zt.bind(heledocument, tweevingerswipe, function(e){
+                //         //Actions here
+                //         richting = e.detail.data[1].currentDirection;
+                //         rechtsswipe = (richting < 45 || richting > 315);
+                //         linksswipe = (richting > 135 && richting < 225);
+                //         upswipe = (richting > 45 && richting < 135);
+                //         downswipe = (richting > 225 && richting < 315);
+                //         console.log("2 vingers!" + richting);
+                //         if(rechtsswipe) {console.log("rechtsswipe!")}
+                //         if(linksswipe) {console.log("linksswipe!")}
+                //         if(upswipe) {console.log("upswipe!")}
+                //         if(downswipe) {console.log("downswipe!")}
+                //         console.log(e);
+                //     }, false);
+
+                // /// 3 finger swipe
+                //     zt.bind(heledocument, drievingerswipe, function(e){
+                //         //Actions here
+                //         richting = e.detail.data[2].currentDirection;
+                //         rechtsswipe = (richting < 45 || richting > 315);
+                //         linksswipe = (richting > 135 && richting < 225);
+                //         upswipe = (richting > 45 && richting < 135);
+                //         downswipe = (richting > 225 && richting < 315);
+                //         console.log("2 vingers!" + richting);
+                //         if(rechtsswipe) {console.log("rechtsswipe!")}
+                //         if(linksswipe) {console.log("linksswipe!")}
+                //         if(upswipe) {console.log("upswipe!")}
+                //         if(downswipe) {console.log("downswipe!")}
+                //         console.log(e);
+                //     }, false);
+
+                document.onkeydown = keysPressed;
 
                 function keysPressed(e) {
 
@@ -1210,9 +2091,9 @@
                     else if (e.ctrlKey == 1)
                         switch (keyLookup[e.code]) {
                             case 'left': out.innerHTML = 'CTRLleft'; break;
-                            case 'up': out.innerHTML = 'up'; break;
-                            case 'right': out.innerHTML = 'right'; break;
-                            case 'down': out.innerHTML = 'down'; break;
+                            case 'up': out.innerHTML = 'CTRLup'; updateLatex(herbalanceertermen(equation,'opwaarts')); keysList.push('herbalanceertermen'); updateLatex(equation);break;
+                            case 'right': out.innerHTML = 'CTRLright'; break;
+                            case 'down': out.innerHTML = 'CTRLdown'; updateLatex(herbalanceertermen(equation,'neerwaarts')); keysList.push('herbalanceertermen'); updateLatex(equation);break;
 
                             // letters
 
@@ -1283,7 +2164,7 @@
                             case 'minus': applyMinus(); keysList.push('applyMinus'); break;
                             case 'divide': applyDivide(); keysList.push('applyDivide'); break;
                             case 'nthroot': applyNthroot(); keysList.push('applyNthroot'); break;
-                            case 'equals': applyEquality(); keysList.push('applyEquals'); break;
+                            case 'equals': updateLatex(applyEquality(equation)); keysList.push('applyEquals'); break;
 
                             // Extra keys
                             case 'space': e.preventDefault(); keysList.push('space'); spaceBar(equation); break;
@@ -1337,7 +2218,10 @@
 
                 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
                 // equation = math.parse('Select(Times(4,9))^2( + y^2 == Select(Times(2,512))');
-                equation = math.parse('Select(pow(Times(a,Plus(9,a)),2))==a');
+                var equationnummer = 3;
+                equation = math.parse('Select(pow(Times(x,Plus(9,x)),2))==x');
+
+                equation = math.parse(opgaven[equationnummer].opgave);
 
                 prevEquation = equation;
                 updateLatex(equation);
