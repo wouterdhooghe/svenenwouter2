@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dots App</title>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/zingtouch/1.0.6/zingtouch.min.js></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.0.1/math.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ"
+        crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+        <script src="input.js"></script>
+        <script src="dotcode.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="wiskapp.css">
+
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+
+<script>
+
+$(document).ready(function(){
+
+// $("jqueryknop").click(function(){
+//      $("#hoofdvergelijking").hide();
+// });
+
+$('#jqueryknop').click(function(){
+    // var listItem = $('input[name=textbox]').val();
+    var listItem = $('#hoofdvergelijking').html();
+    var container = $('#voorhoofdvergelijking');
+//                 $('#rondhoofdvergelijking').append('<div class="list"><span class="del">X</span>' + listItem + '</div>');
+    container.append(listItem);
+
+    // items = container.children().toArray();
+    //     console.log(items);
+    //     last = items[items.length-1];
+    //     last.scrollIntoView();
+
+    container.animate({scrollTop: container.prop("scrollHeight")}, 500);
+});
+
+});
+
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+ctx.canvas.width = 800;
+ctx.canvas.height = 800;
+
+// ctx.fillStyle = 'green';
+// ctx.fillRect(10, 10, 700, 140);
+
+ctx.font = "30px Arial";
+
+
+// for (xnum of [0,1,2,3,4]) {
+//     for (ynum of [0,1,2,3,4]) {
+//         xpos = 100 + xnum*50;
+//         ypos = 100 + ynum*50;
+//         ctx.strokeText(xnum+5*ynum, xpos, ypos);
+//     }
+// }
+
+
+getal = math.complex({abs:1,arg: 2});
+
+function schrijfopplaats(tekst, z) {
+    xpos = 400 + z.re * 200;
+    ypos = 400 - z.im * 200;
+    ctx.fillText(tekst, xpos, ypos);
+}
+
+function rou(k,n) {
+   return math.complex({abs:1,arg: k*2* math.PI / n})
+}
+
+function buildon(z,w,s) {
+    scaledz = math.divide(z,s);
+    stukz = scaledz.add(1);
+    return math.multiply(stukz, w);
+}
+
+// for (i of [0,1,2,3]) {
+//    // schrijfopplaats(i,rou(i,4));
+//     for (j of [0,1,2]) {
+//     schrijfopplaats(1+3*i+j,buildon(rou(j,3),rou(i,4),5));
+//     }
+// }
+
+function schrijfopplaatsen(arr) {
+    for (i =0; i< arr.length; i++) {
+        z = arr[i];
+        schrijfopplaats(i+1,z,5);
+    }
+}
+
+function cirkel(n) {
+    lijst = [];
+    for (i=0; i<n;i++) {
+        lijst.push(rou(i,n));
+    }
+    return lijst;
+}
+
+revarr = [rou(3,4),rou(2,4),rou(1,4),rou(0,4)];
+vier = [rou(0,4),rou(1,4),rou(2,4),rou(3,4)];
+drie = [rou(0,3), rou(1,3), rou(2,3)];
+vijf = cirkel(5);
+
+
+function buildonlijst(stuklijst, baselijst, scale) {
+    eindlijst = [];
+    for (i=0; i<baselijst.length; i++) {
+        for (j=0; j<stuklijst.length; j++) {
+            eindlijst.push(buildon(stuklijst[j],baselijst[i],scale))
+        }
+    }
+    return eindlijst;
+}
+
+twintiga = buildonlijst(vijf, vier, 4);
+twintigb = buildonlijst(vier, vijf, 4);
+
+twee = cirkel(2);
+
+dertig = buildonlijst(twee,buildonlijst(drie,vijf,4),8);
+
+function gemiddelde(lijst1, lijst2) {
+    return math.divide(math.add(lijst1,lijst2),2);
+}
+
+iter = 0;
+
+//setInterval(teken, 100);
+nummer = 0;
+
+function teken() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // var time = new Date;
+    // t = time.getSeconds()*1000+time.getMilliseconds();
+    // t = t%2000;
+    // t = t / 1000;
+    // console.log(t);
+    t = (iter%100)/100;
+    nummer = Math.floor((iter%1000)/20);
+    tlijst = new Array(20);
+     
+    tlijst[nummer] = t;
+    console.log(nummer);
+
+    nu = math.add(math.multiply(twintigb,t),math.multiply(twintiga,(1-t)));
+    schrijfopplaatsen(nu);
+
+    iter = iter + 1;
+}
+
+// schrijfopplaatsen(twintiga);
+// schrijfopplaatsen(twintigb);
+
+// schrijfopplaatsen(gemiddelde(twintiga,twintigb));
+
+
+
+</script>
+
+</body>
