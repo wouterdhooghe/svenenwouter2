@@ -203,7 +203,6 @@ regels = {
                         }
                     },
 
-
                     vermenigvuldigingMetEenheidsbreuk: {
                         naam: 'vermenigvuldiging met eenheidsbreuk geeft breuk (dyadisch)',
                         input: {
