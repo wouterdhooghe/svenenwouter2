@@ -1,0 +1,107 @@
+.card {
+  background:#FFF;
+  display: block;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border:1px solid #AAA;
+  border-bottom:1px solid #BBB;
+  padding:0px;
+  margin-top:5px;
+  overflow:hidden;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  font-family: 'Roboto', sans-serif;
+  -webkit-transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-body{
+margin:1em;
+padding: 1px;   
+text-align: center;
+}
+
+.card-header{
+  font-size: 12px;
+  text-align: center;
+  font-weight: 300;
+  padding:1px;
+  }
+
+.card .hoofd {
+  font-size: 24px;
+  text-align: center;
+}
+
+#hoofdvergelijking {
+  font-size: 30px;
+  text-align: center;
+}
+
+#voorhoofdvergelijking {
+  height: 160px;
+  overflow-y: scroll;
+}
+
+@media (min-width: 768px){
+  #left {
+    position: absolute;
+    top: 20%;
+    bottom: 0;
+    left: 0;
+    width: 10%;
+    overflow-y: scroll; 
+  }
+
+  #middle {
+    position: absolute;
+    top: 20%;
+    bottom: 0;
+    left: 0;
+    overflow-y: scroll;
+    width: 80%;
+  }
+  
+  #right {
+    position: absolute;
+    top: 20%;
+    bottom: 0;
+    right: 0;
+    overflow-y: scroll;
+    width: 20%;
+  }
+
+  #bottom {
+    position: absolute;
+    top: 90%;
+    bottom: 0;
+    right: 0;
+    overflow-y: scroll;
+    width: 100%;
+  }
+}
+
+#left {
+  background-color: rgb(245, 240, 240);
+  text-align: center;
+  height:80%;
+}
+
+#right {
+  height:100%;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+}
+
+#middle {
+    height:80%;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+  }
+
+  #bottom {
+    height:100%;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+  }

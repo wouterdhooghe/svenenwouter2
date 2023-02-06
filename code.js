@@ -1,6 +1,4 @@
 
-
-
 //************************************* */
 // CUSTOM FUNCTIES
 //************************************* */
@@ -194,41 +192,87 @@ function f12_release(eq) {f12(eq)};
 
 
 function f1(eq) {
+  // updateLatex(toegekendeFunctie["f1"](eq)[0]);
+  // updateF(naar(eq,"getal")[1],"f1_button");
+
+  // updateLatexAndFs(toegekendeFunctie["f1"](eq)[0]);
+
+  var bewerking = toegekendeBewerking["f1"];
+  var uit = naar(eq,bewerking);
+  
+  if (uit) {updateLatexAndFs(uit[0]);}
+  
   
 }
 
 function f2(eq) {
 
-naarplus(eq);
+  var bewerking = toegekendeBewerking["f2"];
+  
+  // updateLatex(naar(eq,bewerking)[0]);
+  // updateF(naar(eq,bewerking)[1],"f2_button");
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+
+// naarplus(eq);
 
 }
 
 function f3(eq) {
+
+  var bewerking = toegekendeBewerking["f3"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+
+// naartimes(eq);  
   
 }
 
 function f4(eq) {
-  
+
+  var bewerking = toegekendeBewerking["f4"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+
+  // naarmin(eq);
 }
 
 function f5(eq) {
   
+  var bewerking = toegekendeBewerking["f5"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+  
+  // naarbreuk(eq);
 }
 
 function f6(eq) {
-  
+// naarmacht(eq);
+
+var bewerking = toegekendeBewerking["f6"];
+
+updateLatexAndFs(naar(eq,bewerking)[0]);
 }
 
 function f7(eq) {
-  
+  var bewerking = toegekendeBewerking["f7"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+// naarexp(eq);  
 }
 
 function f8(eq) {
-  
+// naarwortel(eq);  
+var bewerking = toegekendeBewerking["f8"];
+
+updateLatexAndFs(naar(eq,bewerking)[0]);
 }
 
 function f9(eq) {
-  
+  var bewerking = toegekendeBewerking["f3"];
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
+  // naarlog(eq);
 }
 
 function f10(eq) {
@@ -243,30 +287,218 @@ function f12(eq) {
   
 }
 
-function naarplus(eq) {
-    // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, factorBuitenhalen
-    // momenteel wordt de eerste van alle mogelijke regels uitgevoerd, en dan stopt het.
+function naar(eq, bewerking) {
+  console.log('naar' + bewerking + " gestart");
 
- /// idee: voor alle regels in naarPlus, bereken de uitkomst. Alle uitkomsten presenteren aan de gebruiker.
- // gebruiker kiest en de keuze wordt geimplementeerd.
+  regelArray = eval("naar" + bewerking + "regels");
 
- console.log('naarplus gestart');
+  for (i in regelArray) {
+    testregel = regelArray[i];
+    uitkomst = regelTransformSelected(eq, regels[testregel]);
+        neweq = uitkomst[0];
+        newnode = uitkomst[1];
 
-    try {
-      naarplusregels.forEach(function (testregel) {
-          uitkomst = regelTransformSelected(eq, regels[testregel]);
-          console.log('uitkomst = ' + uitkomst);
-          if (uitkomst) {
-            console.log("nieuwe eq:  " + uitkomst.toString());
-              
-              updateLatex(flatten(uitkomst));
-              throw breakException;
-          }
-      })
+        if (neweq) {
+          console.log("nieuwe eq:  " + neweq.toString());
 
-    } catch(e) {}
+            return [neweq, newnode];
+            console.log('als je dit kan lezen is er iets mislukt')
+
+        }
+  };
 
 }
+
+function naargetal(eq) {
+
+  console.log('naargetal gestart');
+
+  for (i in naargetalregels) {
+    testregel = naargetalregels[i];
+    uitkomst = regelTransformSelected(eq, regels[testregel]);
+        neweq = uitkomst[0];
+        newnode = uitkomst[1];
+
+        if (neweq) {
+          console.log("nieuwe eq:  " + neweq.toString());
+
+            return [neweq, newnode];
+            console.log('als je dit kan lezen is er iets mislukt')
+
+        }
+  };
+
+}
+
+// naarplus, naartimes etc gebruiken nog niet het idee dat regeltransformselected een array output heeft. Maar ze worden ook niet meer gebruikt nu dus weg.
+
+// function naarplus(eq) {
+//     // regels die naar Plus omzetten: binomium2Expand, binomium3Expand, verschilVanKwadratenExpand1, factorBuitenhalen
+//     // momenteel wordt de eerste van alle mogelijke regels uitgevoerd, en dan stopt het.
+
+//  /// idee: voor alle regels in naarPlus, bereken de uitkomst. Alle uitkomsten presenteren aan de gebruiker.
+//  // gebruiker kiest en de keuze wordt geimplementeerd.
+
+//  console.log('naarplus gestart');
+
+//     try {
+//       naarplusregels.forEach(function (testregel) {
+//           uitkomst = regelTransformSelected(eq, regels[testregel]);
+//           console.log('uitkomst = ' + uitkomst);
+//           if (uitkomst) {
+//             console.log("nieuwe eq:  " + uitkomst.toString());
+              
+//               updateLatex(flatten(uitkomst));
+//               throw breakException;
+//           }
+//       })
+
+//     } catch(e) {}
+
+// }
+
+// function naartimes(eq) {
+
+//   console.log('naartimes gestart');
+
+//   try {
+//     naartimesregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
+            
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
+
+//   } catch(e) {}
+
+// }
+
+// function naarmin(eq) {
+
+//   console.log('naarmin gestart');
+
+//   try {
+//     naarminregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
+            
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
+
+//   } catch(e) {}
+
+// }
+
+// function naarbreuk(eq) {
+
+//   console.log('naarbreuk gestart');
+
+//   try {
+//     naarbreukregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
+            
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
+
+//   } catch(e) {}
+
+// }
+
+// function naarmacht(eq) {
+
+//   console.log('naarmacht gestart');
+
+//   try {
+//     naarmachtregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
+            
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
+
+//   } catch(e) {}
+
+// }
+
+// function naarexp(eq) {
+
+//   console.log('naarexp gestart');
+
+//   try {
+//     naarexpregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
+            
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
+
+//   } catch(e) {}
+
+// }
+
+// function naarwortel(eq) {
+
+//   console.log('naarwortel gestart');
+
+//   eqvoorvoorvoor = equation.cloneDeep();
+
+//   try {
+//     naarwortelregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
+            
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
+
+//   } catch(e) {}
+
+// }
+
+// function naarlog(eq) {
+
+//   console.log('naarlog gestart');
+
+//   try {
+//     naarlogregels.forEach(function (testregel) {
+//         uitkomst = regelTransformSelected(eq, regels[testregel]);
+//         console.log('uitkomst = ' + uitkomst);
+//         if (uitkomst) {
+//           console.log("nieuwe eq:  " + uitkomst.toString());
+            
+//             updateLatex(flatten(uitkomst));
+//             throw breakException;
+//         }
+//     })
+
+//   } catch(e) {}
+
+// }
+
 
 //************************************* */
 // UTILITY
@@ -306,14 +538,42 @@ function returnWithoutLast(arr) {
   return newarr;
 }
 
+function verwijderEnkeleMultifunctionsCallBack(node, index, parent) {
+                      // // als er maar een argument is vervalt de functie
+                      if (multiFunction[node.name] == 1) {
+                        if (node.args.length == 1) {
+                        console.log('multifunction node heeft maar 1 arg');
+                        console.log('node = ' + node.toString());
+                        console.log('child = ' + node.args[0].toString());
+                        return node.args[0];
+                      } else {
+                        return node;
+                      }
+                      } else {
+                        return node;
+                      }
+};
+
+// deze is in principel desctuructief denk ik want gebruikt geen DeepClone
+function verwijderEnkeleMultifunctions(eq) {
+ // neweq = verwijderEnkeleMultifunctionsCallBack(eq);
+  neweq = eq.transform(verwijderEnkeleMultifunctionsCallBack);
+  return neweq;
+}
+
 // brengt geneste multifunctions Plus en Times samen in 1 niveau.
 // Niet destructief!
 function flatten(eq) {
   neweq = eq.cloneDeep();
+  neweq = verwijderEnkeleMultifunctions(neweq);
   neweq.traverse(function(node, index, parent) {
+
     if (parent != null) {
       //           console.log(node);
-      if (node.type == "FunctionNode") {
+
+
+
+     if (node.type == "FunctionNode") {
         if ((multiFunction[parent.name] == 1) & (node.name == parent.name)) {
           indexnum = Number(/\d+/.exec(index));
 
@@ -335,6 +595,8 @@ function flatten(eq) {
           console.log("flattened");
           console.log(parent.args.length);
         }
+
+
       }
     }
   });
@@ -426,6 +688,7 @@ function cleanEquation(eq) {
   return cleanedEquation;
 }
 
+//  TODO wat doet deze functie eigenlijk, en is ze compatibel met het idee van de previews?
 function SelectAllLettersInSelection(letter, eq) {
   cleanedEquation = cleanEquation(eq);
 
@@ -465,14 +728,15 @@ function patternContents(cleanedNode, patternNode, unknownArr) {
   return output;
 }
 
+//  TODO: matchesPattern aanpassen zodat het niet meer matchet als er nog een stuk achteraan komt
 function matchesPattern(cleanedNode, patternNode, unknownArr) {
   patpad = buildPath(patternNode);
   bigpad = buildPath(cleanedNode);
 
-  console.log("patpad ");
-  console.log(patpad);
-  console.log("bigpad ");
-  console.log(bigpad);
+  // console.log("patpad ");
+  // console.log(patpad);
+  // console.log("bigpad ");
+  // console.log(bigpad);
 
   // placeholders = ['a','b','c','d','x','y','z'];
   checker = {};
@@ -485,22 +749,31 @@ function matchesPattern(cleanedNode, patternNode, unknownArr) {
         unknownArr.includes(currentplaceholder));
     if (unknownArr.includes(currentplaceholder)) {
       if (bigpad[place] == undefined) {
-        console.log("adres bestaat niet in cleanednode ");
+        // console.log("adres bestaat niet in cleanednode ");
         return false;
       } else {
-        console.log("place " + place);
+        // console.log("place " + place);
         adres = place.split(",");
         subexp = readAtAdress(adres, cleanedNode);
-        console.log("subexp = " + subexp.toString());
+        // console.log("subexp = " + subexp.toString());
         checker[currentplaceholder]
           ? (match = match && checker[currentplaceholder].equals(subexp))
           : (checker[currentplaceholder] = subexp);
+
+          // weggecommente poging om overmatching te vermijden werkt niet... geen idee waarom
+          // keys(bigpad).forEach( key => {if (key.includes(place)) {  bigpad[key]}});
+
       }
     }
 
     console.log("place match =" + match);
+    
+    
   }
+  // rest = Object.keys(bigpad).length
+  // console.log('rest = ' + rest );
   console.log("pattern match =" + match);
+  // return match && rest==0;
   return match;
 }
 
@@ -539,37 +812,56 @@ console.log(unknownOutArr);
   }
 }
 
-// heeft volledige equation als output
+// heeft volledige equation als 1e output, en transformed als 2e output
 function transformSelected(
   eq,
   inputPatternNode,
   outputPatternNode,
   unknownInArr,
   unknownOutArr,
+  functie,
   extraEquation
 ) {
-  console.log(
-    "doe transformSelected met inputPattern: " + inputPatternNode.toString()
-  );
+  
   selectAdresses = adresses("Select", eq);
   selectAdresses.forEach(function setnodes(selectAdres, index) {
-    selectNode = readAtAdress(selectAdres, equation);
-    transformed = transformNode(
-      selectNode.args[0],
-      inputPatternNode,
-      outputPatternNode,
-      unknownInArr,
-      unknownOutArr,
-      extraEquation
-    );
+    selectNode = readAtAdress(selectAdres, eq);
+
+    if (functie) {
+      console.log(
+        "doe transformSelected met functie: "
+      );
+      transformed = functie(selectNode.args[0]);
+    } else {
+      console.log(
+        "doe transformSelected met inputPattern: " + inputPatternNode.toString()
+      );
+
+      //  SKIP VOOR TEST DE HELE MATCH CRAP VAN VROEGER
+
+      transformed = transformNode(
+        selectNode.args[0],
+        inputPatternNode,
+        outputPatternNode,
+        unknownInArr,
+        unknownOutArr
+      );
+
+      //  EN DOE GEWOON ALTIJD DEZE F|UNCTIE
+      // TODO DIT TERUG VERWIJDEREN EN MSS optermijn de oude crap echt vervangen door functies
+
+      // transformed = regels.eenNeutraalVoorMaal.functie(selectNode.args[0]);
+    }
+
     
     if (transformed) { 
-      
+
       eq = injectAtAdress(selectIt(transformed), selectAdres, eq);
+      eq = flatten(eq);
 
       if (extraEquation) {
-
-        applyEquality(extraEquation);
+        console.log('extra equation toevoegen');
+        eq = applyEquality(eq,extraEquation);
 
       }
 
@@ -582,12 +874,14 @@ function transformSelected(
      };
      
   });
-  return eq;
+  console.log('eq op einde = ' + eq.toString());
+  return [eq,transformed];
 }
 
 function regelTransformSelected(eq, regel) {
   console.log("doe regeltransformSelected op: ");
   console.log(regel.naam);
+
   // console.log(multiFunction);
   return transformSelected(
     eq,
@@ -595,10 +889,16 @@ function regelTransformSelected(eq, regel) {
     regel.output.expr,
     regel.input.unknowns,
     regel.output.unknowns,
+    regel.functie,
     regel.extraEquation
   );
   // updateLatex(eq);
 }
+
+function oneCombinations([node,arr]) {oneComb = []; arr.forEach(s => oneComb.push([node,s])); return oneComb};
+function twoCombinations(genArray) { twoComb = []; genArray[0].forEach( s => twoComb.push(oneCombinations(s,genArray[1])));return twoComb }
+
+function makeMulti(multiName, multiArgs) { return new math.expression.node.FunctionNode(multiName, multiArgs); }
 
 //************************************* */
 // SELECTIES
@@ -727,7 +1027,13 @@ function injectAtAdress(subst, adress, bignode) {
     subst = math.parse(subst);
   }
 
-  var eq = bignode.cloneDeep();
+  // hier mss clone ipv cloneDeep omdat er anders een vuile foutmelding komt (geen idee waarom!)
+  
+  console.log("bignode");
+  console.log(bignode);
+  big = bignode;
+  
+  var equat = bignode.cloneDeep();
   var adressText = "";
 
   for (i = 0; i < adress.length; i++) {
@@ -754,8 +1060,29 @@ function injectAtAdress(subst, adress, bignode) {
   //   console.log('adrestext:' + adressText + ' subst: ' + subst);
   // PAS OP WANT DIT IS DESTRUCTIEF en vERANDERT DE OORSPRONKELIJKE VARIABELE !!!
   // IS DAT ECHT ZO? CHECK DIT!
-  eval("eq" + adressText + "= subst");
-  return eq;
+  eval("equat" + adressText + "= subst");
+  return equat;
+}
+
+function test(expr) {
+  if (expr.name == 'Times') {
+      
+      if (expr.args.every(factor => factor.fn = "pow")) {
+          console.log('good one');
+          baseArray = [];
+          exponent = expr.args[0].args[1];
+          expr.args.forEach( factor => {if (factor.args[1].equals(exponent)) {baseArray.push(factor.args[0])} });
+          console.log('aantal gelijke exp = ' + baseArray.length);
+          // powArray = baseArray.map( base => new math.expression.node.FunctionNode('pow', [base, exponent]));
+          if (baseArray.length === expr.args.length) {
+              product = makeMulti('Times', baseArray);
+             macht = new math.expression.node.FunctionNode("pow", [product, exponent]);
+             console.log('macht = ' + macht.toString());
+             return macht;
+          }
+      }
+  }
+
 }
 
 function deleteAtAdress(adress, bignode) {
@@ -863,7 +1190,34 @@ selected = function(node) {
 // UPDATES
 //************************************* */
 
-updateEval = function(node) {
+function updateF(nieuweNode, fknopString) {
+
+  try {
+
+    fknopString.value = nieuweNode;
+    
+
+    // export the expression to LaTeX
+    var latex = nieuweNode
+      ? nieuweNode.toTex({
+          parenthesis: parenthesis,
+          implicit: implicit
+        })
+      : "";
+         console.log('LaTeX expression:', latex);
+    var largeLatex = "\\large " + latex;
+    var hugeLatex = "\\Huge " + latex;
+
+    // display and re-render the expression
+    katex.render(latex, eval(fknopString));
+  } catch (err) {
+    fknopString.innerHTML = "error!!!";
+  }
+  
+
+};
+
+function updateEval(node) {
   try {
     antwoord = equation.compile().eval();
     antwoord ? (result.innerHTML = antwoord.toString()) : (result.value = "");
@@ -873,11 +1227,8 @@ updateEval = function(node) {
   
 };
 
-updateLatex = function(eq) {
+function updateLatex(eq) {
   try {
-    // update de globale variabele equation
-    //       equation = flatten(eq);
-
     equation = eq;
     // update expression
     expr.value = eq;
@@ -901,6 +1252,28 @@ updateLatex = function(eq) {
   updateEval(eq);
 };
 
+function updateLatexAndFs(eq) {
+  updateLatex(eq);
+
+  for (var f in toegekendeBewerking) {
+     console.log( "ffffffffffffff: " + f);
+     console.log( "toegk bew: " + toegekendeBewerking[f]);
+    var previewArr = naar(eq,toegekendeBewerking[f]);
+    var knop = f + "_button";
+    if (previewArr) {
+      updateF(previewArr[1],knop);
+    } else {
+      // DIT IS TE TRAAG OM ALTIJD TE DOEN dus liever direct de innerHTML
+      // updateF(math.parse("geen naar gevonden"),knop);
+      eval(knop).innerHTML = "...";
+    }
+    
+  };
+  // updateF(naargetal(eq)[1],"f1_button");
+  // updateF(naarplus(eq)[1],"f2_button");
+};
+
+
 // verplaatst de selectie naar het gevraagde adress
 // past global variabele equation aan!
 function MoveSelectToAdress(selectAdress, newAdress, eq) {
@@ -923,6 +1296,26 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
   equation = eq;
 }
 
+function eqWithSelectMovedToAdress(selectAdress, newAdress, eq) {
+  // select eruit halen (dit werkt is getest)
+  var cleanedEquation = eq.transform(function(child, path, parent) {
+    if (child.fn == "Select") {
+      return child.args[0];
+    } else {
+      return child;
+    }
+  });
+  console.log("cleaned");
+
+  eq = injectAtAdress(
+    selectIt(readAtAdress(newAdress, cleanedEquation)),
+    newAdress,
+    cleanedEquation
+  );
+  console.log("injected");
+  return eq;
+}
+
 //************************************* */
 // ACTIES
 //************************************* */
@@ -930,7 +1323,7 @@ function MoveSelectToAdress(selectAdress, newAdress, eq) {
 // applyRule
 
 function applyRule(regelNode,eq) {
-  alert("clicked1" + regelNode.toString());
+ // alert("clicked1" + regelNode.toString());
 
   prevEquation = eq.cloneDeep();
   selectAdress = adresses("Select", equation)[0];
@@ -990,8 +1383,9 @@ function applyPlus() {
     });
   }
 
+
   equation = flatten(equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 /* function applyAdd() {
@@ -1014,7 +1408,7 @@ function replaceWithPlus() {
 
   equation = substituteSelected(substitution, equation);
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyTimes() {
@@ -1056,7 +1450,7 @@ function applyTimes() {
     });
   }
   equation = flatten(equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 /* function applyMultiply() {
@@ -1075,7 +1469,7 @@ function replaceWithTimes() {
   prevEquation = equation.cloneDeep();
   substitution = "Times(Select(a),b)";
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyPower() {
@@ -1117,7 +1511,7 @@ function applyPower() {
     });
   }
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyUnaryMinus() {
@@ -1167,7 +1561,7 @@ function applyUnaryMinus() {
     });
   }
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithPower() {
@@ -1176,7 +1570,7 @@ function replaceWithPower() {
   exponent = math.parse("b");
   substitution = new math.expression.node.FunctionNode("pow", [base, exponent]);
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 // function applyMinusOp() {
@@ -1235,14 +1629,14 @@ function applyMinus() {
   }
 
   equation = flatten(equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithMinus() {
   prevEquation = equation.cloneDeep();
   substitution = "(Select(a)-b)";
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyDivide() {
@@ -1283,14 +1677,14 @@ function applyDivide() {
     });
   }
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithDivide() {
   prevEquation = equation.cloneDeep();
   substitution = "Select(a) / b";
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function applyNthroot() {
@@ -1334,14 +1728,14 @@ function applyNthroot() {
     });
   }
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithNthroot() {
   prevEquation = equation.cloneDeep();
   substitution = "nthRoot(Select(a),b)";
   equation = substituteSelected(substitution, equation);
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function selectThisEquality(eq) {
@@ -1358,35 +1752,40 @@ function selectThisEquality(eq) {
 
   
   upAdress = returnWithoutLast(selectAdress);
+  i = 1;
   console.log('upAdress');
   console.log(upAdress);
-  while (true) {
+  while (upAdress.length > 0) {
+    i = i +1
+    // if (i==100) { break;}
     upNode = readAtAdress(upAdress,eq);
     console.log(upNode);
-    if (upNode.isFunctionNode) {
+    if (upNode.isOperatorNode) {
       if (upNode.fn == 'equal') {
         console.log('equality found!')
         break;
       }
     }
     upAdress.pop()
-    if (upNode == undefined) {break};
+    // if (upNode == []) {break};
+    console.log(i);
   }
   
   console.log(" upAdress: ");
   console.log(upAdress);
 
-  MoveSelectToAdress(selectAdress, upAdress, eq);
+  if (upAdress.length>0) {
 
-  equation = flatten(equation);
+    console.log('moveselectoadress');
+   return eqWithSelectMovedToAdress(selectAdress, upAdress, eq);
 
-  updateLatex(equation);
+  }
 }
 
-function applyEquality(extraVgl) {
+function applyEquality(eq,extraVgl) {
   prevEquation = equation.cloneDeep();
-  selectAdress = adresses("Select", equation)[0];
-  selectNode = readAtAdress(selectAdress, equation);
+  selectAdress = adresses("Select", eq)[0];
+  selectNode = readAtAdress(selectAdress, eq);
 
   tweedeVgl = math.parse("Select(a)==b");
   if (extraVgl) {tweedeVgl=extraVgl}
@@ -1396,12 +1795,21 @@ function applyEquality(extraVgl) {
       selectNode.args[0],
       tweedeVgl
     ]);
-    equation = substituteSelected(substitution, equation);
-    updateLatex(flatten(equation));
+    // equation = substituteSelected(substitution, equation);
+    // updateLatex(flatten(equation));
+    // return flatten(substituteSelected(substitution, eq));
+    return flatten(substitution);
   } else if (selectAdress == 'root?') {
     console.log('root!!!')
-    equation = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
-    updateLatex(equation);
+    // equation = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
+    // updateLatex(equation);
+    neweq = new math.expression.node.OperatorNode('==','equal', [equation.args[0], math.parse('Select(b)')]);
+    return neweq;
+  } else {
+    console.log('nog geen vgl geselecteerd!');
+    
+    metEqualityGeselecteerd = selectThisEquality(eq);
+    return applyEquality(metEqualityGeselecteerd,extraVgl);
   }
 
   /* if (selectNode.args[0].fn == 'equal') {
@@ -1413,10 +1821,36 @@ function applyEquality(extraVgl) {
     } */
 }
 
+function ontvouwMulti(eq,multi) {
+  neweq = eq.transform(function (node, index, parent) {
+    if (node.name == multi && node.args.length>2) {
+      newMulti = new math.expression.node.FunctionNode(
+        multi,
+        node.args.slice(1)
+      );
+      newMultiArgs = [node.args[0],newMulti];
+      newnode = new math.expression.node.FunctionNode(
+        multi,
+        newMultiArgs
+      );
+      return newnode;
+    } else {
+      return node;
+    }
+  })
+return neweq;
+}
+
+function ontvouwMultis(eq,multis) {
+  // kies een multi om te ontvouwen met multis
+  multis.forEach(ontvouwMulti(eq,multi));
+    
+}
+
 function replaceWithEquality() {
   prevEquation = equation.cloneDeep();
   equation = math.parse("y==Select(x)");
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 // Functies sin, cos, tan, f, g, h, integrate, derive, log 
@@ -1457,7 +1891,7 @@ function applyFunction(functieString, eq) {
     });
   }
 
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 
 }
 
@@ -1500,7 +1934,7 @@ function applyLog(eq) {
     });
   }
 
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 
 }
 
@@ -1509,7 +1943,7 @@ function replaceWithE(eq) {
   prevEquation = equation.cloneDeep();
   substitution = "Select(e)";
   eq = substituteSelected(substitution, eq);
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 }
 
 function replaceWithPi(eq) {
@@ -1517,7 +1951,7 @@ function replaceWithPi(eq) {
   prevEquation = equation.cloneDeep();
   substitution = "Select(pi)";
   eq = substituteSelected(substitution, eq);
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 }
 
 function applyIntegral(eq) {
@@ -1565,7 +1999,7 @@ function applyIntegral(eq) {
     });
   }
 
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 }
 
 function applyDerivative(eq) {
@@ -1609,7 +2043,7 @@ function applyDerivative(eq) {
     });
   }
 
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 
 }
 
@@ -1704,7 +2138,7 @@ if (pad[parentAdres] == "==" && pad[grandParentAdres] == "And" && bestemmingBest
     eq = injectAtAdress( selectIt(nieuwebestemming), bestemmingVglAdres ,cleanEquation(eq));
     
   }
-  updateLatex(eq);
+  updateLatexAndFs(flatten(eq));
 }
 console.log('voorwaarden voor substitutie NIET voldaan!')
 }
@@ -1712,7 +2146,7 @@ console.log('voorwaarden voor substitutie NIET voldaan!')
 // Spacebar en Enter
 
 function spaceBar(eq) {
-  prevEquation = equation.cloneDeep();
+     prevEquation = equation.cloneDeep();
   // selectAdress = adresses('Select', eq)[0];
   // selectNode = readAtAdress(selectAdress, eq);
 
@@ -1791,9 +2225,9 @@ function spaceBar(eq) {
       try {
         spaceregels.forEach(function (testregel) {
             uitkomst = regelTransformSelected(eq, regels[testregel]);
-            if (uitkomst) {
-              console.log("nieuwe eq:  " + uitkomst.toString());
-                updateLatex(uitkomst);
+            if (uitkomst[0]) {
+              console.log("nieuwe eq:  " + uitkomst[0].toString());
+                updateLatex(uitkomst[0]);
                 throw breakException;
             }
         })
@@ -1801,7 +2235,7 @@ function spaceBar(eq) {
       } catch(e) {}
     }
   });
-  flatten(equation);
+  equation = flatten(equation);
   updateLatex(equation);
 }
 
@@ -1822,7 +2256,7 @@ function enter(eq) {
     if (uitkomstIsInteger) {
       // uitkomstString = math.eval(selectNode.args[0].toString());
       uitkomstString < 0 ? 
-      substitution = math.parse("Select(unaryMinus(" + -1*uitkomstString + "))") 
+      substitution = math.parse("Select(" + '-1*' + -1*uitkomstString + ")") 
       : substitution = math.parse("Select(" + uitkomstString + ")");
 
       equation = injectAtAdress(substitution, item, equation);
@@ -1836,28 +2270,29 @@ function enter(eq) {
     //   uitkomsten = [eq2, eq3,eq4,eq5,eq6];
       
 
-    var breakException = {};
+   var breakException = {};
     
     try {
-    enterregels.forEach(function (testregel) {
+    simplificatieregels.forEach(function (testregel) {
         uitkomst = regelTransformSelected(eq, regels[testregel]);
-        if (uitkomst) {
-          console.log("nieuwe eq:  " + uitkomst.toString());
-            updateLatex(uitkomst);
+        if (uitkomst[0]) {
+          console.log("nieuwe eq:  " + uitkomst[0].toString());
+            updateLatex(uitkomst[0]);
+ //           throw(e);
         }
     })
     }
-    catch(e) { };
+    catch(e) { console.Log('fout tijdens simplificatieregels');  };
 
-    //   if (eq2.equals(eq) == false) {
-    //     console.log("nieuwe eq:  " + eq2.toString());
-    //     updateLatex(eq2);
-    //   } else if (eq3.equals(eq) == false) {
-    //     console.log("geen a-a=0, testing a/1=a");
-    //     // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
-    //     console.log("a/1 getest en mss gedaan");
-    //     updateLatex(eq3);
-    //   }
+      // if (eq2.equals(eq) == false) {
+      //   console.log("nieuwe eq:  " + eq2.toString());
+      //   updateLatex(eq2);
+      // } else if (eq3.equals(eq) == false) {
+      //   console.log("geen a-a=0, testing a/1=a");
+      //   // eq = regelTransformSelected(eq,regels.eenOpslorpendVoorMaal);
+      //   console.log("a/1 getest en mss gedaan");
+      //   updateLatex(eq3);
+      // }
     }
   });
 
@@ -1870,7 +2305,7 @@ function backSpace() {
   console.log("prevequation: ");
   console.log(prevEquation);
   equation = prevEquation;
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function leftSelect(eq) {
@@ -1920,7 +2355,7 @@ function leftSelect(eq) {
 
   MoveSelectToAdress(selectAdress, leftAdress, eq);
 
-  updateLatex(flatten(equation));
+  updateLatexAndFs(flatten(equation));
 }
 
 function rightSelect(eq) {
@@ -1974,7 +2409,7 @@ function rightSelect(eq) {
   MoveSelectToAdress(selectAdress, rightAdress, eq);
 
   // updateLatex(equation);
-  updateLatex(flatten(equation));
+  updateLatexAndFs(flatten(equation));
 }
 
 function upSelect(eq) {
@@ -2007,7 +2442,7 @@ function upSelect(eq) {
 
   equation = flatten(equation);
 
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function downSelect(eq, actionName) {
@@ -2053,7 +2488,7 @@ function downSelect(eq, actionName) {
   // keysList.push(actionName);
 
   // update de latexweergave
-  updateLatex(equation);
+  updateLatexAndFs(equation);
 }
 
 function replaceWithDigit(digit, eq) {
@@ -2069,7 +2504,7 @@ function replaceWithDigit(digit, eq) {
     inputDigit(Number(digit), equation);
   } else {
     eq = substituteSelected(selectIt(digit), eq);
-    updateLatex(eq);
+    updateLatexAndFs(eq);
   }
 
 
@@ -2089,11 +2524,11 @@ function inputDigit(digit, eq) {
       nieuwGetal = oudGetal * 10 + digit;
       nieuwGetalNode = new math.expression.node.ConstantNode(nieuwGetal);
       eq = substituteSelected(selectIt(nieuwGetalNode), eq);
-      updateLatex(eq);
+      updateLatexAndFs(eq);
     }
   } else {
     eq = substituteSelected(selectIt("" + digit), eq);
-    updateLatex(eq);
+    updateLatexAndFs(eq);
   }
 }
 
@@ -2114,11 +2549,11 @@ function replaceWithLetter (letterString, eq) {
     substitution = new math.expression.node.FunctionNode("Times", [selectNode.args[0],letterNode])
 
     eq = substituteSelected(substitution, eq);
-    flatten(eq);
-    updateLatex(eq);
+    eq = flatten(eq);
+    updateLatexAndFs(eq);
 } else {
   eq = substituteSelected(selectIt(letterString), eq);
-  updateLatex(eq);
+  updateLatexAndFs(eq);
 }
 }
 
@@ -2159,7 +2594,7 @@ function rightSlurp(eq) {
 
         // MSS ZIJN DE VOLGENDE TWEE LIJNEN OVERBODIG?
         eq = flatten(eq);
-        updateLatex(eq);
+        updateLatexAndFs(eq);
 
         return eq;
       }
@@ -2242,7 +2677,7 @@ function leftSlurp(eq) {
 
         // MSS ZIJN DE VOLGENDE TWEE LIJNEN OVERBODIG?
         eq = flatten(eq);
-        updateLatex(eq);
+        updateLatexAndFs(eq);
 
         return eq;
       }
@@ -2330,7 +2765,7 @@ commuteSelectedWithNext = function(eq) {
         eq = injectAtAdress(newParent, parentAdress, eq);
 
         eq = flatten(eq);
-        updateLatex(eq);
+        updateLatexAndFs(eq);
 
         return eq;
       }
@@ -2374,7 +2809,7 @@ function commuteSelectedWithPrevious(eq) {
         eq = injectAtAdress(newParent, parentAdress, eq);
 
         eq = flatten(eq);
-        updateLatex(eq);
+        updateLatexAndFs(eq);
 
         return eq;
       }
@@ -2467,6 +2902,74 @@ function distributeOrFactorSelectedLeft(eq) {
   eq = injectAtAdress(selectIt(nieuw), selectAdress, eq);
   return eq;
 }
+
+
+// voor ctrl up en down splits in termen functies
+
+
+function herbalanceertermen(eq, richting) {
+selectAdress = adresses("Select", eq)[0];
+selectNode = readAtAdress(selectAdress, eq);
+selectedNode = selectNode.args[0];
+
+if (richting == 'opwaarts') {sprong = -1}
+if (richting == 'neerwaarts') {sprong = 1}
+
+// als het een gewone integer is
+if (selectedNode.isConstantNode) {
+   getal = selectedNode.value;
+
+// getal direct eentje aftrekken of bijdoen
+    
+//   if (Number.isInteger(getal)) {
+//     nieuwlinksgetal = getal + sprong;
+//     nieuwesom = math.parse( nieuwlinksgetal +"+"+ -sprong)
+//     }
+// }
+
+// beter is: eerst getal + 0 van maken
+
+  if (Number.isInteger(getal)) {
+    nieuwesom = math.parse( "Plus("+ getal + "," +  0 + ")")
+    }
+} else {
+
+  if ((selectedNode.name == 'Plus') & (selectedNode.args.length == 2)) {
+    links = selectedNode.args[0]; linkswaarde = links.value;
+    rechts = selectedNode.args[1]; rechtswaarde = rechts.value;
+    if (links.name == 'unaryMinus') {links = links.args[0]; linkswaarde = links.value * -1;}
+    if (rechts.name == 'unaryMinus') {rechts = rechts.args[0]; rechtswaarde = rechts.value * -1;}
+
+    if (links.isConstantNode & rechts.isConstantNode) {
+  
+      if (Number.isInteger(linkswaarde) & Number.isInteger(rechtswaarde)) {
+        nieuwesom = new math.expression.node.FunctionNode("Plus", [
+        ((linkswaarde - sprong) < 0)? math.parse( "" + 'unaryMinus('+(sprong - linkswaarde)+")" ) : math.parse( "" + (linkswaarde - sprong) ),
+        ((rechtswaarde + sprong) < 0)? math.parse( "" + 'unaryMinus('+(-sprong - rechtswaarde)+")" ) : math.parse( "" + (rechtswaarde + sprong) )
+      ]);
+      }
+  
+    }
+  }
+
+
+}
+
+
+
+
+
+
+
+// als selectie een gewonen integer is -> maak er een som van met 1 + (n-1)
+// als selectie een som van twee integers is -> verhoog linkse en verlaag rechtse (of omgekeerd)
+
+eq = injectAtAdress(selectIt(nieuwesom), selectAdress, eq);
+return eq;
+
+}
+
+
 
 //***************************** */
 // Grafiek functies
