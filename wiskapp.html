@@ -30,29 +30,15 @@
 
         <div class='container-fluid'>
 
-            <!-- <div class='row'>
-
-                <button type="button" class="btn btn-primary" id="button_f1" onclick="f1_release(equation)">  Z </button>
-                <button type="button" class="btn btn-primary" id="button_f2" onclick="f2_release(equation);">  plus </button>
-                <button type="button" class="btn btn-primary" id="button_f3" onclick="f3_release(equation);">  times </button>
-                <button type="button" class="btn btn-primary" id="button_f4" onclick="f4_release(equation);">  min </button>
-                <button type="button" class="btn btn-primary" id="button_f5" onclick="f5_release(equation);">  fraction </button>
-                <button type="button" class="btn btn-primary" id="button_f6" onclick="f6_release(equation);">  power </button>
-                <button type="button" class="btn btn-primary" id="button_f7" onclick="f7_release(equation);">  exp </button>
-                <button type="button" class="btn btn-primary" id="button_f8" onclick="f8_release(equation);">  root </button>
-                <button type="button" class="btn btn-primary" id="button_f9" onclick="f9_release(equation);">  log </button>
-                <button type="button" class="btn btn-primary" id="button_f10" onclick="f10_release(equation);">  equals </button>
-                <button type="button" class="btn btn-primary" id="button_f11" onclick="f11_release(equation);">  > </button>
-                <button type="button" class="btn btn-primary" id="button_f12" onclick="f12_release(equation);">  < </button>
-
-
-            </div> -->
-
             <div class='row'>
 
                 <div class='col-md-4'>
+                    <p class="card-text" id="result"> </p>
+                </div>
+
+                <div class='col-md-4'>
                         <div class="card">
-                        <div class='card-header'> F1: naar getal</div>
+                        <div class='card-header'> F1: log uitdelen</div>
                         <div class="card-body">
                             <p class="card-text" id="f1_button" onclick="f1(equation)">$$$$</p>
 
@@ -61,12 +47,8 @@
                 </div>
 
                 <div class='col-md-4'>
-                    <p class="card-text" id="result"> </p>
-                </div>
-
-                <div class='col-md-4'>
                         <div class="card">
-                        <div class='card-header'> F2: naar plus </div>
+                        <div class='card-header'> F2: log schrappen </div>
                         <div class="card-body">
                             <p class="card-text" id="f2_button" onclick="f2(equation)">$$$$</p>
                         </div>
@@ -76,7 +58,7 @@
 
                 <div class='col-md-3'>
                         <div class="card">
-                        <div class='card-header'> F3: naar maal</div>
+                        <div class='card-header'> F3: bzz</div>
                         <div class="card-body">
                             <p class="card-text" id="f3_button" onclick="f3(equation)">$$$$</p>
                         </div>
@@ -105,76 +87,12 @@
 
                 </div>
 
-                <!-- <div class='col-md' id="middle"> -->
-                <div class='col-md-6' id="rondhoofdvergelijking">
-
-                    <div id="voorhoofdvergelijking">
-
-                    </div>
-
-                    <div class="card hoofd" id="hoofdvergelijking">
-                        <!-- <div class='card-header'> Vgl 1</div> -->
-                        <div class="card-body">
-                            <p class="card-text" id="pretty">$$$$</p>
-                            <p class="card-text" id="expr"> </p>
-                        </div>
-                    </div>
-
-
-                    <!-- <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 2</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 3</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 4</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 5</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 6</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 7</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 5</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 6</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">Vgl 7</p>
-                        </div>
-                    </div> -->
-
+                <div class='col-md-1'>
+                    <div id="exp"> exp </div>
+                    <div id="dubbelproduct_exp"> dubbelprod </div>
+                    <div id="maal"> maal </div>
+                    <div id="dubbelproduct_plus"> dubbelprod </div>
+                    <div id="plus"> plus </div>
 
                 </div>
 
@@ -209,47 +127,32 @@
                 </div>
 
 
+
+
                 
                 
             </div>
 
+            <div class="row">
+                    <div class='col-md-10' id="rondhoofdvergelijking">
+
+                    <div id="voorhoofdvergelijking">
+
+                    </div>
+
+                    <div class="card hoofd" id="hoofdvergelijking">
+                        <!-- <div class='card-header'> Vgl 1</div> -->
+                        <div class="card-body">
+                            <p class="card-text" id="pretty">$$$$</p>
+                            <p class="card-text" id="expr"> </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
 
             
-            <!-- <div class='row'>
-
-                    <div class='col-md-4'>
-                            <div class="card">
-                            <div class='card-header'> F11</div>
-                            <div class="card-body">
-                                <p class="card-text" id="f11_button">$$$$</p>
-                            </div>
-                            </div>
-    
-                    </div>
-
-                    <div class='col-md-4'>
-
-                                <button type="button" class="btn btn-primary" id="jqueryknop" > jquery </button>
-
-                                 <button type="button" class="btn btn-primary" id="up_pos" style="position:relative;left:50%;top:-20%" onclick="upSelect(equation)">  up </button>
-                                 <button type="button" class="btn btn-primary" id="left_pos" style="position:relative;left:20%;top:30%" onclick="leftSelect(equation)">  left </button>
-                                 <button type="button" class="btn btn-primary" id="current_pos" style="position:relative;left:20%;top:30%" onclick="">  Selectie </button>
-                                 <button type="button" class="btn btn-primary" id="right_pos" style="position:relative;left:20%;top:30%" onclick="rightSelect(equation)">  right </button>
-                                 <button type="button" class="btn btn-primary" id="down_pos" style="position:relative;left:-15%;top:80%" onclick="downSelect(equation)">  down </button>
-                    </div>
-
-                    <div class='col-md-4'>
-                            <div class="card">
-                            <div class='card-header'> F12</div>
-                            <div class="card-body">
-                                <p class="card-text" id="f12_button">$$$$</p>
-                            </div>
-                            </div>
-    
-                    </div>
-
-            </div> -->
-
             <div class='row'>
 
                 <div> Rekenregels</div>
