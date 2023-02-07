@@ -198,9 +198,8 @@ function f1(eq) {
   // updateLatexAndFs(toegekendeFunctie["f1"](eq)[0]);
 
   var bewerking = toegekendeBewerking["f1"];
-  var uit = naar(eq,bewerking);
-  
-  if (uit) {updateLatexAndFs(uit[0]);}
+
+  updateLatexAndFs(naar(eq,bewerking)[0]);
   
   
 }
@@ -269,28 +268,44 @@ updateLatexAndFs(naar(eq,bewerking)[0]);
 }
 
 function f9(eq) {
+
   var bewerking = toegekendeBewerking["f9"];
 
   updateLatexAndFs(naar(eq,bewerking)[0]);
-  // naarlog(eq);
+
 }
 
 function f10(eq) {
+
+var bewerking = toegekendeBewerking["f10"];
+updateLatexAndFs(naar(eq,bewerking)[0]);
   
 }
 
 function f11(eq) {
-  
+  var bewerking = toegekendeBewerking["f11"];
+updateLatexAndFs(naar(eq,bewerking)[0]);
 }
 
 function f12(eq) {
-  
+  var bewerking = toegekendeBewerking["f12"];
+updateLatexAndFs(naar(eq,bewerking)[0]);
 }
 
-function naar(eq, bewerking) {
-  console.log('naar' + bewerking + " gestart");
+function f13(eq) {
+  var bewerking = toegekendeBewerking["f13"];
+updateLatexAndFs(naar(eq,bewerking)[0]);
+}
 
-  regelArray = eval("naar" + bewerking + "regels");
+function f14(eq) {
+  var bewerking = toegekendeBewerking["f14"];
+updateLatexAndFs(naar(eq,bewerking)[0]);
+}
+
+function naar(eq, regelset) {
+  console.log(regelset + " gestart");
+
+  regelArray = eval(regelset);
 
   for (i in regelArray) {
     testregel = regelArray[i];
