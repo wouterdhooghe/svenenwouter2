@@ -269,7 +269,7 @@ updateLatexAndFs(naar(eq,bewerking)[0]);
 }
 
 function f9(eq) {
-  var bewerking = toegekendeBewerking["f3"];
+  var bewerking = toegekendeBewerking["f9"];
 
   updateLatexAndFs(naar(eq,bewerking)[0]);
   // naarlog(eq);

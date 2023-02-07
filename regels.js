@@ -1,5 +1,6 @@
 regels = {
 
+
                     aMinA: {
                         naam: 'a min a',
                         input: {
@@ -923,18 +924,22 @@ regels = {
                     },                    
 
                     nulBijtellen: {
+
                         naam: 'nul bijtellen',
                         input: {
+
                             expr: math.parse('a'),
                             unknowns: ['a']
                         },
                         output: {
+
                             expr: math.parse('Plus(a,0)'),
                             unknowns: ['a']
                         }
                     },
 
                     aGedeeldDoorA: {
+
                         naam: 'a delen door a is 1',
                         input: {
                             expr: math.parse('a/a'),
@@ -944,7 +949,35 @@ regels = {
                             expr: math.parse('1'),
                             unknowns: []
                         }
-                    },                    
+                    }, 
+
+                    logUitdelenOverMaal: {
+
+                        naam: 'log uitdelen over product',
+                        input: {
+                            expr: math.parse('log(Times(b,c),a)'),
+                            unknowns: ['a','b','c']
+                        },
+                        output: {
+
+                            expr: math.parse('Plus(log(b,a),log(c,a))'),
+                            unknowns: ['a','b','c']
+                        }
+                    },
+
+                    logUitdelenOverExp: {
+
+                        naam: 'log uitdelen over exponent',
+                        input: {
+                            expr: math.parse('log(pow(b,c),a)'),
+                            unknowns: ['a','b','c']
+                        },
+                        output: {
+
+                            expr: math.parse('Times(c,log(b,a))'),
+                            unknowns: ['a','b','c']
+                        }
+                    },                     
                     
                     
                 };

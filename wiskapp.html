@@ -347,6 +347,14 @@
                                 <h4 class="card-title">Toetsen </h4>
                                 <p> pijltjes om door de vergelijking te bewegen</p>
                                 <p> de zes toetsen naast enter zijn standaardbewerkingen</p>
+                                <p> tab of alt pijl up down voor substitutie</p>
+                                <p> ctrl D om enkele factor buiten of binnen te halen (buitenhalen heeft nog fouten)</p>
+                                <p> todo: ctrl links/rechts = naar zak/naar moeilijk </p>
+                                <p> todo: ctrl up/down = buitenhalen, uitdelen </p>
+                                <p> todo: enter = schrappen</p>
+                                <p> todo: ctrl bewerking = ontschrappen (introductie) naar bewerking </p>
+                                <p> todo: shift letter = selecteer alle instances van die letter in equation </p>
+                                <p> todo: ctrl letter = noem selectie letter (in extra equation van stelsel) </p>
                                 <p> ALT en de letter d voor een update van de grafiek</p>
                                 <p> ALT en = om een propere vergelijking te krijgen</p>
                                 <p> Cijfers (zonder shift) voor cijfers</p>
@@ -503,6 +511,22 @@
                 tijd = new Date();
                 laatsteDigitOfLetterTijdStip = tijd.getTime();
 
+                loguitdeelregels = {
+
+                };
+
+                logschrapregels = {}
+
+                expvertaalregels = {
+
+                };
+
+                wortelvertaalregels = {
+
+                };
+
+
+
                 toegekendeBewerking = {
                     "f1": "getal",
                     "f2": "plus",
@@ -645,7 +669,9 @@
                 ];
 
                 naarlogregels = [
-   //                 'vergelijkingNegeren'
+   //                 'vergelijkingNegeren',
+                    'logUitdelenOverMaal',
+                    'logUitdelenOverExp'
                 ];
 
                 naaropgaveregels = [
