@@ -497,6 +497,27 @@ function keysPressed(e) {
             case 'a': e.preventDefault(); replaceWithLetter('a',equation); break; //  a
             case 'b': e.preventDefault(); replaceWithLetter('b',equation); break; //  b
             case 'c': e.preventDefault(); replaceWithLetter('c',equation); break; //  c7
+            case 'd': e.preventDefault(); replaceWithLetter('d',equation); break; //  d
+            case 'e': e.preventDefault(); replaceWithLetter('e',equation); break; //  e
+            case 'f': e.preventDefault(); replaceWithLetter('f',equation); break; //  f
+            case 'g': e.preventDefault(); replaceWithLetter('g',equation); break; //  g
+            case 'h': e.preventDefault(); replaceWithLetter('h',equation); break; //  h
+            case 'i': e.preventDefault(); replaceWithLetter('i',equation); break; //  i
+            case 'j': e.preventDefault(); replaceWithLetter('j',equation); break; //  j
+            case 'k': e.preventDefault(); replaceWithLetter('k',equation); break; //  k
+            case 'l': e.preventDefault(); replaceWithLetter('l',equation); break; //  l
+            case 'm': e.preventDefault(); replaceWithLetter('m',equation); break; //  m
+            case 'n': e.preventDefault(); replaceWithLetter('n',equation); break; //  n
+            case 'o': e.preventDefault(); replaceWithLetter('o',equation); break; //  o
+            case 'p': e.preventDefault(); replaceWithLetter('p',equation); break; //  p
+            case 'q': e.preventDefault(); replaceWithLetter('q',equation); break; //  q
+            case 'r': e.preventDefault(); replaceWithLetter('r',equation); break; //  r
+            case 's': e.preventDefault(); replaceWithLetter('s',equation); break; //  s
+            case 't': e.preventDefault(); replaceWithLetter('t',equation); break; //  t
+            case 'u': e.preventDefault(); replaceWithLetter('u',equation); break; //  u
+            case 'v': e.preventDefault(); replaceWithLetter('v',equation); break; //  v
+            case 'w': e.preventDefault(); replaceWithLetter('w',equation); break; //  w
+
             case 'x': e.preventDefault(); replaceWithLetter('x',equation); break; //  8
             case 'y': e.preventDefault(); replaceWithLetter('y',equation); break; //  9
             case 'z': e.preventDefault(); replaceWithLetter('z',equation); //  0
