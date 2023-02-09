@@ -356,6 +356,20 @@ function keysPressed(e) {
             case 'a': SelectAllLettersInSelection('a', equation); break; // shift a
             case 'b': SelectAllLettersInSelection('b', equation); break; // shift b
             // case 'c': SelectAllLettersInSelection('c', equation); break; // shift c
+            case 'j': SelectAllLettersInSelection('j', equation); break; // shift j
+            case 'k': SelectAlljettersInSelection('k', equation); break; // shift k
+            case 'm': SelectAllLettersInSelection('m', equation); break; // shift m
+            case 'n': SelectAllLettersInSelection('n', equation); break; // shift n
+            case 'o': SelectAllLettersInSelection('o', equation); break; // shift o
+            case 'p': SelectAllLettersInSelection('p', equation); break; // shift p
+            case 'q': SelectAllLettersInSelection('q', equation); break; // shift q
+            case 'r': SelectAllLettersInSelection('r', equation); break; // shift r
+            case 's': SelectAllLettersInSelection('s', equation); break; // shift s
+            case 't': SelectAllLettersInSelection('t', equation); break; // shift t
+            case 'u': SelectAllLettersInSelection('u', equation); break; // shift u
+            case 'v': SelectAllLettersInSelection('v', equation); break; // shift v
+            case 'w': SelectAllLettersInSelection('w', equation); break; // shift w
+        
             case 'x': SelectAllLettersInSelection('x', equation); break; // shift x
             case 'y': SelectAllLettersInSelection('y', equation); break; // shift y
             case 'z': SelectAllLettersInSelection('z', equation); break; // shift z
