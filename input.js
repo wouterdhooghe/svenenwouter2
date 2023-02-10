@@ -100,6 +100,7 @@ var keyboardlookups = {
     }
 }
 
+// keyboards zijn normaal niet meer nodig, alleen legacy. Als keymappings in keyboardlookups staan krijgen die voorrang
 var keyboards = {
     wouterkeyCode: {
         left: 37,

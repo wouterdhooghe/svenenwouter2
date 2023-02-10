@@ -25,9 +25,9 @@ var customFunctions = {
     });
     return product;
   },
-  minus: function(a, b) {
-    return a - b;
-  },
+  // minus: function(a, b) {
+  //   return a - b;
+  // },
   binom: function(n, k) {
     return 1;
   },
@@ -152,9 +152,9 @@ customFunctions.Or.toTex = function(node, options) {
 };
 
 customFunctions.binom.toTex = "\\mathrm{${name}}\\left(${args}\\right)"; //template string
-customFunctions.minus.toTex = function(node, options) {
-  return node.args[0].toTex(options) + node.name + node.args[1].toTex(options);
-};
+// customFunctions.minus.toTex = function(node, options) {
+//   return node.args[0].toTex(options) + node.name + node.args[1].toTex(options);
+// };
 customFunctions.Select.toTex = function(node, options) {
   // console.log("slct");
   return "\\textcolor{red}{" + node.args[0].toTex(options) + "}";
