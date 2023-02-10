@@ -2884,6 +2884,8 @@ function commuteSelectedWithPrevious(eq) {
 //   return eq;
 // }
 
+
+// TODO: deze functie is mega unsafe
 function distributeOrFactorSelectedLeft(eq) {
   selectAdress = adresses("Select", eq)[0];
   selectNode = readAtAdress(selectAdress, eq);
@@ -2892,6 +2894,7 @@ function distributeOrFactorSelectedLeft(eq) {
   var sameFactor = true;
   var nieuw = {};
 
+  // hier zou ik eignelijk moeten checken of er geen args[2] is want dan mag er al een break komen
   if ((selectedNode.name == "Times") & (selectedNode.args[1].name == "Plus")) {
     nieuw = selectedNode.args[1].map(function(node, index, parent) {
       return new math.expression.node.FunctionNode("Times", [
@@ -2899,6 +2902,7 @@ function distributeOrFactorSelectedLeft(eq) {
         node
       ]);
     });
+    // hier zou ik moeten breaken als de common factor er niet is; nu maakt het niks uit als sameFactor=false
   } else if (selectedNode.name == "Plus") {
     commonFactor = selectedNode.args[0].args[0];
     selectedNode.args.forEach(function(node, index, parent) {

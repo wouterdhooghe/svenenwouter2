@@ -1,5 +1,106 @@
 regels = {
 
+    //TODO schrijf functies die nu allemaal de unaryMinus doen!
+                    schraplogaa: {
+                        naam: 'schraplogaa',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    },
+                    schrapaalog: {
+                        naam: 'schrapaalog',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    }, 
+                    schrapaloga: {
+                        naam: 'schrapaloga',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    }, 
+                    introexp: {
+                        naam: 'ontschrapaloga = schrijf x als een macht',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    }, 
+                    introlog: {
+                        naam: 'ontschrap aalog = schrijf x als log',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    }, 
+                    
+                    intrologrekenmachine: {
+                        naam: 'ontschrap logaa = schrijf product van 2 logs',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    }, 
+                    productBuitenLogHalen: {
+                        naam: 'direct voor prod en voor deling?',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    }, 
+                    expBuitenLogHalen: {
+                        naam: 'direct voor prod en voor deling?',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    }, 
+                    test: {
+                        naam: 'test',
+                        input: {
+                            expr: math.parse('Plus(a,unaryMinus(a))'),
+                            unknowns: ['a']
+                        },
+                        output: {
+                            expr: math.parse('0'),
+                            unknowns: []
+                        },
+                    }, 
 
                     aMinA: {
                         naam: 'a min a',
