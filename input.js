@@ -5,7 +5,7 @@ var keyboardlookups = {
         ArrowRight: 'right',
         ArrowDown: 'down',
 
-        Slash:'minus',
+        Slash: 'minus',
         Period: 'plus',
         Quote: 'divide',
         Semicolon: 'times',
@@ -33,9 +33,7 @@ var keyboardlookups = {
         NumpadDivide: 'divide',
         NumpadMultiply: 'times',
         NumpadEnter: 'enter',
-        Quote: 'nthroot',
         Backslash: 'power',
-        Slash: 'equals',
 
         F1: 'f1',
         F2: 'f2',
