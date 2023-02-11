@@ -400,9 +400,9 @@ function keysPressed(e) {
     else if (e.ctrlKey == 1)
         switch (keyLookup[e.code]) {
             case 'left': out.innerHTML = 'CTRLleft'; break;
-            case 'up': out.innerHTML = 'CTRLup'; updateLatex(herbalanceertermen(equation,'opwaarts')); keysList.push('herbalanceertermen'); updateLatex(equation);break;
+            case 'up': out.innerHTML = 'CTRLup'; updateLatex(ctrlupfun(equation)); keysList.push('herbalanceertermen'); updateLatex(equation);break;
             case 'right': out.innerHTML = 'CTRLright'; break;
-            case 'down': out.innerHTML = 'CTRLdown'; updateLatex(herbalanceertermen(equation,'neerwaarts')); keysList.push('herbalanceertermen'); updateLatex(equation);break;
+            case 'down': out.innerHTML = 'CTRLdown'; updateLatex(ctrldownfun(equation)); keysList.push('herbalanceertermen'); updateLatex(equation);break;
             case 'enter': document.getElementById('jqueryknop').click();
 
             // letters

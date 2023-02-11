@@ -2922,8 +2922,27 @@ function distributeOrFactorSelectedLeft(eq) {
   return eq;
 }
 
+// ctrl-downfunctie
 
-// voor ctrl up en down splits in termen functies
+function ctrldownfun(eq) {
+
+ eq = herbalanceertermen(eq, 'neerwaarts')
+ uitgedeeld = naar(eq,'uitdeelregels');
+ if (uitgedeeld) {eq = uitgedeeld[0]};
+ return eq;
+}
+
+// ctrl up functie
+
+function ctrlupfun(eq) {
+
+  eq = herbalanceertermen(eq, 'opwaarts')
+  buitengehaald = naar(eq,'buitenhaalregels');
+  if (buitengehaald) {eq = buitengehaald[0]};
+  return eq;
+ }
+
+// functies om getallen te splitsen in termen
 
 
 function herbalanceertermen(eq, richting) {
@@ -2933,6 +2952,9 @@ selectedNode = selectNode.args[0];
 
 if (richting == 'opwaarts') {sprong = -1}
 if (richting == 'neerwaarts') {sprong = 1}
+
+// nieuweSom initialiseren
+nieuwesom = null;
 
 // als het een gewone integer is
 if (selectedNode.isConstantNode) {
@@ -2983,7 +3005,7 @@ if (selectedNode.isConstantNode) {
 // als selectie een gewonen integer is -> maak er een som van met 1 + (n-1)
 // als selectie een som van twee integers is -> verhoog linkse en verlaag rechtse (of omgekeerd)
 
-eq = injectAtAdress(selectIt(nieuwesom), selectAdress, eq);
+if (nieuwesom) {eq = injectAtAdress(selectIt(nieuwesom), selectAdress, eq);}
 return eq;
 
 }
