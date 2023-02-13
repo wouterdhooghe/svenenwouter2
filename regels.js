@@ -26,13 +26,13 @@ regels = {
         },
     }, 
     introExp: {
-        naam: 'ontschrapaloga = schrijf x als een macht',
+        naam: 'ontschrapaalog = schrijf x als een macht',
         input: {
             expr: math.parse('x'),
             unknowns: ['x']
         },
         output: {
-            expr: math.parse('pow(log(a,x),a)'),
+            expr: math.parse('pow(a,log(x,a))'),
             unknowns: ['x','a']
         },
     }, 
@@ -66,6 +66,39 @@ regels = {
         },
         output: {
             expr: math.parse('Times(1,a)'),
+            unknowns: ['a']
+        }
+    },
+    introDeling: {
+        naam: 'noemer 1 doet niks',
+        input: {
+            expr: math.parse('a'),
+            unknowns: ['a']
+        },
+        output: {
+            expr: math.parse('divide(a,1)'),
+            unknowns: ['a']
+        }
+    },
+    introPlus: {
+        naam: 'term 0 doet niks',
+        input: {
+            expr: math.parse('a'),
+            unknowns: ['a']
+        },
+        output: {
+            expr: math.parse('Plus(a,0)'),
+            unknowns: ['a']
+        }
+    },
+    introMin: {
+        naam: 'term 0 doet niks',
+        input: {
+            expr: math.parse('a'),
+            unknowns: ['a']
+        },
+        output: {
+            expr: math.parse('Plus(a,unaryMinus(0))'),
             unknowns: ['a']
         }
     },

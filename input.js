@@ -335,12 +335,6 @@ function keysPressed(e) {
 
     if (e.shiftKey == 1)
         {
-            // shift EN ctrl tegelijk!
-            if (e.ctrlKey == 1) {
-                switch (keyLookup[e.code]) {
-                    case 'l': out.innerHTML = 'CTRL log'; updateLatex(naar(equation,'naarlogregels')[0]); keysList.push('naarlogregels'); updateLatex(equation);break;
-                }
-            }
 
         switch (keyLookup[e.code]) {
             // pijltjes met shift
@@ -370,7 +364,8 @@ function keysPressed(e) {
             case 'b': SelectAllLettersInSelection('b', equation); break; // shift b
             // case 'c': SelectAllLettersInSelection('c', equation); break; // shift c
             case 'j': SelectAllLettersInSelection('j', equation); break; // shift j
-            case 'k': SelectAlljettersInSelection('k', equation); break; // shift k
+            case 'k': SelectAllLettersInSelection('k', equation); break; // shift k
+            case 'l': if(e.ctrlKey==1) {out.innerHTML = 'CTRL log'; updateLatex(naar(equation,'naarlogregels')[0]); keysList.push('naarlogregels'); updateLatex(equation);break;} else {SelectAllLettersInSelection('k', equation); break;};
             case 'm': SelectAllLettersInSelection('m', equation); break; // shift m
             case 'n': SelectAllLettersInSelection('n', equation); break; // shift n
             case 'o': SelectAllLettersInSelection('o', equation); break; // shift o
