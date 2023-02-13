@@ -197,21 +197,21 @@ function f1(eq) {
 
   // updateLatexAndFs(toegekendeFunctie["f1"](eq)[0]);
 
-  var bewerking = toegekendeBewerking["f1"];
+  var regels = toegekendeRegels["f1"];
 
-  updateLatexAndFs(naar(eq,bewerking)[0]);
+  updateLatexAndFs(naar(eq,regels)[0]);
   
   
 }
 
 function f2(eq) {
 
-  var bewerking = toegekendeBewerking["f2"];
+  var regels = toegekendeRegels["f2"];
   
-  // updateLatex(naar(eq,bewerking)[0]);
-  // updateF(naar(eq,bewerking)[1],"f2_button");
+  // updateLatex(naar(eq,regels)[0]);
+  // updateF(naar(eq,regels)[1],"f2_button");
 
-  updateLatexAndFs(naar(eq,bewerking)[0]);
+  updateLatexAndFs(naar(eq,regels)[0]);
 
 // naarplus(eq);
 
@@ -219,9 +219,9 @@ function f2(eq) {
 
 function f3(eq) {
 
-  var bewerking = toegekendeBewerking["f3"];
+  var regels = toegekendeRegels["f3"];
 
-  updateLatexAndFs(naar(eq,bewerking)[0]);
+  updateLatexAndFs(naar(eq,regels)[0]);
 
 // naartimes(eq);  
   
@@ -229,18 +229,18 @@ function f3(eq) {
 
 function f4(eq) {
 
-  var bewerking = toegekendeBewerking["f4"];
+  var regels = toegekendeRegels["f4"];
 
-  updateLatexAndFs(naar(eq,bewerking)[0]);
+  updateLatexAndFs(naar(eq,regels)[0]);
 
   // naarmin(eq);
 }
 
 function f5(eq) {
   
-  var bewerking = toegekendeBewerking["f5"];
+  var regels = toegekendeRegels["f5"];
 
-  updateLatexAndFs(naar(eq,bewerking)[0]);
+  updateLatexAndFs(naar(eq,regels)[0]);
   
   // naarbreuk(eq);
 }
@@ -248,58 +248,58 @@ function f5(eq) {
 function f6(eq) {
 // naarmacht(eq);
 
-var bewerking = toegekendeBewerking["f6"];
+var regels = toegekendeRegels["f6"];
 
-updateLatexAndFs(naar(eq,bewerking)[0]);
+updateLatexAndFs(naar(eq,regels)[0]);
 }
 
 function f7(eq) {
-  var bewerking = toegekendeBewerking["f7"];
+  var regels = toegekendeRegels["f7"];
 
-  updateLatexAndFs(naar(eq,bewerking)[0]);
+  updateLatexAndFs(naar(eq,regels)[0]);
 // naarexp(eq);  
 }
 
 function f8(eq) {
 // naarwortel(eq);  
-var bewerking = toegekendeBewerking["f8"];
+var regels = toegekendeRegels["f8"];
 
-updateLatexAndFs(naar(eq,bewerking)[0]);
+updateLatexAndFs(naar(eq,regels)[0]);
 }
 
 function f9(eq) {
 
-  var bewerking = toegekendeBewerking["f9"];
+  var regels = toegekendeRegels["f9"];
 
-  updateLatexAndFs(naar(eq,bewerking)[0]);
+  updateLatexAndFs(naar(eq,regels)[0]);
 
 }
 
 function f10(eq) {
 
-var bewerking = toegekendeBewerking["f10"];
-updateLatexAndFs(naar(eq,bewerking)[0]);
+var regels = toegekendeRegels["f10"];
+updateLatexAndFs(naar(eq,regels)[0]);
   
 }
 
 function f11(eq) {
-  var bewerking = toegekendeBewerking["f11"];
-updateLatexAndFs(naar(eq,bewerking)[0]);
+  var regels = toegekendeRegels["f11"];
+updateLatexAndFs(naar(eq,regels)[0]);
 }
 
 function f12(eq) {
-  var bewerking = toegekendeBewerking["f12"];
-updateLatexAndFs(naar(eq,bewerking)[0]);
+  var regels = toegekendeRegels["f12"];
+updateLatexAndFs(naar(eq,regels)[0]);
 }
 
 function f13(eq) {
-  var bewerking = toegekendeBewerking["f13"];
-updateLatexAndFs(naar(eq,bewerking)[0]);
+  var regels = toegekendeRegels["f13"];
+updateLatexAndFs(naar(eq,regels)[0]);
 }
 
 function f14(eq) {
-  var bewerking = toegekendeBewerking["f14"];
-updateLatexAndFs(naar(eq,bewerking)[0]);
+  var regels = toegekendeRegels["f14"];
+updateLatexAndFs(naar(eq,regels)[0]);
 }
 
 function naar(eq, regelset) {
@@ -895,6 +895,7 @@ function transformSelected(
 
 function regelTransformSelected(eq, regel) {
   console.log("doe regeltransformSelected op: ");
+  console.log(regel);
   console.log(regel.naam);
 
   // console.log(multiFunction);
@@ -1270,10 +1271,10 @@ function updateLatex(eq) {
 function updateLatexAndFs(eq) {
   updateLatex(eq);
 
-  for (var f in toegekendeBewerking) {
+  for (var f in toegekendeRegels) {
      console.log( "ffffffffffffff: " + f);
-     console.log( "toegk bew: " + toegekendeBewerking[f]);
-    var previewArr = naar(eq,toegekendeBewerking[f]);
+     console.log( "toegk bew: " + toegekendeRegels[f]);
+    var previewArr = naar(eq,toegekendeRegels[f]);
     var knop = f + "_button";
     if (previewArr) {
       updateF(previewArr[1],knop);
@@ -2297,7 +2298,7 @@ function enter(eq) {
         }
     })
     }
-    catch(e) { console.Log('fout tijdens simplificatieregels');  };
+    catch(e) { console.log('fout tijdens simplificatieregels');  };
 
       // if (eq2.equals(eq) == false) {
       //   console.log("nieuwe eq:  " + eq2.toString());
