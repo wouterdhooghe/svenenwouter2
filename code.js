@@ -804,11 +804,24 @@ function transformNode(
   // cleanedEq = cleanEquation(eq);
 
   if (matchesPattern(cleanedEq, inputPatternNode, unknownInArr)) {
-    output = patternContents(cleanedEq, inputPatternNode, unknownInArr);
+    extraoutput = patternContents(cleanedEq, inputPatternNode, unknownInArr);
     adressen = invert(buildPath(outputPatternNode));
 
+console.log('unknowninARR= ');
+console.log(unknownInArr);
 console.log('unknownoutARR= ');
 console.log(unknownOutArr);
+
+// als er meer outs dan ins zijn dan worden de extra outs gewoon door zichzelf vervangen:
+standaardoutput = {};
+
+    for (letter of unknownOutArr) {
+      standaardoutput[letter]=letter;
+        }
+  let output = {
+    ...standaardoutput,
+    ...extraoutput
+  };
 
     unknownOutArr.forEach(function(placeholder) {
         console.log('crrent placeholder = ' + placeholder);

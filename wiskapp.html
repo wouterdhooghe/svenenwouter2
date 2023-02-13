@@ -548,11 +548,60 @@
                 tijd = new Date();
                 laatsteDigitOfLetterTijdStip = tijd.getTime();
 
+
+
+                alleregels = [
+                'propernaarexp',
+                'propernaarmaal',
+                'propernaarplus',
+
+                'vuilnaarwortel',
+                'vuilnaardeling',
+                'vuilnaarmin',
+
+                'introLog', 'introLogrekenmachine',
+                'introExp', 'introExp1', 'introWortel',
+                'introMaal','introDeling',   
+                'introPlus', 'introMin',
+
+                'schraplogaa', 'schrapaalog', 'schrapaloga',
+                'schrapExp0', 'schrapExp1', 'wortelInversAanMacht', 'machtInversAanWortel',
+                'schrapWortel',
+                'schrapMaal',
+                'schrapDeling',
+                'schrapPlus',
+                'schrapMin',
+
+                'logUitdelenOverMaal', 'logUitdelenOverDeling', 'logUitdelenOverExp', 'logUitdelenOverWortel',            
+                'logBuitenMaalHalen', 'logBuitenDelingHalen', 'logBuitenExpHalen', 'logBuitenWortelHalen',
+
+                'expUitdelenOverMaal', 'expUitdelenOverDeling',            
+                'expBuitenMaalHalen', 'expBuitenDelingHalen', 
+
+                'wortelUitdelenOverMaal', 'wortelUitdelenOverDeling',            
+                'wortelBuitenMaalHalen', 'wortelBuitenDelingHalen', 
+                
+                'maalUitdelenOverPlus', 'maalUitdelenOverMin',            
+                'maalBuitenPlusHalen', 'maalBuitenMinHalen', 
+                
+                'delingUitdelenOverPlus', 'delingUitdelenOverMin',            
+                'delingBuitenPlusHalen', 'delingBuitenMinHalen',
+                
+                'maalUitdelenOverPlus', 'maalUitdelenOverMin',            
+                'maalBuitenPlusHalen', 'maalBuitenMinHalen',
+                
+                'basisUitdelenOverPlus', 'basisUitdelenOverMin', 'basisUitdelenOverMaal', 'basisUitdelenOverDeling',            
+                'basisBuitenPlusHalen', 'basisBuitenMinHalen', 'basisBuitenMaalHalen', 'basisBuitenDelingHalen',
+
+                'maalbreukSplitsen', 'maalbreukOntsplitsen'
+
+                 ]
+
                 loguitdeelregels = [
                 'logUitdelenOverMaal',
                 'logUitdelenOverExp',
-                'productBuitenLogHalen',
-                'expBuitenLogHalen'
+                'logBuitenMaalHalen',
+                'logBuitenExpHalen'
 
                 ];
 
@@ -595,7 +644,8 @@
                 ];
 
                 schrapexpregels = [
-                'nuldeMachtIsEen'
+                'schrapExp0',
+                'schrapExp1'
                 ];
 
                 vertaaldelingregels = [
@@ -606,15 +656,18 @@
                 ];
 
                 schrapnaar1regels = [
+                // a/a -> 1
                 'aGedeeldDoorA',
+                // *1 droppen
                 'eenNeutraalVoorMaal'
                 ];
 
                 splitsmaaloverbreukregels = [
-                'breukenVermenigvuldigen'
+                'maalbreukOntsplitsen'
                 ];
 
                 lageladderregels = [
+  //              'expandDoorMetFunctie',    
                 'brengLinkseFactorBinnenMetFunctie',
                 'factorBuitenhalen',
                 'binomium2Expand',
@@ -625,7 +678,7 @@
 
                 splitsplusoverbreukregels = [
                 'simpeleBreukUitElkaarTrekken',
-                'uiteenTrekRegel'
+                'maalbreukSplitsen'
                 ];
 
                 vertaalminregels = [
@@ -633,8 +686,9 @@
                 ];
 
                 schrapnaar0regels = [
+                // a+0->a
                 'nulNeutraalVoorPlus',
-                'aMinA'
+                'schrapMin'
                 ];
 
                 basisuitdeelregels = [
@@ -648,7 +702,7 @@
                 uitdeelregels = [
                 'brengLinkseFactorBinnenMetFunctie',
                 'simpeleBreukUitElkaarTrekken',
-                'uiteenTrekRegel',
+                'maalbreukSplitsen',
                 'machtVanProduct',
                 'productOnderDeWortel',
                 'wortelVanBreuk',
@@ -670,7 +724,7 @@
 
 
 
-                toegekendeBewerking = {
+                toegekendeRegels = {
                     "f1": "loguitdeelregels",
                     "f2": "logschrapregels",
                     "f3": "vertaalwortelregels",
@@ -691,6 +745,9 @@
                 
 
                 simplificatieregels = [
+                    'schraplogaa',
+                    'schrapaalog',
+                    'eersteMachtNeutraal',
                     'nulNeutraalVoorPlus',
                     'eenNeutraalVoorMaal',
                     'schrapUnitaireBreuk',
@@ -706,8 +763,8 @@
                 ];
 
                 spaceregels = [
-                    'breukenVermenigvuldigen',
-                    'uiteenTrekRegel',
+                    'maalbreukOntsplitsen',
+                    'maalbreukSplitsen',
                     'minEenExponentAlsEenheidsbreuk',
                     'eenheidsbreukAlsMinEenExponent',
                     'eenheidsbreukAlsNegatieveExponent',
@@ -741,7 +798,7 @@
 
                 naargetalregels = [
  //                   'vergelijkingNegeren',
-                    'aMinA',
+                    'schrapMin',
                     'nulNeutraalVoorPlus',
                     'eenNeutraalVoorMaal',
                     'schrapUnitaireBreuk',
@@ -768,15 +825,14 @@
 
                 naartimesregels = [
   //                  'vergelijkingNegeren',
-                    'machtVanProduct',
-                    'productOnderDeWortel',
-                    'uiteenTrekRegel',
-                    'simpeleBreukUitElkaarTrekken',
-                    // 'vermenigvuldigingMetEenheidsbreukOmgekeerd',
-                    // TODO vermenigvuldigingMetEenheidsbreukOmgekeerd maken
-                    'somVanExponentenNaarVermenigvuldiging',
-                    'verschilVanKwadratenExpand',
-                    'factorBuitenhalen',
+                    // 'machtVanProduct',
+                    // 'productOnderDeWortel',
+                    // 'maalbreukSplitsen',
+                    // 'simpeleBreukUitElkaarTrekken',
+                    // 'somVanExponentenNaarVermenigvuldiging',
+                    // 'verschilVanKwadratenExpand',
+                    // 'factorBuitenhalen'
+                    'introMaal'
                     
                 ];
 
@@ -786,7 +842,7 @@
 
                 naarbreukregels = [
  //                   'vergelijkingNegeren',
-                    'breukenVermenigvuldigen',
+                    'maalbreukOntsplitsen',
                     'minEenExponentAlsEenheidsbreuk',
                     'negatieveExponentAlsEenheidsbreuk',
                     'vermenigvuldigingMetEenheidsbreuk',
@@ -794,36 +850,70 @@
                     'wortelVanBreuk'
                 ];
 
-                naarmachtregels = [
-  //                  'vergelijkingNegeren',
-                    'eenheidsbreukAlsMinEenExponent',
-                    'eenheidsbreukAlsNegatieveExponent',
-                    'productAlsMacht',
-                    'exponentenOptellen',
-                    'productMetGelijkeExponenten',
-                    'wortelNaarMachtNotatie1',
-                    'wortelNaarMachtNotatie2',
-                    'wortelNaarMachtNotatie3'
-                ];
-
                 naarexpregels = [
-  //                  'vergelijkingNegeren'
+  //                  'vergelijkingNegeren',
+                    'introExp',
+                    'introExp1'
+                    // 'eenheidsbreukAlsMinEenExponent',
+                    // 'eenheidsbreukAlsNegatieveExponent',
+                    // 'productAlsMacht',
+                    // 'exponentenOptellen',
+                    // 'productMetGelijkeExponenten',
+                    // 'wortelNaarMachtNotatie1',
+                    // 'wortelNaarMachtNotatie2',
+                    // 'wortelNaarMachtNotatie3'
                 ];
 
                 naarwortelregels = [
    //                 'vergelijkingNegeren',
-                    'productVanGelijkeWortels',
-                    'breukVanWortels'
+                    'introWortel',
+                    // 'productVanGelijkeWortels',
+                    // 'breukVanWortels'
                 ];
 
                 naarlogregels = [
    //                 'vergelijkingNegeren',
-                    'logUitdelenOverMaal',
-                    'logUitdelenOverExp'
+                    // 'logUitdelenOverMaal',
+                    // 'logUitdelenOverExp'
+                    'introlog'
                 ];
 
                 naaropgaveregels = [
                     'leesOpgaveNummer'
+                ];
+
+
+                regellijst = [
+                    loguitdeelregels, 
+                    logschrapregels, , 
+                    intrologregels, 
+                    schrapwortelregels,
+                    introexpregels,
+                    vertaalwortelregels,
+                    hogeladderregels, 
+                    schrapexpregels,
+                    vertaaldelingregels,
+                    splitsmaaloverbreukregels,
+                    schrapnaar1regels,
+                    lageladderregels,
+                    splitsplusoverbreukregels,
+                    schrapnaar0regels,
+                    vertaalminregels,
+                    basisuitdeelregels,
+                    uitdeelregels,
+                    buitenhaalregels,
+                    naarplusregels,
+                    naartimesregels,
+                    naarminregels,
+                    simplificatieregels,
+                    spaceregels,
+                    naargetalregels,
+
+                    naarbreukregels,
+                    naarexpregels,
+                    naarwortelregels,
+                    naarlogregels,
+                    naaropgaveregels
                 ];
 
 

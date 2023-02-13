@@ -335,6 +335,12 @@ function keysPressed(e) {
 
     if (e.shiftKey == 1)
         {
+            // shift EN ctrl tegelijk!
+            if (e.ctrlKey == 1) {
+                switch (keyLookup[e.code]) {
+                    case 'l': out.innerHTML = 'CTRL log'; updateLatex(naar(equation,'naarlogregels')[0]); keysList.push('naarlogregels'); updateLatex(equation);break;
+                }
+            }
 
         switch (keyLookup[e.code]) {
             // pijltjes met shift
@@ -404,6 +410,13 @@ function keysPressed(e) {
             case 'right': out.innerHTML = 'CTRLright'; break;
             case 'down': out.innerHTML = 'CTRLdown'; updateLatex(ctrldownfun(equation)); keysList.push('herbalanceertermen'); updateLatex(equation);break;
             case 'enter': document.getElementById('jqueryknop').click();
+
+            case 'power' : out.innerHTML = 'CTRL power'; updateLatex(naar(equation,'naarexpregels')[0]); keysList.push('naarexpregels'); updateLatex(equation);break;
+            case 'nthroot' : out.innerHTML = 'CTRL nthroot'; updateLatex(naar(equation,'naarwortelregels')[0]); keysList.push('naarwortelregels'); updateLatex(equation);break;
+            case 'times' : out.innerHTML = 'CTRL times'; updateLatex(naar(equation,'naartimesregels')[0]); keysList.push('naartimesregels'); updateLatex(equation);break;
+            case 'divide' : out.innerHTML = 'CTRL divide'; updateLatex(naar(equation,'naarbreukregels')[0]); keysList.push('naarbreukregels'); updateLatex(equation);break;
+            case 'plus' : out.innerHTML = 'CTRL plus'; updateLatex(naar(equation,'naarplusregels')[0]); keysList.push('naarplusregels'); updateLatex(equation);break;
+            case 'minus' : out.innerHTML = 'CTRL minus'; updateLatex(naar(equation,'naarminregels')[0]); keysList.push('naarminregels'); updateLatex(equation);break;
 
             // letters
 

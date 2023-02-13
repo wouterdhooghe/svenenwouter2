@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Wiskunde App</title>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/zingtouch/1.0.6/zingtouch.min.js></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.0.1/math.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.css" integrity="sha384-L/SNYu0HM7XECWBeshTGLluQO9uVI1tvkCtunuoUbCHHoTH76cDyXty69Bb9I0qZ"
+        crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta/katex.min.js" integrity="sha384-ad+n9lzhJjYgO67lARKETJH6WuQVDDlRfj81AJJSswMyMkXTD49wBj5EP004WOY6"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+        <script src="input.js"></script>
+        <script src="opgaven.js"></script>
+        <script src="regels.js"></script>
+        <script src="code.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="wiskapp.css">
+
+
+    <body>
+
+
+
+        <div class='container-fluid'>
+
+            <div class='row'>
+
+                <div class='col-md-4'>
+                    <p class="card-text" id="result"> </p>
+                </div>
+
+                <div class='col-md-4'>
+                        <div class="card">
+                        <div class='card-header'> F1: log uitdelen</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f1_button" onclick="f1(equation)">$$$$</p>
+
+                        </div>
+                        </div>
+                </div>
+
+                <div class='col-md-1'>
+                    <p class="card-text" > </p>
+                </div>
+
+                <div class='col-md-3'>
+                        <div class="card">
+                        <div class='card-header'> F2: log schrappen </div>
+                        <div class="card-body">
+                            <p class="card-text" id="f2_button" onclick="f2(equation)">$$$$</p>
+                        </div>
+                        </div>
+
+                </div>
+
+            </div>
+
+                <div class='row'>
+                    <div class="col-md-3">
+                        <p class="card-text" > bzz </p>
+                    </div>
+
+                    <div class='col-md-1'>
+                        <p class="card-text" id="exp"> exp</p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <div class="card">
+                        <div class='card-header'> F3: vertaal wortel</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f3_button" onclick="f3(equation)">$$$$</p>
+                        </div>
+                    </div>
+                     </div>
+
+                     <div class='col-md-1'>
+                        <p class="card-text" id="wortel"> wortel</p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class='card-header'> F4: schrap wortel</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f4_button" onclick="f4(equation)">$$$$</p>
+                            </div>
+                        </div>
+                         </div>
+
+                </div>
+
+                <div class='row'>
+                    <div class="col-md-3">
+                        <p class="card-text"> </p>
+                    </div>
+
+                    <div class='col-md-1'>
+                        <p class="card-text" id="dubbelprod_exp"> dubbelprod</p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <div class="card">
+                        <div class='card-header'> F5: hoge ladder</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f5_button" onclick="f5(equation)">$$$$</p>
+                        </div>
+                    </div>
+                     </div>
+
+                     <div class='col-md-1'>
+                        <p class="card-text" id="verschilkwadraten_exp"> verschil kwadraten</p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class='card-header'> F6: schrap exp</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f6_button" onclick="f6(equation)">$$$$</p>
+                            </div>
+                        </div>
+                         </div>
+
+                </div>
+
+                <div class='row'>
+                    <div class="col-md-3">
+                        <p class="card-text"> </p>
+                    </div>
+
+                    <div class='col-md-1'>
+                        <p class="card-text"> * </p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <div class="card">
+                        <div class='card-header'> F7: vertaal deling</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f7_button" onclick="f7(equation)">$$$$</p>
+                        </div>
+                    </div>
+                     </div>
+
+                     <div class='col-md-1'>
+                        <p class="card-text"> / </p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class='card-header'> F8: schrap naar 1</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f8_button" onclick="f8(equation)">$$$$</p>
+                            </div>
+                        </div>
+                         </div>
+
+                </div>
+
+                <div class='row'>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class='card-header'> F9: splitst * over breuk</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f9_button" onclick="f9(equation)">$$$$</p>
+                            </div>
+                            </div>
+                    </div>
+
+                    <div class='col-md-1'>
+                        <p class="card-text"> verschil kwadraten</p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <div class="card">
+                        <div class='card-header'> F10: lage ladder</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f10_button" onclick="f10(equation)">$$$$</p>
+                        </div>
+                    </div>
+                     </div>
+
+                     <div class='col-md-1'>
+                        <p class="card-text" id="verschil kwadraten_plus"> verschil kwadraten</p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <p class="card-text">  </p>
+                         </div>
+
+                </div>
+
+                <div class='row'>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class='card-header'> F11: splits + over breuk</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f11_button" onclick="f11(equation)">$$$$</p>
+                            </div>
+                            </div>
+                    </div>
+
+                    <div class='col-md-1'>
+                        <p class="card-text"> + </p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <div class="card">
+                        <div class='card-header'> F12: vertaal min</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f12_button" onclick="f12(equation)">$$$$</p>
+                        </div>
+                    </div>
+                     </div>
+
+                     <div class='col-md-1'>
+                        <p class="card-text"> - </p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class='card-header'> F13: schrap naar 0</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f13_button" onclick="f13(equation)">$$$$</p>
+                            </div>
+                        </div>
+                         </div>
+
+                </div>
+
+                <div class='row'>
+                    <div class="col-md-3">
+                        <div class='col-md-1'>
+                            <p class="card-text">  </p>
+                        </div>
+                    </div>
+
+                    <div class='col-md-1'>
+                        <p class="card-text"> </p>
+                    </div>
+
+                    <div class="col-md-4">
+                    <div class="card">
+                        <div class='card-header'> F14: basis uitdelen</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f14_button" onclick="f14(equation)">$$$$</p>
+                        </div>
+                    </div>
+                     </div>
+
+                     <div class='col-md-1'>
+                        <p class="card-text"> </p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class='col-md-1'>
+                            <p class="card-text">  </p>
+                        </div>
+                         </div>
+
+                </div>
+            
+
+            <div class="row">
+                    <div class='col-md-12' id="rondhoofdvergelijking">
+
+
+
+                    <div class="card hoofd" id="hoofdvergelijking">
+                        <!-- <div class='card-header'> Vgl 1</div> -->
+                        <div class="card-body">
+                            <p class="card-text" id="pretty">$$$$</p>
+                            <p class="card-text" id="expr"> </p>
+                        </div>
+                    </div>
+
+                    <div id="voorhoofdvergelijking">
+
+                    </div>
+
+                </div>
+            </div>
+            
+
+            
+            <div class='row'>
+
+                <div> Rekenregels</div>
+
+                <div class="card" onclick="applyRule(regelNode1,equation)">
+                    <div class='card-header'> distributiviteit</div>
+                    <div class="card-body">
+                    <p class="card-text" id="regel1">$$$$</p>
+
+                    </div>
+                </div>
+
+                <div class="card" onclick="applyRule(regelNode2,equation)">
+                    <div class='card-header'> sinus van een som </div>
+                    <div class="card-body">
+                    <p class="card-text" id="regel2">$$$$</p>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                        <div class='card-header'> regel 3</div>
+                        <div class="card-body">
+                        <p class="card-text" id="regel3">$$$$</p>
+
+                        </div>
+                    </div>
+
+            </div>
+
+            <div class='row'>
+                    <!-- <div class='col-md' id='bottom'>
+            </div> -->
+
+            <div class='col-md'>
+
+                <div> Grafieken </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">Grafiek</p>
+
+                        <canvas id="myCanvas" width="300" height="300">
+                            Fallback content, in case the browser does not support Canvas.
+                        </canvas>
+
+                        <input type="range" value="7" min="0" max="10" name="range">
+
+                        <input type="range" min="0" max="100" value="50" class="vertical" orient="vertical">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+    
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Instellingen </h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+    
+                                <select id='keyboardType' onchange="changeKeyboardType()">
+                                    <option value="wouterCodeNumpad">Wouter met numpad</option>
+                                    <option value="wouterCode">Wouter code</option>
+                                    <option value="svenCode">Sven code</option>
+                                    <option value="wouterkeyCode">Wouter keyCode</option>
+                                    <option value="svenkeyCode">Sven Code</option>
+
+                                </select>
+    
+                            </div>
+                            <div class="card-body">
+                                <b>Parenthesis option:</b>
+                                <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
+                                <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
+                                <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
+                                <br/>
+                                <b>Implicit multiplication:</b>
+                                <input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
+                                <input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
+                                <p class="output"> para 2</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+    
+                        <div class="card">
+                                <div class="card-body">
+                                        <h4 class="card-title"> Modus </h4>
+                                        <input type="radio" name="modus" value="bouwmodus" onclick="modus = 'bouw'; expr.oninput();" checked>bouwmodus
+                                        <input type="radio" name="modus" value="manipulatiemodus" onclick="modus = 'manipulatie'; expr.oninput();" >manipulatiemodus
+            
+                                    </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Toetsen </h4>
+                                <p> pijltjes om door de vergelijking te bewegen</p>
+                                <p> de zes toetsen naast enter zijn standaardbewerkingen</p>
+                                <p> tab of alt pijl up down voor substitutie</p>
+                                <p> ctrl D om enkele factor buiten of binnen te halen (buitenhalen heeft nog fouten)</p>
+                                <p> todo: ctrl links/rechts = naar zak/naar moeilijk </p>
+                                <p> todo: ctrl up/down = buitenhalen, uitdelen </p>
+                                <p> todo: enter = schrappen</p>
+                                <p> todo: ctrl bewerking = ontschrappen (introductie) naar bewerking </p>
+                                <p> todo: shift letter = selecteer alle instances van die letter in equation </p>
+                                <p> todo: ctrl letter = noem selectie letter (in extra equation van stelsel) </p>
+                                <p> ALT en de letter d voor een update van de grafiek</p>
+                                <p> ALT en = om een propere vergelijking te krijgen</p>
+                                <p> Cijfers (zonder shift) voor cijfers</p>
+                                <p> SHIFT en pijltjes om de selectie uit te breiden</p>
+    
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            </div>
+
+            <script>  
+
+            // JQuery
+
+            $(document).ready(function(){
+
+                // $("jqueryknop").click(function(){
+                //      $("#hoofdvergelijking").hide();
+                // });
+
+                $('#jqueryknop').click(function(){
+                    // var listItem = $('input[name=textbox]').val();
+                    var listItem = $('#hoofdvergelijking').html();
+                    var container = $('#voorhoofdvergelijking');
+   //                 $('#rondhoofdvergelijking').append('<div class="list"><span class="del">X</span>' + listItem + '</div>');
+                    container.append(listItem);
+
+                    // items = container.children().toArray();
+                    //     console.log(items);
+                    //     last = items[items.length-1];
+                    //     last.scrollIntoView();
+
+                    container.animate({scrollTop: container.prop("scrollHeight")}, 500);
+                });
+
+            });
+
+                //CANVAS GEDOE
+
+
+                var canvas = document.getElementById("myCanvas");
+                var canvasWidth = canvas.width;
+                var canvasHeight = canvas.height;
+                var ctx = canvas.getContext("2d");
+                var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+                // That's how you define the value of a pixel //
+                function drawPixel(x, y, r, g, b, a) {
+                    var index = (x + y * canvasWidth) * 4;
+
+                    canvasData.data[index + 0] = r;
+                    canvasData.data[index + 1] = g;
+                    canvasData.data[index + 2] = b;
+                    canvasData.data[index + 3] = a;
+                }
+
+                // That's how you update the canvas, so that your //
+                // modification are taken in consideration //
+                function updateCanvas() {
+                    ctx.putImageData(canvasData, 0, 0);
+                } 
+            </script>
+
+
+
+
+
+            <script>
+
+                // velden in de html benoemen
+
+                var out = document.querySelector(".output");
+
+                var expr = document.getElementById('expr'),
+                    pretty = document.getElementById('pretty'),
+                    result = document.getElementById('result'),
+                    parenthesis = 'keep',
+                    implicit = 'hide',
+                    modus = 'bouw';
+
+                var f1_button = document.getElementById('f1_button'),
+                    f2_button = document.getElementById('f2_button'),
+                    f3_button = document.getElementById('f3_button'),
+                    f4_button = document.getElementById('f4_button'),
+                    f5_button = document.getElementById('f5_button'),
+                    f6_button = document.getElementById('f6_button'),
+                    f7_button = document.getElementById('f7_button'),
+                    f8_button = document.getElementById('f8_button'),
+                    f9_button = document.getElementById('f9_button'),
+                    f10_button = document.getElementById('f10_button'),
+                    f11_button = document.getElementById('f11_button'),
+                    f12_button = document.getElementById('f12_button');    
+
+                    
+
+                // rekenregels
+
+                var regel1 = document.getElementById('regel1'),
+                    regel2 = document.getElementById('regel2'),
+                    regel3 = document.getElementById('regel3')
+
+                // Selectfunctie en andere speciale functies importeren
+
+                math.import(customFunctions);
+                // math.nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
+                math.pow.toTex = function (node, options) {
+
+                    // console.log(multiFunction[node.args[0].name] == 1);
+                    // console.log(node.args[0].name == 'nthRoot');
+                    // console.log(node.args[0].name == 'unaryMinus');
+                    // console.log(node.args[0].fn == 'divide');
+                    // console.log(node.args[0].fn == 'pow');
+
+                    if (multiFunction[node.args[0].name] == 1 || node.args[0].name == 'nthRoot' || node.args[0].name == 'unaryMinus' || node.args[0].fn == 'divide' || node.args[0].fn == 'pow') {
+                    // console.log('moethaakjeskrijgen');
+                        return "\\left(" + node.args[0].toTex(options) + "\\right)^{" + node.args[1].toTex(options) + "}";
+                    } else {
+                        return "{" + node.args[0].toTex(options) + "}" + "^{" + node.args[1].toTex(options) + "}";
+                    }
+
+                };
+
+                math.unaryMinus.toTex = function (node, options) {
+
+                    if (multiFunction[node.args[0].name] == 1) {
+                        return "-\\left(" + node.args[0].toTex(options) + "\\right)";
+                    } else {
+                        return "-" + node.args[0].toTex(options);
+                    }
+
+                };
+
+                // "-\\left(${args[0]}\\right)"
+
+                // Initialisatie van de state variabelen: begin met een lege vergelijking en een lege keyslist
+
+
+
+
+
+
+
+
+                ///*********************************************************************
+                /// Initialisatie van objecten
+                ///*********************************************************************
+
+                tijd = new Date();
+                laatsteDigitOfLetterTijdStip = tijd.getTime();
+
+
+
+                alleregels = [
+                'propernaarexp',
+                'propernaarmaal',
+                'propernaarplus',
+
+                'vuilnaarwortel',
+                'vuilnaardeling',
+                'vuilnaarmin',
+
+                'introlog', 'intrologrekenmachine',
+                'introexp', 'introwortel',
+                'intromaal','introdeling',   
+                'introplus', 'intromin',
+
+                'schraplogaa', 'schrapaalog', 'schrapaloga',
+                'schrapExp',
+                'schrapWortel',
+                'schrapMaal',
+                'schrapDeling',
+                'schrapPlus',
+                'schrapMin',
+
+                'logUitdelenOverMaal', 'logUitdelenOverDeling', 'logUitdelenOverExp', 'logUitdelenOverWortel',            
+                'logBuitenMaalHalen', 'logBuitenDelingHalen', 'logBuitenExpHalen', 'logBuitenWortelHalen',
+
+                'expUitdelenOverMaal', 'expUitdelenOverDeling',            
+                'expBuitenMaalHalen', 'expBuitenDelingHalen', 
+
+                'wortelUitdelenOverMaal', 'wortelUitdelenOverDeling',            
+                'wortelBuitenMaalHalen', 'wortelBuitenDelingHalen', 
+                
+                'maalUitdelenOverPlus', 'maalUitdelenOverMin',            
+                'maalBuitenPlusHalen', 'maalBuitenMinHalen', 
+                
+                'delingUitdelenOverPlus', 'delingUitdelenOverMin',            
+                'delingBuitenPlusHalen', 'delingBuitenMinHalen',
+                
+                'maalUitdelenOverPlus', 'maalUitdelenOverMin',            
+                'maalBuitenPlusHalen', 'maalBuitenMinHalen',
+                
+                'basisUitdelenOverPlus', 'basisUitdelenOverMin', 'basisUitdelenOverMaal', 'basisUitdelenOverDeling',            
+                'basisBuitenPlusHalen', 'basisBuitenMinHalen', 'basisBuitenMaalHalen', 'basisBuitenDelingHalen',
+
+                'maalbreukSplitsen', 'maalbreukOntsplitsen'
+
+                 ]
+
+                loguitdeelregels = [
+                'logUitdelenOverMaal',
+                'logUitdelenOverExp',
+                'productBuitenLogHalen',
+                'expBuitenLogHalen'
+
+                ];
+
+                logschrapregels = [
+                    'schraplogaa',
+                    'schrapaalog',
+                    'schrapaloga'
+
+            ],
+                intrologregels = [
+                    'introlog',
+                    'intrologrekenmachine'
+                ],
+
+                introexpregels = [
+                    'introexp'
+                ],
+
+                vertaalwortelregels = [
+
+                'wortelNaarMachtNotatie1',
+                    'wortelNaarMachtNotatie3'
+                ];
+
+            // TODO tot hier lijken de regels compleet!
+
+                schrapwortelregels = [
+                'machtInversAanWortel',
+                'wortelInversAanMacht'
+
+                ];
+
+                hogeladderregels = [
+                'machtVanProduct',
+                    'productMetGelijkeExponenten',
+                    'productOnderDeWortel',
+                    'productVanGelijkeWortels',
+                    'breukVanWortels',
+                    'wortelVanBreuk'
+                ];
+
+                schrapexpregels = [
+                'nuldeMachtIsEen'
+                ];
+
+                vertaaldelingregels = [
+                'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'minEenExponentAlsEenheidsbreuk'
+
+                ];
+
+                schrapnaar1regels = [
+                // a/a -> 1
+                'aGedeeldDoorA',
+                // *1 droppen
+                'eenNeutraalVoorMaal'
+                ];
+
+                splitsmaaloverbreukregels = [
+                'maalbreukOntsplitsen'
+                ];
+
+                lageladderregels = [
+  //              'expandDoorMetFunctie',    
+                'brengLinkseFactorBinnenMetFunctie',
+                'factorBuitenhalen',
+                'binomium2Expand',
+                    'binomium2Factor',
+                    'binomium3Expand',
+                    'binomium3Factor'
+                ];
+
+                splitsplusoverbreukregels = [
+                'simpeleBreukUitElkaarTrekken',
+                'maalbreukSplitsen'
+                ];
+
+                vertaalminregels = [
+
+                ];
+
+                schrapnaar0regels = [
+                // a+0->a
+                'nulNeutraalVoorPlus',
+                'aMinA'
+                ];
+
+                basisuitdeelregels = [
+                'BreukAlsVerschilVanExponenten',
+                    'exponentenOptellen',
+                    'somVanExponentenNaarVermenigvuldiging',
+                    'machtTorenAfbreken',
+                    'machtTorenOpbouwen'
+                ];
+
+                uitdeelregels = [
+                'brengLinkseFactorBinnenMetFunctie',
+                'simpeleBreukUitElkaarTrekken',
+                'maalbreukSplitsen',
+                'machtVanProduct',
+                'productOnderDeWortel',
+                'wortelVanBreuk',
+                'logUitdelenOverMaal',
+                'logUitdelenOverExp'
+                ];
+
+                buitenhaalregels = [
+                'BreukAlsVerschilVanExponenten',
+                'exponentenOptellen',
+//                'factorBuitenhalen',
+                'productVanGelijkeWortels',
+                'breukVanWortels',
+                'productMetGelijkeExponenten',
+                'productBuitenLogHalen',
+                'expBuitenLogHalen'
+
+                ];
+
+
+
+                toegekendeRegels = {
+                    "f1": "loguitdeelregels",
+                    "f2": "logschrapregels",
+                    "f3": "vertaalwortelregels",
+                    "f4": "schrapwortelregels",
+                    "f5": "hogeladderregels",
+                    "f6": "schrapexpregels",
+                    "f7": "vertaaldelingregels",
+                    "f8": "schrapnaar1regels",
+                    "f9": "splitsmaaloverbreukregels",
+                    "f10": "lageladderregels",
+                    "f11": "splitsplusoverbreukregels",
+                    "f12": "vertaalminregels",
+                    "f13": "schrapnaar0regels",
+                    "f14": "basisuitdeelregels"
+
+                };
+
+                
+
+                simplificatieregels = [
+                    'schraplogaa',
+                    'eersteMachtNeutraal',
+                    'nulNeutraalVoorPlus',
+                    'eenNeutraalVoorMaal',
+                    'schrapUnitaireBreuk',
+                    'nulDelenDoorIets',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetNul',
+                    'machtInversAanWortel',
+                    'wortelInversAanMacht',
+                    'nuldeMachtIsEen',
+                    'BreukAlsVerschilVanExponenten',
+                    'aGedeeldDoorA'
+                ];
+
+                spaceregels = [
+                    'maalbreukOntsplitsen',
+                    'maalbreukSplitsen',
+                    'minEenExponentAlsEenheidsbreuk',
+                    'eenheidsbreukAlsMinEenExponent',
+                    'eenheidsbreukAlsNegatieveExponent',
+                    'negatieveExponentAlsEenheidsbreuk',
+                    'vermenigvuldigingMetEenheidsbreuk',
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
+                    'simpeleBreukUitElkaarTrekken',
+                    'exponentenOptellen',
+                    'somVanExponentenNaarVermenigvuldiging',
+                    'machtTorenAfbreken',
+                    'machtTorenOpbouwen',
+                    'machtNaarWortelNotatie',
+                    'wortelNaarMachtNotatie1',
+                    'wortelNaarMachtNotatie2',
+                    'wortelNaarMachtNotatie3',
+                    'machtVanProduct',
+                    'productMetGelijkeExponenten',
+                    'productOnderDeWortel',
+                    'productVanGelijkeWortels',
+                    'breukVanWortels',
+                    'wortelVanBreuk',
+                    'binomium2Expand',
+                    'binomium2Factor',
+                    'binomium3Expand',
+                    'binomium3Factor',
+                    'verschilVanKwadratenExpand',
+                    'verschilVanKwadratenExpand1',
+                    'verschilVanKwadratenExpand2'
+
+                ];
+
+                naargetalregels = [
+ //                   'vergelijkingNegeren',
+                    'aMinA',
+                    'nulNeutraalVoorPlus',
+                    'eenNeutraalVoorMaal',
+                    'schrapUnitaireBreuk',
+                    'wortelInversAanMacht',
+                    'machtInversAanWortel',
+                    'omgekeerdeIsInverseVoorMaal1',
+                    'omgekeerdeIsInverseVoorMaal2',
+                    'vermenigvuldigingMetNul',
+                    'nuldeMachtIsEen',
+                    'aGedeeldDoorA',
+                    'nulDelenDoorIets',
+
+                ];
+
+                naarplusregels = [
+  //                  'vergelijkingNegeren',
+                    'binomium2Expand',
+                    'binomium3Expand',
+                    'verschilVanKwadratenExpand1',
+                    'verschilVanKwadratenExpand2',
+                    'brengLinkseFactorBinnenMetFunctie',
+                    'nulBijtellen'
+                ];
+
+                naartimesregels = [
+  //                  'vergelijkingNegeren',
+                    'machtVanProduct',
+                    'productOnderDeWortel',
+                    'maalbreukSplitsen',
+                    'simpeleBreukUitElkaarTrekken',
+                    // 'vermenigvuldigingMetEenheidsbreukOmgekeerd',
+                    // TODO vermenigvuldigingMetEenheidsbreukOmgekeerd maken
+                    'somVanExponentenNaarVermenigvuldiging',
+                    'verschilVanKwadratenExpand',
+                    'factorBuitenhalen',
+                    
+                ];
+
+                naarminregels = [
+ //                   'vergelijkingNegeren'
+                ];
+
+                naarbreukregels = [
+ //                   'vergelijkingNegeren',
+                    'maalbreukOntsplitsen',
+                    'minEenExponentAlsEenheidsbreuk',
+                    'negatieveExponentAlsEenheidsbreuk',
+                    'vermenigvuldigingMetEenheidsbreuk',
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
+                    'wortelVanBreuk'
+                ];
+
+                naarexpregels = [
+  //                  'vergelijkingNegeren',
+                    'eenheidsbreukAlsMinEenExponent',
+                    'eenheidsbreukAlsNegatieveExponent',
+                    'productAlsMacht',
+                    'exponentenOptellen',
+                    'productMetGelijkeExponenten',
+                    'wortelNaarMachtNotatie1',
+                    'wortelNaarMachtNotatie2',
+                    'wortelNaarMachtNotatie3'
+                ];
+
+                naarwortelregels = [
+   //                 'vergelijkingNegeren',
+                    'productVanGelijkeWortels',
+                    'breukVanWortels'
+                ];
+
+                naarlogregels = [
+   //                 'vergelijkingNegeren',
+                    'logUitdelenOverMaal',
+                    'logUitdelenOverExp'
+                ];
+
+                naaropgaveregels = [
+                    'leesOpgaveNummer'
+                ];
+
+
+                regels = [
+                    loguitdeelregels, 
+                    logschrapregels, , 
+                    intrologregels, 
+                    schrapwortelregels,
+                    introexpregels,
+                    vertaalwortelregels,
+                    hogeladderregels, 
+                    schrapexpregels,
+                    vertaaldelingregels,
+                    splitsmaaloverbreukregels,
+                    schrapnaar1regels,
+                    lageladderregels,
+                    splitsplusoverbreukregels,
+                    schrapnaar0regels,
+                    vertaalminregels,
+                    basisuitdeelregels,
+                    uitdeelregels,
+                    buitenhaalregels,
+                    naarplusregels,
+                    naartimesregels,
+                    naarminregels,
+                    simplificatieregels,
+                    spaceregels,
+                    naargetalregels,
+
+                    naarbreukregels,
+                    naarexpregels,
+                    naarwortelregels,
+                    naarlogregels,
+                    naaropgaveregels
+                ];
+
+
+
+                multiFunction = {
+                    'Times': 1,
+                    'Plus': 1,
+                    'And': 1,
+                    'Or': 1,
+                    'add': 1,
+                    'multiply': 1
+                };
+
+                var equation = math.parse('');
+
+                var keysList = [];
+
+                updateLatex(equation);
+
+// om toch maar iets in de regelbox te schrijven
+                regelString1 = "Times(a,Plus(b,c))==Plus(Times(a,b),Times(a,c))";
+                regelNode1 = math.parse(regelString1);
+                var latex = regelNode1.toTex({
+                   parenthesis: parenthesis,
+                    implicit: implicit
+                       });
+                var largeLatex = "\\large " + latex;
+                    katex.render(largeLatex, regel1);
+
+
+                regelString2 = "Sin(x+y)==Sin(x)*Cos(y)+Sin(y)*Cos(x)";
+                regelNode2 = math.parse(regelString2);
+                var latex = regelNode2.toTex({
+                   parenthesis: parenthesis,
+                    implicit: implicit
+                       });
+                var largeLatex = "\\large " + latex;
+                    katex.render(largeLatex, regel2);
+// einde toch maar iets in regelbox schrijven
+
+                // wat er gebeurt als je iets rechtstreeks invult in de expressiebox
+                expr.oninput = function () {
+
+                    equation = math.parse(expr.value)
+                    updateLatex(equation);
+
+                }
+
+
+
+                ///*********************************************************************
+                ///  Keyboard handling
+                ///*********************************************************************
+
+                keyboardSelectElement = document.getElementById('keyboardType');
+                keyboardType = keyboardSelectElement.value;
+
+
+                // maak opzoektabel voor ingedrukte toetsen, gebaseerd op het gekozen keyboardType (voor de oude versies was het met invert door stommiteiten)
+                var keyLookup = keyboardType in keyboardlookups? keyboardlookups[keyboardType] : invertSimple(keyboards[keyboardType]);
+
+
+
+                ///// ************************
+                //// *** TOUCH EVENTS! ! !
+                //// ************************
+
+                // zingtouch listen region gedefinieerd. Dan enkel kijken naar een knop of daar geklikt is.
+                // natuurlijk wil ik eigenlijk gewoon swipes over het hele document detecteren en mappen naar de pijltjes commandos
+                var zt = new ZingTouch.Region(document.body);
+
+                var tweevingerswipe = new ZingTouch.Swipe({numInputs: 2});
+                var drievingerswipe = new ZingTouch.Swipe({numInputs: 3});
+
+                // eerst maakte ik het heledocument swipebaar. nu enkel nog de omgeving vd hoofdvergelijking
+                var heledocument = document.body;
+                var midden = document.getElementById('rondhoofdvergelijking');
+
+                // 1 vinger swipe 
+
+                    zt.bind(midden, 'swipe', function(e){
+                        //Actions here
+                        richting = e.detail.data[0].currentDirection;
+                        rechtsswipe = (richting < 45 || richting > 315);
+                        linksswipe = (richting > 135 && richting < 225);
+                        upswipe = (richting > 45 && richting < 135);
+                        downswipe = (richting > 225 && richting < 315);
+                        console.log("een vinger!" + richting);
+                        if(rechtsswipe) {console.log("rechtsswipe!"); kant = "right";}
+                        if(linksswipe) {console.log("linksswipe!"); kant= "left";}
+                        if(upswipe) {console.log("upswipe!"); kant = "up";}
+                        if(downswipe) {console.log("downswipe!"); kant = "down";}
+
+                        switch (kant) {
+                            case 'left': keysList.push('left'); e.preventDefault(); leftSelect(equation); break;
+                            case 'up': keysList.push('up'); e.preventDefault(); upSelect(equation); break;
+                            case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
+                            case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
+                        }
+
+                        
+                        console.log(e);
+                    }, false);
+
+                    // distance (voor de versies van 1 (bvb 7/7) en de versies van 0 (bvb 4-4) en de splitsingen van getallen (bvb 34 = 33+1) ) 
+                    // MAAR BLIJKBAAR BESTAAT DISTANCE NIET MEER IN ZINGTOUCH!!!
+                
+
+                // // 2 vinger swipe
+                //     zt.bind(heledocument, tweevingerswipe, function(e){
+                //         //Actions here
+                //         richting = e.detail.data[1].currentDirection;
+                //         rechtsswipe = (richting < 45 || richting > 315);
+                //         linksswipe = (richting > 135 && richting < 225);
+                //         upswipe = (richting > 45 && richting < 135);
+                //         downswipe = (richting > 225 && richting < 315);
+                //         console.log("2 vingers!" + richting);
+                //         if(rechtsswipe) {console.log("rechtsswipe!")}
+                //         if(linksswipe) {console.log("linksswipe!")}
+                //         if(upswipe) {console.log("upswipe!")}
+                //         if(downswipe) {console.log("downswipe!")}
+                //         console.log(e);
+                //     }, false);
+
+                // /// 3 finger swipe
+                //     zt.bind(heledocument, drievingerswipe, function(e){
+                //         //Actions here
+                //         richting = e.detail.data[2].currentDirection;
+                //         rechtsswipe = (richting < 45 || richting > 315);
+                //         linksswipe = (richting > 135 && richting < 225);
+                //         upswipe = (richting > 45 && richting < 135);
+                //         downswipe = (richting > 225 && richting < 315);
+                //         console.log("2 vingers!" + richting);
+                //         if(rechtsswipe) {console.log("rechtsswipe!")}
+                //         if(linksswipe) {console.log("linksswipe!")}
+                //         if(upswipe) {console.log("upswipe!")}
+                //         if(downswipe) {console.log("downswipe!")}
+                //         console.log(e);
+                //     }, false);
+
+                document.onkeydown = keysPressed;
+
+
+
+
+                // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
+                // equation = math.parse('Select(Times(4,9))^2( + y^2 == Select(Times(2,512))');
+                var equationnummer = 1;
+                equation = math.parse('Select(pow(Times(x,Plus(9,x)),2))==x');
+
+                equation = math.parse(opgaven[equationnummer].opgave);
+
+                prevEquation = equation;
+                updateLatex(equation);
+
+            </script>
+
+    <button type="button" class="btn btn-primary" id="jqueryknop" > jquery </button>
+
+        </div>
+
+    </body>
