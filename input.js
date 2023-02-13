@@ -7,6 +7,7 @@ var keyboardlookups = {
 
         Slash: 'minus',
         Period: 'plus',
+        Comma: 'plus',
         Quote: 'divide',
         Semicolon: 'times',
         BracketRight: 'nthroot',
