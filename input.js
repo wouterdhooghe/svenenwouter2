@@ -445,7 +445,7 @@ function keysPressed(e) {
 
         switch (keyLookup[e.code]) {
             case 'left': e.preventDefault(); commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
-            case 'up': e.preventDefault(); substitueerNaar(equation, "boven"); break;
+            case 'up': e.preventDefault(); substitueerRest(equation); break;
             case 'right': e.preventDefault(); commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
             case 'down': e.preventDefault(); substitueerNaar(equation, "onder"); break;
 

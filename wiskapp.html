@@ -33,7 +33,7 @@
             <div class='row'>
 
                 <div class='col-md-4'>
-                    <p class="card-text" id="result"> </p>
+                    <p class="card-text"> </p>
                 </div>
 
                 <div class='col-md-4'>
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class='col-md-1'>
-                    <p class="card-text" > </p>
+                    <p class="card-text" id="result"> </p>
                 </div>
 
                 <div class='col-md-3'>
@@ -63,8 +63,8 @@
             </div>
 
                 <div class='row'>
-                    <div class="col-md-3">
-                        <p class="card-text" > bzz </p>
+                    <div class="col-md-3"  id="bzz">
+                        <p class="card-text"> bzz </p>
                     </div>
 
                     <div class='col-md-1'>
@@ -233,9 +233,9 @@
                 </div>
 
                 <div class='row'>
-                    <div class="col-md-3">
+                    <div class="col-md-3"   id="luchtballon">
                         <div class='col-md-1'>
-                            <p class="card-text">  </p>
+                            <p class="card-text"> luchtballon </p>
                         </div>
                     </div>
 
@@ -256,9 +256,9 @@
                         <p class="card-text"> </p>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3" id="vis">
                         <div class='col-md-1'>
-                            <p class="card-text">  </p>
+                            <p class="card-text" > vis </p>
                         </div>
                          </div>
 
@@ -617,8 +617,21 @@
                 ],
 
                 introexpregels = [
-                    'introexp'
+                    'introexp',
+                    'eenheidsbreukAlsMinEenExponent'
                 ],
+
+                properregels = [
+                'wortelNaarMachtNotatie1',
+                'wortelNaarMachtNotatie2',
+                'wortelNaarMachtNotatie3',
+                'maalbreukSplitsen'
+                ];
+
+                vuilregels = [
+                'machtNaarWortelNotatie',
+                'maalbreukOntsplitsen'
+                ];
 
                 vertaalwortelregels = [
 
@@ -842,6 +855,10 @@
 
                 naarbreukregels = [
  //                   'vergelijkingNegeren',
+                    'minEenExponentAlsEenheidsbreuk',
+                    'negatieveExponentAlsEenheidsbreuk',
+                    'vermenigvuldigingMetEenheidsbreuk',
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
                     'introDeling'
                     // 'maalbreukOntsplitsen',
                     // 'minEenExponentAlsEenheidsbreuk',
@@ -853,6 +870,7 @@
 
                 naarexpregels = [
   //                  'vergelijkingNegeren',
+                    'eenheidsbreukAlsNegatieveExponent',
                     'introExp',
                     'introExp1'
                     // 'eenheidsbreukAlsMinEenExponent',
@@ -984,7 +1002,7 @@
 
                 // zingtouch listen region gedefinieerd. Dan enkel kijken naar een knop of daar geklikt is.
                 // natuurlijk wil ik eigenlijk gewoon swipes over het hele document detecteren en mappen naar de pijltjes commandos
-                var zt = new ZingTouch.Region(document.body);
+
 
                 var tweevingerswipe = new ZingTouch.Swipe({numInputs: 2});
                 var drievingerswipe = new ZingTouch.Swipe({numInputs: 3});
@@ -992,10 +1010,13 @@
                 // eerst maakte ik het heledocument swipebaar. nu enkel nog de omgeving vd hoofdvergelijking
                 var heledocument = document.body;
                 var midden = document.getElementById('rondhoofdvergelijking');
+                var luchtballon = document.getElementById('luchtballon');
+                var vis = document.getElementById('vis');
+                var bzz = document.getElementById('bzz');
 
-                // 1 vinger swipe 
-
-                    zt.bind(midden, 'swipe', function(e){
+                // 1 vinger swipe op equation
+                var ztEquation = new ZingTouch.Region(heledocument);
+                    ztEquation.bind(midden, 'swipe', function(e){
                         //Actions here
                         richting = e.detail.data[0].currentDirection;
                         rechtsswipe = (richting < 45 || richting > 315);
@@ -1019,6 +1040,86 @@
                         console.log(e);
                     }, false);
 
+                    // 1 vinger swipe op luchtballon (voor shift)
+                    var ztLuchtballon = new ZingTouch.Region(heledocument);
+                        ztLuchtballon.bind(luchtballon, 'swipe', function(e){
+                        //Actions here
+                        richting = e.detail.data[0].currentDirection;
+                        rechtsswipe = (richting < 45 || richting > 315);
+                        linksswipe = (richting > 135 && richting < 225);
+                        upswipe = (richting > 45 && richting < 135);
+                        downswipe = (richting > 225 && richting < 315);
+                        console.log("een vinger!" + richting);
+                        if(rechtsswipe) {console.log("rechtsswipe!"); kant = "right";}
+                        if(linksswipe) {console.log("linksswipe!"); kant= "left";}
+                        if(upswipe) {console.log("upswipe!"); kant = "up";}
+                        if(downswipe) {console.log("downswipe!"); kant = "down";}
+
+                        switch (kant) {
+                            case 'left': keysList.push('shift left'); e.preventDefault(); leftSlurp(equation); break;
+                            case 'up': out.innerHTML = 'shift up'; break;
+                            case 'right': keysList.push('shift right'); e.preventDefault(); rightSlurp(equation); break;
+                            case 'down': keysList.push('shift down'); e.preventDefault(); updateLatex(flatten(equation)); break;
+                        }
+
+                        
+                        console.log(e);
+                    }, false);
+
+                    // 1 vinger swipe op vis voor alt (links rechts schuiven; op en neer voor benoemen en vervangen)
+                    // TODO: mss op termijn letters klaarzetten waarnaar je naartoe kan swipen om direct te kiezen met welke letter je de benaming doet!
+                    // TODO: mss altijd standaard benoemen met een letter die nog niet voorkwam tot nu toe
+                    var ztVis = new ZingTouch.Region(heledocument);
+                        ztVis.bind(vis, 'swipe', function(e){
+                        //Actions here
+                        richting = e.detail.data[0].currentDirection;
+                        rechtsswipe = (richting < 45 || richting > 315);
+                        linksswipe = (richting > 135 && richting < 225);
+                        upswipe = (richting > 45 && richting < 135);
+                        downswipe = (richting > 225 && richting < 315);
+                        console.log("een vinger!" + richting);
+                        if(rechtsswipe) {console.log("rechtsswipe!"); kant = "right";}
+                        if(linksswipe) {console.log("linksswipe!"); kant= "left";}
+                        if(upswipe) {console.log("upswipe!"); kant = "up";}
+                        if(downswipe) {console.log("downswipe!"); kant = "down";}
+
+                        switch (kant) {
+                            case 'left': e.preventDefault(); commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
+                            case 'up': e.preventDefault(); substitueerNaar(equation, "boven"); break;
+                            case 'right': e.preventDefault(); commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
+                            case 'down': e.preventDefault(); substitueerNaar(equation, "onder"); break;
+                        }
+
+                        
+                        console.log(e);
+                    }, false);
+
+
+                    // 1 vinger swipe op bzz voor nog iets anders 
+                    var ztBzz = new ZingTouch.Region(heledocument);
+                    ztBzz.bind(bzz, 'swipe', function(e){
+                        //Actions here
+                        richting = e.detail.data[0].currentDirection;
+                        rechtsswipe = (richting < 45 || richting > 315);
+                        linksswipe = (richting > 135 && richting < 225);
+                        upswipe = (richting > 45 && richting < 135);
+                        downswipe = (richting > 225 && richting < 315);
+                        console.log("een vinger!" + richting);
+                        if(rechtsswipe) {console.log("rechtsswipe!"); kant = "right";}
+                        if(linksswipe) {console.log("linksswipe!"); kant= "left";}
+                        if(upswipe) {console.log("upswipe!"); kant = "up";}
+                        if(downswipe) {console.log("downswipe!"); kant = "down";}
+
+                        switch (kant) {
+                            case 'left': keysList.push('left'); e.preventDefault(); leftSelect(equation); break;
+                            case 'up': keysList.push('up'); e.preventDefault(); upSelect(equation); break;
+                            case 'right': keysList.push('right'); e.preventDefault(); rightSelect(equation); break;
+                            case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
+                        }
+
+                        
+                        console.log(e);
+                    }, false);
                     // distance (voor de versies van 1 (bvb 7/7) en de versies van 0 (bvb 4-4) en de splitsingen van getallen (bvb 34 = 33+1) ) 
                     // MAAR BLIJKBAAR BESTAAT DISTANCE NIET MEER IN ZINGTOUCH!!!
                 

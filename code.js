@@ -1143,7 +1143,7 @@ function deleteAtAdress(adress, bignode) {
   //   console.log('adrestext:' + adressText + ' subst: ' + subst);
   // PAS OP WANT DIT IS DESTRUCTIEF en vERANDERT DE OORSPRONKELIJKE VARIABELE !!!
   // IS DAT ECHT ZO? CHECK DIT!
-  console.log(adressText);
+  console.log("adressText is : " + adressText);
   adressText = adressText.slice(0,adressText.length - arg.length);
   eval("equation" + adressText + 'args' + ".splice(1,1)");
   return eq;
@@ -1231,7 +1231,7 @@ function updateF(nieuweNode, fknopString) {
       ? nieuweNode.toTex({
           parenthesis: parenthesis,
           implicit: implicit
-        })
+        }) 
       : "";
          console.log('LaTeX expression:', latex);
     var largeLatex = "\\large " + latex;
@@ -2107,6 +2107,47 @@ function substitueerExpr(vgl, exprNode, substitutie) {
   
   return newVgl;
   }
+
+function substitueerRest(eq,locatie) {
+  //nu kan je ook naar rest substitueren ipv enkel onder of boven
+
+  prevEquation = equation.cloneDeep();
+  // check of we in een kant van een vgl zitten
+  // check of we een letter geselecteerd hebben
+  // check of hierboven een vlg staat
+selectAdres = adresses("Select", eq)[0];
+selectNode = readAtAdress(selectAdres, eq);
+pad = buildPath(eq);
+parentAdres = returnWithoutLast(selectAdres);
+grandParentAdres = returnWithoutLast(parentAdres);
+grandParentNode = readAtAdress(grandParentAdres,eq);
+console.log("grpadresbegin" + grandParentAdres);
+vglNummer = Number(/\d+/.exec(parentAdres[parentAdres.length-1]));
+lidVanVgl = Number(/\d+/.exec(selectAdres[selectAdres.length-1]));
+nummerLaatsteVgl = grandParentNode.args.length
+
+
+  // versie waarbij je de te elimineren expressie moet selecteren
+  // exprNode = selectNode.args[0];
+  // substitutie = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
+
+  // versie waarbij je de te kopieren expressie moet selecteren
+  substitutie = selectNode.args[0];
+  exprNode = readAtAdress(parentAdres,eq).args[1-lidVanVgl];
+
+ eq = substitueerExpr(eq,exprNode,substitutie);
+ eq = substituteSelected(selectIt(exprNode), eq);
+
+ // nu huidige selectie terug veranderen in de substitutie
+ 
+
+      // oorsprongAdres = parentAdres;
+      // //oorsprongAdres.push("args[" + (vglNummer)+ "]");
+      // console.log('delete op adres: ' + oorsprongAdres);
+      // deleteAtAdress(oorsprongAdres,eq);
+
+  updateLatexAndFs(flatten(eq));
+}
 
 function substitueerNaar(eq, locatie) {
   prevEquation = equation.cloneDeep();
