@@ -445,9 +445,13 @@ function keysPressed(e) {
 
         switch (keyLookup[e.code]) {
             case 'left': e.preventDefault(); commuteSelectedWithPrevious(equation); keysList.push('commuteWithPrevious'); break;
-            case 'up': e.preventDefault(); substitueerRest(equation); break;
+            // TODO
+            // alt up zou eigenlijk 'vinden' moeten zijn: multiselect alle copies van huidige selectie
+            // dan kan ctrl-letter of alt-letter 'benoemen' zijn =  alles substitueren met die letter en een equation toevoegen met de assignement
+            // voor de touch kan het mss ook goed zijn om alt down (naast 'vervangen') ook 'benoemen' te laten zijn, maar met een automatisch gekozen nieuwe letter!
+            case 'up': e.preventDefault(); substitueerNaar(equation, "boven") ; break;
             case 'right': e.preventDefault(); commuteSelectedWithNext(equation); keysList.push('commuteWithNext'); break;
-            case 'down': e.preventDefault(); substitueerNaar(equation, "onder"); break;
+            case 'down': e.preventDefault(); substitueerRest(equation); break;
 
             // Specialkeys  
             case 'plus': replaceWithPlus(); keysList.push('replacePlus'); break;

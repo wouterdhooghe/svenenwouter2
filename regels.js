@@ -962,8 +962,8 @@ regels = {
         }
     },
 
-    factorBuitenhalen: {
-        naam: 'factor buitenhalen',
+    factorBuitenhalenMetC: {
+        naam: 'factor buitenhalen met C',
         input: {
             expr: math.parse('Plus(a,b)'),
             unknowns: ['a','b']
@@ -988,6 +988,41 @@ regels = {
         
         },
         extraEquation: math.parse('c==Select(c)')
+    },
+
+    factorBuitenhalenMetFunctie: {
+        naam: 'factor buitenhalen met functie',
+        input: {
+            expr: math.parse('Plus(a,b)'),
+            unknowns: ['a','b']
+        },
+        output: {
+            expr: math.parse('Times(c,Plus(a/c,b/c))'),
+            unknowns: ['a','b']
+        },
+        functie: function(expr) {
+
+            var sameFactor = true;
+            
+            if (expr.name == 'Plus') {
+                
+                    console.log('good one');
+                    commonFactor = expr.args[0].args[0];
+                    expr.args.forEach(function(node, index, parent) {
+                        node.args[0].equals(commonFactor) & (node.name == 'Times')
+                          ? (sameFactor = sameFactor)
+                          : (sameFactor = false);
+                      });
+                    if (sameFactor) {
+                        newTermsArray = expr.args.map(term => new math.expression.node.OperatorNode("/", "divide", [term, divisor]));
+                    } 
+                    newPlus = makeMulti('Plus', newTermsArray);
+
+                    return makeMulti('Times', [commonFactor, newPlus]);
+                
+            }
+        
+        }
     },
 
     productAlsMacht: {
