@@ -5,58 +5,68 @@
 	<script src="script.js"></script>
 	<style>
         body {
-            display: flex;
-            flex-direction: column;
+            /* display: flex;
+            flex-direction: column; */
             justify-content: center;
             align-items: center;
             text-align: center;
             font-size: 50px;
         }
 
-        #wordDisplay {
-            margin: 50px 0;
+        .flex-container {
+                        /* We first create a flex layout context */
+            display: flex;
+            
+            /* Then we define the flow direction 
+                and if we allow the items to wrap 
+            * Remember this is the same as:
+            * flex-direction: row;
+            * flex-wrap: wrap;
+            */
+            flex-flow: row wrap;
+            
+            /* Then we define how is distributed the remaining space */
+            justify-content: space-around;
+            
+            padding: 0;
+            margin: 0;
+            list-style: none;
         }
 
-        #wordImageContainer {
-            position: relative;
-            width: 200px;
-            height: 200px;
+        .flex-item {
+            /* background: tomato; */
+            padding: 5px;
+            /* width: 200px;
+            height: 150px; */
+            margin-top: 10px;
+            /* line-height: 150px; */
+            /* color: white; */
+            /* font-weight: bold; */
+            /* font-size: 3em; */
+            text-align: center;
         }
 
         #wordImage {
-            position: absolute;
-            top: 0;
-            left: 0;
-            /* width: 500px; */
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        #placeholderImage {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: none;
-        }
-
-        .wordAttribute {
-            margin: 20px 0;
+            width: 500px;
         }
 
 	</style>
 </head>
 <body>
-	<div id="godDisplay" onclick="attribute = 'godDisplay';">G</div>
 
-    <div id="landDisplay" onclick="attribute = 'landDisplay';">L</div>
+<div class="flex-container">
+	<div class="flex-item" id="godDisplay" onclick="attribute = 'godDisplay';">G</div>
 
-    <div id="objectDisplay" onclick="attribute = 'objectDisplay';">O</div>
+    <div class="flex-item" id="landDisplay" onclick="attribute = 'landDisplay';">L</div>
 
-    <div id="schaalDisplay" onclick="attribute = 'schaalDisplay';">S</div>
+    <div class="flex-item" id="objectDisplay" onclick="attribute = 'objectDisplay';">O</div>
+
+    <div class="flex-item" id="schaalDisplay" onclick="attribute = 'schaalDisplay';">S</div>
+
+    <div class="flex-item" id="atoomDisplay" onclick="attribute = 'atoomDisplay';">A</div>
+
+    <div class="flex-item" id="eeuwDisplay" onclick="attribute = 'eeuwDisplay';">E</div>
+</div>
 
     <img id="wordImage" src="" alt="" width="500">
 

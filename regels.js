@@ -2,11 +2,37 @@ regels = {
 
     //TODO schrijf functies die nu allemaal de unaryMinus doen!
 
+    negatiefismaalmineen: {
+        naam: 'negatief getal als -1 keer schrijven',
+        input: {
+            expr: math.parse('unaryMinus(a)'),
+            unknowns: ['a']
+        },
+        output: {
+            expr: math.parse('Times(unaryMinus(1),a)'),
+            unknowns: ['a']
+        },
+
+    },
+
+    maalmineenisnegatief: {
+        naam: '-1 als een min schrijven',
+        input: {
+            expr: math.parse('Times(unaryMinus(1),a)'),
+            unknowns: ['a']
+        },
+        output: {
+            expr: math.parse('unaryMinus(a)'),
+            unknowns: ['a']
+        },
+
+    },
+
     introlog: {
         naam: 'ontschrap aalog = schrijf x als log',
         input: {
-            expr: math.parse('a'),
-            unknowns: ['a']
+            expr: math.parse('x'),
+            unknowns: ['x']
         },
         output: {
             expr: math.parse('log(pow(a,x),a)'),
