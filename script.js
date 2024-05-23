@@ -1,4 +1,6 @@
 
+// gewoon om te testen of git werkt nu
+
 godenDict = {
     1: {
         'god':'Icarus',
