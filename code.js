@@ -1,4 +1,5 @@
 
+
 //************************************* */
 // CUSTOM FUNCTIES
 //************************************* */
@@ -161,8 +162,16 @@ customFunctions.Select.toTex = function(node, options) {
 };
 
 //************************************* */
-// f knoppen
+// f knoppen en opgaveknop
 //************************************* */
+
+function nieuweopgave() {
+
+  equationnummer = (equationnummer + 1) % opgaven.length;
+  equation = math.parse(opgaven[equationnummer].opgave);
+  // prevEquation = equation;
+  updateLatex(equation);
+};
 
 function f1_hold(eq) {};
 function f2_hold(eq) {};
@@ -1239,6 +1248,7 @@ function updateF(nieuweNode, fknopString) {
 
     // display and re-render the expression
     katex.render(latex, eval(fknopString));
+    console.log("nieuwe latex gezet in " + fknopString);
   } catch (err) {
     fknopString.innerHTML = "error!!!";
   }
@@ -1288,13 +1298,16 @@ function updateLatexAndFs(eq) {
      console.log( "ffffffffffffff: " + f);
      console.log( "toegk bew: " + toegekendeRegels[f]);
     var previewArr = naar(eq,toegekendeRegels[f]);
+    console.log("previewARR van " + f + " is " + previewArr);
     var knop = f + "_button";
     if (previewArr) {
       updateF(previewArr[1],knop);
     } else {
       // DIT IS TE TRAAG OM ALTIJD TE DOEN dus liever direct de innerHTML
       // updateF(math.parse("geen naar gevonden"),knop);
-      eval(knop).innerHTML = "...";
+      prentjesbestand = knop + ".png";
+      eval(knop).innerHTML = '<img src="' + prentjesbestand +'" alt="basis uitdelen" width="50" height="50">';
+      console.log('prentje erop gezet bij '+ knop);
     }
     
   };
@@ -1817,6 +1830,7 @@ function applyEquality(eq,extraVgl) {
   selectNode = readAtAdress(selectAdress, eq);
 
   tweedeVgl = math.parse("Select(a)==b");
+
   if (extraVgl) {tweedeVgl=extraVgl}
   if (selectNode.args[0].name == "And" || selectNode.args[0].fn == "equal") {
 

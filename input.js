@@ -5,6 +5,11 @@ var keyboardlookups = {
         ArrowRight: 'right',
         ArrowDown: 'down',
 
+        // KeyH: 'left',
+        // KeyJ: 'up',
+        // KeyL: 'right',
+        // KeyK: 'down',
+
         Slash: 'minus',
         Period: 'plus',
         Comma: 'plus',
@@ -78,11 +83,11 @@ var keyboardlookups = {
         KeyE: 'e',
         KeyF: 'f',
         KeyG: 'g',
-        KeyH: 'h',
+       KeyH: 'h',
         KeyI: 'i',
-        KeyJ: 'j',
-        KeyK: 'k',
-        KeyL: 'l',
+       KeyJ: 'j',
+       KeyK: 'k',
+       KeyL: 'l',
         KeyM: 'm',
         KeyN: 'n',
         KeyO: 'o',
@@ -423,6 +428,7 @@ function keysPressed(e) {
             //  case 'y': e.preventDefault(); alert('CTRL - f');
             // case 'c': e.preventDefault(); alert('CTRL - f');
             // case 'b': e.preventDefault(); alert('CTRL - f');
+            case 'o': e.preventDefault(); nieuweopgave(); break;
 
         }
 

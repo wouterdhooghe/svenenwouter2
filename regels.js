@@ -206,15 +206,16 @@ regels = {
             unknowns: []
         },
     }, 
-    test: {
-        naam: 'test',
+    
+    elimPlus: {
+        naam: 'som met nul versimpelen',
         input: {
-            expr: math.parse('Plus(a,unaryMinus(a))'),
+            expr: math.parse('Plus(a,0)'),
             unknowns: ['a']
         },
         output: {
-            expr: math.parse('0'),
-            unknowns: []
+            expr: math.parse('a'),
+            unknowns: ['a']
         },
     }, 
 
@@ -345,6 +346,64 @@ regels = {
 
         
     },
+
+    plusbreukOntsplitsen: {
+        naam: 'breuken optellen',
+        input: {
+            expr: math.parse('Plus(a/b,c/b)'),
+            unknowns: ['a', 'b', 'c']
+        },
+        output: {
+            expr: math.parse('Plus(a,c)/b'),
+            unknowns: ['a', 'b', 'c']
+        },
+        functie: function(expr) {
+            if (expr.name == 'Plus') {
+                console.log("dit is een som");
+                if (expr.args.every(s => s.fn == 'divide' && s.args[1].equals(expr.args[0].args[1]))) {
+                    console.log('de som bevat enkel breuken met dezelfde noemer');
+                    tellerArgs = [];
+                    expr.args.forEach(breuk => {
+                        tellerArgs.push(breuk.args[0]);
+                    });
+                    teller = makeMulti('Plus', tellerArgs);
+                    newexp = new math.expression.node.OperatorNode("/", "divide", [teller, expr.args[0].args[1] ]);
+                    console.log('newexp =' + newexp.toString());
+                    return newexp;
+                }
+            }
+        }
+    },
+
+    plusbreukSplitsen: {
+        naam: 'breuk in factoren uit elkaar trekken (uitdelen)',
+        input: {
+            expr: math.parse('Plus(a,b)/c'),
+            unknowns: ['a', 'b', 'c']
+        },
+        output: {
+            expr: math.parse('Plus(a/c,b/c)'),
+            unknowns: ['a', 'b', 'c']
+        },
+        functie: function(expr) {
+            if (expr.fn == 'divide') {
+                if (expr.args[0].name == 'Plus') {
+                    console.log('breuk bestaat uit som');
+                    teller = expr.args[0];
+                    noemer = expr.args[1];
+    //                eersteBreuk = new math.expression.node.OperatorNode("/", "divide", [teller.args[0], noemer]);
+    //                restTeller = makeMulti('Plus', teller.args.slice(1,));
+    //                restBreuk = new math.expression.node.OperatorNode("/", "divide", [restTeller, noemer]);
+                    nieuweBreuken = teller.args.map(term => new math.expression.node.OperatorNode("/", "divide", [term, noemer]));
+                    newexp = makeMulti('Plus', nieuweBreuken);
+      //              newexp = new math.expression.node.OperatorNode("Plus", "add", [eersteBreuk, restBreuk]);
+                    console.log('newexp =' + newexp.toString());
+                    return newexp;
+                }
+            }
+        }
+    },
+
     maalbreukSplitsen: {
         naam: 'breuk in factoren uit elkaar trekken (eerste breuk eraf trekken)',
         input: {
@@ -1026,25 +1085,63 @@ regels = {
             expr: math.parse('Times(c,Plus(a/c,b/c))'),
             unknowns: ['a','b']
         },
-        functie: function(expr) {
+
+
+       functie: function(expr) {
 
             var sameFactor = true;
             
             if (expr.name == 'Plus') {
-                
+             
                     console.log('good one');
                     commonFactor = expr.args[0].args[0];
-                    expr.args.forEach(function(node, index, parent) {
-                        node.args[0].equals(commonFactor) & (node.name == 'Times')
-                          ? (sameFactor = sameFactor)
-                          : (sameFactor = false);
+                    newexpr = expr.map(function(term, index, parent) {
+                        if (term.args[0].equals(commonFactor) & (term.name == 'Times'))
+                        {
+                //            (sameFactor = sameFactor);
+                           return term.map(function(factor, index, parent) {
+                                if (factor.equals(commonFactor) & index == "args[0]")
+                                    {
+                                        console.log("index = ", index);
+                                        return math.parse(1);
+                                    }
+                                    else { 
+                                        return factor
+                                    }
+                            });
+                            // gezuiverdeterm = node;
+                            // gezuiverdeterm.args[0] = math.parse(1);
+                            // newTermsArray.push(gezuiverdeterm);
+                        }
+                        else {
+                            sameFactor = false;
+                            return term;
+                        }
+ 
                       });
                     if (sameFactor) {
-                        newTermsArray = expr.args.map(term => new math.expression.node.OperatorNode("/", "divide", [term, divisor]));
-                    } 
-                    newPlus = makeMulti('Plus', newTermsArray);
+ //                      newTermsArray = expr.args.map(term => new math.expression.node.OperatorNode("/", "divide", [term, commonFactor]));
 
-                    return makeMulti('Times', [commonFactor, newPlus]);
+                      //  alle gemaakte 1en weghalen
+                      newPlus = newexpr.map(function(term,index,parent) {
+                        if (term.name == 'Times') {
+                            if (term.args.some(s => s.value == 1)) {
+                                console.log('bevat product met 1');
+                                newfactors = [];
+                                term.args.forEach(factor => {if (factor.value != 1) {console.log('notone =' + factor.toString()); newfactors.push(factor)}});
+                                if (newfactors.length==0) {newfactors = [math.parse(1)]}
+                                newterm = makeMulti('Times', newfactors);
+                                console.log('newexp =' + newterm.toString());
+                                return newterm;
+                            }
+                        }
+                    
+                    });
+                        console.log('commonfactor = ', commonFactor);
+                        console.log('newplus = ', newPlus);
+                        return makeMulti('Times', [commonFactor, newPlus]);
+                    } 
+
                 
             }
         
