@@ -232,29 +232,45 @@ regels = {
     },
 
     nulNeutraalVoorPlus: {
-        naam: '0 neutraal element voor +',
-        input: {
-            expr: math.parse('Plus(a,unaryMinus(a))'),
-            unknowns: ['a']
-        },
-        output: {
-            expr: math.parse('0'),
-            unknowns: []
-        },
+        naam: 'nul neutraal voor plus',
+        input: 'Plus(a,0)',
+        output: 'a',
         functie: function(expr) {
-            if (expr.name == 'Plus') {
-                if (expr.args.some(s => s.value == 0)) {
-                    console.log('good onez');
-                    newterms = [];
-                    expr.args.forEach(term => {if (term.value != 0) {newterms.push(term)}});
-                    newexp = makeMulti('Plus', newterms);
-                    console.log('newexp =' + newexp.toString());
-                    return newexp;
-                } 
-            } 
-        
+            console.log('nnp aangeroepen met:', expr);
+            console.log('nnp expr type:', expr.type);
+            console.log('nnp expr fn:', expr.fn);
+            if (expr.fn && expr.fn.name) console.log('nnp expr fn name:', expr.fn.name);
+            if (expr.name) console.log('nnp expr name:', expr.name);
+            if (expr.args) console.log('nnp expr args:', expr.args);
+            
+            // Als het een Select is, kijk naar het argument
+            if (expr.name === 'Select') {
+                console.log('nnp Select gevonden, checking args[0]');
+                expr = expr.args[0];
+                console.log('nnp Binnen Select:', expr);
+                console.log('nnp Binnen Select type:', expr.type);
+                console.log('nnp Binnen Select fn:', expr.fn);
+                if (expr.fn && expr.fn.name) console.log('nnp Binnen Select fn name:', expr.fn.name);
+            }
+            
+            if (expr.type === 'FunctionNode' && expr.fn.name === 'Plus') {
+                console.log('nnp Plus gevonden met args:', expr.args);
+                let nietNulArgs = expr.args.filter(arg => {
+                    console.log('nnp checking arg:', arg);
+                    return !(arg.type == 'ConstantNode' && arg.value == 0);
+                });
+                
+                if (nietNulArgs.length == 0) {
+                    return new math.expression.node.ConstantNode(0);
+                }
+                
+                if (nietNulArgs.length == 1) {
+                    return nietNulArgs[0];
+                }
+                
+                return makeMulti('Plus', nietNulArgs);
+            }
         }
-
     },
     eenNeutraalVoorMaal: {
         naam: '1 neutraal element voor *',
@@ -691,35 +707,40 @@ regels = {
     },
     machtTorenAfbreken: {
         naam: 'machttoren afbreken',
-        input: {
-            expr: math.parse('pow(pow(x,a),b)'),
-            unknowns: ['x','a','b']
-        },
-        output: {
-            expr: math.parse('pow(x,Times(a,b))'),
-            unknowns: ['x','a','b']
+        input: 'pow(pow(a,b),c)',
+        output: 'pow(a,Times(b,c))',
+        functie: function(expr) {
+            if (expr.name == 'pow' && expr.args[0].name == 'pow') {
+                let basis = expr.args[0].args[0];
+                let exponent1 = expr.args[0].args[1];
+                let exponent2 = expr.args[1];
+                
+                // Maak een Times node voor de vermenigvuldiging van de exponenten
+                let nieuweExponent = makeMulti('Times', [exponent1, exponent2]);
+                
+                return new math.expression.node.FunctionNode('pow', [basis, nieuweExponent]);
+            }
         }
     },
     machtTorenOpbouwen: {
         naam: 'machttoren opbouwen',
-        input: {
-            expr: math.parse('pow(x,Times(a,b))'),
-            unknowns: ['x','a','b']
-        },
-        output: {
-            expr: math.parse('pow(pow(x,a),b)'),
-            unknowns: ['x','a','b']
-        },
+        input: 'pow(a,Times(b,c))',
+        output: 'pow(pow(a,b),c)',
         functie: function(expr) {
-            if (expr.name == 'pow' && expr.args[1].name == "Times") {
-                console.log('good one');
-                base = expr.args[0];
-                exponentArray = expr.args[1].args;
-                lastExponent = exponentArray.pop();
-                restProduct = makeMulti('Times', exponentArray);
-                newBase = new math.expression.node.FunctionNode('pow', [base,restProduct]);
-                newexpr = new math.expression.node.FunctionNode('pow', [newBase,lastExponent]);
-                return newexpr;
+            if (expr.name == 'pow' && expr.args[1].fn == 'Times') {
+                let basis = expr.args[0];
+                let exponentFactors = expr.args[1].args;
+                
+                // Neem de eerste factor als eerste exponent
+                let exponent1 = exponentFactors[0];
+                
+                // Maak een Times node van de overige factoren voor de tweede exponent
+                let exponent2 = exponentFactors.length > 2 
+                    ? makeMulti('Times', exponentFactors.slice(1))
+                    : exponentFactors[1];
+                
+                let binnenMacht = new math.expression.node.FunctionNode('pow', [basis, exponent1]);
+                return new math.expression.node.FunctionNode('pow', [binnenMacht, exponent2]);
             }
         }
     },
@@ -787,6 +808,39 @@ regels = {
                 return makeMulti('Times', machtArray);
             }
 
+        }
+    },
+
+    machtVanDeling: {
+        naam: 'macht van een deling',
+        input: {
+            expr: math.parse('pow(a/b,n)'),
+            unknowns: ['a','b','n']
+        },
+        output: {
+            expr: math.parse('pow(a,n)/pow(b,n)'),
+            unknowns: ['a','b','n']
+        },
+        functie: function(expr) {
+            console.log('machtVanDeling functie aangeroepen');
+            console.log('expr type:', expr.type);
+            console.log('expr name:', expr.name);
+            if (expr.name == 'pow') {
+                console.log('is een macht');
+                console.log('basis type:', expr.args[0].type);
+                console.log('basis fn:', expr.args[0].fn);
+                if (expr.args[0].fn == 'divide') {
+                    console.log('macht van een deling gevonden');
+                    let teller = expr.args[0].args[0];
+                    let noemer = expr.args[0].args[1];
+                    let exponent = expr.args[1];
+                    
+                    let tellerMacht = new math.expression.node.FunctionNode("pow", [teller, exponent]);
+                    let noemerMacht = new math.expression.node.FunctionNode("pow", [noemer, exponent]);
+                    
+                    return new math.expression.node.OperatorNode("/", "divide", [tellerMacht, noemerMacht]);
+                }
+            }
         }
     },
         
@@ -1306,5 +1360,159 @@ regels = {
         }
     },                     
 
+    delingMetGelijkeExponenten: {
+        naam: 'deling met gelijke exponenten',
+        input: {
+            expr: math.parse('pow(x,n)/pow(y,n)'),
+            unknowns: ['x','y','n']
+        },
+        output: {
+            expr: math.parse('pow(x/y,n)'),
+            unknowns: ['x','y','n']
+        },
+        functie: function(expr) {
+            if (expr.fn == 'divide') {
+                if (expr.args.every(factor => factor.name == 'pow')) {
+                    console.log('deling van machten gevonden');
+                    let teller = expr.args[0];
+                    let noemer = expr.args[1];
+                    
+                    // Check of de exponenten gelijk zijn
+                    if (teller.args[1].equals(noemer.args[1])) {
+                        let basis = new math.expression.node.OperatorNode("/", "divide", 
+                            [teller.args[0], noemer.args[0]]);
+                        let exponent = teller.args[1];  // we nemen een van beide exponenten
+                        
+                        return new math.expression.node.FunctionNode('pow', [basis, exponent]);
+                    }
+                }
+            }
+        }
+    },
+
+    plusMinusNaarMin: {
+        naam: 'plus minus naar min',
+        input: 'Plus(a,unaryMinus(b))',
+        output: 'Minus(a,b)',
+        functie: function(expr) {
+            if (expr.fn == 'Plus') {
+                let minusIndex = expr.args.findIndex(arg => arg.name == 'unaryMinus');
+                if (minusIndex !== -1) {
+                    let otherArgs = expr.args.filter((arg, index) => index !== minusIndex);
+                    let leftSide = otherArgs.length === 1 
+                        ? otherArgs[0] 
+                        : makeMulti('Plus', otherArgs);
+                    
+                    return new math.expression.node.OperatorNode('-', 'subtract', 
+                        [leftSide, expr.args[minusIndex].args[0]]);
+                }
+            }
+        }
+    },
+
+    minNaarPlusMinus: {
+        naam: 'min naar plus minus',
+        input: 'Minus(a,b)',
+        output: 'Plus(a,unaryMinus(b))',
+        functie: function(expr) {
+            if (expr.fn == 'subtract') {
+                let minusTerm = new math.expression.node.FunctionNode('unaryMinus', [expr.args[1]]);
+                
+                if (expr.args[0].fn == 'Plus') {
+                    let newArgs = [...expr.args[0].args, minusTerm];
+                    return makeMulti('Plus', newArgs);
+                } else {
+                    return makeMulti('Plus', [expr.args[0], minusTerm]);
+                }
+            }
+        }
+    },
+
+    basisuitdelen: {
+        naam: 'basis uitdelen',
+        input: 'pow(a,b)',
+        output: 'pow(a,Times(b,1))',
+        functie: function(expr) {
+            if (expr.name == 'pow') {
+                let basis = expr.args[0];
+                let exponent = expr.args[1];
+                
+                // Gebruik makeMulti in plaats van OperatorNode
+                let nieuweExponent = makeMulti('Times', [exponent]);
+                
+                return new math.expression.node.FunctionNode('pow', [basis, nieuweExponent]);
+            }
+        }
+    },
+
+    machtMetUnaryMinusInExponent: {
+        naam: 'macht met unary minus in exponent',
+        input: 'pow(divide(a,b),unaryMinus(n))',
+        output: 'pow(divide(b,a),n)',
+        functie: function(expr) {
+            if (expr.name == 'pow') {
+                // Check of de basis een deling is
+                let basis = expr.args[0];
+                if (basis.fn != 'divide') return;
+                
+                // Check of de exponent een unaryMinus is
+                let exponent = expr.args[1];
+                if (exponent.name != 'unaryMinus') return;
+                
+                // Haal de teller en noemer uit de basis
+                let teller = basis.args[0];
+                let noemer = basis.args[1];
+                
+                // Maak een nieuwe deling met teller en noemer omgewisseld
+                let nieuweBasis = new math.expression.node.OperatorNode('/', 'divide', [noemer, teller]);
+                
+                // Gebruik de expressie binnen de unaryMinus als nieuwe exponent
+                let nieuweExponent = exponent.args[0];
+                
+                return new math.expression.node.FunctionNode('pow', [nieuweBasis, nieuweExponent]);
+            }
+        }
+    },
+
+    nulUitSomSchrappen: {
+        naam: 'nul uit som schrappen',
+        input: 'Plus(a,0,b)',
+        output: 'Plus(a,b)',
+        functie: function(expr) {
+            if (expr.fn == 'Plus') {
+                // Filter alle argumenten die niet 0 zijn
+                let nietNulArgs = expr.args.filter(arg => 
+                    !(arg.type == 'ConstantNode' && arg.value == 0)
+                );
+                
+                // Als er geen argumenten overblijven, return 0
+                if (nietNulArgs.length == 0) {
+                    return new math.expression.node.ConstantNode(0);
+                }
+                
+                // Als er maar 1 argument overblijft, return dat argument
+                if (nietNulArgs.length == 1) {
+                    return nietNulArgs[0];
+                }
+                
+                // Anders maak een nieuwe Plus met de overgebleven argumenten
+                return makeMulti('Plus', nietNulArgs);
+            }
+        }
+    },
 
 };
+
+uitdeelregels = [
+    'brengLinkseFactorBinnenMetFunctie',
+    'simpeleBreukUitElkaarTrekken',
+    'maalbreukSplitsen',
+    'machtVanProduct',
+    'machtVanProductZonderDeling',
+    'machtVanDeling',  // Nieuwe regel toegevoegd
+    'productOnderDeWortel',
+    'wortelVanBreuk',
+    'logUitdelenOverMaal',
+    'logUitdelenOverExp',
+    'delingMetGelijkeExponenten'
+];

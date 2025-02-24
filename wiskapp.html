@@ -84,6 +84,10 @@
                         </div>
                          </div>
 
+                    <div class="col-md-0">
+                         <button class="math-button" id="exp_button" onclick="applyPower(); keysList.push('applyPower')">^</button>
+                    </div>
+
 
                     <div class="col-md-4">
                     <div class="cord">
@@ -94,8 +98,12 @@
                     </div>
                      </div>
 
+                    <div class="col-md-0">
+                        <button class="math-button" id="root_button" onclick="applyNthroot(); keysList.push('applyNthroot')">√</button>
+                    </div>
 
-                    <div class="col-md-4">
+
+                    <div class="col-md-3">
                         <div class="cord">
                             <div class='card-header'> F6: schrap wortel</div>
                             <div class="card-body">
@@ -116,6 +124,10 @@
                             </div>
                     </div>
 
+                    <div class="col-md-0">
+                        <button class="math-button" id="multiply_button" onclick="applyTimes(); keysList.push('applyTimes')">×</button>
+                    </div>
+
                     <div class="col-md-4">
                     <div class="cord">
                         <div class='card-header'> F8: -1 regels</div>
@@ -125,7 +137,11 @@
                     </div>
                      </div>
 
-                     <div class="col-md-4">
+                    <div class="col-md-0">
+                        <button class="math-button" id="divide_button" onclick="applyDivide(); keysList.push('applyDivide')">÷</button>
+                    </div>
+
+                     <div class="col-md-3">
                         <div class="cord">
                             <div class='card-header'> F9: schrap 1</div>
                             <div class="card-body">
@@ -146,6 +162,10 @@
                             </div>
                     </div>
 
+                    <div class="col-md-0">
+                        <button class="math-button" id="plus_button" onclick="applyPlus(); keysList.push('applyPlus');">+</button>
+                    </div>
+
                     <div class="col-md-4">
                     <div class="cord">
                         <div class='card-header'> F11: vertaal </div>
@@ -155,9 +175,13 @@
                     </div>
                      </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-0">
+                        <button class="math-button" id="min_button" onclick="applyMinus(); keysList.push('applyMinus')">-</button>
+                    </div>
+
+                    <div class="col-md-3">
                         <div class="cord">
-                            <div class='card-header'> F12: schrap naar 0</div>
+                            <div class='card-header'> F12: schrap 0</div>
                             <div class="card-body">
                                 <p class="card-text" id="f12_button" onclick="f12(equation)">$$$$</p>
                             </div>
@@ -188,11 +212,11 @@
                     </div>
                      </div>
 
-                     <div class="col-md-4" id="vis">
+                     <div class="col-md-4" id="vlinder">
                         <div class="cord">
-                            <div class='card-header'> vis</div>
+                            <div class='card-header'> vlinder</div>
                             <div class="card-body">
-                                <p class="card-text"> <img src="vis.png" alt="basis uitdelen" width="50" height="50"> </p>
+                                <p class="card-text"> <img src="vervangvlinder.jpg" alt="vervangvlinder" width="50" height="50"> </p>
                             </div>
                         </div>
                          </div>
@@ -592,11 +616,11 @@
                     'machtNaarWortelNotatie',
                     'wortelNaarMachtNotatie1',
                     'wortelNaarMachtNotatie2',
-                    // IK MIS HIER EEN MIN NAAR + REGEL!
                     'vermenigvuldigingMetEenheidsbreuk',
                     'simpeleBreukUitElkaarTrekken',
-                    'vermenigvuldigingGetalMetEenheidsbreuk'
-
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
+                    'plusMinusNaarMin',
+                    'minNaarPlusMinus'
                 ];
 
             // TODO tot hier lijken de regels compleet!
@@ -609,7 +633,9 @@
 
                 ladderregels = [
                 'machtVanProduct',
+                    'machtVanDeling',
                     'productMetGelijkeExponenten',
+                    'delingMetGelijkeExponenten',
                     'productOnderDeWortel',
                     'productVanGelijkeWortels',
                     'breukVanWortels',
@@ -627,10 +653,12 @@
                 hogeladderregels = [
                 'machtVanProduct',
                     'productMetGelijkeExponenten',
+                    'delingMetGelijkeExponenten',
                     'productOnderDeWortel',
                     'productVanGelijkeWortels',
                     'breukVanWortels',
-                    'wortelVanBreuk'
+                    'wortelVanBreuk',
+                    'machtVanDeling'
                 ];
 
                 schrapexpregels = [
@@ -685,8 +713,10 @@
 
                 schrapnaar0regels = [
                 // a+0->a
+                'nulUitSomSchrappen',
                 'nulNeutraalVoorPlus',
                 'schrapMin'
+                
                 ];
 
                 basisuitdeelregels = [
@@ -695,6 +725,8 @@
                     'somVanExponentenNaarVermenigvuldiging',
                     'machtTorenAfbreken',
                     'machtTorenOpbouwen'
+
+
                 ];
 
                 uitdeelregels = [
@@ -709,6 +741,7 @@
                 ];
 
                 min1regels = [
+                'machtMetUnaryMinusInExponent',
                 'minEenExponentAlsEenheidsbreuk',
                 'eenheidsbreukAlsMinEenExponent',
                  'negatiefismaalmineen',
@@ -1005,7 +1038,7 @@
                 var heledocument = document.body;
                 var midden = document.getElementById('rondhoofdvergelijking');
                 var luchtballon = document.getElementById('luchtballon');
-                var vis = document.getElementById('vis');
+                var vlinder = document.getElementById('vlinder');
                 var bzz = document.getElementById('bzz');
 
                 // 1 vinger swipe op equation
@@ -1034,6 +1067,32 @@
                         console.log(e);
                     }, false);
 
+                // 2 vinger swipe op equation: werkt maar detecteert niet zo goed....
+                var ztEquation = new ZingTouch.Region(heledocument);
+                    ztEquation.bind(midden, tweevingerswipe, function(e){
+                        //Actions here
+                        richting = e.detail.data[0].currentDirection;
+                        rechtsswipe = (richting < 45 || richting > 315);
+                        linksswipe = (richting > 135 && richting < 225);
+                        upswipe = (richting > 45 && richting < 135);
+                        downswipe = (richting > 225 && richting < 315);
+                        console.log("een vinger!" + richting);
+                        if(rechtsswipe) {console.log("rechtsswipe!"); kant = "right";}
+                        if(linksswipe) {console.log("linksswipe!"); kant= "left";}
+                        if(upswipe) {console.log("upswipe!"); kant = "up";}
+                        if(downswipe) {console.log("downswipe!"); kant = "down";}
+
+                        switch (kant) {
+                            case 'left': keysList.push('left'); e.preventDefault(); leftSlurp(equation); break;
+                            case 'up': keysList.push('up'); e.preventDefault(); upSelect(equation); break;
+                            case 'right': keysList.push('right'); e.preventDefault(); rightSlurp(equation); break;
+                            case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
+                        }
+
+                        
+                        console.log(e);
+                    }, false);
+                    
                     // 1 vinger swipe op luchtballon (voor shift)
                     var ztLuchtballon = new ZingTouch.Region(heledocument);
                         ztLuchtballon.bind(luchtballon, 'swipe', function(e){
@@ -1060,11 +1119,11 @@
                         console.log(e);
                     }, false);
 
-                    // 1 vinger swipe op vis voor alt (links rechts schuiven; op en neer voor benoemen en vervangen)
+                    // 1 vinger swipe op vlinder voor alt (links rechts schuiven; op en neer voor benoemen en vervangen)
                     // TODO: mss op termijn letters klaarzetten waarnaar je naartoe kan swipen om direct te kiezen met welke letter je de benaming doet!
                     // TODO: mss altijd standaard benoemen met een letter die nog niet voorkwam tot nu toe
-                    var ztVis = new ZingTouch.Region(heledocument);
-                        ztVis.bind(vis, 'swipe', function(e){
+                    var ztvlinder = new ZingTouch.Region(heledocument);
+                        ztvlinder.bind(vlinder, 'swipe', function(e){
                         //Actions here
                         richting = e.detail.data[0].currentDirection;
                         rechtsswipe = (richting < 45 || richting > 315);
@@ -1089,7 +1148,7 @@
                     }, false);
 
 
-                    // 1 vinger swipe op bzz voor nog iets anders 
+                    // 1 vinger swipe op bzz voor nog iets anders...
                     var ztBzz = new ZingTouch.Region(heledocument);
                     ztBzz.bind(bzz, 'swipe', function(e){
                         //Actions here

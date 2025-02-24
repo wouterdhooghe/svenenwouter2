@@ -498,8 +498,7 @@ function keysPressed(e) {
 
             // Extra keys
             case 'space': e.preventDefault(); keysList.push('space'); spaceBar(equation); break;
-            case 'enter': enter(equation
-            ); keysList.push('enter'); break;
+            case 'enter': enter(equation); keysList.push('enter'); break;
             case 'backspace': backSpace(); keysList.push('backspace'); break;
             case 'tab': e.preventDefault(); substitueerNaar(equation,'boven'); keysList.push('tab'); break;
 
