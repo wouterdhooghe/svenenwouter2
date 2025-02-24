@@ -33,93 +33,79 @@
             <div class='row'>
 
                 <div class='col-md-4'>
-                    <p class="card-text"> </p>
-                </div>
+                    <div class="cord">
+                    <div class='card-header'> F1: logAA</div>
+                    <div class="card-body">
+                        <p class="card-text" id="f1_button" onclick="f1(equation)">$$$$</p>
+
+                    </div>
+                    </div>
+            </div>
 
                 <div class='col-md-4'>
-                        <div class="card">
-                        <div class='card-header'> F1: log uitdelen</div>
+                        <div class="cord">
+                        <div class='card-header'> F2: log uitdelen</div>
                         <div class="card-body">
-                            <p class="card-text" id="f1_button" onclick="f1(equation)">$$$$</p>
+                            <p class="card-text" id="f2_button" onclick="f2(equation)">$$$$</p>
 
                         </div>
                         </div>
-                </div>
-
-                <div class='col-md-1'>
-                    <p class="card-text" id="result"> </p>
                 </div>
 
                 <div class='col-md-3'>
-                        <div class="card">
-                        <div class='card-header'> F2: log schrappen </div>
+                        <div class="cord">
+                        <div class='card-header'> F3: AAlog </div>
                         <div class="card-body">
-                            <p class="card-text" id="f2_button" onclick="f2(equation)">$$$$</p>
+                            <p class="card-text" id="f3_button" onclick="f3(equation)">$$$$</p>
                         </div>
                         </div>
 
                 </div>
 
+                <div class='col-md-4'>
+                    <p class="card-text" id="result"> </p>
+                </div>
+
+
+
             </div>
 
-                <div class='row'>
-                    <div class="col-md-3"  id="bzz">
-                        <p class="card-text"> bzz </p>
-                    </div>
 
-                    <div class='col-md-1'>
-                        <p class="card-text" id="exp"> exp</p>
-                    </div>
+ 
+
+                <div class='row'>
 
                     <div class="col-md-4">
-                    <div class="card">
-                        <div class='card-header'> F3: vertaal wortel</div>
-                        <div class="card-body">
-                            <p class="card-text" id="f3_button" onclick="f3(equation)">$$$$</p>
-                        </div>
-                    </div>
-                     </div>
-
-                     <div class='col-md-1'>
-                        <p class="card-text" id="wortel"> wortel</p>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class='card-header'> F4: schrap wortel</div>
+                        <div class="cord">
+                            <div class='card-header'> F4: aloga</div>
                             <div class="card-body">
                                 <p class="card-text" id="f4_button" onclick="f4(equation)">$$$$</p>
                             </div>
                         </div>
                          </div>
 
-                </div>
-
-                <div class='row'>
-                    <div class="col-md-3">
-                        <p class="card-text"> </p>
+                    <div class="col-md-0">
+                         <button class="math-button" id="exp_button" onclick="applyPower(); keysList.push('applyPower')">^</button>
                     </div>
 
-                    <div class='col-md-1'>
-                        <p class="card-text" id="dubbelprod_exp"> dubbelprod</p>
-                    </div>
 
                     <div class="col-md-4">
-                    <div class="card">
-                        <div class='card-header'> F5: hoge ladder</div>
+                    <div class="cord">
+                        <div class='card-header'> F5: uitdelen (ladder)</div>
                         <div class="card-body">
                             <p class="card-text" id="f5_button" onclick="f5(equation)">$$$$</p>
                         </div>
                     </div>
                      </div>
 
-                     <div class='col-md-1'>
-                        <p class="card-text" id="verschilkwadraten_exp"> verschil kwadraten</p>
+                    <div class="col-md-0">
+                        <button class="math-button" id="root_button" onclick="applyNthroot(); keysList.push('applyNthroot')">√</button>
                     </div>
 
+
                     <div class="col-md-3">
-                        <div class="card">
-                            <div class='card-header'> F6: schrap exp</div>
+                        <div class="cord">
+                            <div class='card-header'> F6: schrap wortel</div>
                             <div class="card-body">
                                 <p class="card-text" id="f6_button" onclick="f6(equation)">$$$$</p>
                             </div>
@@ -129,103 +115,75 @@
                 </div>
 
                 <div class='row'>
-                    <div class="col-md-3">
-                        <p class="card-text"> </p>
+                    <div class="col-md-4">
+                        <div class="cord">
+                            <div class='card-header'> F7: splitst * over breuk</div>
+                            <div class="card-body">
+                                <p class="card-text" id="f7_button" onclick="f7(equation)">$$$$</p>
+                            </div>
+                            </div>
                     </div>
 
-                    <div class='col-md-1'>
-                        <p class="card-text"> * </p>
+                    <div class="col-md-0">
+                        <button class="math-button" id="multiply_button" onclick="applyTimes(); keysList.push('applyTimes')">×</button>
                     </div>
 
                     <div class="col-md-4">
-                    <div class="card">
-                        <div class='card-header'> F7: vertaal deling</div>
+                    <div class="cord">
+                        <div class='card-header'> F8: -1 regels</div>
                         <div class="card-body">
-                            <p class="card-text" id="f7_button" onclick="f7(equation)">$$$$</p>
+                            <p class="card-text" id="f8_button" onclick="f8(equation)">$$$$</p>
                         </div>
                     </div>
                      </div>
 
-                     <div class='col-md-1'>
-                        <p class="card-text"> / </p>
+                    <div class="col-md-0">
+                        <button class="math-button" id="divide_button" onclick="applyDivide(); keysList.push('applyDivide')">÷</button>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class='card-header'> F8: schrap naar 1</div>
-                            <div class="card-body">
-                                <p class="card-text" id="f8_button" onclick="f8(equation)">$$$$</p>
-                            </div>
-                        </div>
-                         </div>
-
-                </div>
-
-                <div class='row'>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class='card-header'> F9: splitst * over breuk</div>
+                     <div class="col-md-3">
+                        <div class="cord">
+                            <div class='card-header'> F9: schrap 1</div>
                             <div class="card-body">
                                 <p class="card-text" id="f9_button" onclick="f9(equation)">$$$$</p>
                             </div>
-                            </div>
-                    </div>
-
-                    <div class='col-md-1'>
-                        <p class="card-text"> verschil kwadraten</p>
-                    </div>
-
-                    <div class="col-md-4">
-                    <div class="card">
-                        <div class='card-header'> F10: lage ladder</div>
-                        <div class="card-body">
-                            <p class="card-text" id="f10_button" onclick="f10(equation)">$$$$</p>
                         </div>
-                    </div>
-                     </div>
-
-                     <div class='col-md-1'>
-                        <p class="card-text" id="verschil kwadraten_plus"> verschil kwadraten</p>
-                    </div>
-
-                    <div class="col-md-3">
-                        <p class="card-text">  </p>
                          </div>
 
                 </div>
 
                 <div class='row'>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class='card-header'> F11: splits + over breuk</div>
+                    <div class="col-md-4">
+                        <div class="cord">
+                            <div class='card-header'> F10: splits + over breuk</div>
                             <div class="card-body">
-                                <p class="card-text" id="f11_button" onclick="f11(equation)">$$$$</p>
+                                <p class="card-text" id="f10_button" onclick="f10(equation)">$$$$</p>
                             </div>
                             </div>
                     </div>
 
-                    <div class='col-md-1'>
-                        <p class="card-text"> + </p>
+                    <div class="col-md-0">
+                        <button class="math-button" id="plus_button" onclick="applyPlus(); keysList.push('applyPlus');">+</button>
                     </div>
 
                     <div class="col-md-4">
-                    <div class="card">
-                        <div class='card-header'> F12: vertaal min</div>
+                    <div class="cord">
+                        <div class='card-header'> F11: vertaal </div>
                         <div class="card-body">
-                            <p class="card-text" id="f12_button" onclick="f12(equation)">$$$$</p>
+                            <p class="card-text" id="f11_button" onclick="f11(equation)">$$$$</p>
                         </div>
                     </div>
                      </div>
 
-                     <div class='col-md-1'>
-                        <p class="card-text"> - </p>
+                    <div class="col-md-0">
+                        <button class="math-button" id="min_button" onclick="applyMinus(); keysList.push('applyMinus')">-</button>
                     </div>
 
                     <div class="col-md-3">
-                        <div class="card">
-                            <div class='card-header'> F13: schrap naar 0</div>
+                        <div class="cord">
+                            <div class='card-header'> F12: schrap 0</div>
                             <div class="card-body">
-                                <p class="card-text" id="f13_button" onclick="f13(equation)">$$$$</p>
+                                <p class="card-text" id="f12_button" onclick="f12(equation)">$$$$</p>
                             </div>
                         </div>
                          </div>
@@ -233,34 +191,46 @@
                 </div>
 
                 <div class='row'>
-                    <div class="col-md-3"   id="luchtballon">
+                    
+
+                    <div class="col-md-4" id="bzz">
+                        <div class="cord">
+                            <div class='card-header'> BZZ</div>
+                            <div class="card-body">
+                                <p class="card-text"> <img src="bzz.png" alt="basis uitdelen" width="50" height="50"> </p>
+                            </div>
+                        </div>
+                         </div>
+
+
+                    <div class="col-md-4">
+                    <div class="cord">
+                        <div class='card-header'> F13: basis uitdelen</div>
+                        <div class="card-body">
+                            <p class="card-text" id="f13_button" onclick="f13(equation)">$$$$</p>
+                        </div>
+                    </div>
+                     </div>
+
+                     <div class="col-md-4" id="vlinder">
+                        <div class="cord">
+                            <div class='card-header'> vlinder</div>
+                            <div class="card-body">
+                                <p class="card-text"> <img src="vervangvlinder.jpg" alt="vervangvlinder" width="50" height="50"> </p>
+                            </div>
+                        </div>
+                         </div>
+
+
+
+                </div>
+
+                <div class='row'>
+                    <div class="col-md-4"   id="luchtballon">
                         <div class='col-md-1'>
                             <p class="card-text"> luchtballon </p>
                         </div>
                     </div>
-
-                    <div class='col-md-1'>
-                        <p class="card-text"> </p>
-                    </div>
-
-                    <div class="col-md-4">
-                    <div class="card">
-                        <div class='card-header'> F14: basis uitdelen</div>
-                        <div class="card-body">
-                            <p class="card-text" id="f14_button" onclick="f14(equation)">$$$$</p>
-                        </div>
-                    </div>
-                     </div>
-
-                     <div class='col-md-1'>
-                        <p class="card-text"> </p>
-                    </div>
-
-                    <div class="col-md-3" id="vis">
-                        <div class='col-md-1'>
-                            <p class="card-text" > vis </p>
-                        </div>
-                         </div>
 
                 </div>
             
@@ -489,7 +459,9 @@
                     f9_button = document.getElementById('f9_button'),
                     f10_button = document.getElementById('f10_button'),
                     f11_button = document.getElementById('f11_button'),
-                    f12_button = document.getElementById('f12_button');    
+                    f12_button = document.getElementById('f12_button');
+                    f13_button = document.getElementById('f13_button'); 
+        
 
                     
 
@@ -529,6 +501,7 @@
                     }
 
                 };
+
 
                 // "-\\left(${args[0]}\\right)"
 
@@ -639,6 +612,17 @@
                     'wortelNaarMachtNotatie3'
                 ];
 
+                vertaalregels = [
+                    'machtNaarWortelNotatie',
+                    'wortelNaarMachtNotatie1',
+                    'wortelNaarMachtNotatie2',
+                    'vermenigvuldigingMetEenheidsbreuk',
+                    'simpeleBreukUitElkaarTrekken',
+                    'vermenigvuldigingGetalMetEenheidsbreuk',
+                    'plusMinusNaarMin',
+                    'minNaarPlusMinus'
+                ];
+
             // TODO tot hier lijken de regels compleet!
 
                 schrapwortelregels = [
@@ -647,13 +631,34 @@
 
                 ];
 
-                hogeladderregels = [
+                ladderregels = [
                 'machtVanProduct',
+                    'machtVanDeling',
                     'productMetGelijkeExponenten',
+                    'delingMetGelijkeExponenten',
                     'productOnderDeWortel',
                     'productVanGelijkeWortels',
                     'breukVanWortels',
-                    'wortelVanBreuk'
+                    'wortelVanBreuk',
+                      //              'expandDoorMetFunctie',    
+                'brengLinkseFactorBinnenMetFunctie',
+                'factorBuitenhalenMetFunctie',
+                'binomium2Expand',
+                    'binomium2Factor',
+                    'binomium3Expand',
+                    'binomium3Factor'
+
+                ]
+
+                hogeladderregels = [
+                'machtVanProduct',
+                    'productMetGelijkeExponenten',
+                    'delingMetGelijkeExponenten',
+                    'productOnderDeWortel',
+                    'productVanGelijkeWortels',
+                    'breukVanWortels',
+                    'wortelVanBreuk',
+                    'machtVanDeling'
                 ];
 
                 schrapexpregels = [
@@ -672,11 +677,16 @@
                 // a/a -> 1
                 'aGedeeldDoorA',
                 // *1 droppen
-                'eenNeutraalVoorMaal'
+                'eenNeutraalVoorMaal',
+                'schrapExp1',
+                'schrapExp0'
                 ];
 
                 splitsmaaloverbreukregels = [
-                'maalbreukOntsplitsen'
+                'maalbreukOntsplitsen',
+                'maalbreukSplitsen',
+                'simpeleBreukUitElkaarTrekken',
+
                 ];
 
                 lageladderregels = [
@@ -690,8 +700,11 @@
                 ];
 
                 splitsplusoverbreukregels = [
-                'simpeleBreukUitElkaarTrekken',
-                'maalbreukSplitsen'
+                'plusbreukOntsplitsen',
+                'plusbreukSplitsen',
+
+                 // REGEL NOG TE MAKEN!           'breukenmetgelijkenoemeroptellen',
+  // REGEL NOG TE MAKEN!          'breuksplitsen over som'
                 ];
 
                 vertaalminregels = [
@@ -700,8 +713,10 @@
 
                 schrapnaar0regels = [
                 // a+0->a
+                'nulUitSomSchrappen',
                 'nulNeutraalVoorPlus',
                 'schrapMin'
+                
                 ];
 
                 basisuitdeelregels = [
@@ -710,6 +725,8 @@
                     'somVanExponentenNaarVermenigvuldiging',
                     'machtTorenAfbreken',
                     'machtTorenOpbouwen'
+
+
                 ];
 
                 uitdeelregels = [
@@ -723,6 +740,15 @@
                 'logUitdelenOverExp'
                 ];
 
+                min1regels = [
+                'machtMetUnaryMinusInExponent',
+                'minEenExponentAlsEenheidsbreuk',
+                'eenheidsbreukAlsMinEenExponent',
+                 'negatiefismaalmineen',
+                  'maalmineenisnegatief'
+
+                ];
+
                 buitenhaalregels = [
                 'BreukAlsVerschilVanExponenten',
                 'exponentenOptellen',
@@ -733,23 +759,24 @@
                 'logBuitenExpHalen'
                 ];
 
+                
+
 
 
                 toegekendeRegels = {
-                    "f1": "loguitdeelregels",
-                    "f2": "logschrapregels",
-                    "f3": "vertaalwortelregels",
-                    "f4": "schrapwortelregels",
-                    "f5": "hogeladderregels",
-                    "f6": "schrapexpregels",
-                    "f7": "vertaaldelingregels",
-                    "f8": "schrapnaar1regels",
-                    "f9": "splitsmaaloverbreukregels",
-                    "f10": "lageladderregels",
-                    "f11": "splitsplusoverbreukregels",
-                    "f12": "vertaalminregels",
-                    "f13": "schrapnaar0regels",
-                    "f14": "basisuitdeelregels"
+                    "f1": "logschrapregels",
+                    "f2": "loguitdeelregels",
+                    "f3": "logschrapregels",
+                    "f4": "logschrapregels",
+                    "f5": "ladderregels",
+                    "f6": "schrapwortelregels",
+                    "f7": "splitsmaaloverbreukregels",
+                    "f8": "min1regels",
+                    "f9": "schrapnaar1regels",
+                    "f10": "splitsplusoverbreukregels",
+                    "f11": "vertaalregels",
+                    "f12": "schrapnaar0regels",
+                    "f13": "basisuitdeelregels"
 
                 };
 
@@ -1011,7 +1038,7 @@
                 var heledocument = document.body;
                 var midden = document.getElementById('rondhoofdvergelijking');
                 var luchtballon = document.getElementById('luchtballon');
-                var vis = document.getElementById('vis');
+                var vlinder = document.getElementById('vlinder');
                 var bzz = document.getElementById('bzz');
 
                 // 1 vinger swipe op equation
@@ -1040,6 +1067,32 @@
                         console.log(e);
                     }, false);
 
+                // 2 vinger swipe op equation: werkt maar detecteert niet zo goed....
+                var ztEquation = new ZingTouch.Region(heledocument);
+                    ztEquation.bind(midden, tweevingerswipe, function(e){
+                        //Actions here
+                        richting = e.detail.data[0].currentDirection;
+                        rechtsswipe = (richting < 45 || richting > 315);
+                        linksswipe = (richting > 135 && richting < 225);
+                        upswipe = (richting > 45 && richting < 135);
+                        downswipe = (richting > 225 && richting < 315);
+                        console.log("een vinger!" + richting);
+                        if(rechtsswipe) {console.log("rechtsswipe!"); kant = "right";}
+                        if(linksswipe) {console.log("linksswipe!"); kant= "left";}
+                        if(upswipe) {console.log("upswipe!"); kant = "up";}
+                        if(downswipe) {console.log("downswipe!"); kant = "down";}
+
+                        switch (kant) {
+                            case 'left': keysList.push('left'); e.preventDefault(); leftSlurp(equation); break;
+                            case 'up': keysList.push('up'); e.preventDefault(); upSelect(equation); break;
+                            case 'right': keysList.push('right'); e.preventDefault(); rightSlurp(equation); break;
+                            case 'down': keysList.push('down'); e.preventDefault(); downSelect(equation); break;
+                        }
+
+                        
+                        console.log(e);
+                    }, false);
+                    
                     // 1 vinger swipe op luchtballon (voor shift)
                     var ztLuchtballon = new ZingTouch.Region(heledocument);
                         ztLuchtballon.bind(luchtballon, 'swipe', function(e){
@@ -1066,11 +1119,11 @@
                         console.log(e);
                     }, false);
 
-                    // 1 vinger swipe op vis voor alt (links rechts schuiven; op en neer voor benoemen en vervangen)
+                    // 1 vinger swipe op vlinder voor alt (links rechts schuiven; op en neer voor benoemen en vervangen)
                     // TODO: mss op termijn letters klaarzetten waarnaar je naartoe kan swipen om direct te kiezen met welke letter je de benaming doet!
                     // TODO: mss altijd standaard benoemen met een letter die nog niet voorkwam tot nu toe
-                    var ztVis = new ZingTouch.Region(heledocument);
-                        ztVis.bind(vis, 'swipe', function(e){
+                    var ztvlinder = new ZingTouch.Region(heledocument);
+                        ztvlinder.bind(vlinder, 'swipe', function(e){
                         //Actions here
                         richting = e.detail.data[0].currentDirection;
                         rechtsswipe = (richting < 45 || richting > 315);
@@ -1095,7 +1148,7 @@
                     }, false);
 
 
-                    // 1 vinger swipe op bzz voor nog iets anders 
+                    // 1 vinger swipe op bzz voor nog iets anders...
                     var ztBzz = new ZingTouch.Region(heledocument);
                     ztBzz.bind(bzz, 'swipe', function(e){
                         //Actions here
@@ -1163,7 +1216,7 @@
 
                 // plaats een beginvergelijking in het begin (moet hier staan want anders loopt alles vast)
                 // equation = math.parse('Select(Times(4,9))^2( + y^2 == Select(Times(2,512))');
-                var equationnummer = 1;
+                var equationnummer = 0;
                 equation = math.parse('Select(pow(Times(x,Plus(9,x)),2))==x');
 
                 equation = math.parse(opgaven[equationnummer].opgave);

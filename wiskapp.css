@@ -34,6 +34,11 @@ text-align: center;
   text-align: center;
 }
 
+.cord img {
+  display: block;
+  margin: auto;
+}
+
 #hoofdvergelijking {
   font-size: 30px;
   text-align: center;
@@ -43,6 +48,11 @@ text-align: center;
   height: 160px;
   overflow-y: scroll;
 }
+
+.katex {
+  color: #000000; /* Set your desired color */
+}
+
 
 @media (min-width: 768px){
   #left {

@@ -5,6 +5,11 @@ var keyboardlookups = {
         ArrowRight: 'right',
         ArrowDown: 'down',
 
+        // KeyH: 'left',
+        // KeyJ: 'up',
+        // KeyL: 'right',
+        // KeyK: 'down',
+
         Slash: 'minus',
         Period: 'plus',
         Comma: 'plus',
@@ -78,11 +83,11 @@ var keyboardlookups = {
         KeyE: 'e',
         KeyF: 'f',
         KeyG: 'g',
-        KeyH: 'h',
+       KeyH: 'h',
         KeyI: 'i',
-        KeyJ: 'j',
-        KeyK: 'k',
-        KeyL: 'l',
+       KeyJ: 'j',
+       KeyK: 'k',
+       KeyL: 'l',
         KeyM: 'm',
         KeyN: 'n',
         KeyO: 'o',
@@ -366,7 +371,7 @@ function keysPressed(e) {
             // case 'c': SelectAllLettersInSelection('c', equation); break; // shift c
             case 'j': SelectAllLettersInSelection('j', equation); break; // shift j
             case 'k': SelectAllLettersInSelection('k', equation); break; // shift k
-            case 'l': if(e.ctrlKey==1) {out.innerHTML = 'CTRL log'; updateLatex(naar(equation,'naarlogregels')[0]); keysList.push('naarlogregels'); updateLatex(equation);break;} else {SelectAllLettersInSelection('k', equation); break;};
+            case 'l': if(e.ctrlKey==1) {out.innerHTML = 'CTRL log'; updateLatex(naar(equation,'naarlogregels')[0]); keysList.push('naarlogregels'); updateLatex(equation);break;} else {applyLog(equation); break;};
             case 'm': SelectAllLettersInSelection('m', equation); break; // shift m
             case 'n': SelectAllLettersInSelection('n', equation); break; // shift n
             case 'o': SelectAllLettersInSelection('o', equation); break; // shift o
@@ -389,7 +394,7 @@ function keysPressed(e) {
             case 'f': applyFunction('f', equation); break;
             case 'g': applyFunction('g', equation); break;
             case 'h': applyFunction('h', equation); break;
-            case 'l': applyLog(equation); break;
+ // wordt al boven gehandletd bij case l           case 'l': applyLog(equation); break;
             case 'e': e.preventDefault(); replaceWithE(equation); break;
             case 'p': replaceWithPi(equation); break; 
             case 'i': applyIntegral(equation); break; 
@@ -405,7 +410,7 @@ function keysPressed(e) {
             case 'up': out.innerHTML = 'CTRLup'; updateLatex(ctrlupfun(equation)); keysList.push('herbalanceertermen'); updateLatex(equation);break;
             case 'right': out.innerHTML = 'CTRLright'; break;
             case 'down': out.innerHTML = 'CTRLdown'; updateLatex(ctrldownfun(equation)); keysList.push('herbalanceertermen'); updateLatex(equation);break;
-            case 'enter': document.getElementById('jqueryknop').click();
+            case 'enter': document.getElementById('jqueryknop').click();break;
 
             case 'power' : out.innerHTML = 'CTRL power'; updateLatex(naar(equation,'naarexpregels')[0]); keysList.push('naarexpregels'); updateLatex(equation);break;
             case 'nthroot' : out.innerHTML = 'CTRL nthroot'; updateLatex(naar(equation,'naarwortelregels')[0]); keysList.push('naarwortelregels'); updateLatex(equation);break;
@@ -423,6 +428,7 @@ function keysPressed(e) {
             //  case 'y': e.preventDefault(); alert('CTRL - f');
             // case 'c': e.preventDefault(); alert('CTRL - f');
             // case 'b': e.preventDefault(); alert('CTRL - f');
+            case 'o': e.preventDefault(); nieuweopgave(); break;
 
         }
 
@@ -454,6 +460,7 @@ function keysPressed(e) {
             case 'down': e.preventDefault(); substitueerRest(equation); break;
 
             // Specialkeys  
+            // eigenlijk zijn deze niet interessant, er zou iets beters mogelijk moeten zijn dan 'replace'
             case 'plus': replaceWithPlus(); keysList.push('replacePlus'); break;
             case 'times': replaceWithTimes(); keysList.push('replaceTimes'); break;
             case 'power': replaceWithPower(); keysList.push('replacePower'); break;
@@ -491,8 +498,7 @@ function keysPressed(e) {
 
             // Extra keys
             case 'space': e.preventDefault(); keysList.push('space'); spaceBar(equation); break;
-            case 'enter': enter(equation
-            ); keysList.push('enter'); break;
+            case 'enter': enter(equation); keysList.push('enter'); break;
             case 'backspace': backSpace(); keysList.push('backspace'); break;
             case 'tab': e.preventDefault(); substitueerNaar(equation,'boven'); keysList.push('tab'); break;
 
@@ -553,7 +559,7 @@ function keysPressed(e) {
             case 'f8': e.preventDefault(); f8(equation); break;
             case 'f9': e.preventDefault(); f9(equation); break;
             case 'f10': e.preventDefault(); f10(equation); break;
-            // case 'f11': e.preventDefault(); f11(equation); break;
-            // case 'f12': e.preventDefault(); f12(equation); break;
+            case 'f11': e.preventDefault(); f11(equation); break;
+            case 'f12': e.preventDefault(); f12(equation); break;
         }
 };

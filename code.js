@@ -1,4 +1,3 @@
-
 //************************************* */
 // CUSTOM FUNCTIES
 //************************************* */
@@ -49,7 +48,24 @@ var customFunctions = {
       return a || b;
     });
     return atLeastOneTrue;
-  }
+  },
+
+  unaryMinus: {
+    'toTex': function(node, options) {
+        let arg = node.args[0];
+        
+        // Bepaal of we haakjes nodig hebben
+        let needParens = !(
+            arg.isConstantNode || 
+            (arg.type === 'SymbolNode') ||
+            (arg.type === 'FunctionNode' && arg.name === 'Select' && 
+             (arg.args[0].isConstantNode || arg.args[0].type === 'SymbolNode'))
+        );
+        
+        let argTex = arg.toTex(options);
+        return `-${needParens ? `\\left(${argTex}\\right)` : argTex}`;
+    }
+}
 };
 
 customFunctions.Plus.toTex = function(node, options) {
@@ -74,50 +90,38 @@ customFunctions.Plus.toTex = function(node, options) {
 customFunctions.Times.toTex = function(node, options) {
   output = "";
   options.implicit == "hide" ? (maalTeken = "~") : (maalTeken = "\\cdot");
-  // console.log('teken: ' + maalTeken);
+  
   node.args.forEach(function(value, index, parent) {
-    // console.log('maalteken: ' + maalTeken);
-
-    value.isConstantNode ||
-    (value.name == "Select" && value.args[0].isConstantNode)
-      ? (ditTeken = "\\cdot")
-      : (ditTeken = maalTeken);
-    if (index == 0) {
-      ditTeken = "";
-    } else if (
-      value.isConstantNode ||
-      (value.name == "Select" && value.args[0].isConstantNode)
-    ) {
-      ditTeken = "\\cdot";
-    } else {
-      ditTeken = maalTeken;
+    let ditTeken = "";
+    
+    // Bepaal welk teken we moeten gebruiken
+    if (index > 0) {  // Niet voor eerste term
+      if (value.isConstantNode || 
+          (value.name == "Select" && value.args[0].isConstantNode) ||
+          value.fn == "unaryMinus" ||  // Toegevoegd voor unaryMinus
+          (value.type == "OperatorNode" && value.fn == "unaryMinus") ||  // Toegevoegd voor OperatorNode unaryMinus
+          (value.name == "Select" && value.args[0].fn == "unaryMinus")) {
+        ditTeken = "\\cdot";
+      } else {
+        ditTeken = maalTeken;
+      }
     }
 
     output += ditTeken;
 
-    // console.log('ditTeken: ' + ditTeken);
+    // Check voor haakjes bij Plus of geselecteerde Plus
+    let selectedPlus = value.name == "Select" && value.args[0].name == "Plus";
+    let plus = value.name == "Plus";
+    let plusOrSelectedPlus = selectedPlus || plus;
 
-    selectedPlus = value.name == "Select" && value.args[0].name == "Plus";
-    plus = value.name == "Plus";
-
-    plusOrSelectedPlus = selectedPlus || plus;
-
-    // console.log('plusOrSelectedPlus' + plusOrSelectedPlus);
-
-    plusOrSelectedPlus
-      ? (output += "(" + value.toTex(options) + ")")
-      : (output += value.toTex(options));
-
-    //     console.log('timestex: '+ output);
-    //     console.log(value);
-    //    // console.log(value.toTex(options));
+    if (plusOrSelectedPlus) {
+      output += "(" + value.toTex(options) + ")";
+    } else {
+      output += value.toTex(options);
+    }
   });
-  options.parenthesis == "all"
-    ? (output = "(" + output + ")")
-    : (output = output);
-  //return output;
-  // console.log(output);
-  return output;
+
+  return options.parenthesis == "all" ? "(" + output + ")" : output;
 };
 
 // katex.render("\\begin{cases} a b + c &=a \\\\ a b + c &=d \\\\ a b + c + d &=b \\\\ a b + c &=b \\\\ e&=b+c \\end{cases}", pretty)
@@ -161,8 +165,16 @@ customFunctions.Select.toTex = function(node, options) {
 };
 
 //************************************* */
-// f knoppen
+// f knoppen en opgaveknop
 //************************************* */
+
+function nieuweopgave() {
+
+  equationnummer = (equationnummer + 1) % opgaven.length;
+  equation = math.parse(opgaven[equationnummer].opgave);
+  // prevEquation = equation;
+  updateLatex(equation);
+};
 
 function f1_hold(eq) {};
 function f2_hold(eq) {};
@@ -850,16 +862,20 @@ function transformSelected(
   functie,
   extraEquation
 ) {
-  
+  console.log('ts: Start transformSelected');
   selectAdresses = adresses("Select", eq);
+  console.log('ts: Found select addresses:', selectAdresses);
+  
   selectAdresses.forEach(function setnodes(selectAdres, index) {
+    console.log('ts: Processing select address:', selectAdres);
     selectNode = readAtAdress(selectAdres, eq);
+    console.log('ts: Select node:', selectNode);
+    console.log('ts: Select node args[0]:', selectNode.args[0]);
 
     if (functie) {
-      console.log(
-        "doe transformSelected met functie: "
-      );
+      console.log("ts: Calling function with:", selectNode.args[0]);
       transformed = functie(selectNode.args[0]);
+      console.log("ts: Function returned:", transformed);
     } else {
       console.log(
         "doe transformSelected met inputPattern: " + inputPatternNode.toString()
@@ -907,12 +923,12 @@ function transformSelected(
 }
 
 function regelTransformSelected(eq, regel) {
-  console.log("doe regeltransformSelected op: ");
-  console.log(regel);
-  console.log(regel.naam);
+  console.log("rts: Start regelTransformSelected");
+  console.log("rts: regel:", regel);
+  console.log("rts: regel.naam:", regel.naam);
+  console.log("rts: regel.functie:", regel.functie);
 
-  // console.log(multiFunction);
-  return transformSelected(
+  let result = transformSelected(
     eq,
     regel.input.expr,
     regel.output.expr,
@@ -921,7 +937,9 @@ function regelTransformSelected(eq, regel) {
     regel.functie,
     regel.extraEquation
   );
-  // updateLatex(eq);
+  
+  console.log("rts: transformSelected returned:", result);
+  return result;
 }
 
 function oneCombinations([node,arr]) {oneComb = []; arr.forEach(s => oneComb.push([node,s])); return oneComb};
@@ -1239,6 +1257,7 @@ function updateF(nieuweNode, fknopString) {
 
     // display and re-render the expression
     katex.render(latex, eval(fknopString));
+    console.log("nieuwe latex gezet in " + fknopString);
   } catch (err) {
     fknopString.innerHTML = "error!!!";
   }
@@ -1288,13 +1307,16 @@ function updateLatexAndFs(eq) {
      console.log( "ffffffffffffff: " + f);
      console.log( "toegk bew: " + toegekendeRegels[f]);
     var previewArr = naar(eq,toegekendeRegels[f]);
+    console.log("previewARR van " + f + " is " + previewArr);
     var knop = f + "_button";
     if (previewArr) {
       updateF(previewArr[1],knop);
     } else {
       // DIT IS TE TRAAG OM ALTIJD TE DOEN dus liever direct de innerHTML
       // updateF(math.parse("geen naar gevonden"),knop);
-      eval(knop).innerHTML = "...";
+      prentjesbestand = knop + ".png";
+      eval(knop).innerHTML = '<img src="' + prentjesbestand +'" alt="basis uitdelen" width="50" height="50">';
+      console.log('prentje erop gezet bij '+ knop);
     }
     
   };
@@ -1817,6 +1839,7 @@ function applyEquality(eq,extraVgl) {
   selectNode = readAtAdress(selectAdress, eq);
 
   tweedeVgl = math.parse("Select(a)==b");
+
   if (extraVgl) {tweedeVgl=extraVgl}
   if (selectNode.args[0].name == "And" || selectNode.args[0].fn == "equal") {
 

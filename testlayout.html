@@ -1,0 +1,159 @@
+<style>
+    .math-button {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        font-size: 16px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+    }
+    .math-button:hover {
+        background-color: #e9ecef;
+    }
+</style>
+
+<!-- Vervang de bestaande rijen met nieuwe rijen die de oorspronkelijke structuur behouden -->
+<div class='row'>
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F4: aloga</div>
+            <div class="card-body">
+                <p class="card-text" id="f4_button" onclick="f4(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <button class="math-button" id="exp_button" onclick="expFunction(equation)">EXP</button>
+    </div>
+
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F5: uitdelen (ladder)</div>
+            <div class="card-body">
+                <p class="card-text" id="f5_button" onclick="f5(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='row'>
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F5: uitdelen (ladder)</div>
+            <div class="card-body">
+                <p class="card-text" id="f5_button" onclick="f5(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <button class="math-button" id="root_button" onclick="rootFunction(equation)">√</button>
+    </div>
+
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F6: schrap wortel</div>
+            <div class="card-body">
+                <p class="card-text" id="f6_button" onclick="f6(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='row'>
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F7: splitst * over breuk</div>
+            <div class="card-body">
+                <p class="card-text" id="f7_button" onclick="f7(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <button class="math-button" id="multiply_button" onclick="multiplyFunction(equation)">×</button>
+    </div>
+
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F8: -1 regels</div>
+            <div class="card-body">
+                <p class="card-text" id="f8_button" onclick="f8(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='row'>
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F8: -1 regels</div>
+            <div class="card-body">
+                <p class="card-text" id="f8_button" onclick="f8(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <button class="math-button" id="divide_button" onclick="divideFunction(equation)">÷</button>
+    </div>
+
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F9: schrap 1</div>
+            <div class="card-body">
+                <p class="card-text" id="f9_button" onclick="f9(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='row'>
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F10: splits + over breuk</div>
+            <div class="card-body">
+                <p class="card-text" id="f10_button" onclick="f10(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <button class="math-button" id="plus_button" onclick="plusFunction(equation)">+</button>
+    </div>
+
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F11: vertaal </div>
+            <div class="card-body">
+                <p class="card-text" id="f11_button" onclick="f11(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='row'>
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F11: vertaal </div>
+            <div class="card-body">
+                <p class="card-text" id="f11_button" onclick="f11(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <button class="math-button" id="minus_button" onclick="minusFunction(equation)">−</button>
+    </div>
+
+    <div class="col-md-4">
+        <div class="cord">
+            <div class='card-header'> F12: schrap naar 0</div>
+            <div class="card-body">
+                <p class="card-text" id="f12_button" onclick="f12(equation)">$$$$</p>
+            </div>
+        </div>
+    </div>
+</div>
