@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fingermath Foto App (Mapkiezer)</title>
+    <style>
+        /* ... (vorige CSS blijft hetzelfde) ... */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            background-color: #f0f0f0;
+        }
+        #app {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 1vh;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            z-index: 10;
+        }
+         #folder-controls{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: column; /* Stack button and status */
+            align-items: flex-start; /* Align items to the left */
+            gap: 5px; /* Space between button and status */
+            z-index: 10;
+        }
+
+        #selectFolderButton, #toggle-button {
+            padding: 8px 12px;
+            background-color: #5a5a5a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        #selectFolderButton:hover, #toggle-button:hover {
+            background-color: #777;
+        }
+        #folderStatus {
+            font-size: 0.8em;
+            color: #333;
+            margin: 0; /* Remove default margins */
+            background-color: rgba(255, 255, 255, 0.7); /* Slight background */
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        #result-container {
+            position: relative;
+            width: 90vw;
+            max-width: 700px;
+            height: 45vh;
+            margin-top: 60px; /* Add margin to avoid overlap with controls */
+            margin-bottom: 2vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            border: none;
+            background-color: transparent; /* transparant zodat body-kleur zichtbaar wordt */
+            overflow: hidden;
+        }
+        #caption {
+            width: 100%;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            min-height: 1.5em;
+            margin-bottom: 0.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Outline voor betere leesbaarheid */
+            text-shadow: 2px 2px 4px #000, -2px -2px 4px #000, 2px -2px 4px #000, -2px 2px 4px #000;
+            -webkit-text-stroke: 1px black;
+            color: #fff;
+        }
+        #result, #image-display {
+            flex-shrink: 0;
+        }
+        #result {
+            font-size: 18vw;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        #image-display {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: transparent;
+        }
+        #hands-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: space-around;
+            gap: 15px;
+            padding: 0 15px;
+            flex-grow: 1;
+            max-height: 45vh;
+        }
+        .hand {
+            display: flex;
+            flex-direction: column;
+            width: 48%;
+            position: relative;
+        }
+        .hand-label {
+            position: absolute;
+            top: -25px;
+            width: 100%;
+            text-align: center;
+            color: #666;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .fingers-zone {
+            width: 100%;
+            height: 60%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 1.5%;
+        }
+        .thumb-zone {
+            width: 100%;
+            height: 40%;
+            display: flex;
+            align-items: center;
+        }
+        .left-hand .thumb-zone {
+            justify-content: flex-end;
+            padding-right: 8%;
+        }
+        .right-hand .thumb-zone {
+            justify-content: flex-start;
+            padding-left: 8%;
+        }
+        .zone {
+            border: 2px dashed rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            color: rgba(0, 0, 0, 0.3);
+            transition: background-color 0.2s, border-color 0.2s;
+            margin: 3px;
+            border-radius: 8px;
+        }
+        .left-hand .zone {
+            background-color: rgba(180, 200, 255, 0.1);
+        }
+        .right-hand .zone {
+            background-color: rgba(255, 180, 180, 0.1);
+        }
+        .zone.active {
+            background-color: rgba(0, 150, 255, 0.3);
+            border: 2px solid rgba(0, 100, 255, 0.7);
+            color: rgba(0, 0, 0, 0.7);
+        }
+        .thumb-zone .zone {
+            width: 45%;
+            min-width: 70px;
+            height: 75%;
+            border-radius: 12px;
+            font-size: 1.8rem;
+        }
+        .fingers-zone .zone {
+            flex: 1;
+            height: 90%;
+        }
+        #instructions {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #555;
+            padding: 5px 20px;
+            width: 100%;
+            margin-top: auto;
+            margin-bottom: 1vh;
+        }
+        /* Toggles en knoppen */
+        #bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(30, 30, 30, 0.8);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        
+        .toggle-btn {
+            background-color: rgba(60, 60, 60, 0.8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            transition: all 0.3s;
+            min-width: 100px;
+        }
+        
+        .toggle-btn.active {
+            background-color: rgba(0, 120, 255, 0.9);
+        }
+        
+        .toggle-btn:hover {
+            background-color: rgba(80, 80, 80, 0.9);
+        }
+        
+        .toggle-btn.active:hover {
+            background-color: rgba(30, 150, 255, 0.9);
+        }
+        
+        #square-result {
+            position: fixed;
+            bottom: 60px; /* Boven de balk */
+            right: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000, -2px -2px 4px #000, 2px -2px 4px #000, -2px 2px 4px #000;
+            -webkit-text-stroke: 1px black;
+            display: none;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
+
+        <div id="folder-controls">
+            <button id="selectFolderButton">Kies Fotomap</button>
+            <p id="folderStatus">Geen map geselecteerd.</p>
+        </div>
+
+
+        <div id="controls">
+             <button id="toggle-button">Toon Foto's</button>
+        </div>
+
+        <div id="result-container">
+            <div id="caption"></div>
+            <div id="result" style="display: flex;">0</div>
+            <img id="image-display" src="" alt="Foto" style="display: none;" />
+            <canvas id="colorCanvas" style="display: none;"></canvas>
+        </div>
+
+        <div id="hands-container">
+            <div class="hand left-hand">
+                <div class="hand-label">LINKS</div>
+                <div class="fingers-zone">
+                    <div id="L5" class="zone" data-value="10">10</div>
+                    <div id="L4" class="zone" data-value="10">10</div>
+                    <div id="L3" class="zone" data-value="10">10</div>
+                    <div id="L2" class="zone" data-value="10">10</div>
+                </div>
+                <div class="thumb-zone">
+                    <div id="L1" class="zone" data-value="50">50</div>
+                </div>
+            </div>
+            <div class="hand right-hand">
+                <div class="hand-label">RECHTS</div>
+                <div class="fingers-zone">
+                    <div id="R2" class="zone" data-value="1">1</div>
+                    <div id="R3" class="zone" data-value="1">1</div>
+                    <div id="R4" class="zone" data-value="1">1</div>
+                    <div id="R5" class="zone" data-value="1">1</div>
+                </div>
+                <div class="thumb-zone">
+                    <div id="R1" class="zone" data-value="5">5</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="instructions">
+            Selecteer eerst een map met foto's (bv. "01 naam.jpg", "02.png",...).<br>
+            Plaats dan je vingers op de zones.
+        </div>
+
+        <div id="square-result">0²=0</div>
+
+        <div id="bottom-bar">
+            <button id="caption-toggle" class="toggle-btn">FEIT</button>
+            <button id="square-toggle" class="toggle-btn">kwadraat</button>
+            <button id="speech-toggle" class="toggle-btn">spraak</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = document.getElementById('app');
+            const resultDisplay = document.getElementById('result');
+            const imageDisplay = document.getElementById('image-display');
+            const toggleButton = document.getElementById('toggle-button');
+            const folderInput = document.getElementById('folderInput');
+            const selectFolderButton = document.getElementById('selectFolderButton');
+            const folderStatus = document.getElementById('folderStatus');
+
+            let displayImages = false; // Start met getallen
+            let imageUrlMap = {}; // Opslag voor { nummer: objectURL }
+            let imageCount = 0;
+            let showAllCaps = false; // Standaard geen ALLCAPS maar "FEIT"
+            let showSquare = false; // Standaard geen kwadraat tonen
+            let enableSpeech = false; // Standaard geen spraak
+            let speechTimeout = null; // Voor debouncing
+            let lastSpokenNumber = null; // Om herhalingen te voorkomen
+
+            const activeZones = new Set();
+            const touchMap = new Map();
+
+            // Functie om Object URLs vrij te geven (geheugenbeheer)
+            function cleanupImageUrls() {
+                Object.values(imageUrlMap).forEach(url => URL.revokeObjectURL(url));
+                imageUrlMap = {};
+                imageCount = 0;
+                 folderStatus.textContent = "Geen map geselecteerd.";
+                 toggleButton.disabled = true; // Disable toggle if no images
+                 // Forceer weergave van getal als modus foto was maar er geen map meer is
+                 if(displayImages) {
+                    displayImages = false;
+                    toggleButton.textContent = "Toon Foto's";
+                 }
+            }
+
+            // --- Map Selectie ---
+            selectFolderButton.addEventListener('click', () => {
+                folderInput.click(); // Open de mapkiezer
+            });
+
+            folderInput.addEventListener('change', (event) => {
+                cleanupImageUrls(); // Ruim oude URLs op voor we nieuwe laden
+                const files = event.target.files;
+                const imageRegex = /^(\d{2})(?:[ .].*)?\.(jpe?g|png)$/i; // Regex voor "NN.jpg/png" of "NN .*.jpg/png" of "NN.*.jpg/png"
+
+                for (const file of files) {
+                    const match = file.name.match(imageRegex);
+                    if (match) {
+                        const number = parseInt(match[1], 10); // Getal uit bestandsnaam (bv. 05 -> 5)
+                        if (number >= 0 && number <= 99) { // Geldige range
+                            const objectURL = URL.createObjectURL(file);
+                            imageUrlMap[number] = { url: objectURL, name: file.name };
+                        }
+                    }
+                }
+                 imageCount = Object.keys(imageUrlMap).length;
+                 folderStatus.textContent = `${imageCount} foto('s) geladen.`;
+                 toggleButton.disabled = (imageCount === 0); // Enable toggle only if images were loaded
+                 updateResult(); // Update weergave direct
+            });
+
+
+            // --- Zoek Afbeelding URL ---
+            function findImageForSum(sum) {
+                return imageUrlMap[sum] || null; // Return het object {url, name} of null
+            }
+
+            // --- Update Weergave (Getal of Foto) ---
+            function updateResult() {
+                let sum = 0;
+                activeZones.forEach(zoneId => {
+                    const zone = document.getElementById(zoneId);
+                    // Ensure zone exists before accessing dataset
+                    if (zone && zone.dataset.value) {
+                        sum += parseInt(zone.dataset.value);
+                    }
+                });
+
+                // Als spraak is ingeschakeld, spreek het getal uit na 200ms debounce
+                if (enableSpeech) {
+                    // Clear bestaande timeout als die er is
+                    if (speechTimeout) {
+                        clearTimeout(speechTimeout);
+                    }
+                    
+                    // Alleen uitspreken als het een nieuw getal is
+                    if (sum !== lastSpokenNumber) {
+                        // Zet nieuwe timeout voor 200ms
+                        speechTimeout = setTimeout(() => {
+                            speakNumber(sum);
+                            lastSpokenNumber = sum;
+                        }, 200);
+                    }
+                }
+
+                // Toggle is alleen zinvol als er afbeeldingen zijn
+                toggleButton.disabled = (imageCount === 0);
+
+                // Caption element
+                const captionDiv = document.getElementById('caption');
+                captionDiv.textContent = '';
+                // Kwadraat element
+                const squareDiv = document.getElementById('square-result');
+                const square = sum * sum;
+                squareDiv.textContent = `${sum}²=${square}`;
+                squareDiv.style.display = showSquare ? 'block' : 'none';
+
+                if (displayImages && imageCount > 0) { // Toon alleen foto's als modus aan staat EN er foto's zijn
+                    const imageObj = findImageForSum(sum);
+                    if (imageObj) {
+                        imageDisplay.src = imageObj.url; // Dit is nu een Object URL
+                        imageDisplay.alt = `Foto voor ${sum}`;
+                        imageDisplay.style.display = 'block';
+                        resultDisplay.style.display = 'none';
+
+                        // Zoek ALLCAPS woorden in de bestandsnaam
+                        let fileName = imageObj.name || '';
+                        // Regex voor ALLCAPS woorden (minimaal 2 letters)
+                        let allcaps = [];
+                        if (fileName) {
+                            allcaps = fileName.match(/\b[A-Z]{2,}\b/g) || [];
+                        }
+                        // Alleen tekst tonen als de toggle aan staat
+                        if (showAllCaps) {
+                            if (allcaps.length > 0) {
+                                // Toon ALLCAPS woorden als die er zijn
+                                captionDiv.textContent = allcaps.join(' ');
+                            } else {
+                                // Toon niets als er geen ALLCAPS woorden zijn
+                                captionDiv.textContent = '';
+                            }
+                        } else {
+                            // Als toggle uit staat, altijd leeg
+                            captionDiv.textContent = '';
+                        }
+
+                        // Wacht tot de afbeelding is geladen voordat we de kleur analyseren
+                        imageDisplay.onload = () => {
+                            const dominantColor = getDominantColor(imageDisplay);
+                            document.body.style.backgroundColor = dominantColor;
+                        };
+
+                        imageDisplay.onerror = () => { // Fallback als laden van Object URL mislukt (onwaarschijnlijk)
+                            imageDisplay.style.display = 'none';
+                            resultDisplay.textContent = `Fout bij laden foto ${sum}`;
+                            resultDisplay.style.display = 'flex';
+                            document.body.style.backgroundColor = '#f0f0f0'; // Reset naar standaard kleur
+                            captionDiv.textContent = '';
+                        };
+                    } else {
+                        // Geen afbeelding voor deze specifieke som
+                        imageDisplay.style.display = 'none';
+                        resultDisplay.textContent = sum; // Toon getal als fallback
+                        resultDisplay.style.display = 'flex';
+                        document.body.style.backgroundColor = '#f0f0f0'; // Reset naar standaard kleur
+                        captionDiv.textContent = '';
+                    }
+                } else {
+                    // Toon het getal
+                    imageDisplay.style.display = 'none';
+                    resultDisplay.textContent = sum;
+                    resultDisplay.style.display = 'flex';
+                    document.body.style.backgroundColor = '#f0f0f0'; // Reset naar standaard kleur
+                    captionDiv.textContent = '';
+                }
+            }
+
+            // Functie om de dominante kleur te berekenen
+            function getDominantColor(img) {
+                const canvas = document.getElementById('colorCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Pas canvas grootte aan aan afbeelding
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                
+                // Teken afbeelding op canvas
+                ctx.drawImage(img, 0, 0);
+                
+                // Verklein de afbeelding voor snellere verwerking
+                const scale = 0.1; // Verklein naar 10% van originele grootte
+                const scaledWidth = Math.floor(canvas.width * scale);
+                const scaledHeight = Math.floor(canvas.height * scale);
+                
+                // Maak een kleiner canvas voor de verkleinde versie
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = scaledWidth;
+                tempCanvas.height = scaledHeight;
+                
+                // Teken verkleinde versie
+                tempCtx.drawImage(canvas, 0, 0, scaledWidth, scaledHeight);
+                
+                // Haal pixel data op
+                const imageData = tempCtx.getImageData(0, 0, scaledWidth, scaledHeight).data;
+                
+                // Tel kleuren
+                const colorCounts = {};
+                const coarse = 40; // Coarse graining factor
+                for (let i = 0; i < imageData.length; i += 4) {
+                    const r = imageData[i];
+                    const g = imageData[i + 1];
+                    const b = imageData[i + 2];
+                    const a = imageData[i + 3];
+                    
+                    // Sla transparante pixels over
+                    if (a < 128) continue;
+                    
+                    // Coarse graining: deel door coarse, rond af, en vermenigvuldig weer
+                    const roundedR = Math.round(r / coarse) * coarse;
+                    const roundedG = Math.round(g / coarse) * coarse;
+                    const roundedB = Math.round(b / coarse) * coarse;
+                    
+                    const colorKey = `${roundedR},${roundedG},${roundedB}`;
+                    colorCounts[colorKey] = (colorCounts[colorKey] || 0) + 1;
+                }
+                
+                // Vind meest voorkomende kleur
+                let maxCount = 0;
+                let dominantColor = '#f0f0f0'; // Standaard kleur als fallback
+                
+                for (const colorKey in colorCounts) {
+                    if (colorCounts[colorKey] > maxCount) {
+                        maxCount = colorCounts[colorKey];
+                        const [r, g, b] = colorKey.split(',').map(Number);
+                        dominantColor = `rgb(${r},${g},${b})`;
+                    }
+                }
+                
+                return dominantColor;
+            }
+
+            // Functie om te bepalen of tekst wit of zwart moet zijn op basis van achtergrondkleur
+            function getContrastYIQ(rgb) {
+                // rgb-formaat: 'rgb(r,g,b)'
+                const result = rgb.match(/\d+/g);
+                if (!result || result.length < 3) return '#222';
+                const r = parseInt(result[0], 10);
+                const g = parseInt(result[1], 10);
+                const b = parseInt(result[2], 10);
+                // YIQ-formule voor contrast
+                const yiq = (r*299 + g*587 + b*114) / 1000;
+                return (yiq >= 128) ? '#222' : '#fff';
+            }
+
+            // --- Touch Event Handlers (min of meer ongewijzigd) ---
+             function handleTouchStart(e) {
+                e.preventDefault();
+                Array.from(e.changedTouches).forEach(touch => {
+                    const touchX = touch.clientX;
+                    const touchY = touch.clientY;
+                    const touchId = touch.identifier;
+
+                    document.querySelectorAll('.zone').forEach(zone => {
+                        const rect = zone.getBoundingClientRect();
+                        if (touchX >= rect.left && touchX <= rect.right && touchY >= rect.top && touchY <= rect.bottom) {
+                           // Only map if this touch isn't already mapped to a zone
+                           if (!touchMap.has(touchId)) {
+                                touchMap.set(touchId, zone.id);
+                                activeZones.add(zone.id);
+                                zone.classList.add('active');
+                            }
+                        }
+                    });
+                });
+                updateResult();
+            }
+
+            function handleTouchMove(e) {
+                e.preventDefault();
+                Array.from(e.changedTouches).forEach(touch => {
+                    const touchX = touch.clientX;
+                    const touchY = touch.clientY;
+                    const touchId = touch.identifier;
+                    let currentZoneId = null;
+
+                    // Find which zone the touch is currently over
+                     document.querySelectorAll('.zone').forEach(zone => {
+                        const rect = zone.getBoundingClientRect();
+                        if (touchX >= rect.left && touchX <= rect.right && touchY >= rect.top && touchY <= rect.bottom) {
+                           currentZoneId = zone.id;
+                        }
+                    });
+
+                    const previousZoneId = touchMap.get(touchId);
+
+                    // If touch is mapped AND (is no longer over any zone OR is over a different zone)
+                    if (previousZoneId && currentZoneId !== previousZoneId) {
+                        const oldZone = document.getElementById(previousZoneId);
+                        if (oldZone) oldZone.classList.remove('active');
+                        activeZones.delete(previousZoneId);
+                        touchMap.delete(touchId); // Unmap the touch
+                    }
+
+                    // If touch is over a zone AND is not currently mapped
+                    if (currentZoneId && !touchMap.has(touchId)) {
+                        touchMap.set(touchId, currentZoneId);
+                        activeZones.add(currentZoneId);
+                        const newZone = document.getElementById(currentZoneId);
+                        if (newZone) newZone.classList.add('active');
+                    }
+                });
+                updateResult();
+            }
+
+
+            function handleTouchEnd(e) {
+                e.preventDefault();
+                Array.from(e.changedTouches).forEach(touch => {
+                    const touchId = touch.identifier;
+                    if (touchMap.has(touchId)) {
+                        const zoneId = touchMap.get(touchId);
+                        const zone = document.getElementById(zoneId);
+                        if (zone) zone.classList.remove('active');
+                        activeZones.delete(zoneId);
+                        touchMap.delete(touchId);
+                    }
+                });
+                 // Delay update slightly on touchend to potentially catch rapid taps better
+                 // Although with the current logic it might not be strictly necessary
+                 // setTimeout(updateResult, 10);
+                 updateResult(); // Update immediately is usually fine
+            }
+
+            // --- Initialisatie & Toggle ---
+            function initEvents() {
+                app.addEventListener('touchstart', handleTouchStart, { passive: false });
+                app.addEventListener('touchmove', handleTouchMove, { passive: false });
+                app.addEventListener('touchend', handleTouchEnd, { passive: false });
+                app.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+
+                toggleButton.addEventListener('click', () => {
+                    if (imageCount > 0) { // Only allow toggle if images are loaded
+                        displayImages = !displayImages;
+                        toggleButton.textContent = displayImages ? 'Toon Getallen' : "Toon Foto's";
+                        updateResult();
+                    }
+                });
+
+                // Voeg touch event toe voor de toggle knop
+                toggleButton.addEventListener('touchstart', (e) => {
+                    e.preventDefault(); // Voorkom dubbele triggers
+                    if (imageCount > 0) { // Only allow toggle if images are loaded
+                        displayImages = !displayImages;
+                        toggleButton.textContent = displayImages ? 'Toon Getallen' : "Toon Foto's";
+                        updateResult();
+                    }
+                });
+
+                // Caption toggle
+                const captionToggle = document.getElementById('caption-toggle');
+                captionToggle.addEventListener('click', () => {
+                    showAllCaps = !showAllCaps;
+                    captionToggle.classList.toggle('active', showAllCaps);
+                    updateResult();
+                });
+                // Ook voor touch
+                captionToggle.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    showAllCaps = !showAllCaps;
+                    captionToggle.classList.toggle('active', showAllCaps);
+                    updateResult();
+                });
+
+                // Kwadraat toggle
+                const squareToggle = document.getElementById('square-toggle');
+                squareToggle.addEventListener('click', () => {
+                    showSquare = !showSquare;
+                    squareToggle.classList.toggle('active', showSquare);
+                    updateResult();
+                });
+                // Ook voor touch
+                squareToggle.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    showSquare = !showSquare;
+                    squareToggle.classList.toggle('active', showSquare);
+                    updateResult();
+                });
+
+                // Spraak toggle
+                const speechToggle = document.getElementById('speech-toggle');
+                speechToggle.addEventListener('click', () => {
+                    enableSpeech = !enableSpeech;
+                    speechToggle.classList.toggle('active', enableSpeech);
+                    
+                    // Als spraak wordt uitgeschakeld, annuleer lopende spraak en timeout
+                    if (!enableSpeech) {
+                        if (speechTimeout) {
+                            clearTimeout(speechTimeout);
+                            speechTimeout = null;
+                        }
+                        window.speechSynthesis.cancel();
+                    } else {
+                        // Als spraak wordt ingeschakeld, spreek huidige getal direct uit
+                        // Reset lastSpokenNumber om nieuwe uitspraak te forceren
+                        lastSpokenNumber = null;
+                        updateResult();
+                    }
+                });
+                // Ook voor touch
+                speechToggle.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    enableSpeech = !enableSpeech;
+                    speechToggle.classList.toggle('active', enableSpeech);
+                    
+                    // Als spraak wordt uitgeschakeld, annuleer lopende spraak en timeout
+                    if (!enableSpeech) {
+                        if (speechTimeout) {
+                            clearTimeout(speechTimeout);
+                            speechTimeout = null;
+                        }
+                        window.speechSynthesis.cancel();
+                    } else {
+                        // Als spraak wordt ingeschakeld, spreek huidige getal direct uit
+                        // Reset lastSpokenNumber om nieuwe uitspraak te forceren
+                        lastSpokenNumber = null;
+                        updateResult();
+                    }
+                });
+
+                // Cleanup URLs when the page is closed to prevent memory leaks
+                window.addEventListener('beforeunload', cleanupImageUrls);
+            }
+
+            // Initial setup
+            toggleButton.disabled = true; // Start disabled
+            // Initialiseer de toggle knoppen
+            document.getElementById('caption-toggle').classList.toggle('active', showAllCaps);
+            document.getElementById('square-toggle').classList.toggle('active', showSquare);
+            document.getElementById('speech-toggle').classList.toggle('active', enableSpeech);
+            updateResult();
+            initEvents();
+
+            // Functie om een getal uit te spreken in het Nederlands
+            function speakNumber(number) {
+                // Stop eventuele lopende spraak
+                window.speechSynthesis.cancel();
+                
+                // Zet het getal om naar Nederlandse tekst
+                let text = number.toString();
+                
+                // Maak een nieuwe utterance aan
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Configureer voor Nederlands
+                utterance.lang = 'nl-NL';
+                utterance.rate = 0.9; // Iets langzamer voor betere verstaanbaarheid
+                
+                // Spreek uit
+                window.speechSynthesis.speak(utterance);
+            }
+        });
+    </script>
+</body>
+</html>

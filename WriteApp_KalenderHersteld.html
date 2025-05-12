@@ -1,0 +1,49 @@
+// App state
+let state = {
+    wordCount: 0,
+    dailyGoal: 500,
+    sprintActive: false,
+    sprintTimeRemaining: 300, // 5 minutes in seconds
+    sprintSpeed: 'medium',
+    sprintLength: 5, // minutes
+    sprintInterval: null,
+    healthDecayInterval: null,
+    timeSpent: 0,
+    lastTyped: Date.now(),
+    fullscreenMode: false,
+    settings: {
+        dailyWordGoal: 500,
+        weeklyGoal: 5,
+        typewriterMode: false,
+        focusMode: false,
+        blurMode: false,
+        autosave: true,
+        autosaveInterval: 30
+    }
+};
+
+// Update word count
+function updateWordCount() {
+    const text = editor.value.trim();
+    state.wordCount = text ? text.split(/\s+/).length : 0;
+    const wordCountElement = document.getElementById('word-count');
+    if (wordCountElement) {
+        wordCountElement.textContent = state.wordCount;
+    }
+    updateProgress();
+}
+
+// VERVANG input-event
+editor.addEventListener('input', function() {
+    const text = editor.value;
+    const wc = countWords(text);
+    state.wordCount = wc;
+    const wordCountElement = document.getElementById('word-count');
+    if (wordCountElement) {
+        wordCountElement.textContent = wc;
+    }
+    updateProgress();
+    const start = state.lastTyped || Date.now();
+    const minutesSpent = Math.floor((Date.now() - start) / 60000);
+    saveCurrentDay(text, wc, minutesSpent);
+}); 
