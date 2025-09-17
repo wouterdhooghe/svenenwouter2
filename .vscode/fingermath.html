@@ -81,6 +81,55 @@
             background-color: transparent; /* transparant zodat body-kleur zichtbaar wordt */
             overflow: hidden;
         }
+        /* Typemodus lay-out (lettermode) */
+        #letter-mode-container {
+            position: relative;
+            display: none; /* zichtbaar in lettermode */
+            width: 100vw;
+            height: calc(100vh - 120px);
+            margin-top: 60px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+        #word-list-container {
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.6);
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        #word-list-title {
+            margin: 0 0 8px 0;
+            font-weight: bold;
+            color: #333;
+        }
+        #word-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 1.1em;
+            line-height: 1.6em;
+            word-break: break-word;
+        }
+        .word-item { color: #222; }
+        .word-item.active { color: #c00; font-weight: bold; }
+        #typing-focus-hint {
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #555;
+        }
+        #hidden-typing-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            height: 0; width: 0;
+        }
         #caption {
             width: 100%;
             text-align: center;
@@ -132,6 +181,116 @@
             width: 48%;
             position: relative;
         }
+        
+        /* Quincunx layout (dobbelsteenpatroon) voor lettermodus */
+        .letter-mode .hand {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 10px;
+            width: 48%;
+            aspect-ratio: 1/1;  /* Vierkante container */
+            padding: 15px;
+            position: relative;
+        }
+        
+        .letter-mode .zone {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            border-radius: 50%; /* Cirkel maken */
+            font-size: 1.5rem;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Positionering van de zones in quincunx patroon */
+        .letter-mode .letter-zone {
+            display: flex !important;
+            position: absolute;
+        }
+        
+        .letter-mode .left-hand #L1-letter {
+            grid-column: 2;
+            grid-row: 2;
+            top: calc(50% - 25px);
+            left: calc(50% - 25px);
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .left-hand #L2-letter {
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .left-hand #L3-letter {
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .left-hand #L4-letter {
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .left-hand #L5-letter {
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .right-hand #R1-letter {
+            top: calc(50% - 25px);
+            left: calc(50% - 25px);
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .right-hand #R2-letter {
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .right-hand #R3-letter {
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .right-hand #R4-letter {
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .letter-mode .right-hand #R5-letter {
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        /* Verberg de oorspronkelijke layout in lettermodus */
+        .letter-mode .fingers-zone,
+        .letter-mode .thumb-zone {
+            display: none;
+        }
+        
+        /* Originele fingers/thumb layout alleen in getalmodus */
         .hand-label {
             position: absolute;
             top: -25px;
@@ -142,7 +301,7 @@
             font-size: 0.9em;
         }
         .fingers-zone {
-            width: 100%;
+            width: 80%;
             height: 60%;
             display: flex;
             flex-direction: row;
@@ -260,20 +419,268 @@
             padding: 5px 10px;
             border-radius: 8px;
         }
+        /* Challenge systeem */
+        #challenge-btn {
+            position: relative;
+        }
+        
+        #challenge-indicator {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(30, 30, 30, 0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 90;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        }
+        
+        #challenge-counter {
+            margin-left: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 15px;
+            padding: 2px 10px;
+            font-weight: bold;
+        }
+        
+        #challenge-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        #challenge-container {
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+        
+        .challenge-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .challenge-item {
+            background-color: #444;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .challenge-item:hover {
+            background-color: #555;
+            transform: translateY(-3px);
+        }
+        
+        .challenge-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .challenge-desc {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+        
+        #challenge-close {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        /* Skeuomorfische toggle voor +100 */
+        #plus100-container {
+            position: absolute;
+            top: 15px;
+            left: 200px;
+            display: flex;
+            align-items: center;
+            z-index: 20;
+            background-color: rgba(240, 240, 240, 0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        #plus100-label {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #444;
+            margin-right: 10px;
+        }
+        
+        /* Mode switch container */
+        #mode-switch-container {
+            position: absolute;
+            top: 15px;
+            left: 320px;
+            display: flex;
+            align-items: center;
+            z-index: 20;
+            background-color: rgba(240, 240, 240, 0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        #mode-switch-label {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #444;
+            margin-right: 10px;
+        }
+        
+        /* Set switch container */
+        #set-switch-container {
+            position: absolute;
+            top: 15px;
+            left: 440px;
+            display: flex;
+            align-items: center;
+            z-index: 20;
+            background-color: rgba(240, 240, 240, 0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        #set-switch-label {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #444;
+            margin-right: 10px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.4);
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background: linear-gradient(to bottom, #fff 0%, #f0f0f0 100%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #2196F3;
+            background-image: linear-gradient(to right, #1a6fc9 0%, #2196F3 100%);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        /* Touch effect */
+        .slider:active:before {
+            width: 28px;
+        }
     </style>
 </head>
 <body>
     <div id="app">
         <input type="file" id="folderInput" webkitdirectory directory multiple style="display: none;">
+        <input type="file" id="folderInput2" webkitdirectory directory multiple style="display: none;">
+        <input type="file" id="lettersFolderInput" webkitdirectory directory multiple style="display: none;">
+        <input type="file" id="lettersFolderInput2" webkitdirectory directory multiple style="display: none;">
 
         <div id="folder-controls">
             <button id="selectFolderButton">Kies Fotomap</button>
+            <button id="selectFolderButton2">Kies Fotomap 2</button>
             <p id="folderStatus">Geen map geselecteerd.</p>
         </div>
 
+        <div id="plus100-container">
+            <span id="plus100-label">+100</span>
+            <label class="switch">
+                <input type="checkbox" id="plus100-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div id="mode-switch-container">
+            <span id="mode-switch-label">Letters</span>
+            <label class="switch">
+                <input type="checkbox" id="mode-switch-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div id="set-switch-container">
+            <span id="set-switch-label">Set 1</span>
+            <label class="switch">
+                <input type="checkbox" id="set-switch-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
 
         <div id="controls">
-             <button id="toggle-button">Toon Foto's</button>
+            <button id="toggle-button">Toon Foto's</button>
+        </div>
+
+        <div id="challenge-indicator">
+            <span id="challenge-name">Tafel van 13</span>
+            <span id="challenge-counter">7</span>
         </div>
 
         <div id="result-container">
@@ -281,6 +688,20 @@
             <div id="result" style="display: flex;">0</div>
             <img id="image-display" src="" alt="Foto" style="display: none;" />
             <canvas id="colorCanvas" style="display: none;"></canvas>
+        </div>
+
+        <!-- Nieuwe lettermode (typemodus) -->
+        <div id="letter-mode-container" style="display: none;">
+            <input id="hidden-typing-input" type="text" autocomplete="off" autocapitalize="characters" />
+            <div id="word-list-container">
+                <div id="word-list-title">Woorden</div>
+                <ul id="word-list"></ul>
+                <div id="typing-focus-hint">Typ om een woord te vormen. Druk Enter voor een nieuw woord.</div>
+            </div>
+            <div id="letter-right-panel" style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.4); border-radius: 8px;">
+                <img id="letter-image-display" src="" alt="Letterfoto" style="max-width: 100%; max-height: 100%; display: none; object-fit: contain;" />
+                <div id="letter-letters-display" style="font-size: 20vw; font-weight: bold; color: #222; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);"></div>
+            </div>
         </div>
 
         <div id="hands-container">
@@ -295,6 +716,12 @@
                 <div class="thumb-zone">
                     <div id="L1" class="zone" data-value="50">50</div>
                 </div>
+                <!-- Extra zones voor de lettermodus -->
+                <div id="L1-letter" class="zone letter-zone" style="display: none;" data-value="O">O</div>
+                <div id="L2-letter" class="zone letter-zone" style="display: none;" data-value="E">E</div>
+                <div id="L3-letter" class="zone letter-zone" style="display: none;" data-value="J">J</div>
+                <div id="L4-letter" class="zone letter-zone" style="display: none;" data-value="T">T</div>
+                <div id="L5-letter" class="zone letter-zone" style="display: none;" data-value="Y">Y</div>
             </div>
             <div class="hand right-hand">
                 <div class="hand-label">RECHTS</div>
@@ -307,6 +734,12 @@
                 <div class="thumb-zone">
                     <div id="R1" class="zone" data-value="5">5</div>
                 </div>
+                <!-- Extra zones voor de lettermodus -->
+                <div id="R1-letter" class="zone letter-zone" style="display: none;" data-value="0">0</div>
+                <div id="R2-letter" class="zone letter-zone" style="display: none;" data-value="1">1</div>
+                <div id="R3-letter" class="zone letter-zone" style="display: none;" data-value="2">2</div>
+                <div id="R4-letter" class="zone letter-zone" style="display: none;" data-value="3">3</div>
+                <div id="R5-letter" class="zone letter-zone" style="display: none;" data-value="4">4</div>
             </div>
         </div>
 
@@ -321,6 +754,54 @@
             <button id="caption-toggle" class="toggle-btn">FEIT</button>
             <button id="square-toggle" class="toggle-btn">kwadraat</button>
             <button id="speech-toggle" class="toggle-btn">spraak</button>
+            <button id="challenge-btn" class="toggle-btn">challenge</button>
+        </div>
+
+        <!-- Challenge Overlay -->
+        <div id="challenge-overlay">
+            <button id="challenge-close">✕</button>
+            <div id="challenge-container">
+                <div class="challenge-title">Kies een Challenge</div>
+                <div class="challenge-grid">
+                    <div class="challenge-item" data-challenge="times13">
+                        <div class="challenge-name">Tafel van 13</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 13</div>
+                    </div>
+                    <div class="challenge-item" data-challenge="times2">
+                        <div class="challenge-name">Tafel van 2</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 2</div>
+                    </div>
+                    <div class="challenge-item" data-challenge="times3">
+                        <div class="challenge-name">Tafel van 3</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 3</div>
+                    </div>
+                    <div class="challenge-item" data-challenge="times4">
+                        <div class="challenge-name">Tafel van 4</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 4</div>
+                    </div>
+                    <div class="challenge-item" data-challenge="times5">
+                        <div class="challenge-name">Tafel van 5</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 5</div>
+                    </div>
+                    <div class="challenge-item" data-challenge="times6">
+                        <div class="challenge-name">Tafel van 6</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 6</div>
+                    </div>
+                    <div class="challenge-item" data-challenge="times7">
+                        <div class="challenge-name">Tafel van 7</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 7</div>
+                    </div>
+                    <div class="challenge-item" data-challenge="times8">
+                        <div class="challenge-name">Tafel van 8</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 8</div>
+                    </div>
+                    <div class="challenge-item" data-challenge="times9">
+                        <div class="challenge-name">Tafel van 9</div>
+                        <div class="challenge-desc">Vind alle getallen uit de tafel van 9</div>
+                    </div>
+                    <!-- Ruimte voor meer challenges in de toekomst -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -331,17 +812,366 @@
             const imageDisplay = document.getElementById('image-display');
             const toggleButton = document.getElementById('toggle-button');
             const folderInput = document.getElementById('folderInput');
+            const lettersFolderInput = document.getElementById('lettersFolderInput');
+            const lettersFolderInput2 = document.getElementById('lettersFolderInput2');
             const selectFolderButton = document.getElementById('selectFolderButton');
             const folderStatus = document.getElementById('folderStatus');
 
-            let displayImages = false; // Start met getallen
+            let displayImages = false; // Start met getallen/letters
             let imageUrlMap = {}; // Opslag voor { nummer: objectURL }
+            let imageUrlMap2 = {}; // Opslag voor tweede set { nummer: objectURL }
+            let letterImageUrlMap = {}; // Opslag voor { key(1-2 letters): objectURL }
+            let letterImageUrlMap2 = {}; // Opslag voor tweede set { key: objectURL }
             let imageCount = 0;
+            let imageCount2 = 0; // Teller voor tweede set
+            let letterImageCount = 0; // aantal unieke keys
+            let letterImageCount2 = 0; // Teller voor tweede letters-set
+            // Typemodus state
+            // Persistente woordenlijst en typestatus
+            // Preload cache voor letterafbeeldingen
+            const preloadedLetterImages = new Map(); // key: `${set}:${letterKey}` -> HTMLImageElement
+            const preloadedNumberImages = new Map(); // key: `${set}:${number}` -> HTMLImageElement
+            function preloadKey(setId, key) { return `${setId}:${key}`; }
+            function preloadLetterMap(map, setId) {
+                try {
+                    for (const key in map) {
+                        const entry = map[key];
+                        const cacheKey = preloadKey(setId, key);
+                        if (preloadedLetterImages.has(cacheKey)) continue;
+                        const img = new Image();
+                        img.decoding = 'async';
+                        img.loading = 'eager';
+                        img.src = entry.url;
+                        if (typeof img.decode === 'function') {
+                            img.decode().catch(() => {/* ignore */});
+                        }
+                        preloadedLetterImages.set(cacheKey, img);
+                    }
+                } catch (_) { /* ignore */ }
+            }
+
+            // Gerichte preload: alleen relevante keys
+            function preloadLetterKeys(keys, setId, map) {
+                try {
+                    keys.forEach(key => {
+                        if (!key) return;
+                        const entry = map[key];
+                        if (!entry) return;
+                        const cacheKey = preloadKey(setId, key);
+                        if (preloadedLetterImages.has(cacheKey)) return;
+                        const img = new Image();
+                        img.decoding = 'async';
+                        img.loading = 'eager';
+                        img.src = entry.url;
+                        if (typeof img.decode === 'function') {
+                            img.decode().catch(() => {/* ignore */});
+                        }
+                        preloadedLetterImages.set(cacheKey, img);
+                    });
+                } catch (_) { /* ignore */ }
+            }
+
+            function getKeyFromWord(word) {
+                return (String(word || '').toUpperCase().slice(0,2));
+            }
+
+            function preloadForCurrentInput() {
+                if (!letterMode) return;
+                const up = (currentInput || '').toUpperCase();
+                const setId = useSet2 ? '2' : '1';
+                const map = useSet2 ? letterImageUrlMap2 : letterImageUrlMap;
+                const keys = new Set();
+                if (up.length >= 2) {
+                    keys.add(up.slice(0,2));
+                } else if (up.length === 1) {
+                    // Preload alle keys die met de letter starten (limiteer tot 24)
+                    let count = 0;
+                    for (const key in map) {
+                        if (key.startsWith(up)) {
+                            keys.add(key);
+                            count++;
+                            if (count >= 24) break;
+                        }
+                    }
+                }
+                // Preload top suggesties uit gefilterde lijst (eerste 8)
+                for (let i = 0; i < Math.min(8, filteredWords.length); i++) {
+                    keys.add(getKeyFromWord(filteredWords[i]));
+                }
+                preloadLetterKeys(keys, setId, map);
+            }
+
+            // Preload helpers voor getallenmodus
+            function preloadNumberMap(map, setId) {
+                try {
+                    for (const key in map) {
+                        const cacheKey = preloadKey(setId, key);
+                        if (preloadedNumberImages.has(cacheKey)) continue;
+                        const img = new Image();
+                        img.src = map[key].url;
+                        preloadedNumberImages.set(cacheKey, img);
+                    }
+                } catch(_) { /* negeer */ }
+            }
+
+            function preloadNumberKeys(keys, setId, map) {
+                try {
+                    keys.forEach((key) => {
+                        if (!map[key]) return;
+                        const cacheKey = preloadKey(setId, key);
+                        if (preloadedNumberImages.has(cacheKey)) return;
+                        const img = new Image();
+                        img.src = map[key].url;
+                        preloadedNumberImages.set(cacheKey, img);
+                    });
+                } catch(_) { /* negeer */ }
+            }
+
+            function preloadForCurrentSum(sum) {
+                try {
+                    const setId = useSet2 ? '2' : '1';
+                    const map = useSet2 ? imageUrlMap2 : imageUrlMap;
+                    if (typeof sum !== 'number' || isNaN(sum)) return;
+                    const vicinity = [sum - 2, sum - 1, sum, sum + 1, sum + 2]
+                        .filter(n => n >= 0)
+                        .map(n => String(n));
+                    preloadNumberKeys(vicinity, setId, map);
+                } catch(_) { /* negeer */ }
+            }
+            let savedWords = []; // uit localStorage (uppercase)
+            // Indexen voor snelle filtering
+            let wordsByFirst = {}; // { 'A': [..woorden..] }
+            let wordsByFirstTwo = {}; // { 'AB': [..woorden..] }
+            let currentInput = ""; // huidig actief woord (uppercase)
+            let filteredWords = []; // gefilterde weergave links
+            let filteredSelectionIndex = -1; // pijltjesselectie in filteredWords
             let showAllCaps = false; // Standaard geen ALLCAPS maar "FEIT"
             let showSquare = false; // Standaard geen kwadraat tonen
             let enableSpeech = false; // Standaard geen spraak
             let speechTimeout = null; // Voor debouncing
             let lastSpokenNumber = null; // Om herhalingen te voorkomen
+            let lastFailedNumber = null; // Bijhouden van laatste getal met faalgeluid
+            let addPlus100 = false; // Standaard geen +100 toevoegen
+            let useSet2 = false; // Standaard set 1 gebruiken
+            let letterMode = false; // Standaard getalmodus
+
+            // DOM elementen voor lettermodus/getalmodus
+            const modeToggle = document.getElementById('mode-switch-toggle');
+            const modeLabel = document.getElementById('mode-switch-label');
+
+            // DOM elementen voor set switching
+            const setToggle = document.getElementById('set-switch-toggle');
+            const setLabel = document.getElementById('set-switch-label');
+            const folderInput2 = document.getElementById('folderInput2');
+            const selectFolderButton2 = document.getElementById('selectFolderButton2');
+
+            // Challenge systeem variabelen
+            let activeChallenge = null;
+            let challengeData = {
+                times13: {
+                    name: "Tafel van 13",
+                    description: "Vind alle getallen uit de tafel van 13 onder de 100",
+                    check: (number) => number % 13 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        // Genereer alle getallen in de tafel van 13 onder de 100
+                        const numbers = [];
+                        for (let i = 13; i < 100; i += 13) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    // Vink een nummer af in de lijst om bij te houden
+                    found: []
+                },
+                times2: {
+                    name: "Tafel van 2",
+                    description: "Vind alle getallen uit de tafel van 2 onder de 100",
+                    check: (number) => number % 2 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        const numbers = [];
+                        for (let i = 2; i < 100; i += 2) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    found: []
+                },
+                times3: {
+                    name: "Tafel van 3",
+                    description: "Vind alle getallen uit de tafel van 3 onder de 100",
+                    check: (number) => number % 3 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        const numbers = [];
+                        for (let i = 3; i < 100; i += 3) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    found: []
+                },
+                times4: {
+                    name: "Tafel van 4",
+                    description: "Vind alle getallen uit de tafel van 4 onder de 100",
+                    check: (number) => number % 4 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        const numbers = [];
+                        for (let i = 4; i < 100; i += 4) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    found: []
+                },
+                times5: {
+                    name: "Tafel van 5",
+                    description: "Vind alle getallen uit de tafel van 5 onder de 100",
+                    check: (number) => number % 5 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        const numbers = [];
+                        for (let i = 5; i < 100; i += 5) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    found: []
+                },
+                times6: {
+                    name: "Tafel van 6",
+                    description: "Vind alle getallen uit de tafel van 6 onder de 100",
+                    check: (number) => number % 6 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        const numbers = [];
+                        for (let i = 6; i < 100; i += 6) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    found: []
+                },
+                times7: {
+                    name: "Tafel van 7",
+                    description: "Vind alle getallen uit de tafel van 7 onder de 100",
+                    check: (number) => number % 7 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        const numbers = [];
+                        for (let i = 7; i < 100; i += 7) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    found: []
+                },
+                times8: {
+                    name: "Tafel van 8",
+                    description: "Vind alle getallen uit de tafel van 8 onder de 100",
+                    check: (number) => number % 8 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        const numbers = [];
+                        for (let i = 8; i < 100; i += 8) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    found: []
+                },
+                times9: {
+                    name: "Tafel van 9",
+                    description: "Vind alle getallen uit de tafel van 9 onder de 100",
+                    check: (number) => number % 9 === 0 && number > 0 && number < 100,
+                    generate: () => {
+                        const numbers = [];
+                        for (let i = 9; i < 100; i += 9) {
+                            numbers.push(i);
+                        }
+                        return numbers;
+                    },
+                    found: []
+                }
+                // Hier kunnen later meer challenges worden toegevoegd
+            };
+            
+            // Eenvoudigere geluiden
+            const context = new (window.AudioContext || window.webkitAudioContext)();
+            let audioInitialized = false;
+            
+            // Audiocontext vereist gebruikersinteractie
+            function initAudio() {
+                if (audioInitialized) return;
+                
+                if (context.state === 'suspended') {
+                    context.resume();
+                }
+                audioInitialized = true;
+            }
+            
+            // Functie om een pieptoon te genereren
+            function beep(freq, duration, type = 'sine', volume = 0.5) {
+                try {
+                    initAudio();
+                    
+                    const oscillator = context.createOscillator();
+                    const gainNode = context.createGain();
+                    
+                    oscillator.type = type;
+                    oscillator.frequency.value = freq;
+                    oscillator.connect(gainNode);
+                    
+                    gainNode.gain.value = volume;
+                    gainNode.connect(context.destination);
+                    
+                    oscillator.start();
+                    
+                    setTimeout(function() {
+                        oscillator.stop();
+                    }, duration);
+                } catch (e) {
+                    console.error("Audio fout:", e);
+                }
+            }
+            
+            // Definieer specifieke geluiden
+            function playSuccessSound() {
+                // oude versie:
+                  beep(1000, 100, 'sine', 0.3);
+                setTimeout(() => beep(1500, 100, 'sine', 0.3), 100);
+
+                // nieuwe versie:
+
+                // const baseFreq = 1000; // Basisfrequentie voor succes
+                // const duration = 300; // Duur in ms
+                // beep(baseFreq, duration, 'sine', 0.5);
+                // setTimeout(() => beep(baseFreq + 200, duration, 'sine', 0.5), 100); // Tweede toon
+            }
+            
+            let lastNumber = null; // Houdt het laatste getal bij
+            let failTimeout = null; // Timer voor falen
+            const failDelay = 1000; // Vertraging in ms voordat het falen geluid wordt afgespeeld
+
+            function playFailSound() {
+                const baseFreq = 300; // Basisfrequentie voor falen
+                const duration = 200; // Duur in ms
+                beep(baseFreq, duration, 'square', 0.1); // Gebruik een vierkante golfvorm voor een "harder" geluid
+            }
+
+            // Functie om het huidige getal bij te houden en falen geluid te spelen
+            function checkForFailSound(currentNumber, isFound, isChallengeActive) {
+                if (currentNumber !== lastNumber) {
+                    // Reset de timer als het getal verandert
+                    if (failTimeout) {
+                        clearTimeout(failTimeout);
+                        failTimeout = null;
+                    }
+                    lastNumber = currentNumber; // Update het laatste getal
+                } else {
+                    // Als het getal constant is, start de timer voor het falen geluid
+                    if (!failTimeout && !isFound && isChallengeActive) {
+                        failTimeout = setTimeout(() => {
+                            playFailSound();
+                            failTimeout = null; // Reset de timer na het afspelen
+                        }, failDelay);
+                    }
+                }
+            }
 
             const activeZones = new Set();
             const touchMap = new Map();
@@ -351,92 +1181,347 @@
                 Object.values(imageUrlMap).forEach(url => URL.revokeObjectURL(url));
                 imageUrlMap = {};
                 imageCount = 0;
-                 folderStatus.textContent = "Geen map geselecteerd.";
-                 toggleButton.disabled = true; // Disable toggle if no images
-                 // Forceer weergave van getal als modus foto was maar er geen map meer is
-                 if(displayImages) {
-                    displayImages = false;
-                    toggleButton.textContent = "Toon Foto's";
-                 }
+                folderStatus.textContent = "Geen map geselecteerd.";
+                toggleButton.disabled = true; // Disable toggle if no images
+                // Forceer weergave van getal als modus foto was maar er geen map meer is
+                if(displayImages) {
+                   displayImages = false;
+                   toggleButton.textContent = "Toon Foto's";
+                }
+            }
+            
+            // Functie om tweede set Object URLs vrij te geven
+            function cleanupImageUrls2() {
+                Object.values(imageUrlMap2).forEach(url => URL.revokeObjectURL(url));
+                imageUrlMap2 = {};
+                imageCount2 = 0;
+            }
+
+            // Functie om letter-Object URLs vrij te geven
+            function cleanupLetterImageUrls() {
+                Object.values(letterImageUrlMap).forEach(url => URL.revokeObjectURL(url));
+                letterImageUrlMap = {};
+                letterImageCount = 0;
+                if (letterMode) {
+                    folderStatus.textContent = "Geen lettermap geselecteerd.";
+                    toggleButton.disabled = true;
+                    if(displayImages) {
+                        displayImages = false;
+                        toggleButton.textContent = "Toon Foto's";
+                    }
+                }
+            }
+
+            // Functie om tweede set letter-Object URLs vrij te geven
+            function cleanupLetterImageUrls2() {
+                Object.values(letterImageUrlMap2).forEach(url => URL.revokeObjectURL(url));
+                letterImageUrlMap2 = {};
+                letterImageCount2 = 0;
             }
 
             // --- Map Selectie ---
             selectFolderButton.addEventListener('click', () => {
-                folderInput.click(); // Open de mapkiezer
+                if (letterMode) {
+                    lettersFolderInput.click(); // Open de mapkiezer voor letters
+                } else {
+                    folderInput.click(); // Open de mapkiezer voor getallen
+                }
+            });
+
+            selectFolderButton2.addEventListener('click', () => {
+                if (letterMode) {
+                    lettersFolderInput2.click(); // Open de mapkiezer voor tweede set letters
+                } else {
+                    folderInput2.click(); // Open de mapkiezer voor tweede set getallen
+                }
             });
 
             folderInput.addEventListener('change', (event) => {
                 cleanupImageUrls(); // Ruim oude URLs op voor we nieuwe laden
                 const files = event.target.files;
-                const imageRegex = /^(\d{2})(?:[ .].*)?\.(jpe?g|png)$/i; // Regex voor "NN.jpg/png" of "NN .*.jpg/png" of "NN.*.jpg/png"
+                const imageRegex = /^(\d{1,3})(?:[ .].*)?\.(jpe?g|png)$/i; // Regex voor 1-3 cijferige getallen, bv. "9.jpg", "42.png", "123.jpg"
 
                 for (const file of files) {
                     const match = file.name.match(imageRegex);
                     if (match) {
                         const number = parseInt(match[1], 10); // Getal uit bestandsnaam (bv. 05 -> 5)
-                        if (number >= 0 && number <= 99) { // Geldige range
+                        if (number >= 0 && number <= 999) { // Uitgebreide range tot 999
                             const objectURL = URL.createObjectURL(file);
                             imageUrlMap[number] = { url: objectURL, name: file.name };
                         }
                     }
                 }
-                 imageCount = Object.keys(imageUrlMap).length;
-                 folderStatus.textContent = `${imageCount} foto('s) geladen.`;
-                 toggleButton.disabled = (imageCount === 0); // Enable toggle only if images were loaded
-                 updateResult(); // Update weergave direct
+                imageCount = Object.keys(imageUrlMap).length;
+                folderStatus.textContent = `${imageCount} foto('s) geladen.`;
+                toggleButton.disabled = (imageCount === 0); // Enable toggle only if images were loaded
+                // Preload set 1 getal-afbeeldingen
+                preloadNumberMap(imageUrlMap, '1');
+                updateResult(); // Update weergave direct
             });
 
+            folderInput2.addEventListener('change', (event) => {
+                cleanupImageUrls2(); // Ruim oude URLs op voor we nieuwe laden
+                const files = event.target.files;
+                const imageRegex = /^(\d{1,3})(?:[ .].*)?\.(jpe?g|png)$/i; // Regex voor 1-3 cijferige getallen
+
+                for (const file of files) {
+                    const match = file.name.match(imageRegex);
+                    if (match) {
+                        const number = parseInt(match[1], 10);
+                        if (number >= 0 && number <= 999) {
+                            const objectURL = URL.createObjectURL(file);
+                            imageUrlMap2[number] = { url: objectURL, name: file.name };
+                        }
+                    }
+                }
+                imageCount2 = Object.keys(imageUrlMap2).length;
+                if (!letterMode) {
+                    folderStatus.textContent = `${imageCount} foto('s) set 1, ${imageCount2} foto('s) set 2 geladen.`;
+                    toggleButton.disabled = (imageCount === 0 && imageCount2 === 0);
+                }
+                // Preload set 2 getal-afbeeldingen
+                preloadNumberMap(imageUrlMap2, '2');
+                updateResult();
+            });
+
+            // Event handler voor het laden van letterfoto's
+            lettersFolderInput.addEventListener('change', (event) => {
+                cleanupLetterImageUrls(); // Ruim oude letter-URLs op
+                const files = event.target.files;
+                const imgRegex = /\.(jpe?g|png)$/i;
+
+                for (const file of files) {
+                    if (!imgRegex.test(file.name)) continue;
+                    const key = getLetterKeyFromFilename(file.name);
+                    if (!key) continue;
+                    const objectURL = URL.createObjectURL(file);
+                    letterImageUrlMap[key] = { url: objectURL, name: file.name };
+                }
+                letterImageCount = Object.keys(letterImageUrlMap).length;
+                if (letterMode) {
+                    folderStatus.textContent = `${letterImageCount} letterfoto('s) set 1, ${letterImageCount2} letterfoto('s) set 2 geladen.`;
+                    const totalLetters = letterImageCount + letterImageCount2;
+                    toggleButton.disabled = (totalLetters === 0);
+                }
+                updateResult();
+                // direct de rechter weergave verversen in lettermode
+                updateLetterRightPanel();
+                // Preload set 1
+                preloadLetterMap(letterImageUrlMap, '1');
+            });
+
+            // Event handler voor het laden van letterfoto's set 2
+            lettersFolderInput2.addEventListener('change', (event) => {
+                cleanupLetterImageUrls2(); // Ruim oude letter-URLs (set 2) op
+                const files = event.target.files;
+                const imgRegex = /\.(jpe?g|png)$/i;
+
+                for (const file of files) {
+                    if (!imgRegex.test(file.name)) continue;
+                    const key = getLetterKeyFromFilename(file.name);
+                    if (!key) continue;
+                    const objectURL = URL.createObjectURL(file);
+                    letterImageUrlMap2[key] = { url: objectURL, name: file.name };
+                }
+                letterImageCount2 = Object.keys(letterImageUrlMap2).length;
+                if (letterMode) {
+                    folderStatus.textContent = `${letterImageCount} letterfoto('s) set 1, ${letterImageCount2} letterfoto('s) set 2 geladen.`;
+                    const totalLetters = letterImageCount + letterImageCount2;
+                    toggleButton.disabled = (totalLetters === 0);
+                }
+                updateResult();
+                updateLetterRightPanel();
+                // Preload set 2
+                preloadLetterMap(letterImageUrlMap2, '2');
+            });
 
             // --- Zoek Afbeelding URL ---
+            // Hulpfunctie: bepaal lettersleutel uit bestandsnaam
+            function getLetterKeyFromFilename(fileName) {
+                try {
+                    const dot = fileName.lastIndexOf('.');
+                    const base = dot > 0 ? fileName.slice(0, dot) : fileName;
+                    // Neem aaneengesloten hoofdletters aan het begin, max 2
+                    const m = base.match(/^[A-Z]{1,2}/);
+                    if (m && m[0]) return m[0];
+                    // Fallback: neem eerste 2 letters uppercased
+                    const up = base.toUpperCase();
+                    return up.slice(0, Math.min(2, up.length));
+                } catch (_) {
+                    return '';
+                }
+            }
             function findImageForSum(sum) {
-                return imageUrlMap[sum] || null; // Return het object {url, name} of null
+                if (letterMode) {
+                    // In lettermode gebruiken we de eerste twee letters van het actieve woord als key
+                    const key = (currentInput.slice(0,2) || "").toUpperCase();
+                    const currentMap = useSet2 ? letterImageUrlMap2 : letterImageUrlMap;
+                    return key ? (currentMap[key] || null) : null;
+                } else {
+                    // In getalmodus zoeken we in de juiste imageUrlMap op basis van useSet2
+                    const currentMap = useSet2 ? imageUrlMap2 : imageUrlMap;
+                    return currentMap[sum] || null;
+                }
             }
 
             // --- Update Weergave (Getal of Foto) ---
             function updateResult() {
                 let sum = 0;
-                activeZones.forEach(zoneId => {
-                    const zone = document.getElementById(zoneId);
-                    // Ensure zone exists before accessing dataset
-                    if (zone && zone.dataset.value) {
-                        sum += parseInt(zone.dataset.value);
+                let letter = "";
+                
+                if (letterMode) {
+                    // Zoek eerste de basisletter (linkerhand)
+                    let baseLetter = "";
+                    let offset = 0;
+                    
+                    // Verzamel actieve zones en groepeer per hand
+                    const leftHandZones = [];
+                    const rightHandZones = [];
+                    
+                    activeZones.forEach(zoneId => {
+                        const zone = document.getElementById(zoneId);
+                        if (zone) {
+                            // Links (basisletter)
+                            if (zoneId.startsWith('L')) {
+                                leftHandZones.push(zone);
+                            }
+                            // Rechts (offset)
+                            else if (zoneId.startsWith('R')) {
+                                rightHandZones.push(zone);
+                            }
+                        }
+                    });
+                    
+                    // Als er een basisletter is geselecteerd
+                    if (leftHandZones.length > 0) {
+                        // Neem alleen de eerste geselecteerde basisletter (als er meerdere zijn)
+                        baseLetter = leftHandZones[0].dataset.value;
+                        
+                        // Als er een offset is geselecteerd
+                        if (rightHandZones.length > 0) {
+                            // Neem alleen de eerste geselecteerde offset (als er meerdere zijn)
+                            offset = parseInt(rightHandZones[0].dataset.value);
+                            
+                            // Bereken de nieuwe letter (offset posities voor basisletter)
+                            if (baseLetter && !isNaN(offset)) {
+                                letter = calculateLetterWithOffset(baseLetter, -offset); // Negatieve offset om terug te tellen
+                            } else {
+                                letter = baseLetter; // Fallback naar basisletter als offset niet geldig is
+                            }
+                        } else {
+                            // Geen offset, gebruik gewoon de basisletter
+                            letter = baseLetter;
+                        }
                     }
-                });
+                } else {
+                    // In getalmodus: tel de waarden op zoals voorheen
+                    activeZones.forEach(zoneId => {
+                        const zone = document.getElementById(zoneId);
+                        if (zone && zone.dataset.value) {
+                            sum += parseInt(zone.dataset.value);
+                        }
+                    });
+                    
+                    // Voeg 100 toe als de toggle actief is (alleen in getalmodus)
+                    if (addPlus100) {
+                        sum = (sum === 0) ? 100 : sum + 100;
+                    }
+                }
+                
+                // Resultaat is een letter in lettermodus of een getal in getalmodus
+                const result = letterMode ? letter : sum;
 
-                // Als spraak is ingeschakeld, spreek het getal uit na 200ms debounce
+                // Challenge check (alleen in getalmodus)
+                if (!letterMode && activeChallenge && challengeData[activeChallenge]) {
+                    const challenge = challengeData[activeChallenge];
+                    
+                    // Check of het huidige getal bij de challenge past en nog niet eerder is gevonden
+                    if (challenge.check(sum) && !challenge.found.includes(sum)) {
+                        // Voeg toe aan gevonden getallen
+                        challenge.found.push(sum);
+                        // Speel succesvol geluid af
+                        playSuccessSound();
+                        // Reset het laatst gefaalde getal
+                        lastFailedNumber = null;
+                        // Update counter
+                        updateChallengeCounter();
+                        
+                        // Check of de challenge compleet is
+                        if (challenge.found.length === challenge.generate().length) {
+                            // Overwinning!
+                            setTimeout(() => {
+                                playVictorySound();
+                                alert("Gefeliciteerd! Je hebt de " + challenge.name + " challenge voltooid!");
+                                stopChallenge();
+                            }, 500);
+                        }
+                    } 
+                    // Als het getal niet bij de challenge past en het is niet 0, speel faalgaluid af
+                    else if (sum > 0 && !challenge.check(sum) && sum !== lastFailedNumber) {
+                        checkForFailSound(sum, false, !!activeChallenge);
+                        lastFailedNumber = sum; // Onthoud dit nummer als laatst gefaald
+                    }
+                }
+
+                // Als spraak is ingeschakeld, spreek het resultaat uit na 300ms debounce
                 if (enableSpeech) {
                     // Clear bestaande timeout als die er is
                     if (speechTimeout) {
                         clearTimeout(speechTimeout);
                     }
                     
-                    // Alleen uitspreken als het een nieuw getal is
-                    if (sum !== lastSpokenNumber) {
-                        // Zet nieuwe timeout voor 200ms
+                    // Alleen uitspreken als het nieuw is en niet leeg
+                    const shouldSpeak = letterMode ? 
+                        (letter !== lastSpokenNumber && letter !== "") : 
+                        (sum !== lastSpokenNumber && sum !== 0);
+                    
+                    if (shouldSpeak) {
+                        // Zet nieuwe timeout voor 10ms
                         speechTimeout = setTimeout(() => {
-                            speakNumber(sum);
-                            lastSpokenNumber = sum;
-                        }, 200);
+                            if (letterMode) {
+                                speakLetter(letter);
+                            } else {
+                                speakNumber(sum);
+                            }
+                            lastSpokenNumber = letterMode ? letter : sum;
+                        }, 10);
                     }
                 }
 
-                // Toggle is alleen zinvol als er afbeeldingen zijn
-                toggleButton.disabled = (imageCount === 0);
+                // Toggle is alleen zinvol als er afbeeldingen zijn voor de huidige modus
+                const relevantImageCount = letterMode ? (useSet2 ? letterImageCount2 : letterImageCount) : (useSet2 ? imageCount2 : imageCount);
+                toggleButton.disabled = (relevantImageCount === 0);
 
                 // Caption element
                 const captionDiv = document.getElementById('caption');
                 captionDiv.textContent = '';
-                // Kwadraat element
-                const squareDiv = document.getElementById('square-result');
-                const square = sum * sum;
-                squareDiv.textContent = `${sum}²=${square}`;
-                squareDiv.style.display = showSquare ? 'block' : 'none';
 
-                if (displayImages && imageCount > 0) { // Toon alleen foto's als modus aan staat EN er foto's zijn
-                    const imageObj = findImageForSum(sum);
+                // Kwadraat element (alleen zichtbaar in getalmodus)
+                const squareDiv = document.getElementById('square-result');
+                if (!letterMode) {
+                    const square = sum * sum;
+                    squareDiv.textContent = `${sum}²=${square}`;
+                    squareDiv.style.display = showSquare ? 'block' : 'none';
+                } else {
+                    squareDiv.style.display = 'none';
+                }
+
+                if (displayImages && relevantImageCount > 0) {
+                    const imageObj = findImageForSum(result);
                     if (imageObj) {
-                        imageDisplay.src = imageObj.url; // Dit is nu een Object URL
-                        imageDisplay.alt = `Foto voor ${sum}`;
+                        // Gebruik preloaded cache indien beschikbaar (getallenmodus)
+                        if (!letterMode) {
+                            const cacheKey = preloadKey(useSet2 ? '2' : '1', String(result));
+                            const pre = preloadedNumberImages.get(cacheKey);
+                            if (pre && pre.complete) {
+                                imageDisplay.src = pre.src;
+                            } else {
+                                imageDisplay.src = imageObj.url;
+                            }
+                        } else {
+                            imageDisplay.src = imageObj.url;
+                        }
+                        imageDisplay.alt = letterMode ? `Foto voor letter ${result}` : `Foto voor ${result}`;
                         imageDisplay.style.display = 'block';
                         resultDisplay.style.display = 'none';
 
@@ -469,26 +1554,48 @@
 
                         imageDisplay.onerror = () => { // Fallback als laden van Object URL mislukt (onwaarschijnlijk)
                             imageDisplay.style.display = 'none';
-                            resultDisplay.textContent = `Fout bij laden foto ${sum}`;
+                            resultDisplay.textContent = letterMode ? 
+                                `Fout bij laden foto voor ${result}` : 
+                                `Fout bij laden foto ${result}`;
                             resultDisplay.style.display = 'flex';
                             document.body.style.backgroundColor = '#f0f0f0'; // Reset naar standaard kleur
                             captionDiv.textContent = '';
                         };
                     } else {
-                        // Geen afbeelding voor deze specifieke som
+                        // Geen afbeelding voor dit specifieke resultaat
                         imageDisplay.style.display = 'none';
-                        resultDisplay.textContent = sum; // Toon getal als fallback
+                        resultDisplay.textContent = result; // Toon resultaat als fallback
                         resultDisplay.style.display = 'flex';
                         document.body.style.backgroundColor = '#f0f0f0'; // Reset naar standaard kleur
                         captionDiv.textContent = '';
                     }
                 } else {
-                    // Toon het getal
+                    // Toon het resultaat (getal of letter)
                     imageDisplay.style.display = 'none';
-                    resultDisplay.textContent = sum;
+                    if (letterMode) {
+                        // In typemodus: toon de eerste twee letters van de huidige input
+                        const key = (currentInput.slice(0,2) || "").toUpperCase();
+                        resultDisplay.textContent = key || '';
+                    } else {
+                        resultDisplay.textContent = result;
+                    }
                     resultDisplay.style.display = 'flex';
-                    document.body.style.backgroundColor = '#f0f0f0'; // Reset naar standaard kleur
+                    document.body.style.backgroundColor = '#f0f0f0';
                     captionDiv.textContent = '';
+                }
+
+                // Controleer of het huidige getal al als gevonden is gemarkeerd
+                const isFound = activeChallenge && challengeData[activeChallenge].found.includes(sum);
+                const isChallengeActive = !!activeChallenge; // Controleer of er een actieve challenge is
+
+                // Roep de checkForFailSound functie aan met het huidige getal, of het al gevonden is, en of de challenge actief is
+                if (!letterMode) {
+                    checkForFailSound(sum, isFound, isChallengeActive); // Controleer op falen geluid in getalmodus
+                }
+
+                // Preload nabije afbeeldingen voor snellere wissel (getallenmodus)
+                if (!letterMode && displayImages) {
+                    preloadForCurrentSum(sum);
                 }
             }
 
@@ -643,10 +1750,12 @@
                         touchMap.delete(touchId);
                     }
                 });
-                 // Delay update slightly on touchend to potentially catch rapid taps better
-                 // Although with the current logic it might not be strictly necessary
-                 // setTimeout(updateResult, 10);
-                 updateResult(); // Update immediately is usually fine
+                // Reset lastFailedNumber bij het loslaten, zodat nieuwe fouten weer kunnen klinken
+                lastFailedNumber = null;
+                // Delay update slightly on touchend to potentially catch rapid taps better
+                // Although with the current logic it might not be strictly necessary
+                // setTimeout(updateResult, 10);
+                updateResult(); // Update immediately is usually fine
             }
 
             // --- Initialisatie & Toggle ---
@@ -657,19 +1766,27 @@
                 app.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 
                 toggleButton.addEventListener('click', () => {
-                    if (imageCount > 0) { // Only allow toggle if images are loaded
+                    // Controleer of er al een map is geselecteerd
+                    if (imageCount === 0) {
+                        // Als er geen afbeeldingen zijn geladen, laad de standaard afbeeldingen
+                        loadDefaultImages();
+                    } else {
+                        // Als er al afbeeldingen zijn geladen, toggle de weergave
                         displayImages = !displayImages;
-                        toggleButton.textContent = displayImages ? 'Toon Getallen' : "Toon Foto's";
-                        updateResult();
+                        toggleButton.textContent = displayImages ? 'Toon Getallen' : 'Toon Foto\'s';
+                        updateResult(); // Update de weergave
                     }
                 });
 
                 // Voeg touch event toe voor de toggle knop
                 toggleButton.addEventListener('touchstart', (e) => {
                     e.preventDefault(); // Voorkom dubbele triggers
-                    if (imageCount > 0) { // Only allow toggle if images are loaded
+                    const relevantImageCount = letterMode ? letterImageCount : imageCount;
+                    if (relevantImageCount > 0) { // Only allow toggle if images are loaded
                         displayImages = !displayImages;
-                        toggleButton.textContent = displayImages ? 'Toon Getallen' : "Toon Foto's";
+                        toggleButton.textContent = displayImages ? 
+                            (letterMode ? 'Toon Letters' : 'Toon Getallen') : 
+                            "Toon Foto's";
                         updateResult();
                     }
                 });
@@ -689,7 +1806,7 @@
                     updateResult();
                 });
 
-                // Kwadraat toggle
+                // Kwadraat/Hoofdletter toggle
                 const squareToggle = document.getElementById('square-toggle');
                 squareToggle.addEventListener('click', () => {
                     showSquare = !showSquare;
@@ -745,8 +1862,117 @@
                     }
                 });
 
+                // Mode toggle
+                modeToggle.addEventListener('change', switchMode);
+                
+                // Ook touch event voor de modus slider
+                const modeSlider = document.querySelector('#mode-switch-container .slider');
+                modeSlider.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    modeToggle.checked = !modeToggle.checked;
+                    switchMode();
+                });
+                
+                // Touch event voor het modus label
+                document.getElementById('mode-switch-label').addEventListener('click', () => {
+                    modeToggle.checked = !modeToggle.checked;
+                    switchMode();
+                });
+
+                // Challenge systeem
+                // Challenge knop opent het overlay
+                const challengeBtn = document.getElementById('challenge-btn');
+                challengeBtn.addEventListener('click', () => {
+                    // Initialiseer audio
+                    initAudio();
+                    document.getElementById('challenge-overlay').style.display = 'flex';
+                });
+                
+                // Ook voor touch
+                challengeBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    document.getElementById('challenge-overlay').style.display = 'flex';
+                });
+                
+                // Sluit overlay
+                document.getElementById('challenge-close').addEventListener('click', () => {
+                    document.getElementById('challenge-overlay').style.display = 'none';
+                });
+                
+                // Klik op een challenge item
+                document.querySelectorAll('.challenge-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const challengeId = item.getAttribute('data-challenge');
+                        startChallenge(challengeId);
+                    });
+                    
+                    // Ook voor touch
+                    item.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        const challengeId = item.getAttribute('data-challenge');
+                        startChallenge(challengeId);
+                    });
+                });
+
                 // Cleanup URLs when the page is closed to prevent memory leaks
                 window.addEventListener('beforeunload', cleanupImageUrls);
+                window.addEventListener('beforeunload', cleanupImageUrls2);
+                window.addEventListener('beforeunload', cleanupLetterImageUrls);
+                window.addEventListener('beforeunload', cleanupLetterImageUrls2);
+
+                // Plus 100 toggle
+                const plus100Toggle = document.getElementById('plus100-toggle');
+                plus100Toggle.addEventListener('change', () => {
+                    addPlus100 = plus100Toggle.checked;
+                    updateResult();
+                });
+                
+                // Verbeterde touch handling voor de slider
+                const slider = document.querySelector('.slider');
+                
+                slider.addEventListener('touchstart', (e) => {
+                    e.preventDefault(); // Voorkom default browser gedrag
+                    const toggle = document.getElementById('plus100-toggle');
+                    toggle.checked = !toggle.checked;
+                    addPlus100 = toggle.checked;
+                    updateResult();
+                });
+                
+                // Extra: Maak ook klikken op het label mogelijk
+                document.getElementById('plus100-label').addEventListener('click', () => {
+                    const toggle = document.getElementById('plus100-toggle');
+                    toggle.checked = !toggle.checked;
+                    addPlus100 = toggle.checked;
+                    updateResult();
+                });
+
+                // Set toggle
+                setToggle.addEventListener('change', () => {
+                    useSet2 = setToggle.checked;
+                    setLabel.textContent = useSet2 ? "Set 2" : "Set 1";
+                    updateResult();
+                    updateLetterRightPanel();
+                });
+                
+                // Touch handling voor set toggle
+                const setSlider = document.querySelector('#set-switch-container .slider');
+                setSlider.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    setToggle.checked = !setToggle.checked;
+                    useSet2 = setToggle.checked;
+                    setLabel.textContent = useSet2 ? "Set 2" : "Set 1";
+                    updateResult();
+                    updateLetterRightPanel();
+                });
+                
+                // Klikken op set label
+                document.getElementById('set-switch-label').addEventListener('click', () => {
+                    setToggle.checked = !setToggle.checked;
+                    useSet2 = setToggle.checked;
+                    setLabel.textContent = useSet2 ? "Set 2" : "Set 1";
+                    updateResult();
+                    updateLetterRightPanel();
+                });
             }
 
             // Initial setup
@@ -755,8 +1981,329 @@
             document.getElementById('caption-toggle').classList.toggle('active', showAllCaps);
             document.getElementById('square-toggle').classList.toggle('active', showSquare);
             document.getElementById('speech-toggle').classList.toggle('active', enableSpeech);
+
+            // Initialiseer challenge indicator en overlay
+            document.getElementById('challenge-indicator').style.display = 'none';
+            document.getElementById('challenge-overlay').style.display = 'none';
+            
+            // Initialiseer zone-waarden voor de huidige modus
+            updateZoneValues();
+
             updateResult();
             initEvents();
+
+            // Typemodus: render en input events
+            const wordListEl = document.getElementById('word-list');
+            const hiddenInput = document.getElementById('hidden-typing-input');
+            const letterImageEl = document.getElementById('letter-image-display');
+            const letterLettersEl = document.getElementById('letter-letters-display');
+
+            function rebuildWordIndexes() {
+                wordsByFirst = {};
+                wordsByFirstTwo = {};
+                for (const w of savedWords) {
+                    if (!w || typeof w !== 'string') continue;
+                    const up = w.toUpperCase();
+                    if (up.length >= 1) {
+                        const k1 = up[0];
+                        if (!wordsByFirst[k1]) wordsByFirst[k1] = [];
+                        wordsByFirst[k1].push(up);
+                    }
+                    if (up.length >= 2) {
+                        const k2 = up.slice(0,2);
+                        if (!wordsByFirstTwo[k2]) wordsByFirstTwo[k2] = [];
+                        wordsByFirstTwo[k2].push(up);
+                    }
+                }
+                // Sorteer buckets om autocompletion consistent te maken
+                for (const k in wordsByFirst) wordsByFirst[k].sort();
+                for (const k in wordsByFirstTwo) wordsByFirstTwo[k].sort();
+            }
+
+            function loadSavedWords() {
+                try {
+                    const raw = localStorage.getItem('fingermath_saved_words');
+                    if (raw) {
+                        const arr = JSON.parse(raw);
+                        if (Array.isArray(arr)) {
+                            savedWords = Array.from(new Set(arr.map(w => String(w).toUpperCase()))).sort();
+                        }
+                    }
+                } catch (_) { /* negeer */ }
+                rebuildWordIndexes();
+            }
+
+            function saveSavedWords() {
+                try {
+                    localStorage.setItem('fingermath_saved_words', JSON.stringify(savedWords));
+                } catch (_) { /* negeer */ }
+                rebuildWordIndexes();
+            }
+
+            function computeFilteredWords() {
+                const up = (currentInput || '').toUpperCase();
+                const LIMIT = 100;
+                if (up.length === 0) {
+                    filteredWords = savedWords.slice(0, LIMIT);
+                    return;
+                }
+                if (up.length === 1) {
+                    const bucket = wordsByFirst[up] || [];
+                    filteredWords = bucket.slice(0, LIMIT);
+                    return;
+                }
+                const key = up.slice(0,2);
+                const bucket2 = wordsByFirstTwo[key] || [];
+                filteredWords = bucket2.slice(0, LIMIT);
+            }
+
+            function computeAutocomplete() {
+                const up = (currentInput || '').toUpperCase();
+                if (up.length === 0) return '';
+                if (up.length === 1) {
+                    const matches = savedWords.filter(w => w.startsWith(up));
+                    if (matches.length === 0) return '';
+                    return matches[0].slice(1);
+                }
+                const key = up.slice(0,2);
+                const matches = savedWords.filter(w => w.startsWith(key));
+                if (matches.length === 0) return '';
+                return matches[0].slice(up.length); // rest van eerste match t.o.v. huidig input
+            }
+
+            function renderWords() {
+                if (!wordListEl) return;
+                computeFilteredWords();
+                // Efficiënter opnieuw opbouwen met DocumentFragment
+                while (wordListEl.firstChild) wordListEl.removeChild(wordListEl.firstChild);
+                const frag = document.createDocumentFragment();
+                // Actieve typregel bovenaan
+                const activeLi = document.createElement('li');
+                activeLi.className = 'word-item active';
+                const activeSpanTyped = document.createElement('span');
+                activeSpanTyped.style.color = '#c00';
+                activeSpanTyped.style.fontWeight = 'bold';
+                activeSpanTyped.textContent = currentInput;
+                const comp = computeAutocomplete();
+                const activeSpanGhost = document.createElement('span');
+                activeSpanGhost.style.color = '#888';
+                activeSpanGhost.textContent = comp;
+                activeLi.appendChild(activeSpanTyped);
+                activeLi.appendChild(activeSpanGhost);
+                frag.appendChild(activeLi);
+
+                // Gefilterde voorgeschiedenis eronder
+                filteredWords.forEach((w, idx) => {
+                    const li = document.createElement('li');
+                    li.className = 'word-item' + (idx === filteredSelectionIndex ? ' active' : '');
+
+                    // Tekstspan voor het woord
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = w;
+                    li.appendChild(textSpan);
+
+                    // Verwijderkruisje
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.textContent = '×';
+                    removeBtn.title = 'Verwijder dit woord';
+                    removeBtn.style.marginLeft = '8px';
+                    removeBtn.style.cursor = 'pointer';
+                    removeBtn.style.border = 'none';
+                    removeBtn.style.background = 'transparent';
+                    removeBtn.style.color = '#888';
+                    removeBtn.style.fontWeight = 'bold';
+                    removeBtn.style.fontSize = '14px';
+                    removeBtn.addEventListener('mouseenter', () => { removeBtn.style.color = '#c00'; });
+                    removeBtn.addEventListener('mouseleave', () => { removeBtn.style.color = '#888'; });
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const indexInSaved = savedWords.indexOf(w);
+                        if (indexInSaved !== -1) {
+                            savedWords.splice(indexInSaved, 1);
+                            saveSavedWords();
+                            // Reset selectie indien nodig en herteken
+                            if (filteredSelectionIndex >= filteredWords.length - 1) {
+                                filteredSelectionIndex = Math.max(0, filteredSelectionIndex - 1);
+                            }
+                            renderWords();
+                            updateLetterRightPanel();
+                        }
+                    });
+                    li.appendChild(removeBtn);
+
+                    li.addEventListener('click', () => {
+                        currentInput = w;
+                        filteredSelectionIndex = idx;
+                        renderWords();
+                        updateLetterRightPanel();
+                    });
+                    frag.appendChild(li);
+                });
+                wordListEl.appendChild(frag);
+                // Rechterpaneel update gebeurt via scheduler
+            }
+
+            function updateLetterRightPanel() {
+                if (!letterMode) return;
+                const key = (currentInput.slice(0,2) || '').toUpperCase();
+                const relevantCount = useSet2 ? letterImageCount2 : letterImageCount;
+                const map = useSet2 ? letterImageUrlMap2 : letterImageUrlMap;
+                const match = key && map[key] ? map[key] : null;
+                if (match && relevantCount > 0) {
+                    const cacheKey = preloadKey(useSet2 ? '2' : '1', key);
+                    const pre = preloadedLetterImages.get(cacheKey);
+                    if (pre && pre.complete) {
+                        letterImageEl.src = pre.src;
+                    } else {
+                        letterImageEl.src = match.url;
+                    }
+                    letterImageEl.style.display = 'block';
+                    letterLettersEl.textContent = '';
+                } else {
+                    letterImageEl.style.display = 'none';
+                    letterLettersEl.textContent = key;
+                }
+            }
+
+            function ensureActiveWordVisible() {
+                const list = wordListEl;
+                if (!list) return;
+                const items = list.querySelectorAll('.word-item');
+                if (items.length === 0) return;
+                // Eerste item is de actieve typregel; als er een selectie is, verschuift index +1
+                let activeEl = null;
+                if (filteredSelectionIndex >= 0) {
+                    activeEl = items[filteredSelectionIndex + 1] || items[0];
+                } else {
+                    activeEl = items[0];
+                }
+                if (!activeEl) return;
+                const rect = activeEl.getBoundingClientRect();
+                const parentRect = list.getBoundingClientRect();
+                if (rect.top < parentRect.top || rect.bottom > parentRect.bottom) {
+                    activeEl.scrollIntoView({ block: 'nearest' });
+                }
+            }
+
+            // rAF-coalesced scheduler voor linkerlijst en rechterpaneel
+            let letterModeRafId = null;
+            function scheduleLetterModeUpdate() {
+                if (letterModeRafId) return;
+                letterModeRafId = requestAnimationFrame(() => {
+                    letterModeRafId = null;
+                    renderWords();
+                    ensureActiveWordVisible();
+                    updateLetterRightPanel();
+                });
+            }
+
+            function handleTypingInput(e) {
+                if (!letterMode) return;
+                const key = e.key;
+                if (key === 'Enter') {
+                    e.preventDefault();
+                    // bevestigen en opslaan indien niet leeg
+                    const w = (currentInput || '').toUpperCase();
+                    if (w.length > 0) {
+                        if (!savedWords.includes(w)) {
+                            savedWords.push(w);
+                            savedWords.sort();
+                            saveSavedWords();
+                        }
+                    }
+                    currentInput = '';
+                    if (hiddenInput) hiddenInput.value = '';
+                    filteredSelectionIndex = -1;
+                    renderWords();
+                    ensureActiveWordVisible();
+                    updateLetterRightPanel();
+                    scheduleLetterModeUpdate();
+                    preloadForCurrentInput();
+                    return;
+                }
+                if (key === 'Backspace') {
+                    e.preventDefault();
+                    if (currentInput.length > 0) {
+                        currentInput = currentInput.slice(0, -1);
+                        if (hiddenInput) hiddenInput.value = currentInput;
+                        filteredSelectionIndex = -1;
+                        renderWords();
+                        ensureActiveWordVisible();
+                        updateLetterRightPanel();
+                        scheduleLetterModeUpdate();
+                        preloadForCurrentInput();
+                    } else {
+                        // ook updaten als het al leeg is
+                        renderWords();
+                        updateLetterRightPanel();
+                        scheduleLetterModeUpdate();
+                        preloadForCurrentInput();
+                    }
+                    return;
+                }
+                if (key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (filteredWords.length > 0) {
+                        filteredSelectionIndex = Math.min(filteredSelectionIndex + 1, filteredWords.length - 1);
+                        renderWords();
+                        ensureActiveWordVisible();
+                        updateLetterRightPanel();
+                        scheduleLetterModeUpdate();
+                        preloadForCurrentInput();
+                    }
+                    return;
+                }
+                if (key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (filteredWords.length > 0) {
+                        filteredSelectionIndex = Math.max(filteredSelectionIndex - 1, 0);
+                        renderWords();
+                        ensureActiveWordVisible();
+                        updateLetterRightPanel();
+                        scheduleLetterModeUpdate();
+                        preloadForCurrentInput();
+                    }
+                    return;
+                }
+                if (key.length === 1) {
+                    e.preventDefault();
+                    // Voeg teken toe en filter
+                    currentInput = (currentInput + key).toUpperCase();
+                    if (hiddenInput) hiddenInput.value = currentInput;
+                    filteredSelectionIndex = -1;
+                    renderWords();
+                    ensureActiveWordVisible();
+                    updateLetterRightPanel();
+                    scheduleLetterModeUpdate();
+                    preloadForCurrentInput();
+                    return;
+                }
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (!letterMode) return;
+                // Zorg dat we key events vangen zonder focus issues
+                if (hiddenInput) hiddenInput.focus();
+                handleTypingInput(e);
+                // extra zekerheid dat een update gepland wordt
+                scheduleLetterModeUpdate();
+            });
+
+            // Sync typ-invoer via verborgen input (extra zekerheid dat letters altijd updaten)
+            // Sync typ-invoer via verborgen input (zorgt voor updates wanneer focus daar zit)
+            if (hiddenInput) {
+                hiddenInput.addEventListener('input', () => {
+                    if (!letterMode) return;
+                    currentInput = (hiddenInput.value || '').toUpperCase();
+                    filteredSelectionIndex = -1;
+                    scheduleLetterModeUpdate();
+                });
+            }
+
+            // Init woorden uit localStorage
+            loadSavedWords();
+            renderWords();
 
             // Functie om een getal uit te spreken in het Nederlands
             function speakNumber(number) {
@@ -776,6 +2323,263 @@
                 // Spreek uit
                 window.speechSynthesis.speak(utterance);
             }
+
+            // Functie om een challenge te starten
+            function startChallenge(challengeId) {
+                if (challengeData[challengeId]) {
+                    // Stel actieve challenge in
+                    activeChallenge = challengeId;
+                    const challenge = challengeData[challengeId];
+                    
+                    // Reset gevonden getallen
+                    challenge.found = [];
+                    // Reset het laatst gefaalde getal
+                    lastFailedNumber = null;
+                    
+                    // Toon indicator
+                    const indicator = document.getElementById('challenge-indicator');
+                    const nameEl = document.getElementById('challenge-name');
+                    nameEl.textContent = challenge.name;
+                    indicator.style.display = 'flex';
+                    
+                    // Update counter
+                    updateChallengeCounter();
+                    
+                    // Sluit overlay
+                    document.getElementById('challenge-overlay').style.display = 'none';
+                }
+            }
+            
+            // Functie om een challenge te stoppen
+            function stopChallenge() {
+                activeChallenge = null;
+                // Verberg indicator
+                document.getElementById('challenge-indicator').style.display = 'none';
+            }
+            
+            // Update de challenge counter
+            function updateChallengeCounter() {
+                if (activeChallenge && challengeData[activeChallenge]) {
+                    const challenge = challengeData[activeChallenge];
+                    const total = challenge.generate().length;
+                    const found = challenge.found.length;
+                    const remaining = total - found;
+                    
+                    document.getElementById('challenge-counter').textContent = remaining;
+                }
+            }
+
+            // Functie voor het uitspreken van letters
+            function speakLetter(letter) {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(letter);
+                utterance.lang = 'nl-NL';
+                utterance.rate = 0.9;
+                
+                window.speechSynthesis.speak(utterance);
+            }
+            
+            // Functie om de modus te schakelen tussen getallen en letters
+            function switchMode() {
+                letterMode = modeToggle.checked;
+                
+                // Update UI elementen op basis van de modus
+                modeLabel.textContent = letterMode ? "Letters" : "Getallen";
+                
+                // Reset zones en wissel UI naar typemodus i.p.v. aanraakzones
+                activeZones.clear();
+                document.querySelectorAll('.zone.active').forEach(zone => { zone.classList.remove('active'); });
+                const handsContainer = document.getElementById('hands-container');
+                const letterModeContainer = document.getElementById('letter-mode-container');
+                if (letterMode) {
+                    handsContainer.style.display = 'none';
+                    document.getElementById('result-container').style.display = 'none';
+                    letterModeContainer.style.display = 'grid';
+                    // Verberg de oude foto/getal toggle in lettermode
+                    document.getElementById('controls').style.display = 'none';
+                    // Focus op verborgen input zodat typen direct werkt
+                    const hiddenInput = document.getElementById('hidden-typing-input');
+                    hiddenInput.value = '';
+                    // focus via rAF om layout wijzigingen niet te blokkeren
+                    requestAnimationFrame(() => hiddenInput.focus());
+                    // Render lijst en rechterpaneel
+                    renderWords();
+                    updateLetterRightPanel();
+                } else {
+                    handsContainer.style.display = 'flex';
+                    document.getElementById('result-container').style.display = 'block';
+                    letterModeContainer.style.display = 'none';
+                    // Toon toggle controls terug
+                    document.getElementById('controls').style.display = 'flex';
+                }
+                
+                // Update de zone-waarden op basis van de modus
+                updateZoneValues();
+                
+                // Update de status info
+                if (letterMode) {
+                    const totalLetters = letterImageCount + letterImageCount2;
+                    folderStatus.textContent = totalLetters > 0 ? 
+                        `${letterImageCount} letterfoto('s) set 1, ${letterImageCount2} letterfoto('s) set 2 geladen.` : 
+                        "Geen lettermap geselecteerd.";
+                    selectFolderButton.textContent = "Kies Lettermap 1";
+                    selectFolderButton2.textContent = "Kies Lettermap 2";
+                    toggleButton.textContent = displayImages ? 'Toon Letters' : "Toon Foto's";
+                    toggleButton.disabled = (totalLetters === 0);
+                    
+                    // Verberg +100 container in lettermodus
+                    document.getElementById('plus100-container').style.display = 'none';
+                    // Toon set switch in lettermodus
+                    document.getElementById('set-switch-container').style.display = 'flex';
+                    
+                    // Update toggle-knoppen voor lettermodus
+                    document.getElementById('caption-toggle').textContent = "WOORD";
+                    document.getElementById('square-toggle').textContent = "hoofdletter";
+                    document.getElementById('speech-toggle').textContent = "spraak";
+                    document.getElementById('challenge-btn').textContent = "woordspel";
+                    
+                    // Hand-labels irrelevant in typemodus, geen aanpassing nodig
+                } else {
+                    const totalImages = imageCount + imageCount2;
+                    folderStatus.textContent = totalImages > 0 ? 
+                        `${imageCount} foto('s) set 1, ${imageCount2} foto('s) set 2 geladen.` : 
+                        "Geen map geselecteerd.";
+                    selectFolderButton.textContent = "Kies Fotomap";
+                    selectFolderButton2.textContent = "Kies Fotomap 2";
+                    toggleButton.textContent = displayImages ? 'Toon Getallen' : "Toon Foto's";
+                    toggleButton.disabled = (totalImages === 0);
+                    
+                    // Toon +100 container in getalmodus
+                    document.getElementById('plus100-container').style.display = 'flex';
+                    // Toon set switch in getalmodus
+                    document.getElementById('set-switch-container').style.display = 'flex';
+                    
+                    // Update toggle-knoppen voor getalmodus
+                    document.getElementById('caption-toggle').textContent = "FEIT";
+                    document.getElementById('square-toggle').textContent = "kwadraat";
+                    document.getElementById('speech-toggle').textContent = "spraak";
+                    document.getElementById('challenge-btn').textContent = "challenge";
+                    
+                    // Herstel hand-labels
+                    document.querySelector('.left-hand .hand-label').textContent = "LINKS";
+                    document.querySelector('.right-hand .hand-label').textContent = "RECHTS";
+                }
+                
+                // Reset result display
+                updateResult();
+            }
+            
+            // Functie om de zone-waarden bij te werken op basis van de huidige modus
+            function updateZoneValues() {
+                if (letterMode) {
+                    // In lettermodus gebruiken we quincunx-patroon voor letters
+                    // Linkerhand voor basisletters E, J, O, T, Y
+                    document.getElementById('L1-letter').dataset.value = 'O'; // Midden
+                    document.getElementById('L1-letter').textContent = 'O';
+                    document.getElementById('L2-letter').dataset.value = 'E'; // Linksboven
+                    document.getElementById('L2-letter').textContent = 'E';
+                    document.getElementById('L3-letter').dataset.value = 'J'; // Rechtsboven
+                    document.getElementById('L3-letter').textContent = 'J';
+                    document.getElementById('L4-letter').dataset.value = 'T'; // Linksonder
+                    document.getElementById('L4-letter').textContent = 'T';
+                    document.getElementById('L5-letter').dataset.value = 'Y'; // Rechtsonder
+                    document.getElementById('L5-letter').textContent = 'Y';
+                    
+                    // Rechterhand voor offsets 0-4
+                    document.getElementById('R1-letter').dataset.value = '0'; // Midden (geen offset)
+                    document.getElementById('R1-letter').textContent = '0';
+                    document.getElementById('R2-letter').dataset.value = '1'; // Linksboven
+                    document.getElementById('R2-letter').textContent = '1';
+                    document.getElementById('R3-letter').dataset.value = '2'; // Rechtsboven
+                    document.getElementById('R3-letter').textContent = '2';
+                    document.getElementById('R4-letter').dataset.value = '3'; // Linksonder
+                    document.getElementById('R4-letter').textContent = '3';
+                    document.getElementById('R5-letter').dataset.value = '4'; // Rechtsonder
+                    document.getElementById('R5-letter').textContent = '4';
+                } else {
+                    // In getalmodus gebruiken we de originele waarden
+                    document.getElementById('L5').dataset.value = '10';
+                    document.getElementById('L5').textContent = '10';
+                    document.getElementById('L4').dataset.value = '10';
+                    document.getElementById('L4').textContent = '10';
+                    document.getElementById('L3').dataset.value = '10'; 
+                    document.getElementById('L3').textContent = '10';
+                    document.getElementById('L2').dataset.value = '10';
+                    document.getElementById('L2').textContent = '10';
+                    document.getElementById('L1').dataset.value = '50';
+                    document.getElementById('L1').textContent = '50';
+                    
+                    document.getElementById('R2').dataset.value = '1';
+                    document.getElementById('R2').textContent = '1';
+                    document.getElementById('R3').dataset.value = '1';
+                    document.getElementById('R3').textContent = '1';
+                    document.getElementById('R4').dataset.value = '1'; 
+                    document.getElementById('R4').textContent = '1';
+                    document.getElementById('R5').dataset.value = '1';
+                    document.getElementById('R5').textContent = '1';
+                    document.getElementById('R1').dataset.value = '5';
+                    document.getElementById('R1').textContent = '5';
+                }
+            }
+
+            // Hulpfunctie om een letter te berekenen met een offset
+            function calculateLetterWithOffset(baseLetter, offset) {
+                // De base letters in ons systeem
+                const baseLetters = ['E', 'J', 'O', 'T', 'Y'];
+                
+                // Het volledige alfabet
+                const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                
+                // Vind de index van de basisletter in het alfabet
+                const baseIndex = alphabet.indexOf(baseLetter);
+                
+                // Als de basisletter niet in het alfabet voorkomt, return de basisletter
+                if (baseIndex === -1) return baseLetter;
+                
+                // Bereken de nieuwe index met offset, met wrap-around
+                let newIndex = baseIndex + offset;
+                
+                // Zorg dat we binnen het alfabet blijven (wrap-around)
+                while (newIndex < 0) newIndex += alphabet.length;
+                newIndex = newIndex % alphabet.length;
+                
+                // Return de nieuwe letter
+                return alphabet[newIndex];
+            }
+
+            // Functie om standaard afbeeldingen te laden uit de 'getalbeelden' map
+            function loadDefaultImages() {
+                const folderInput = document.createElement('input');
+                folderInput.type = 'file';
+                folderInput.webkitdirectory = true; // Voor het selecteren van een map
+                folderInput.addEventListener('change', (event) => {
+                    cleanupImageUrls(); // Ruim oude URLs op voor we nieuwe laden
+                    const files = event.target.files;
+                    const imageRegex = /^(\d{1,3})(?:[ .].*)?\.(jpe?g|png)$/i; // Regex voor 1-3 cijferige getallen, bv. "9.jpg", "42.png", "123.jpg"
+
+                    for (const file of files) {
+                        const match = file.name.match(imageRegex);
+                        if (match) {
+                            const number = parseInt(match[1], 10); // Getal uit bestandsnaam (bv. 05 -> 5)
+                            if (number >= 0 && number <= 999) { // Uitgebreide range tot 999
+                                const objectURL = URL.createObjectURL(file);
+                                imageUrlMap[number] = { url: objectURL, name: file.name };
+                            }
+                        }
+                    }
+                    imageCount = Object.keys(imageUrlMap).length;
+                    folderStatus.textContent = `${imageCount} foto('s) geladen.`;
+                    toggleButton.disabled = (imageCount === 0); // Enable toggle only if images were loaded
+                    updateResult(); // Update weergave direct
+                });
+
+                // Open de mapkiezer
+                folderInput.click(); // Dit moet door de gebruiker worden geactiveerd
+            }
+
+            // Laad standaard afbeeldingen bij het laden van de pagina
+            loadDefaultImages();
         });
     </script>
 </body>
