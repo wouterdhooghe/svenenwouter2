@@ -1680,6 +1680,10 @@
             // --- Touch Event Handlers (min of meer ongewijzigd) ---
              function handleTouchStart(e) {
                 e.preventDefault();
+                // Reset: alle zones uit (0-modus) en mappings leeg, zodat nieuwe touch van nul begint
+                document.querySelectorAll('.zone').forEach(z => z.classList.remove('active'));
+                activeZones.clear();
+                touchMap.clear();
                 Array.from(e.changedTouches).forEach(touch => {
                     const touchX = touch.clientX;
                     const touchY = touch.clientY;
@@ -2580,6 +2584,79 @@
 
             // Laad standaard afbeeldingen bij het laden van de pagina
             loadDefaultImages();
+
+            // Swipe ondersteuning op resultaatweergave
+            (function addSwipe(){
+                let startX = 0, startY = 0, swiping = false;
+                const THRESH = 30; // px
+                resultDisplay.addEventListener('touchstart', (e) => {
+                    if (!e.changedTouches || e.changedTouches.length === 0) return;
+                    const t = e.changedTouches[0];
+                    startX = t.clientX; startY = t.clientY; swiping = true;
+                }, { passive: true });
+                resultDisplay.addEventListener('touchmove', (e) => {
+                    // passive true prevents preventDefault; just track
+                }, { passive: true });
+                resultDisplay.addEventListener('touchend', (e) => {
+                    if (!swiping) return; swiping = false;
+                    const t = e.changedTouches && e.changedTouches[0];
+                    if (!t) return;
+                    const dx = t.clientX - startX;
+                    const dy = t.clientY - startY;
+                    if (Math.abs(dx) < THRESH || Math.abs(dx) < Math.abs(dy)) return;
+                    if (!letterMode) {
+                        // Getalmodus: wijzig som naar som±1 en highlight overeenkomstige zones
+                        // Bepaal huidige som via updateResult berekening: we hergebruiken logica door tijdelijk activeZones te simuleren
+                        // Simpel: we lezen huidige tekst als integer als geen beeld actief is
+                        let current = 0;
+                        const txt = (resultDisplay.textContent || '').trim();
+                        const parsed = parseInt(txt, 10);
+                        if (!isNaN(parsed)) current = parsed; else current = 0;
+                        const next = dx > 0 ? current + 1 : Math.max(0, current - 1);
+                        // Reset en highlight: eenvoudige strategie -> zet zones uit; we tonen enkel getal en spreken, zones pas op aanraak
+                        document.querySelectorAll('.zone').forEach(z => z.classList.remove('active'));
+                        activeZones.clear();
+                        // Toon nieuw getal
+                        imageDisplay.style.display = 'none';
+                        resultDisplay.textContent = String(next);
+                        resultDisplay.style.display = 'flex';
+                        // optioneel: spreek uit
+                        try { speakNumber(next); } catch(_) {}
+                    } else {
+                        // Lettermode: lexicografisch volgende/vorige 2-letter key gebaseerd op currentInput of result
+                        const keyNow = ((currentInput && currentInput.slice(0,2)) || (resultDisplay.textContent || '').slice(0,2)).toUpperCase();
+                        const nextKey = (dx > 0) ? inc2(keyNow) : dec2(keyNow);
+                        currentInput = nextKey; // actief woord links aanpassen naar deze 2-letter combo
+                        const hiddenInput = document.getElementById('hidden-typing-input');
+                        if (hiddenInput) hiddenInput.value = currentInput;
+                        // Update linker lijst en rechterpaneel
+                        renderWords();
+                        ensureActiveWordVisible();
+                        updateLetterRightPanel();
+                        // Toon de letters in de hoofdweergave
+                        imageDisplay.style.display = 'none';
+                        resultDisplay.textContent = nextKey;
+                        resultDisplay.style.display = 'flex';
+                    }
+                }, { passive: true });
+
+                function inc2(key){
+                    let a = (key && key[0]) ? key.charCodeAt(0) - 65 : 0;
+                    let b = (key && key[1]) ? key.charCodeAt(1) - 65 : 0;
+                    if (isNaN(a) || a < 0 || a > 25) a = 0;
+                    if (isNaN(b) || b < 0 || b > 25) b = 0;
+                    b += 1; if (b >= 26) { b = 0; a += 1; } if (a >= 26) a = 0;
+                    return String.fromCharCode(65 + a) + String.fromCharCode(65 + b);
+                }
+                function dec2(key){
+                    let a = (key && key[0]) ? key.charCodeAt(0) - 65 : 0;
+                    let b = (key && key[1]) ? key.charCodeAt(1) - 65 : 0;
+                    if (isNaN(a) || a < 0 || a > 25) a = 0;
+                    if (isNaN(b) || b < 0 || b > 25) b = 0;
+                    b -= 1; if (b < 0) { b = 25; a -= 1; } if (a < 0) a = 25;
+                    return String.fromCharCode(65 + a) + String.fromCharCode(65 + b);
+                }
+            })();
         });
     </script>
 </body>
